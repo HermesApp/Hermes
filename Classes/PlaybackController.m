@@ -213,6 +213,7 @@
 
 /* We are tired o fthe currently playing song, play another */
 - (IBAction)tired: (id) sender {
+  NSLog(@"I'm tired too...");
 }
 
 @end

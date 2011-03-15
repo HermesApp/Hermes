@@ -11,11 +11,15 @@
 
 @implementation AuthController
 
+/* Cancel was hit, hide the sheet */
 - (IBAction)cancel: (id)sender {
   [[NSApp delegate] closeAuthSheet];
   [error setHidden: YES];
+
+  [auth setHidden:NO];
 }
 
+/* Login button in sheet hit, should authenticate */
 - (IBAction)authenticate: (id)sender {
   [error setHidden: YES];
   [spinner setHidden:NO];
@@ -23,6 +27,8 @@
 
   if ([[NSApp delegate] checkAuth: [username stringValue] : [password stringValue]]) {
     [[NSApp delegate] closeAuthSheet];
+    [auth setHidden:YES];
+    [[[NSApp delegate] mainC] afterAuthentication];
   } else {
     [error setHidden: NO];
   }
@@ -31,6 +37,7 @@
   [spinner stopAnimation: sender];
 }
 
+/* Login button in main window hit, should show sheet */
 - (IBAction)showAuth: (id)sender {
   [[NSApp delegate] showAuthSheet];
 }

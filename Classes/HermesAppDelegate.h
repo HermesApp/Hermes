@@ -21,7 +21,7 @@
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSWindow *authSheet;
-@property (assign) IBOutlet MainController *main;
+@property (assign) IBOutlet MainController *mainC;
 @property (assign) IBOutlet AuthController *auth;
 @property (assign) IBOutlet PlaybackController *playback;
 @property (retain) Pandora *pandora;

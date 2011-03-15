@@ -11,7 +11,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize window, authSheet, main, auth, playback, pandora;
+@synthesize window, authSheet, mainC, auth, playback, pandora;
 
 - (id) init {
   pandora = [[Pandora alloc] init];
@@ -73,21 +73,23 @@
       stringForKey:USERNAME_KEY];
   NSString *savedPassword = [Keychain getKeychainPassword: savedUsername];
 
-  if (![self checkAuth: savedUsername : savedPassword]) {
-    [self showAuthSheet];
+  if ([self checkAuth: savedUsername : savedPassword]) {
+    [mainC afterAuthentication];
   } else {
-    [main afterAuthentication];
+    [self showAuthSheet];
   }
 
   [self hideSpinner];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
-  [main hideDrawer];
+  [mainC hideDrawer];
 }
 
 - (void)applicationWillBecomeActive:(NSNotification *)aNotification {
-  [main showDrawer];
+  if ([pandora authToken] != nil) {
+    [mainC showDrawer];
+  }
 }
 
 @end
