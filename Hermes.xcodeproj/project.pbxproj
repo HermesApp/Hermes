@@ -1,0 +1,403 @@
+// !$*UTF8*$!
+{
+  archiveVersion = 1;
+  classes = {
+  };
+  objectVersion = 45;
+  objects = {
+
+/* Begin PBXBuildFile section */
+    1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+    256AC3DA0F4B6AC300CF3369 /* HermesAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */; };
+    8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+    8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+    8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+    FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
+    FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10651A132CAE7C00D6DE42 /* Security.framework */; };
+    FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* MainController.m */; };
+    FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F78132BF97E0089AECC /* Pandora.m */; };
+    FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F92132BF9F50089AECC /* Crypt.m */; };
+    FA2A3F99132BF9F50089AECC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F95132BF9F50089AECC /* Song.m */; };
+    FA2A3F9A132BF9F50089AECC /* Station.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F97132BF9F50089AECC /* Station.m */; };
+    FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */; };
+    FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */; };
+    FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
+    FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
+    FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
+    FAEFFC4E132D6D2A007DC6FB /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4C132D6D2A007DC6FB /* play.png */; };
+    FAEFFC52132D6EC5007DC6FB /* fast_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC51132D6EC5007DC6FB /* fast_forward.png */; };
+    FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50CE132EFDCB00F02CE0 /* accept.png */; };
+    FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50D0132EFDD800F02CE0 /* delete.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+    089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+    1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+    13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+    1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+    256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HermesAppDelegate.h; sourceTree = "<group>"; };
+    256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HermesAppDelegate.m; sourceTree = "<group>"; };
+    256AC3F00F4B6AF500CF3369 /* Hermes_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hermes_Prefix.pch; sourceTree = "<group>"; };
+    29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+    29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+    29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+    8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
+    8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+    FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
+    FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
+    FA10651A132CAE7C00D6DE42 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+    FA2A3F75132BF97E0089AECC /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainController.h; path = Classes/MainController.h; sourceTree = "<group>"; };
+    FA2A3F76132BF97E0089AECC /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainController.m; path = Classes/MainController.m; sourceTree = "<group>"; };
+    FA2A3F77132BF97E0089AECC /* Pandora.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pandora.h; path = Classes/Pandora.h; sourceTree = "<group>"; };
+    FA2A3F78132BF97E0089AECC /* Pandora.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Pandora.m; path = Classes/Pandora.m; sourceTree = "<group>"; };
+    FA2A3F91132BF9F50089AECC /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
+    FA2A3F92132BF9F50089AECC /* Crypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypt.m; sourceTree = "<group>"; };
+    FA2A3F93132BF9F50089AECC /* Keys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keys.h; sourceTree = "<group>"; };
+    FA2A3F94132BF9F50089AECC /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
+    FA2A3F95132BF9F50089AECC /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
+    FA2A3F96132BF9F50089AECC /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
+    FA2A3F97132BF9F50089AECC /* Station.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Station.m; sourceTree = "<group>"; };
+    FA2A3FBB132BFA6F0089AECC /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
+    FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
+    FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+    FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthController.h; sourceTree = "<group>"; };
+    FAEFFAB0132CB173007DC6FB /* AuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthController.m; sourceTree = "<group>"; };
+    FAEFFBD4132CC0E2007DC6FB /* error_icon.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
+    FAEFFC4B132D6D2A007DC6FB /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
+    FAEFFC4C132D6D2A007DC6FB /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+    FAEFFC51132D6EC5007DC6FB /* fast_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fast_forward.png; sourceTree = "<group>"; };
+    FAFF50CE132EFDCB00F02CE0 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
+    FAFF50D0132EFDD800F02CE0 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+    8D11072E0486CEB800E47090 /* Frameworks */ = {
+      isa = PBXFrameworksBuildPhase;
+      buildActionMask = 2147483647;
+      files = (
+        8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+        FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */,
+        FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */,
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+    080E96DDFE201D6D7F000001 /* Classes */ = {
+      isa = PBXGroup;
+      children = (
+        FA2A3FBA132BFA6F0089AECC /* AudioStreamer */,
+        FA2A3F90132BF9F50089AECC /* Pandora */,
+        FA2A3F75132BF97E0089AECC /* MainController.h */,
+        FA2A3F76132BF97E0089AECC /* MainController.m */,
+        FA2A3F77132BF97E0089AECC /* Pandora.h */,
+        FA2A3F78132BF97E0089AECC /* Pandora.m */,
+        256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
+        256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */,
+        FA1063BC132C6A8A00D6DE42 /* Keychain.h */,
+        FA1063BD132C6A8A00D6DE42 /* Keychain.m */,
+        FAEFFAAF132CB173007DC6FB /* AuthController.h */,
+        FAEFFAB0132CB173007DC6FB /* AuthController.m */,
+      );
+      name = Classes;
+      sourceTree = "<group>";
+    };
+    1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+      isa = PBXGroup;
+      children = (
+        1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+        FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */,
+        FA10651A132CAE7C00D6DE42 /* Security.framework */,
+      );
+      name = "Linked Frameworks";
+      sourceTree = "<group>";
+    };
+    1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+      isa = PBXGroup;
+      children = (
+        29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+        29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+        13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+      );
+      name = "Other Frameworks";
+      sourceTree = "<group>";
+    };
+    19C28FACFE9D520D11CA2CBB /* Products */ = {
+      isa = PBXGroup;
+      children = (
+        8D1107320486CEB800E47090 /* Hermes.app */,
+      );
+      name = Products;
+      sourceTree = "<group>";
+    };
+    29B97314FDCFA39411CA2CEA /* Pithos */ = {
+      isa = PBXGroup;
+      children = (
+        080E96DDFE201D6D7F000001 /* Classes */,
+        29B97315FDCFA39411CA2CEA /* Other Sources */,
+        29B97317FDCFA39411CA2CEA /* Resources */,
+        29B97323FDCFA39411CA2CEA /* Frameworks */,
+        19C28FACFE9D520D11CA2CBB /* Products */,
+      );
+      name = Pithos;
+      sourceTree = "<group>";
+    };
+    29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+      isa = PBXGroup;
+      children = (
+        256AC3F00F4B6AF500CF3369 /* Hermes_Prefix.pch */,
+        29B97316FDCFA39411CA2CEA /* main.m */,
+      );
+      name = "Other Sources";
+      sourceTree = "<group>";
+    };
+    29B97317FDCFA39411CA2CEA /* Resources */ = {
+      isa = PBXGroup;
+      children = (
+        FAEFFBFF132D620B007DC6FB /* icons */,
+        8D1107310486CEB800E47090 /* Hermes-Info.plist */,
+        089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+        1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+      );
+      name = Resources;
+      sourceTree = "<group>";
+    };
+    29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+      isa = PBXGroup;
+      children = (
+        1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+        1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+      );
+      name = Frameworks;
+      sourceTree = "<group>";
+    };
+    FA2A3F90132BF9F50089AECC /* Pandora */ = {
+      isa = PBXGroup;
+      children = (
+        FA2A3F91132BF9F50089AECC /* Crypt.h */,
+        FA2A3F92132BF9F50089AECC /* Crypt.m */,
+        FA2A3F93132BF9F50089AECC /* Keys.h */,
+        FA2A3F94132BF9F50089AECC /* Song.h */,
+        FA2A3F95132BF9F50089AECC /* Song.m */,
+        FA2A3F96132BF9F50089AECC /* Station.h */,
+        FA2A3F97132BF9F50089AECC /* Station.m */,
+      );
+      name = Pandora;
+      path = Classes/Pandora;
+      sourceTree = "<group>";
+    };
+    FA2A3FBA132BFA6F0089AECC /* AudioStreamer */ = {
+      isa = PBXGroup;
+      children = (
+        FA2A3FBB132BFA6F0089AECC /* AudioStreamer.h */,
+        FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */,
+      );
+      path = AudioStreamer;
+      sourceTree = "<group>";
+    };
+    FAEFFBFF132D620B007DC6FB /* icons */ = {
+      isa = PBXGroup;
+      children = (
+        FAFF50D0132EFDD800F02CE0 /* delete.png */,
+        FAEFFC51132D6EC5007DC6FB /* fast_forward.png */,
+        FAFF50CE132EFDCB00F02CE0 /* accept.png */,
+        FAEFFC4B132D6D2A007DC6FB /* pause.png */,
+        FAEFFC4C132D6D2A007DC6FB /* play.png */,
+        FAEFFBD4132CC0E2007DC6FB /* error_icon.png */,
+      );
+      name = icons;
+      sourceTree = "<group>";
+    };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+    8D1107260486CEB800E47090 /* Hermes */ = {
+      isa = PBXNativeTarget;
+      buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Hermes" */;
+      buildPhases = (
+        8D1107290486CEB800E47090 /* Resources */,
+        8D11072C0486CEB800E47090 /* Sources */,
+        8D11072E0486CEB800E47090 /* Frameworks */,
+      );
+      buildRules = (
+      );
+      dependencies = (
+      );
+      name = Hermes;
+      productInstallPath = "$(HOME)/Applications";
+      productName = Pithos;
+      productReference = 8D1107320486CEB800E47090 /* Hermes.app */;
+      productType = "com.apple.product-type.application";
+    };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+    29B97313FDCFA39411CA2CEA /* Project object */ = {
+      isa = PBXProject;
+      attributes = {
+        BuildIndependentTargetsInParallel = YES;
+      };
+      buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Hermes" */;
+      compatibilityVersion = "Xcode 3.1";
+      developmentRegion = English;
+      hasScannedForEncodings = 1;
+      knownRegions = (
+        English,
+        Japanese,
+        French,
+        German,
+      );
+      mainGroup = 29B97314FDCFA39411CA2CEA /* Pithos */;
+      projectDirPath = "";
+      projectRoot = "";
+      targets = (
+        8D1107260486CEB800E47090 /* Hermes */,
+      );
+    };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+    8D1107290486CEB800E47090 /* Resources */ = {
+      isa = PBXResourcesBuildPhase;
+      buildActionMask = 2147483647;
+      files = (
+        8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+        1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+        FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */,
+        FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */,
+        FAEFFC4E132D6D2A007DC6FB /* play.png in Resources */,
+        FAEFFC52132D6EC5007DC6FB /* fast_forward.png in Resources */,
+        FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */,
+        FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */,
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+    8D11072C0486CEB800E47090 /* Sources */ = {
+      isa = PBXSourcesBuildPhase;
+      buildActionMask = 2147483647;
+      files = (
+        8D11072D0486CEB800E47090 /* main.m in Sources */,
+        256AC3DA0F4B6AC300CF3369 /* HermesAppDelegate.m in Sources */,
+        FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */,
+        FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */,
+        FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */,
+        FA2A3F99132BF9F50089AECC /* Song.m in Sources */,
+        FA2A3F9A132BF9F50089AECC /* Station.m in Sources */,
+        FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */,
+        FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */,
+        FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */,
+      );
+      runOnlyForDeploymentPostprocessing = 0;
+    };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+    089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+      isa = PBXVariantGroup;
+      children = (
+        089C165DFE840E0CC02AAC07 /* English */,
+      );
+      name = InfoPlist.strings;
+      sourceTree = "<group>";
+    };
+    1DDD58140DA1D0A300B32029 /* MainMenu.xib */ = {
+      isa = PBXVariantGroup;
+      children = (
+        1DDD58150DA1D0A300B32029 /* English */,
+      );
+      name = MainMenu.xib;
+      sourceTree = "<group>";
+    };
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+    C01FCF4B08A954540054247B /* Debug */ = {
+      isa = XCBuildConfiguration;
+      buildSettings = {
+        ALWAYS_SEARCH_USER_PATHS = NO;
+        COPY_PHASE_STRIP = NO;
+        GCC_DYNAMIC_NO_PIC = NO;
+        GCC_ENABLE_FIX_AND_CONTINUE = YES;
+        GCC_MODEL_TUNING = G5;
+        GCC_OPTIMIZATION_LEVEL = 0;
+        GCC_PRECOMPILE_PREFIX_HEADER = YES;
+        GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+        INFOPLIST_FILE = "Hermes-Info.plist";
+        INSTALL_PATH = "$(HOME)/Applications";
+        PRODUCT_NAME = Hermes;
+      };
+      name = Debug;
+    };
+    C01FCF4C08A954540054247B /* Release */ = {
+      isa = XCBuildConfiguration;
+      buildSettings = {
+        ALWAYS_SEARCH_USER_PATHS = NO;
+        DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+        GCC_MODEL_TUNING = G5;
+        GCC_PRECOMPILE_PREFIX_HEADER = YES;
+        GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+        INFOPLIST_FILE = "Hermes-Info.plist";
+        INSTALL_PATH = "$(HOME)/Applications";
+        PRODUCT_NAME = Hermes;
+      };
+      name = Release;
+    };
+    C01FCF4F08A954540054247B /* Debug */ = {
+      isa = XCBuildConfiguration;
+      buildSettings = {
+        ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+        GCC_C_LANGUAGE_STANDARD = gnu99;
+        GCC_OPTIMIZATION_LEVEL = 0;
+        GCC_WARN_ABOUT_RETURN_TYPE = YES;
+        GCC_WARN_UNUSED_VARIABLE = YES;
+        HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+        ONLY_ACTIVE_ARCH = YES;
+        OTHER_LDFLAGS = "-lxml2";
+        PREBINDING = NO;
+        SDKROOT = macosx10.6;
+      };
+      name = Debug;
+    };
+    C01FCF5008A954540054247B /* Release */ = {
+      isa = XCBuildConfiguration;
+      buildSettings = {
+        ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+        GCC_C_LANGUAGE_STANDARD = gnu99;
+        GCC_WARN_ABOUT_RETURN_TYPE = YES;
+        GCC_WARN_UNUSED_VARIABLE = YES;
+        HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+        OTHER_LDFLAGS = "-lxml2";
+        PREBINDING = NO;
+        SDKROOT = macosx10.6;
+      };
+      name = Release;
+    };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+    C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Hermes" */ = {
+      isa = XCConfigurationList;
+      buildConfigurations = (
+        C01FCF4B08A954540054247B /* Debug */,
+        C01FCF4C08A954540054247B /* Release */,
+      );
+      defaultConfigurationIsVisible = 0;
+      defaultConfigurationName = Release;
+    };
+    C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Hermes" */ = {
+      isa = XCConfigurationList;
+      buildConfigurations = (
+        C01FCF4F08A954540054247B /* Debug */,
+        C01FCF5008A954540054247B /* Release */,
+      );
+      defaultConfigurationIsVisible = 0;
+      defaultConfigurationName = Release;
+    };
+/* End XCConfigurationList section */
+  };
+  rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

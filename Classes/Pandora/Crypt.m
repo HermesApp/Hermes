@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #import "Crypt.h"
-#import "PandoraKeys.h"
+#import "Keys.h"
 
 #define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
 

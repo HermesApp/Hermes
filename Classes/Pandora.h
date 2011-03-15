@@ -7,23 +7,20 @@
 //
 
 #import <libxml/parser.h>
-#import "Station.h"
-#import "Song.h"
 
 @interface Pandora : NSObject {
   NSString *authToken;
   NSString *listenerID;
   NSMutableArray *stations;
-  NSMutableArray *songs;
 }
 
 @property (retain) NSString* authToken;
 @property (retain) NSString* listenerID;
 @property (retain) NSArray* stations;
 
-- (void) authenticate: (NSString*)user :(NSString*)pass;
+- (BOOL) authenticate: (NSString*)user :(NSString*)pass;
 - (void) fetchStations;
-- (void) playStation: (Station*) station;
+- (NSMutableArray*) getFragment: (NSString*) station_id;
 - (xmlDocPtr) sendRequest: (NSString*)method :(NSString*)data;
 
 @end

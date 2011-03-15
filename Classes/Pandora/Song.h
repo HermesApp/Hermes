@@ -6,8 +6,6 @@
 //  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
 @interface Song : NSObject {
   NSString *artist;
   NSString *title;

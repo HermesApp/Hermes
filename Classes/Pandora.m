@@ -7,6 +7,8 @@
 
 #import "Pandora.h"
 #import "Crypt.h"
+#import "Station.h"
+#import "Song.h"
 
 @implementation Pandora
 
@@ -14,13 +16,11 @@
 
 - (id) init {
   stations = [[NSMutableArray alloc] init];
-  songs = [[NSMutableArray alloc] init];
   return self;
 }
 
 - (void) dealloc {
   [stations release];
-  [songs release];
   [super dealloc];
 }
 
@@ -60,10 +60,15 @@
   }
 
   NSMutableArray *resultNodes = [NSMutableArray array];
+  char *content;
   for (NSInteger i = 0; i < nodes->nodeNr; i++) {
-    NSString *str = [NSString stringWithCString:
-      strdup((char*) nodes->nodeTab[i]->children->content)
-      encoding:NSUTF8StringEncoding];
+    if (nodes->nodeTab[i]->children == NULL) {
+      content = "";
+    } else {
+      content = (char*) nodes->nodeTab[i]->children->content;
+    }
+
+    NSString *str = [NSString stringWithCString: content encoding:NSUTF8StringEncoding];
 
     [resultNodes addObject: str];
   }
@@ -94,7 +99,7 @@
 /**
  * Authenticates with Pandora. Stores information from the response
  */
-- (void) authenticate:(NSString*)user :(NSString*)pass {
+- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
   xmlDocPtr doc;
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
@@ -112,12 +117,17 @@
   xml = [Crypt encrypt: xml];
   doc = [self sendRequest: @"authenticateListener" : xml];
 
+  authToken = nil;
+  listenerID = nil;
+
   if (doc != NULL) {
     authToken  = [self xpathText: doc : "//member[name='authToken']/value"];
     listenerID = [self xpathText: doc : "//member[name='listenerId']/value"];
 
     xmlFreeDoc(doc);
   }
+
+  return authToken != nil;
 }
 
 /**
@@ -154,8 +164,14 @@
 
   for (i = 0; i < [names count]; i++) {
     Station *station = [[Station alloc] init];
-    station.name = [names objectAtIndex: i];
+
+    station.name       = [names objectAtIndex: i];
     station.station_id = [ids objectAtIndex: i];
+    station.radio      = self;
+
+    if ([[station name] rangeOfString: @"QuickMix"].length != 0) {
+      station.name = @"QuickMix";
+    }
 
     [stations addObject: station];
   }
@@ -166,7 +182,7 @@
 /**
  * Gets a fragment of songs from Pandora for the specified station
  */
-- (void) getFragment: (Station*) station {
+- (NSArray*) getFragment: (NSString*) station_id {
   int i;
 
   NSArray *artists, *titles, *arts, *urls;
@@ -187,13 +203,13 @@
          "<param><value><string>0</string></value></param>"
        "</params>"
      "</methodCall>",
-     [self time], authToken, [station station_id]
+     [self time], authToken, station_id
    ];
 
   xml = [Crypt encrypt: xml];
   xmlDocPtr doc = [self sendRequest: @"getStations" : xml];
   if (doc == NULL) {
-      return;
+      return nil;
   }
 
   artists = [self xpath: doc : "//member[name='artistSummary']/value"];
@@ -201,10 +217,7 @@
   arts    = [self xpath: doc : "//member[name='artRadio']/value"];
   urls    = [self xpath: doc : "//member[name='audioURL']/value"];
 
-  while ([songs count] > 0) {
-    [[songs objectAtIndex: 0] release];
-    [songs removeObjectAtIndex: 0];
-  }
+  NSMutableArray *songs = [[NSMutableArray alloc] init];
 
   for (i = 0; i < [artists count]; i++) {
     Song *song = [[Song alloc] init];
@@ -218,16 +231,8 @@
   }
 
   xmlFreeDoc(doc);
-}
 
-/**
- * Plays a specified station
- */
-- (void) playStation: (Station*)station {
-  [self getFragment: station];
-
-  Song *song = [songs objectAtIndex: 0];
-  NSLog(@"%@", song.url);
+  return songs;
 }
 
 /**
