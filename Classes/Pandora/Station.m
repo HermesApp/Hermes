@@ -26,6 +26,16 @@
   }
 }
 
+- (void) fetchSongsIfNecessary {
+  if ([songs count] == 0) {
+    [self fetchMoreSongs];
+
+    if ([songs count] == 0) {
+      NSLog(@"No songs!");
+    }
+  }
+}
+
 - (void) play {
   if (stream) {
     if ([stream isPlaying]) {
@@ -39,14 +49,7 @@
     return;
   }
 
-  if ([songs count] == 0) {
-    [self fetchMoreSongs];
-
-    if ([songs count] == 0) {
-      NSLog(@"No songs!");
-      return;
-    }
-  }
+  [self fetchSongsIfNecessary];
 
   playing = [songs objectAtIndex:0];
   [songs removeObjectAtIndex:0];
@@ -61,6 +64,7 @@
   [[NSNotificationCenter defaultCenter]
     postNotification:notification];
 
+  [self fetchSongsIfNecessary];
 }
 
 - (void) pause {
@@ -70,6 +74,11 @@
 }
 
 - (void) next {
+  [self stop];
+  [self play];
+}
+
+- (void) stop {
   if (!stream) {
     return;
   }
@@ -77,8 +86,6 @@
   [stream stop];
   [stream release];
   stream = nil;
-
-  [self play];
 }
 
 @end

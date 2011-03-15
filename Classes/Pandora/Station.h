@@ -30,5 +30,6 @@
 - (void) play;
 - (void) next;
 - (void) pause;
+- (void) stop;
 
 @end

@@ -11,7 +11,17 @@
 
 @implementation HermesAppDelegate
 
-@synthesize window, authSheet, main, auth;
+@synthesize window, authSheet, main, auth, playback, pandora;
+
+- (id) init {
+  pandora = [[Pandora alloc] init];
+  return self;
+}
+
+- (void) dealloc {
+  [pandora release];
+  [super dealloc];
+}
 
 - (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication
                     hasVisibleWindows:(BOOL)flag {
@@ -35,18 +45,49 @@
         contextInfo: nil];
 }
 
+- (void) showSpinner {
+  [appLoading setHidden:NO];
+  [appLoading startAnimation:nil];
+}
+
+- (void) hideSpinner {
+  [appLoading setHidden:YES];
+  [appLoading stopAnimation:nil];
+}
+
 - (BOOL) checkAuth: (NSString*) username : (NSString*) password {
-  return [main authenticate: username : password];
+  BOOL valid = [pandora authenticate:username : password];
+
+  if (valid) {
+    [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
+    [Keychain setKeychainItem:username : password];
+  }
+
+  return valid;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  [self showSpinner];
+
   NSString *savedUsername = [[NSUserDefaults standardUserDefaults]
       stringForKey:USERNAME_KEY];
   NSString *savedPassword = [Keychain getKeychainPassword: savedUsername];
 
-  if (![main authenticate: savedUsername : savedPassword]) {
+  if (![self checkAuth: savedUsername : savedPassword]) {
     [self showAuthSheet];
+  } else {
+    [main afterAuthentication];
   }
+
+  [self hideSpinner];
+}
+
+- (void)applicationWillResignActive:(NSNotification *)aNotification {
+  [main hideDrawer];
+}
+
+- (void)applicationWillBecomeActive:(NSNotification *)aNotification {
+  [main showDrawer];
 }
 
 @end

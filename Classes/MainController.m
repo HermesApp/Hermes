@@ -8,19 +8,25 @@
 
 #import "MainController.h"
 #import "Pandora.h"
-#import "Keychain.h"
 #import "HermesAppDelegate.h"
 
 @implementation MainController
 
-- (id) init {
-  pandora = [[Pandora alloc] init];
-  return self;
+- (Pandora*) pandora {
+  return [[NSApp delegate] pandora];
+}
+
+- (Station*) playingStation {
+  return [[[NSApp delegate] playback] playing];
+}
+
+- (void) playStation: (Station*) station {
+  [[[NSApp delegate] playback] playStation:station];
 }
 
 /* Part of the NSTableViewDataSource protocol */
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
-  return [[pandora stations] count];
+  return [[[self pandora] stations] count];
 }
 
 /* Part of the NSTableViewDataSource protocol */
@@ -28,114 +34,78 @@
     objectValueForTableColumn:(NSTableColumn *)aTableColumn
     row:(NSInteger)rowIndex {
 
-  return [[[pandora stations] objectAtIndex: rowIndex] name];
+  return [[[[self pandora] stations] objectAtIndex: rowIndex] name];
 }
 
-/* Called whenever the playing stream changes state */
-- (void)playbackStateChanged: (NSNotification *)aNotification {
-  AudioStreamer *streamer = [playing stream];
+/* Selects a station in the stations menu */
+- (void) selectStation: (Station*) station {
+  Station *cur;
+  int i, index = -1;
 
-  [playpause setImage:[NSImage imageNamed:@"play.png"]];
+  for (i = 0; i < [[[self pandora] stations] count]; i++) {
+    cur = [[[self pandora] stations] objectAtIndex:i];
 
-  if ([streamer isWaiting]) {
-    NSLog(@"Waiting...");
-  } else if ([streamer isPlaying]) {
-    NSLog(@"Playing...");
-    [playpause setImage:[NSImage imageNamed:@"pause.png"]];
-  } else if ([streamer isIdle]) {
-    NSLog(@"Idle...");
-  }
-}
-
-/* Re-draws the timer counting up the time of the played song */
-- (void)updateProgress: (NSTimer *)updatedTimer {
-  AudioStreamer *streamer = [playing stream];
-
-//  if (streamer.bitRate != 0.0) {
-    int prog = streamer.progress;
-    int dur = streamer.duration;
-
-    if (dur > 0) {
-      [progressLabel setStringValue:
-        [NSString stringWithFormat:@"%d:%02d/%d:%02d",
-         prog / 60, prog % 60, dur / 60, dur % 60]];
-      [playbackProgress setDoubleValue:100 * prog / dur];
-    } else {
-//      [progress setEnabled:NO];
+    if ([[station station_id] isEqual: [cur station_id]]) {
+      index = i;
+      break;
     }
-//  } else {
-//    [progressLabel setStringValue: @"What?"];
-//    [positionLabel setStringValue:@"Time Played:"];
-//  }
-}
-
-/* Called whenever a song starts playing, updates all fields to reflect that the song is
- * playing */
-- (void)songPlayed: (NSNotification *)aNotification {
-  Song *song = [playing playing];
-  if (song == nil) {
-    return;
   }
 
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(playbackStateChanged:)
-    name:ASStatusChangedNotification
-    object:[playing stream]];
-
-  progressUpdateTimer =
-    [NSTimer
-     scheduledTimerWithTimeInterval:.3
-     target:self
-     selector:@selector(updateProgress:)
-     userInfo:nil
-     repeats:YES];
-
-  if (song != nil) {
-    NSImage *image = [[NSImage alloc] initWithContentsOfURL:
-        [NSURL URLWithString: song.art]];
-    [image autorelease];
-
-    [art setImage: image];
-    [songLabel setStringValue: song.title];
-    [artistLabel setStringValue: song.artist];
-    [playbackProgress setDoubleValue: 0];
+  if (index >= 0) {
+    [stationsTable
+      selectRowIndexes:[NSIndexSet indexSetWithIndex:i]
+      byExtendingSelection:NO];
   }
 }
 
-/* Auth button hit */
-- (IBAction) auth: (id)sender {
-  [[NSApp delegate] showAuthSheet];
-}
+/* Play the last saved station from the last launch */
+- (BOOL) playSavedStation {
+  NSString *lastPlayed = [[NSUserDefaults standardUserDefaults]
+                          stringForKey:LAST_STATION_KEY];
 
-/* Authenticates a user with a username and password. If successful,
- * the username/password are stored in NSUserDefaults and the keychain
- */
-- (BOOL) authenticate: (NSString*) username : (NSString*) password {
-  if (![pandora authenticate: username : password]) {
-    return NO;
+  if (lastPlayed != nil) {
+    Station *last = nil;
+
+    for (Station *cur in [[self pandora] stations]) {
+      if ([lastPlayed isEqual: [cur station_id]]) {
+        last = cur;
+        break;
+      }
+    }
+
+    if (last != nil) {
+      [self playStation: last];
+      [self selectStation: last];
+      return YES;
+    }
   }
 
-  [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
-  [Keychain setKeychainItem:username : password];
+  return NO;
+}
 
-  [pandora fetchStations];
+- (void) showDrawer {
+  [stations open];
+}
+
+- (void) hideDrawer {
+  [stations close];
+}
+
+/* Called after the user has authenticated */
+- (void) afterAuthentication {
+  [[NSApp delegate] showSpinner];
+
+  [[self pandora] fetchStations];
   [stationsTable setDataSource: self];
   [stationsTable reloadData];
+  [[[NSApp delegate] playback] afterStationsLoaded];
 
-  for (Station *station in [pandora stations]) {
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(songPlayed:)
-     name:@"song.playing"
-     object:station];
+  [[NSApp delegate] hideSpinner];
+  [self showDrawer];
+
+  if (![self playSavedStation]) {
+    [selectStation setHidden:NO];
   }
-
-  [stations toggle: nil];
-  [auth setHidden:YES];
-  [selectStation setHidden:NO];
-
-  return YES;
 }
 
 - (IBAction)tableViewSelected: (id)sender {
@@ -144,41 +114,14 @@
   int row = [stationsTable selectedRow];
 
   if (row != -1) {
-    selected = [[pandora stations] objectAtIndex:row];
-  }
-
-  if (selected != playing && playing != nil) {
-    NSLog(@"Don't do that");
-    return;
-  } else if (selected == playing) {
-    return;
-  }
-
-  if (playing == nil) {
-    [selectStation setHidden:YES];
-    [art setHidden:NO];
-    [artistLabel setHidden:NO];
-    [songLabel setHidden:NO];
-    [playbackProgress setHidden:NO];
-    [progressLabel setHidden:NO];
-  }
-
-  playing = selected;
-  [playing play];
-  [songLoadingProgress setHidden:NO];
-}
-
-- (IBAction)playpause: (id) sender {
-  if ([[playing stream] isPlaying]) {
-    [playing pause];
+    selected = [[[self pandora] stations] objectAtIndex:row];
   } else {
-    [playing play];
+    [self selectStation:[self playingStation]];
+    return;
   }
-}
 
-- (IBAction)next: (id) sender {
-  NSLog(@"next");
-  [playing next];
+  [selectStation setHidden:YES];
+  [self playStation:selected];
 }
 
 @end

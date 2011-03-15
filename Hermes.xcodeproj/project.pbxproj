@@ -21,6 +21,11 @@
 		FA2A3F9A132BF9F50089AECC /* Station.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F97132BF9F50089AECC /* Station.m */; };
 		FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */; };
 		FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */; };
+		FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFE28132F9D30003554E2 /* missing-album.png */; };
+		FA3CFF1D132FB762003554E2 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1B132FB762003554E2 /* thumbdown.png */; };
+		FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1C132FB762003554E2 /* thumbup.png */; };
+		FA3CFF26132FB96A003554E2 /* tired.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF25132FB96A003554E2 /* tired.jpg */; };
+		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
 		FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
 		FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
 		FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
@@ -60,6 +65,12 @@
 		FA2A3FBB132BFA6F0089AECC /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		FA3CFE28132F9D30003554E2 /* missing-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missing-album.png"; sourceTree = "<group>"; };
+		FA3CFF1B132FB762003554E2 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
+		FA3CFF1C132FB762003554E2 /* thumbup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbup.png; sourceTree = "<group>"; };
+		FA3CFF25132FB96A003554E2 /* tired.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tired.jpg; sourceTree = "<group>"; };
+		FA3CFF42132FC4CF003554E2 /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
+		FA3CFF43132FC4CF003554E2 /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthController.h; sourceTree = "<group>"; };
 		FAEFFAB0132CB173007DC6FB /* AuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthController.m; sourceTree = "<group>"; };
 		FAEFFBD4132CC0E2007DC6FB /* error_icon.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
@@ -99,6 +110,8 @@
 				FA1063BD132C6A8A00D6DE42 /* Keychain.m */,
 				FAEFFAAF132CB173007DC6FB /* AuthController.h */,
 				FAEFFAB0132CB173007DC6FB /* AuthController.m */,
+				FA3CFF42132FC4CF003554E2 /* PlaybackController.h */,
+				FA3CFF43132FC4CF003554E2 /* PlaybackController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -198,6 +211,10 @@
 		FAEFFBFF132D620B007DC6FB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				FA3CFF25132FB96A003554E2 /* tired.jpg */,
+				FA3CFE28132F9D30003554E2 /* missing-album.png */,
+				FA3CFF1B132FB762003554E2 /* thumbdown.png */,
+				FA3CFF1C132FB762003554E2 /* thumbup.png */,
 				FAFF50D0132EFDD800F02CE0 /* delete.png */,
 				FAEFFC51132D6EC5007DC6FB /* fast_forward.png */,
 				FAFF50CE132EFDCB00F02CE0 /* accept.png */,
@@ -269,6 +286,10 @@
 				FAEFFC52132D6EC5007DC6FB /* fast_forward.png in Resources */,
 				FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */,
 				FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */,
+				FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */,
+				FA3CFF1D132FB762003554E2 /* thumbdown.png in Resources */,
+				FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */,
+				FA3CFF26132FB96A003554E2 /* tired.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +310,7 @@
 				FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */,
 				FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */,
 				FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */,
+				FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,6 +388,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";

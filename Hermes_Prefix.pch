@@ -5,3 +5,8 @@
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
 #endif
+
+#define LAST_STATION_KEY      @"hermes.last-station"
+#define USERNAME_KEY          @"pandora.username"
+#define KEYCHAIN_GENERIC_ATTR "application password"
+#define KEYCHAIN_LABEL_ATTR   "Hermes"

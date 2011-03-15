@@ -12,35 +12,14 @@
 #import "Station.h"
 
 @interface MainController : NSObject < NSTableViewDataSource > {
-  IBOutlet NSButton *auth;
   IBOutlet NSTextField *selectStation;
-  IBOutlet NSProgressIndicator *songLoadingProgress;
-
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
-
-  // Playback items
-  IBOutlet NSTextField *progressLabel;
-  IBOutlet NSTextField *artistLabel;
-  IBOutlet NSTextField *songLabel;
-
-  IBOutlet NSProgressIndicator *playbackProgress;
-  IBOutlet NSImageView *art;
-
-  IBOutlet NSToolbarItem *playpause;
-  IBOutlet NSToolbarItem *next;
-
-  NSTimer *progressUpdateTimer;
-  Pandora *pandora;
-  Station *playing;
 }
 
-- (BOOL)authenticate: (NSString*) username : (NSString*) password;
-
+- (void) showDrawer;
+- (void) hideDrawer;
+- (void)afterAuthentication;
 - (IBAction)tableViewSelected: (id)sender;
 
-- (IBAction)playpause: (id)sender;
-- (IBAction)next: (id)sender;
-
-- (IBAction)auth: (id)sender;
 @end

@@ -11,7 +11,7 @@
 
 @implementation Song
 
-@synthesize artist, title, art, url;
+@synthesize artist, title, art, url, station_id, music_id, user_seed, rating, song_type, album_url, artist_url, title_url;
 
 /**
  * Decrypts the URL received from Pandora

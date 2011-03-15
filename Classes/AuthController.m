@@ -31,4 +31,8 @@
   [spinner stopAnimation: sender];
 }
 
+- (IBAction)showAuth: (id)sender {
+  [[NSApp delegate] showAuthSheet];
+}
+
 @end

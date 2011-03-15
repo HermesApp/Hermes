@@ -62,7 +62,7 @@
   NSMutableArray *resultNodes = [NSMutableArray array];
   char *content;
   for (NSInteger i = 0; i < nodes->nodeNr; i++) {
-    if (nodes->nodeTab[i]->children == NULL) {
+    if (nodes->nodeTab[i]->children == NULL || nodes->nodeTab[i]->children->content == NULL) {
       content = "";
     } else {
       content = (char*) nodes->nodeTab[i]->children->content;
@@ -133,7 +133,7 @@
 /**
  * Fetches a list of stations for the logged in user
  */
-- (void) fetchStations {
+- (BOOL) fetchStations {
   int i;
   NSArray *names, *ids;
   NSString *xml = [NSString stringWithFormat:
@@ -151,7 +151,7 @@
   xml = [Crypt encrypt: xml];
   xmlDocPtr doc = [self sendRequest: @"getStations" : xml];
   if (doc == NULL) {
-      return;
+    return NO;
   }
 
   names = [self xpath: doc : "//member[name='stationName']/value"];
@@ -177,6 +177,7 @@
   }
 
   xmlFreeDoc(doc);
+  return YES;
 }
 
 /**
@@ -185,7 +186,8 @@
 - (NSArray*) getFragment: (NSString*) station_id {
   int i;
 
-  NSArray *artists, *titles, *arts, *urls;
+  NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
+    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls;
 
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
@@ -212,20 +214,36 @@
       return nil;
   }
 
-  artists = [self xpath: doc : "//member[name='artistSummary']/value"];
-  titles  = [self xpath: doc : "//member[name='songTitle']/value"];
-  arts    = [self xpath: doc : "//member[name='artRadio']/value"];
-  urls    = [self xpath: doc : "//member[name='audioURL']/value"];
+  artists     = [self xpath: doc : "//member[name='artistSummary']/value"];
+  titles      = [self xpath: doc : "//member[name='songTitle']/value"];
+  arts        = [self xpath: doc : "//member[name='artRadio']/value"];
+  urls        = [self xpath: doc : "//member[name='audioURL']/value"];
+  station_ids = [self xpath: doc : "//member[name='stationId']/value"];
+  music_ids   = [self xpath: doc : "//member[name='musicId']/value"];
+  user_seeds  = [self xpath: doc : "//member[name='userSeed']/value"];
+  ratings     = [self xpath: doc : "//member[name='rating']/value/int"];
+  song_types  = [self xpath: doc : "//member[name='songType']/value/int"];
+  album_urls  = [self xpath: doc : "//member[name='albumDetailURL']/value"];
+  artist_urls = [self xpath: doc : "//member[name='artistDetailURL']/value"];
+  title_urls  = [self xpath: doc : "//member[name='songDetailURL']/value"];
 
   NSMutableArray *songs = [[NSMutableArray alloc] init];
 
   for (i = 0; i < [artists count]; i++) {
     Song *song = [[Song alloc] init];
 
-    song.artist = [artists objectAtIndex: i];
-    song.title  = [titles objectAtIndex: i];
-    song.art    = [arts objectAtIndex: i];
-    song.url    = [Song decryptURL: [urls objectAtIndex: i]];
+    song.artist     = [artists objectAtIndex: i];
+    song.title      = [titles objectAtIndex: i];
+    song.art        = [arts objectAtIndex: i];
+    song.url        = [Song decryptURL: [urls objectAtIndex: i]];
+    song.station_id = [station_ids objectAtIndex: i];
+    song.music_id   = [music_ids objectAtIndex: i];
+    song.user_seed  = [user_seeds objectAtIndex: i];
+    song.rating     = [ratings objectAtIndex: i];
+    song.song_type  = [song_types objectAtIndex: i];
+    song.album_url  = [album_urls objectAtIndex: i];
+    song.artist_url = [artist_urls objectAtIndex: i];
+    song.title_url  = [title_urls objectAtIndex: i];
 
     [songs addObject: song];
   }
@@ -236,9 +254,57 @@
 }
 
 /**
+ * Sync with Pandora
+ */
+- (BOOL) sync {
+  NSString *xml =
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>misc.sync</methodName>"
+      "<params></params>"
+    "</methodCall>";
+
+  return [self sendRequest: @"sync" : [Crypt encrypt: xml]] != NULL;
+}
+
+/**
+ * Rate a song, "0" = dislike, "1" = like
+ */
+- (BOOL) rateSong: (Song*) song : (NSString*) rating {
+  xmlDocPtr doc;
+  NSString *xml = [NSString stringWithFormat:
+     @"<?xml version=\"1.0\"?>"
+     "<methodCall>"
+       "<methodName>station.addFeedback</methodName>"
+       "<params>"
+         "<param><value><int>%d</int></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value>%@</value></param>"
+         "<param><value><boolean>%@</boolean></value></param>"
+         "<param><value><boolean>0</boolean></value></param>"
+         "<param><value><int>%@</int></value></param>"
+       "</params>"
+     "</methodCall>",
+     [self time], authToken, [song station_id], [song music_id],
+       [song user_seed], @"undefined", rating, [song song_type]
+   ];
+
+  doc = [self sendRequest: @"station.addFeedback" : [Crypt encrypt: xml]];
+
+  if (doc != NULL) {
+    song.rating = rating;
+  }
+
+  return doc != NULL;
+}
+
+/**
  * Sends a request to the server and parses the response as XML
  */
-- (xmlDocPtr) sendRequest: (NSString*)method :(NSString*)data {
+- (xmlDocPtr) sendRequest: (NSString*)method : (NSString*)data {
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
 
@@ -275,12 +341,23 @@
   [request release];
   [error release];
 
-  if (responseData != nil) {
-    return xmlReadMemory([responseData bytes], [responseData length], "", NULL,
-      XML_PARSE_RECOVER);
+  if (responseData == nil) {
+    return NULL;
   }
 
-  return NULL;
+  xmlDocPtr doc = xmlReadMemory([responseData bytes], [responseData length], "",
+    NULL, XML_PARSE_RECOVER);
+  NSArray *fault = [self xpath: doc : "//methodResponse/fault"];
+
+  if ([fault count] > 0) {
+    NSString *resp = [[NSString alloc] initWithData:responseData
+        encoding:NSASCIIStringEncoding];
+    NSLog(@"Fault!: %@", resp);
+    xmlFreeDoc(doc);
+    return NULL;
+  }
+
+  return doc;
 }
 
 @end

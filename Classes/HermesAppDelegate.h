@@ -10,24 +10,26 @@
 
 #import "MainController.h"
 #import "AuthController.h"
-
-#define USERNAME_KEY (@"pandora.username")
+#import "PlaybackController.h"
+#import "Pandora.h"
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
-  NSWindow *window;
-  NSWindow *authSheet;
+  Pandora *pandora;
 
-  MainController *main;
-  AuthController *auth;
+  IBOutlet NSProgressIndicator *appLoading;
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSWindow *authSheet;
-@property (retain) IBOutlet MainController *main;
-@property (retain) IBOutlet AuthController *auth;
+@property (assign) IBOutlet MainController *main;
+@property (assign) IBOutlet AuthController *auth;
+@property (assign) IBOutlet PlaybackController *playback;
+@property (retain) Pandora *pandora;
 
 - (void) closeAuthSheet;
 - (void) showAuthSheet;
 - (BOOL) checkAuth: (NSString*) username : (NSString*) password;
+- (void) showSpinner;
+- (void) hideSpinner;
 
 @end
