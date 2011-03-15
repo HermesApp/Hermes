@@ -59,6 +59,9 @@
     [playpause setImage:[NSImage imageNamed:@"pause.png"]];
   } else if ([streamer isPaused]) {
     [playpause setImage:[NSImage imageNamed:@"play.png"]];
+  } else if ([streamer isIdle]) {
+    /* The currently playing song finished playing */
+    [self next:nil];
   }
 }
 
@@ -213,7 +216,15 @@
 
 /* We are tired o fthe currently playing song, play another */
 - (IBAction)tired: (id) sender {
-  NSLog(@"I'm tired too...");
+  if (playing == nil || [playing playing] == nil) {
+    return;
+  }
+
+  if ([[self pandora] tiredOfSong:[playing playing]]) {
+    [self next:sender];
+  } else {
+    NSLog(@"Couldn't get tired of a song?!");
+  }
 }
 
 @end

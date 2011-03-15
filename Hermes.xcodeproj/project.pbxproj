@@ -26,6 +26,7 @@
 		FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1C132FB762003554E2 /* thumbup.png */; };
 		FA3CFF26132FB96A003554E2 /* tired.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF25132FB96A003554E2 /* tired.jpg */; };
 		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
+		FA6FE347132FF5AA00D1FF1C /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6FE346132FF5AA00D1FF1C /* API.m */; };
 		FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
 		FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
 		FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
@@ -71,6 +72,8 @@
 		FA3CFF25132FB96A003554E2 /* tired.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tired.jpg; sourceTree = "<group>"; };
 		FA3CFF42132FC4CF003554E2 /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
 		FA3CFF43132FC4CF003554E2 /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
+		FA6FE345132FF5AA00D1FF1C /* API.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = API.h; sourceTree = "<group>"; };
+		FA6FE346132FF5AA00D1FF1C /* API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = API.m; sourceTree = "<group>"; };
 		FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthController.h; sourceTree = "<group>"; };
 		FAEFFAB0132CB173007DC6FB /* AuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthController.m; sourceTree = "<group>"; };
 		FAEFFBD4132CC0E2007DC6FB /* error_icon.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
@@ -195,6 +198,8 @@
 				FA2A3F95132BF9F50089AECC /* Song.m */,
 				FA2A3F96132BF9F50089AECC /* Station.h */,
 				FA2A3F97132BF9F50089AECC /* Station.m */,
+				FA6FE345132FF5AA00D1FF1C /* API.h */,
+				FA6FE346132FF5AA00D1FF1C /* API.m */,
 			);
 			path = Pandora;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */,
 				FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */,
 				FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */,
+				FA6FE347132FF5AA00D1FF1C /* API.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

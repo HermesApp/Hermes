@@ -18,7 +18,7 @@
 }
 
 - (void) fetchMoreSongs {
-  NSMutableArray *more = [radio getFragment: station_id];
+  NSArray *more = [radio getFragment: station_id];
 
   if (more != nil) {
     [songs addObjectsFromArray: more];
