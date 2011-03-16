@@ -13,7 +13,7 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="372"/>
-			<integer value="863"/>
+			<integer value="701"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1950,7 +1950,7 @@
 					<object class="NSButton" id="318563550">
 						<reference key="NSNextResponder" ref="889557454"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{100, -2}, {20, 20}}</string>
+						<string key="NSFrame">{{100, 0}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="889557454"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="861243305">
