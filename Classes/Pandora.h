@@ -18,8 +18,9 @@
 @property (retain) NSArray* stations;
 
 - (BOOL) authenticate: (NSString*)user :(NSString*)pass;
+- (BOOL) authenticated;
 - (BOOL) fetchStations;
-- (NSArray*) getFragment: (NSString*)station_id;
+- (BOOL) getFragment: (NSString*)station_id;
 - (BOOL) sync;
 - (BOOL) rateSong: (Song*)song : (NSString*)rating;
 - (BOOL) tiredOfSong: (Song*)song;

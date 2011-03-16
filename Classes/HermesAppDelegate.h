@@ -28,7 +28,7 @@
 
 - (void) closeAuthSheet;
 - (void) showAuthSheet;
-- (BOOL) checkAuth: (NSString*) username : (NSString*) password;
+- (void) cacheAuth: (NSString*) username : (NSString*) password;
 - (void) showSpinner;
 - (void) hideSpinner;
 

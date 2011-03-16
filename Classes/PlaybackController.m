@@ -7,6 +7,7 @@
 //
 
 #import "PlaybackController.h"
+#import "HermesAppDelegate.h"
 
 @implementation PlaybackController
 
@@ -19,26 +20,32 @@
     selector:@selector(updateProgress:)
     userInfo:nil
     repeats:YES];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(songRated:)
+    name:@"hermes.song-rated"
+    object:[[NSApp delegate] pandora]];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(songTired:)
+    name:@"hermes.song-tired"
+    object:[[NSApp delegate] pandora]];
+
+  loader = [[ImageLoader alloc] init];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(imageLoaded:)
+    name:@"image-loaded"
+    object:loader];
+
   return self;
 }
 
 - (Pandora*) pandora {
   return [[NSApp delegate] pandora];
-}
-
-- (void) afterStationsLoaded {
-  for (Station *station in [[self pandora] stations]) {
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(songPlayed:)
-     name:@"song.playing"
-     object:station];
-  }
-}
-
-/* If not implemented, disabled toolbar items suddenly get re-enabled? */
-- (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
-  return [theItem isEnabled];
 }
 
 - (void) showSpinner {
@@ -49,6 +56,39 @@
 - (void) hideSpinner {
   [songLoadingProgress setHidden:YES];
   [songLoadingProgress stopAnimation:nil];
+}
+
+- (void) afterStationsLoaded {
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name:@"song.playing"
+    object:nil];
+
+  for (Station *station in [[self pandora] stations]) {
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(songPlayed:)
+     name:@"song.playing"
+     object:station];
+  }
+}
+
+- (void) songRated: (NSNotification*) not {
+  [self hideSpinner];
+}
+
+- (void) songTired: (NSNotification*) not {
+  [self hideSpinner];
+}
+
+- (void) imageLoaded: (NSNotification*) not {
+  NSImage *image = [[NSImage alloc] initWithData: [loader data]];
+  [[art animator] setImage:image];
+}
+
+/* If not implemented, disabled toolbar items suddenly get re-enabled? */
+- (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
+  return [theItem isEnabled];
 }
 
 /* Called whenever the playing stream changes state */
@@ -92,34 +132,39 @@
  */
 - (void)songPlayed: (NSNotification *)aNotification {
   Song *song = [playing playing];
+
   if (song == nil) {
     NSLog(@"No song to play!?");
     return;
   }
 
   [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name:ASStatusChangedNotification
+    object:nil];
+  [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(playbackStateChanged:)
     name:ASStatusChangedNotification
     object:[playing stream]];
 
-  NSImage *image;
-
-  if (song.art == nil || [song.art isEqual: @""]) {
-    image = [NSImage imageNamed:@"missing-album.png"];
+  if ([song art] == nil || [[song art] isEqual: @""]) {
+    [art setImage: [NSImage imageNamed:@"missing-album.png"]];
   } else {
-    image = [[NSImage alloc] initWithContentsOfURL:
-             [NSURL URLWithString: song.art]];
-    [image autorelease];
+    [loader loadImageURL:[song art]];
   }
 
-  [art setHidden:NO];
-  [artistLabel setHidden:NO];
-  [songLabel setHidden:NO];
-  [playbackProgress setHidden:NO];
-  [progressLabel setHidden:NO];
+  if ([art isHidden]) {
+    [art setHidden:NO];
+    [artistLabel setHidden:NO];
+//    [artistLabel setAlphaValue:0.0];
+//    [[artistLabel animator] setAlphaValue:1.0];
+    [songLabel setHidden:NO];
+    [playbackProgress setHidden:NO];
+    [progressLabel setHidden:NO];
+  } else {
+  }
 
-  [art setImage: image];
   [songLabel setStringValue: song.title];
   [artistLabel setStringValue: song.artist];
   [playbackProgress setDoubleValue: 0];
@@ -152,7 +197,7 @@
   }
 
   [[NSUserDefaults standardUserDefaults]
-    setObject:[station station_id]
+    setObject:[station stationId]
     forKey:LAST_STATION_KEY];
 
   playing = station;
@@ -192,7 +237,6 @@
     NSLog(@"Couldn't rate song?!");
   }
 
-  [self hideSpinner];
 }
 
 /* Dislike button was hit */
@@ -203,10 +247,8 @@
   }
 
   [self showSpinner];
-  BOOL could_rate = [[self pandora] rateSong: playingSong : @"0"];
-  [self hideSpinner];
 
-  if (could_rate) {
+  if ([[self pandora] rateSong: playingSong : @"0"]) {
     [self next:sender];
   } else {
     NSLog(@"Couldn't rate song?!");

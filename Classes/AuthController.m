@@ -11,6 +11,31 @@
 
 @implementation AuthController
 
+- (id) init {
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(authenticationFinished:)
+    name:@"hermes.authenticated"
+    object:[[NSApp delegate] pandora]];
+
+  return self;
+}
+
+- (void)authenticationFinished: (NSNotification *)aNotification {
+  [[NSApp delegate] hideSpinner]; // Big app spinner
+  [spinner setHidden:YES];        // Local login sheet spinner
+  [spinner stopAnimation:nil];
+
+  if ([[[NSApp delegate] pandora] authenticated]) {
+    [self cancel:nil];
+    [auth setHidden:YES];
+    [[[NSApp delegate] mainC] afterAuthentication];
+  } else {
+    [self showAuth:nil];
+    [error setHidden:NO];
+  }
+}
+
 /* Cancel was hit, hide the sheet */
 - (IBAction)cancel: (id)sender {
   [[NSApp delegate] closeAuthSheet];
@@ -25,16 +50,7 @@
   [spinner setHidden:NO];
   [spinner startAnimation: sender];
 
-  if ([[NSApp delegate] checkAuth: [username stringValue] : [password stringValue]]) {
-    [[NSApp delegate] closeAuthSheet];
-    [auth setHidden:YES];
-    [[[NSApp delegate] mainC] afterAuthentication];
-  } else {
-    [error setHidden: NO];
-  }
-
-  [spinner setHidden:YES];
-  [spinner stopAnimation: sender];
+  [[[NSApp delegate] pandora] authenticate:[username stringValue] : [password stringValue]];
 }
 
 /* Login button in main window hit, should show sheet */

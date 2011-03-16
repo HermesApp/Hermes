@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "Station.h"
+#import "ImageLoader.h"
 
 @interface PlaybackController : NSObject {
   IBOutlet NSProgressIndicator *songLoadingProgress;
@@ -19,6 +20,7 @@
   IBOutlet NSImageView *art;
 
   NSTimer *progressUpdateTimer;
+  ImageLoader *loader;
 
   // Liking/Disliking/Tired
   IBOutlet NSToolbarItem *like;

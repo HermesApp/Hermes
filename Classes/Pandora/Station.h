@@ -11,18 +11,12 @@
 #import "Song.h"
 
 @interface Station : NSObject {
-  NSString *name;
-  NSString *station_id;
-  NSMutableArray *songs;
-
-  Pandora *radio;
-  AudioStreamer *stream;
-  Song *playing;
+  BOOL shouldPlaySongOnFetch;
 }
 
 @property (retain) NSString* name;
-@property (retain) NSString* station_id;
-@property (retain) NSArray* songs;
+@property (retain) NSString* stationId;
+@property (retain) NSMutableArray* songs;
 @property (retain) Pandora* radio;
 @property (retain) AudioStreamer* stream;
 @property (retain) Song* playing;

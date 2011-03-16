@@ -15,11 +15,13 @@
   IBOutlet NSTextField *selectStation;
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
+  IBOutlet NSProgressIndicator *stationsRefreshing;
 }
 
 - (void) showDrawer;
 - (void) hideDrawer;
 - (void)afterAuthentication;
 - (IBAction)tableViewSelected: (id)sender;
+- (IBAction)refreshList: (id)sender;
 
 @end

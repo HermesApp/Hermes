@@ -14,14 +14,14 @@
 @property (retain) NSString *title;
 @property (retain) NSString *art;
 @property (retain) NSString *url;
-@property (retain) NSString *station_id;
-@property (retain) NSString *music_id;
-@property (retain) NSString *user_seed;
+@property (retain) NSString *stationId;
+@property (retain) NSString *musicId;
+@property (retain) NSString *userSeed;
 @property (retain) NSString *rating;
-@property (retain) NSString *song_type;
-@property (retain) NSString *album_url;
-@property (retain) NSString *artist_url;
-@property (retain) NSString *title_url;
+@property (retain) NSString *songType;
+@property (retain) NSString *albumUrl;
+@property (retain) NSString *artistUrl;
+@property (retain) NSString *titleUrl;
 
 + (NSString*) decryptURL: (NSString*) url;
 

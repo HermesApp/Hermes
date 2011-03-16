@@ -38,6 +38,7 @@
 }
 
 - (void) showAuthSheet {
+  [self hideSpinner];
   [NSApp beginSheet: authSheet
      modalForWindow: window
       modalDelegate: self
@@ -55,15 +56,9 @@
   [appLoading stopAnimation:nil];
 }
 
-- (BOOL) checkAuth: (NSString*) username : (NSString*) password {
-  BOOL valid = [pandora authenticate:username : password];
-
-  if (valid) {
-    [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
-    [Keychain setKeychainItem:username : password];
-  }
-
-  return valid;
+- (void) cacheAuth: (NSString*) username : (NSString*) password {
+  [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
+  [Keychain setKeychainItem:username : password];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -73,13 +68,11 @@
       stringForKey:USERNAME_KEY];
   NSString *savedPassword = [Keychain getKeychainPassword: savedUsername];
 
-  if ([self checkAuth: savedUsername : savedPassword]) {
-    [mainC afterAuthentication];
+  if (savedUsername != nil && savedPassword != nil) {
+    [pandora authenticate: savedUsername : savedPassword];
   } else {
     [self showAuthSheet];
   }
-
-  [self hideSpinner];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {

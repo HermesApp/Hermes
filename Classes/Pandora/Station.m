@@ -10,29 +10,65 @@
 
 @implementation Station
 
-@synthesize station_id, name, songs, radio, stream, playing;
+@synthesize stationId, name, songs, radio, stream, playing;
 
 - (id) init {
-  songs = [[NSMutableArray alloc] init];
+  [self setSongs:[NSMutableArray arrayWithCapacity:10]];
   return self;
 }
 
-- (void) fetchMoreSongs {
-  NSArray *more = [radio getFragment: station_id];
-
-  if (more != nil) {
-    [songs addObjectsFromArray: more];
-    [more release];
+- (void) stopObserving {
+  if (radio != nil) {
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:nil
+     object:radio];
   }
 }
 
-- (void) fetchSongsIfNecessary {
-  if ([songs count] == 0) {
-    [self fetchMoreSongs];
+- (void) dealloc {
+  [self stopObserving];
+  [super dealloc];
+}
 
-    if ([songs count] == 0) {
-      NSLog(@"No songs!");
-    }
+- (BOOL) isEqual:(id)object {
+  return [stationId isEqual:[object stationId]];
+}
+
+- (void) setRadio:(Pandora *)pandora {
+  [self stopObserving];
+  radio = pandora;
+
+  NSString *n = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
+      stationId];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(songsLoaded:)
+    name:n
+    object:pandora];
+}
+
+- (void) songsLoaded: (NSNotification*)not {
+  NSArray *more = [[not userInfo] objectForKey:@"songs"];
+
+  if (more != nil) {
+    [songs addObjectsFromArray: more];
+  }
+
+  if ([songs count] > 0 && shouldPlaySongOnFetch) {
+    shouldPlaySongOnFetch = NO;
+    [self play];
+  }
+}
+
+- (void) fetchMoreSongs {
+  [radio getFragment: stationId];
+}
+
+- (void) fetchSongsIfNecessary {
+  if ([songs count] <= 1) {
+    [self fetchMoreSongs];
   }
 }
 
@@ -49,7 +85,11 @@
     return;
   }
 
-  [self fetchSongsIfNecessary];
+  if ([songs count] == 0) {
+    shouldPlaySongOnFetch = YES;
+    [radio getFragment: stationId];
+    return;
+  }
 
   playing = [songs objectAtIndex:0];
   [songs removeObjectAtIndex:0];

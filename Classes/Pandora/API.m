@@ -11,9 +11,20 @@
 #include <libxml/xpath.h>
 #include <string.h>
 
+typedef struct connection_data {
+  SEL selector;
+  NSMutableData *data;
+  id info;
+} connection_data_t;
+
 @implementation API
 
 @synthesize listenerID;
+
+- (id) init {
+  activeRequests = [[NSMutableDictionary alloc] init];
+  return [super init];
+}
 
 /**
  * Gets the current UNIX time
@@ -87,19 +98,27 @@
   return ret;
 }
 
+- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback {
+  return [self sendRequest:method : data : callback : nil];
+}
+
 /**
  * Sends a request to the server and parses the response as XML
  */
-- (xmlDocPtr) sendRequest: (NSString*)method : (NSString*)data {
+- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info{
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
-
-  NSString *url = [NSString stringWithFormat:
-                   @"http://www.pandora.com/radio/xmlrpc/v29?rid=%@P&method=%@", rid, method];
+  NSString *url  = [NSString stringWithFormat:
+      @"http://www.pandora.com/radio/xmlrpc/v29?rid=%@P&method=%@", rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
     NSString *lid = [NSString stringWithFormat:@"lid=%@", listenerID];
     url = [url stringByAppendingString:lid];
+  }
+
+  connection_data_t *conn_data = malloc(sizeof(connection_data_t));
+  if (conn_data == NULL) {
+    return NO;
   }
 
   // Prepare the request
@@ -114,36 +133,88 @@
   [postBody appendData: [data dataUsingEncoding:NSUTF8StringEncoding]];
   [request setHTTPBody:postBody];
 
-  // get response
-  NSHTTPURLResponse *urlResponse = nil;
-  NSError *error = [[NSError alloc] init];
-  NSData *responseData = [NSURLConnection sendSynchronousRequest:request
-                                               returningResponse:&urlResponse error:&error];
+  // get response asynchronously. Don't start the connection
+  // just yet because we need to make sure we put it in the
+  // hash table first
+  NSURLConnection *conn = [[NSURLConnection alloc]
+    initWithRequest:request delegate:self
+    startImmediately:NO];
 
-  if ([urlResponse statusCode] < 200 || [urlResponse statusCode] >= 300) {
-    responseData = nil;
+  if (conn == nil) {
+    return NO;
   }
+  conn_data->selector = callback;
+  conn_data->data     = [NSMutableData dataWithCapacity:1024];
+  conn_data->info     = info;
+  [conn_data->data retain];
 
-  [request release];
-  [error release];
+  [activeRequests setObject:[NSValue valueWithPointer:conn_data]
+    forKey:[NSNumber numberWithInteger: [conn hash]]];
 
-  if (responseData == nil) {
-    return NULL;
+  // Schedule the defaults
+  [conn scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+  [conn start];
+
+  return YES;
+}
+
+- (connection_data_t*) dataForConnection: (NSURLConnection*)connection {
+  NSValue *val = [activeRequests objectForKey:
+      [NSNumber numberWithInteger:[connection hash]]];
+  return [val pointerValue];
+}
+
+- (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc {
+  connection_data_t *cdata = [self dataForConnection:connection];
+  [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
+
+  [cdata->data release]; /* TODO: does this cause errors? */
+
+  SEL selector = cdata->selector;
+  id info = cdata->info;
+  free(cdata);
+
+  [self performSelector:selector withObject:(id)doc withObject:info];
+  xmlFreeDoc(doc);
+}
+
+- (void)connection:(NSURLConnection *)connection
+    didReceiveData:(NSData *)data {
+  connection_data_t *cdata = [self dataForConnection:connection];
+  [cdata->data appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection
+    didReceiveResponse:(NSHTTPURLResponse *)response {
+  if ([response statusCode] < 200 || [response statusCode] >= 300) {
+    [connection cancel];
+    [self cleanupConnection:connection : NULL];
   }
+}
 
-  xmlDocPtr doc = xmlReadMemory([responseData bytes], [responseData length], "",
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+  [self cleanupConnection:connection : NULL];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+  connection_data_t *cdata = [self dataForConnection:connection];
+
+  xmlDocPtr doc = xmlReadMemory([cdata->data bytes], [cdata->data length], "",
                                 NULL, XML_PARSE_RECOVER);
+
   NSArray *fault = [self xpath: doc : "//methodResponse/fault"];
 
   if ([fault count] > 0) {
-    NSString *resp = [[NSString alloc] initWithData:responseData
+    NSString *resp = [[NSString alloc] initWithData:cdata->data
                                            encoding:NSASCIIStringEncoding];
     NSLog(@"Fault!: %@", resp);
     xmlFreeDoc(doc);
-    return NULL;
+    [self cleanupConnection:connection : NULL];
+
+    return;
   }
 
-  return doc;
+  [self cleanupConnection:connection : doc];
 }
 
 @end

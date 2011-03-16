@@ -9,7 +9,7 @@
 
 - (id) init {
   stations = [[NSMutableArray alloc] init];
-  return self;
+  return [super init];
 }
 
 - (void) dealloc {
@@ -17,11 +17,19 @@
   [super dealloc];
 }
 
+- (void) notify: (NSString*)msg with:(NSDictionary*)obj {
+  [[NSNotificationCenter defaultCenter] postNotificationName:msg object:self
+      userInfo:obj];
+}
+
+- (BOOL) authenticated {
+  return authToken != nil && listenerID != nil;
+}
+
 /**
  * Authenticates with Pandora. Stores information from the response
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass {
-  xmlDocPtr doc;
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -35,27 +43,26 @@
       [self time], user, pass
     ];
 
-  doc = [self sendRequest: @"authenticateListener" : [Crypt encrypt: xml]];
+  return [self sendRequest: @"authenticateListener" : [Crypt encrypt: xml] :
+    @selector(handleAuthenticate:)];
+}
 
+- (void) handleAuthenticate: (xmlDocPtr) doc {
   authToken = nil;
   listenerID = nil;
 
   if (doc != NULL) {
     authToken  = [self xpathText: doc : "//member[name='authToken']/value"];
     listenerID = [self xpathText: doc : "//member[name='listenerId']/value"];
-
-    xmlFreeDoc(doc);
   }
 
-  return authToken != nil;
+  [self notify:@"hermes.authenticated" with:nil];
 }
 
 /**
  * Fetches a list of stations for the logged in user
  */
 - (BOOL) fetchStations {
-  int i;
-  NSArray *names, *ids;
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
      "<methodCall>"
@@ -68,46 +75,47 @@
      [self time], authToken
    ];
 
-  xmlDocPtr doc = [self sendRequest: @"getStations" : [Crypt encrypt: xml]];
+  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
+      @selector(handleStations:)];
+}
+
+- (void) handleStations: (xmlDocPtr) doc {
+  int i;
+  NSArray *names, *ids;
+
   if (doc == NULL) {
-    return NO;
+    [self notify:@"hermes.stations" with:nil];
+    return;
   }
 
   names = [self xpath: doc : "//member[name='stationName']/value"];
   ids   = [self xpath: doc : "//member[name='stationId']/value"];
 
-  while ([stations count] > 0) {
-    [[stations objectAtIndex: 0] release];
-    [stations removeObjectAtIndex: 0];
-  }
-
   for (i = 0; i < [names count]; i++) {
     Station *station = [[Station alloc] init];
 
-    station.name       = [names objectAtIndex: i];
-    station.station_id = [ids objectAtIndex: i];
-    station.radio      = self;
+    [station setName:[names objectAtIndex: i]];
+    [station setStationId:[ids objectAtIndex: i]];
+    [station setRadio:self];
 
     if ([[station name] rangeOfString: @"QuickMix"].length != 0) {
-      station.name = @"QuickMix";
+      [station setName:@"QuickMix"];
     }
 
-    [stations addObject: station];
+    if ([stations containsObject:station]) {
+      [station release];
+    } else {
+      [stations addObject:station];
+    }
   }
 
-  xmlFreeDoc(doc);
-  return YES;
+  [self notify:@"hermes.stations" with:nil];
 }
 
 /**
  * Gets a fragment of songs from Pandora for the specified station
  */
-- (NSArray*) getFragment: (NSString*) station_id {
-  int i;
-
-  NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
-    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls;
-
+- (BOOL) getFragment: (NSString*) station_id {
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
      "<methodCall>"
@@ -127,9 +135,20 @@
      [self time], authToken, station_id
    ];
 
-  xmlDocPtr doc = [self sendRequest: @"getStations" : [Crypt encrypt: xml]];
+  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
+          @selector(handleFragment::) : station_id];
+}
+
+- (void) handleFragment: (xmlDocPtr) doc : (NSString*) station_id {
+  int i;
+
+  NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
+    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls;
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 1];
+
   if (doc == NULL) {
-      return nil;
+    [self notify:@"hermes.fragment-fetched" with:dict];
+    return;
   }
 
   artists     = [self xpath: doc : "//member[name='artistSummary']/value"];
@@ -145,30 +164,32 @@
   artist_urls = [self xpath: doc : "//member[name='artistDetailURL']/value"];
   title_urls  = [self xpath: doc : "//member[name='songDetailURL']/value"];
 
-  NSMutableArray *songs = [[NSMutableArray alloc] init];
+  NSMutableArray *songs = [NSMutableArray arrayWithCapacity:[artists count]];
 
   for (i = 0; i < [artists count]; i++) {
     Song *song = [[Song alloc] init];
 
-    song.artist     = [artists objectAtIndex: i];
-    song.title      = [titles objectAtIndex: i];
-    song.art        = [arts objectAtIndex: i];
-    song.url        = [Song decryptURL: [urls objectAtIndex: i]];
-    song.station_id = [station_ids objectAtIndex: i];
-    song.music_id   = [music_ids objectAtIndex: i];
-    song.user_seed  = [user_seeds objectAtIndex: i];
-    song.rating     = [ratings objectAtIndex: i];
-    song.song_type  = [song_types objectAtIndex: i];
-    song.album_url  = [album_urls objectAtIndex: i];
-    song.artist_url = [artist_urls objectAtIndex: i];
-    song.title_url  = [title_urls objectAtIndex: i];
+    [song setArtist: [artists objectAtIndex: i]];
+    [song setTitle: [titles objectAtIndex: i]];
+    [song setArt: [arts objectAtIndex: i]];
+    [song setUrl: [Song decryptURL: [urls objectAtIndex: i]]];
+    [song setStationId: [station_ids objectAtIndex: i]];
+    [song setMusicId: [music_ids objectAtIndex: i]];
+    [song setUserSeed: [user_seeds objectAtIndex: i]];
+    [song setRating: [ratings objectAtIndex: i]];
+    [song setSongType: [song_types objectAtIndex: i]];
+    [song setAlbumUrl: [album_urls objectAtIndex: i]];
+    [song setArtistUrl:  [artist_urls objectAtIndex: i]];
+    [song setTitleUrl: [title_urls objectAtIndex: i]];
 
     [songs addObject: song];
   }
 
-  xmlFreeDoc(doc);
+  [dict setObject:songs forKey:@"songs"];
 
-  return songs;
+  NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
+
+  [self notify:name with:dict];
 }
 
 /**
@@ -182,14 +203,17 @@
       "<params></params>"
     "</methodCall>";
 
-  return [self sendRequest: @"sync" : [Crypt encrypt: xml]] != NULL;
+  return [self sendRequest: @"sync" : [Crypt encrypt: xml] : @selector(handleSync:)];
+}
+
+- (void) handleSync: (xmlDocPtr) doc {
+  [self notify:@"hermes.sync" with:nil];
 }
 
 /**
  * Rate a song, "0" = dislike, "1" = like
  */
 - (BOOL) rateSong: (Song*) song : (NSString*) rating {
-  xmlDocPtr doc;
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
      "<methodCall>"
@@ -206,17 +230,17 @@
          "<param><value><int>%@</int></value></param>"
        "</params>"
      "</methodCall>",
-     [self time], authToken, [song station_id], [song music_id],
-       [song user_seed], @"undefined", rating, [song song_type]
+     [self time], authToken, [song stationId], [song musicId],
+       [song userSeed], @"undefined", rating, [song songType]
    ];
 
-  doc = [self sendRequest: @"station.addFeedback" : [Crypt encrypt: xml]];
+  song.rating = rating;
+  return [self sendRequest: @"station.addFeedback" : [Crypt encrypt: xml] :
+      @selector(handleRating:)];
+}
 
-  if (doc != NULL) {
-    song.rating = rating;
-  }
-
-  return doc != NULL;
+- (void) handleRating: (xmlDocPtr) doc {
+  [self notify:@"hermes.song-rated" with:nil];
 }
 
 /**
@@ -235,10 +259,15 @@
       "<param><value><string>%@</string></value></param>"
       "</params>"
     "</methodCall>",
-    [self time], authToken, [song music_id], [song user_seed], [song station_id]
+    [self time], authToken, [song musicId], [song userSeed], [song stationId]
   ];
 
-  return [self sendRequest: @"addTiredSong" : [Crypt encrypt: xml]] != NULL;
+  return [self sendRequest: @"addTiredSong" : [Crypt encrypt: xml] :
+      @selector(handleTired:)];
+}
+
+- (void) handleTired: (xmlDocPtr) doc {
+  [self notify:@"hermes.song-tired" with:nil];
 }
 
 @end

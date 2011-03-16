@@ -10,6 +10,8 @@
 
 @interface API : NSObject {
   NSString *listenerID;
+
+  NSMutableDictionary *activeRequests;
 }
 
 @property (retain) NSString* listenerID;
@@ -17,6 +19,7 @@
 - (int) time;
 - (NSArray*) xpath: (xmlDocPtr) doc : (char*) xpath;
 - (NSString*) xpathText: (xmlDocPtr)doc : (char*) xpath;
-- (xmlDocPtr) sendRequest: (NSString*)method : (NSString*)data;
+- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback;
+- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info;
 
 @end

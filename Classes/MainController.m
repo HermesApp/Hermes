@@ -12,6 +12,16 @@
 
 @implementation MainController
 
+- (id) init {
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(stationsLoaded:)
+    name:@"hermes.stations"
+    object:[[NSApp delegate] pandora]];
+
+  return self;
+}
+
 - (Pandora*) pandora {
   return [[NSApp delegate] pandora];
 }
@@ -45,7 +55,7 @@
   for (i = 0; i < [[[self pandora] stations] count]; i++) {
     cur = [[[self pandora] stations] objectAtIndex:i];
 
-    if ([[station station_id] isEqual: [cur station_id]]) {
+    if ([[station stationId] isEqual: [cur stationId]]) {
       index = i;
       break;
     }
@@ -67,7 +77,7 @@
     Station *last = nil;
 
     for (Station *cur in [[self pandora] stations]) {
-      if ([lastPlayed isEqual: [cur station_id]]) {
+      if ([lastPlayed isEqual: [cur stationId]]) {
         last = cur;
         break;
       }
@@ -83,6 +93,22 @@
   return NO;
 }
 
+- (void) stationsLoaded: (NSNotification*) not {
+  [stationsTable reloadData];
+  [[[NSApp delegate] playback] afterStationsLoaded];
+
+  [self showDrawer];
+
+  [stationsRefreshing setHidden:YES];
+  [stationsRefreshing stopAnimation:nil];
+
+  if ([self playingStation] != nil) {
+    [self selectStation:[self playingStation]];
+  } else if ([self playSavedStation]) {
+    [selectStation setHidden:YES];
+  }
+}
+
 - (void) showDrawer {
   [stations open];
 }
@@ -93,19 +119,10 @@
 
 /* Called after the user has authenticated */
 - (void) afterAuthentication {
-  [[NSApp delegate] showSpinner];
-
-  [[self pandora] fetchStations];
+  [selectStation setHidden:NO];
   [stationsTable setDataSource: self];
-  [stationsTable reloadData];
-  [[[NSApp delegate] playback] afterStationsLoaded];
 
-  [[NSApp delegate] hideSpinner];
-  [self showDrawer];
-
-  if (![self playSavedStation]) {
-    [selectStation setHidden:NO];
-  }
+  [self refreshList:nil];
 }
 
 - (IBAction)tableViewSelected: (id)sender {
@@ -122,6 +139,12 @@
 
   [selectStation setHidden:YES];
   [self playStation:selected];
+}
+
+- (IBAction)refreshList: (id)sender {
+  [stationsRefreshing setHidden:NO];
+  [stationsRefreshing startAnimation:nil];
+  [[self pandora] fetchStations];
 }
 
 @end
