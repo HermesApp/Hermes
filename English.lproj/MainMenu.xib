@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
+			<integer value="371"/>
 			<integer value="701"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -1375,7 +1375,7 @@
 								<nil key="NSToolbarItemView"/>
 								<object class="NSCustomResource" key="NSToolbarItemImage">
 									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">NSBonjour</string>
+									<string key="NSResourceName">zzs</string>
 								</object>
 								<nil key="NSToolbarItemTarget"/>
 								<nil key="NSToolbarItemAction"/>
@@ -1569,12 +1569,12 @@
 						<object class="NSTextField" id="826133605">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">-2147483384</int>
-							<string key="NSFrame">{{23, 266}, {193, 17}}</string>
+							<string key="NSFrame">{{5, 266}, {231, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="947449395">
-								<int key="NSCellFlags">68288064</int>
-								<int key="NSCellFlags2">138413056</int>
+								<int key="NSCellFlags">69336641</int>
+								<int key="NSCellFlags2">138418176</int>
 								<string key="NSContents">Song Title</string>
 								<object class="NSFont" key="NSSupport" id="265285679">
 									<string key="NSName">LucidaGrande</string>
@@ -1609,8 +1609,8 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="247742456">
-								<int key="NSCellFlags">68288064</int>
-								<int key="NSCellFlags2">138413056</int>
+								<int key="NSCellFlags">69336641</int>
+								<int key="NSCellFlags2">138418176</int>
 								<string key="NSContents">Artist</string>
 								<reference key="NSSupport" ref="265285679"/>
 								<reference key="NSControlView" ref="780257344"/>
@@ -5078,9 +5078,9 @@
 					<integer value="1"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{686, 436}, {240, 290}}</string>
+					<string>{{686, 404}, {240, 290}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{686, 436}, {240, 290}}</string>
+					<string>{{686, 404}, {240, 290}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="NO"/>
@@ -5271,7 +5271,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{498, 726}, {616, 0}}</string>
+					<string>{{498, 694}, {616, 0}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
@@ -5335,7 +5335,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">864</int>
+			<int key="maxID">870</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -6501,7 +6501,6 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>NSBonjour</string>
 				<string>NSMenuCheckmark</string>
 				<string>NSMenuMixedState</string>
 				<string>NSRefreshTemplate</string>
@@ -6510,10 +6509,10 @@
 				<string>play</string>
 				<string>thumbdown</string>
 				<string>thumbup</string>
+				<string>zzs</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{32, 32}</string>
 				<string>{9, 8}</string>
 				<string>{7, 2}</string>
 				<string>{10, 12}</string>
@@ -6522,6 +6521,7 @@
 				<string>{128, 128}</string>
 				<string>{40, 40}</string>
 				<string>{40, 40}</string>
+				<string>{80, 58}</string>
 			</object>
 		</object>
 	</data>

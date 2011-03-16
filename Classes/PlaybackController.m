@@ -157,16 +157,13 @@
   if ([art isHidden]) {
     [art setHidden:NO];
     [artistLabel setHidden:NO];
-//    [artistLabel setAlphaValue:0.0];
-//    [[artistLabel animator] setAlphaValue:1.0];
     [songLabel setHidden:NO];
     [playbackProgress setHidden:NO];
     [progressLabel setHidden:NO];
-  } else {
   }
 
-  [songLabel setStringValue: song.title];
-  [artistLabel setStringValue: song.artist];
+  [songLabel setStringValue: [song title]];
+  [artistLabel setStringValue: [song artist]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
 
