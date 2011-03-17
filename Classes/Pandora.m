@@ -22,6 +22,24 @@
       userInfo:obj];
 }
 
+- (void) logout {
+  Station *station;
+
+  [self notify: @"hermes.logged-out" with:nil];
+
+  while ([stations count] > 0) {
+    station = [stations objectAtIndex:0];
+    [stations removeObjectAtIndex:0];
+    [station release];
+  }
+
+  [authToken release];
+  [listenerID release];
+
+  authToken = nil;
+  listenerID = nil;
+}
+
 - (BOOL) authenticated {
   return authToken != nil && listenerID != nil;
 }
@@ -141,13 +159,14 @@
 
 - (void) handleFragment: (xmlDocPtr) doc : (NSString*) station_id {
   int i;
+  NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
 
   NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
     *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls;
   NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 1];
 
   if (doc == NULL) {
-    [self notify:@"hermes.fragment-fetched" with:dict];
+    [self notify:name with:dict];
     return;
   }
 
@@ -186,8 +205,6 @@
   }
 
   [dict setObject:songs forKey:@"songs"];
-
-  NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
 
   [self notify:name with:dict];
 }

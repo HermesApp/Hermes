@@ -19,6 +19,12 @@
     name:@"hermes.stations"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(loggedOut:)
+    name:@"hermes.logged-out"
+    object:[[NSApp delegate] pandora]];
+
   return self;
 }
 
@@ -32,6 +38,10 @@
 
 - (void) playStation: (Station*) station {
   [[[NSApp delegate] playback] playStation:station];
+}
+
+- (void) loggedOut: (NSNotification*) not {
+  [self hideDrawer];
 }
 
 /* Part of the NSTableViewDataSource protocol */

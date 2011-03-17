@@ -33,6 +33,18 @@
     name:@"hermes.song-tired"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(noSongs:)
+    name:@"hermes.no-songs"
+    object:nil];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(loggedOut:)
+    name:@"hermes.logged-out"
+    object:[[NSApp delegate] pandora]];
+
   loader = [[ImageLoader alloc] init];
 
   [[NSNotificationCenter defaultCenter]
@@ -78,6 +90,24 @@
 }
 
 - (void) songTired: (NSNotification*) not {
+  [self hideSpinner];
+}
+
+- (void) noSongs: (NSNotification*) not {
+  [self hideSpinner];
+  [sorryLabel setHidden:NO];
+  [loadMore setHidden:NO];
+}
+
+- (void) loggedOut: (NSNotification*) not {
+  playing = nil;
+  [sorryLabel setHidden:YES];
+  [loadMore setHidden:YES];
+  [art setHidden:YES];
+  [songLabel setHidden:YES];
+  [artistLabel setHidden:YES];
+  [playbackProgress setHidden:YES];
+  [progressLabel setHidden:YES];
   [self hideSpinner];
 }
 
@@ -163,6 +193,11 @@
     [progressLabel setHidden:NO];
   }
 
+  if (![loadMore isHidden]) {
+    [loadMore setHidden:YES];
+    [sorryLabel setHidden:YES];
+  }
+
   [songLabel setStringValue: [song title]];
   [artistLabel setStringValue: [song artist]];
   [playbackProgress setDoubleValue: 0];
@@ -179,7 +214,7 @@
 
 /* Plays a new station */
 - (void) playStation: (Station*) station {
-  if (playing == station) {
+  if (![[self pandora] authenticated] || playing == station) {
     return;
   }
 
@@ -204,6 +239,10 @@
 
 /* Toggle between playing and pausing */
 - (IBAction)playpause: (id) sender {
+  if (![[self pandora] authenticated]) {
+    return;
+  }
+
   if ([[playing stream] isPlaying]) {
     [playing pause];
   } else {
@@ -213,6 +252,10 @@
 
 /* Stop this song and go to the next */
 - (IBAction)next: (id) sender {
+  if (![[self pandora] authenticated]) {
+    return;
+  }
+
   [art setHidden:YES];
   [self showSpinner];
 
@@ -222,7 +265,7 @@
 /* Like button was hit */
 - (IBAction)like: (id) sender {
   Song *playingSong = [playing playing];
-  if (playingSong == nil) {
+  if (![[self pandora] authenticated] || playingSong == nil) {
     return;
   }
 
@@ -240,7 +283,7 @@
 /* Dislike button was hit */
 - (IBAction)dislike: (id) sender {
   Song *playingSong = [playing playing];
-  if (playingSong == nil) {
+  if (![[self pandora] authenticated] || playingSong == nil) {
     return;
   }
 
@@ -256,7 +299,8 @@
 
 /* We are tired o fthe currently playing song, play another */
 - (IBAction)tired: (id) sender {
-  if (playing == nil || [playing playing] == nil) {
+  if (![[self pandora] authenticated] ||
+      playing == nil || [playing playing] == nil) {
     return;
   }
 
@@ -265,6 +309,12 @@
   } else {
     NSLog(@"Couldn't get tired of a song?!");
   }
+}
+
+/* Load more songs manually */
+- (IBAction)loadMore: (id)sender {
+  [self showSpinner];
+  [[self playing] play];
 }
 
 @end

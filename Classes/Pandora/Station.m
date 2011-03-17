@@ -29,6 +29,13 @@
 - (void) dealloc {
   [self stop];
   [self stopObserving];
+
+  while ([songs count] > 0) {
+    Song *s = [songs objectAtIndex:0];
+    [songs removeObjectAtIndex:0];
+    [s release];
+  }
+
   [songs release];
   [stationId release];
   [name release];
@@ -60,9 +67,14 @@
     [songs addObjectsFromArray: more];
   }
 
-  if ([songs count] > 0 && shouldPlaySongOnFetch) {
-    shouldPlaySongOnFetch = NO;
-    [self play];
+  if ([songs count] > 0) {
+    if (shouldPlaySongOnFetch) {
+      shouldPlaySongOnFetch = NO;
+      [self play];
+    }
+  } else {
+    [[NSNotificationCenter defaultCenter]
+      postNotificationName:@"hermes.no-songs" object:self];
   }
 }
 
@@ -101,12 +113,8 @@
   stream = [[AudioStreamer alloc] initWithURL: [NSURL URLWithString: playing.url]];
   [stream start];
 
-  NSNotification *notification =
-    [NSNotification
-      notificationWithName: @"song.playing"
-      object:self];
   [[NSNotificationCenter defaultCenter]
-    postNotification:notification];
+    postNotificationName:@"song.playing" object:self];
 
   [self fetchSongsIfNecessary];
 }

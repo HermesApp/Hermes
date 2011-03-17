@@ -210,6 +210,7 @@ typedef struct connection_data {
     NSString *resp = [[NSString alloc] initWithData:cdata->data
                                            encoding:NSASCIIStringEncoding];
     NSLog(@"Fault!: %@", resp);
+    [resp release];
     xmlFreeDoc(doc);
     [self cleanupConnection:connection : NULL];
 

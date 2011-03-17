@@ -25,5 +25,6 @@
 - (IBAction)cancel: (id)sender;
 - (IBAction)authenticate: (id)sender;
 - (IBAction)showAuth: (id)sender;
+- (IBAction)logout: (id)sender;
 
 @end

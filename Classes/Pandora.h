@@ -24,5 +24,6 @@
 - (BOOL) sync;
 - (BOOL) rateSong: (Song*)song : (NSString*)rating;
 - (BOOL) tiredOfSong: (Song*)song;
+- (void) logout;
 
 @end

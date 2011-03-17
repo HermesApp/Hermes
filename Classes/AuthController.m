@@ -62,4 +62,10 @@
   [[NSApp delegate] showAuthSheet];
 }
 
+/* Logout the current user */
+- (IBAction)logout: (id)sender {
+  [[[NSApp delegate] pandora] logout];
+  [auth setHidden:NO];
+}
+
 @end

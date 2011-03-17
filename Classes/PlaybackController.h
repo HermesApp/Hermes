@@ -33,6 +33,10 @@
   IBOutlet NSToolbar *toolbar;
 
   Station *playing;
+
+  // Sorry, you're not pandora one and you loaded too many songs
+  IBOutlet NSTextField *sorryLabel;
+  IBOutlet NSButton *loadMore;
 }
 
 @property (assign) Station *playing;
@@ -44,5 +48,6 @@
 - (IBAction)like: (id) sender;
 - (IBAction)dislike: (id) sender;
 - (IBAction)tired: (id) sender;
+- (IBAction)loadMore: (id)sender;
 
 @end
