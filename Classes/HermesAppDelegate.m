@@ -11,7 +11,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize window, authSheet, mainC, auth, playback, pandora;
+@synthesize mainC, auth, playback, pandora;
 
 - (id) init {
   pandora = [[Pandora alloc] init];
@@ -40,6 +40,19 @@
 - (void) showAuthSheet {
   [self hideSpinner];
   [NSApp beginSheet: authSheet
+     modalForWindow: window
+      modalDelegate: self
+     didEndSelector: NULL
+        contextInfo: nil];
+}
+
+- (void) closeNewStationSheet {
+  [NSApp endSheet:newStationSheet];
+  [newStationSheet orderOut:self];
+}
+
+- (void) showNewStationSheet {
+  [NSApp beginSheet: newStationSheet
      modalForWindow: window
       modalDelegate: self
      didEndSelector: NULL

@@ -3,6 +3,12 @@
 #import "Station.h"
 #import "Song.h"
 
+@implementation SearchResult
+
+@synthesize value, name;
+
+@end
+
 @implementation Pandora
 
 @synthesize authToken, stations;
@@ -285,6 +291,158 @@
 
 - (void) handleTired: (xmlDocPtr) doc {
   [self notify:@"hermes.song-tired" with:nil];
+}
+
+- (BOOL) search: (NSString*) search {
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>music.search</methodName>"
+      "<params>"
+      "<param><value><int>%d</int></value></param>"
+      "<param><value><string>%@</string></value></param>"
+      "<param><value><string>mi%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, search
+  ];
+
+  return [self sendRequest: @"search" : [Crypt encrypt: xml] :
+          @selector(handleSearch:)];
+}
+
+- (void) handleSearch: (xmlDocPtr) doc {
+  NSMutableDictionary *map = [NSMutableDictionary dictionaryWithCapacity:3];
+  int i;
+
+  NSMutableArray *foundSongs, *foundStations, *foundArtists;
+  foundSongs    = [NSMutableArray arrayWithCapacity:10];
+  foundStations = [NSMutableArray arrayWithCapacity:10];
+  foundArtists  = [NSMutableArray arrayWithCapacity:10];
+
+  [map setObject:foundSongs forKey:@"Songs"];
+  [map setObject:foundStations forKey:@"Stations"];
+  [map setObject:foundArtists forKey:@"Artists"];
+
+  if (doc == NULL) {
+    [self notify:@"hermes.search-results" with:map];
+    return;
+  }
+
+  NSArray *songs = [self xpath:doc :
+      "//member[name='songs']//member[name='musicId' or name='artistSummary'"
+      " or name='songTitle']/value"];
+  NSArray *stats = [self xpath:doc :
+      "//member[name='stations']//member[name='musicId'"
+      " or name='stationName']/value"];
+  NSArray *artists = [self xpath:doc :
+      "//member[name='artists']//member[name='artistName'"
+      " or name='musicId']/value"];
+
+  SearchResult *r;
+
+  for (i = 0; i < [songs count]; i += 3) {
+    r = [[[SearchResult alloc] init] autorelease];
+
+    [r setName:
+        [NSString stringWithFormat:@"%@ - %@",
+        [songs objectAtIndex:i + 1], [songs objectAtIndex:i + 2]]];
+
+    [r setValue:[songs objectAtIndex:i]];
+
+    [foundSongs addObject:r];
+  }
+
+  for (i = 0; i < [stats count]; i += 2) {
+    r = [[[SearchResult alloc] init] autorelease];
+
+    [r setName:[stats objectAtIndex:i + 1]];
+    [r setValue:[stats objectAtIndex:i]];
+
+    [foundStations addObject:r];
+  }
+
+  for (i = 0; i < [artists count]; i += 2) {
+    r = [[[SearchResult alloc] init] autorelease];
+
+    [r setName:[artists objectAtIndex:i]];
+    [r setValue:[artists objectAtIndex:i + 1]];
+
+    [foundArtists addObject:r];
+  }
+
+  [self notify:@"hermes.search-results" with:map];
+}
+
+/**
+ * Create a new station, just for kicks
+ */
+- (BOOL) createStation: (NSString*)musicId {
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>station.createStation</methodName>"
+      "<params>"
+        "<param><value><int>%d</int></value></param>"
+        "<param><value><string>%@</string></value></param>"
+        "<param><value><string>mi%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, musicId
+  ];
+
+  return [self sendRequest: @"createStation" : [Crypt encrypt: xml] :
+          @selector(handleCreateStation:)];
+}
+
+- (void) handleCreateStation: (xmlDocPtr) doc {
+  [self notify:@"hermes.station-created" with:nil];
+}
+
+/**
+ * Remove a station from the list, only removing if
+ */
+- (BOOL) removeStation: (NSString*)stationId {
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>station.removeStation</methodName>"
+      "<params>"
+        "<param><value><int>%d</int></value></param>"
+        "<param><value><string>%@</string></value></param>"
+        "<param><value><string>%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, stationId
+  ];
+
+  return [self sendRequest: @"removeStation" : [Crypt encrypt: xml] :
+          @selector(handleRemoveStation::) : stationId];
+}
+
+- (void) handleRemoveStation: (xmlDocPtr)doc : (NSString*)stationId {
+  int i;
+
+  if (doc == NULL) {
+    [self notify:@"hermes.station-removed" with:nil];
+    return;
+  }
+
+  for (i = 0; i < [stations count]; i++) {
+    if ([[[stations objectAtIndex:i] stationId] isEqual:stationId]) {
+      break;
+    }
+  }
+
+  if ([stations count] == i) {
+    NSLog(@"Deleted unknown station?!");
+  } else {
+    Station *s = [stations objectAtIndex:i];
+    [stations removeObjectAtIndex:i];
+    [s release];
+  }
+
+  [self notify:@"hermes.station-removed" with:nil];
 }
 
 @end

@@ -18,22 +18,24 @@
 
   IBOutlet NSProgressIndicator *appLoading;
 
-  NSWindow *window;
-  NSWindow *authSheet;
-  MainController *mainC;
-  AuthController *auth;
-  PlaybackController *playback;
+  IBOutlet NSWindow *window;
+  IBOutlet NSWindow *authSheet;
+  IBOutlet NSWindow *newStationSheet;
+
+  IBOutlet MainController *mainC;
+  IBOutlet AuthController *auth;
+  IBOutlet PlaybackController *playback;
 }
 
-@property (assign) IBOutlet NSWindow *window;
-@property (assign) IBOutlet NSWindow *authSheet;
-@property (assign) IBOutlet MainController *mainC;
-@property (assign) IBOutlet AuthController *auth;
-@property (assign) IBOutlet PlaybackController *playback;
+@property (assign) MainController *mainC;
+@property (assign) AuthController *auth;
+@property (assign) PlaybackController *playback;
 @property (retain) Pandora *pandora;
 
 - (void) closeAuthSheet;
 - (void) showAuthSheet;
+- (void) closeNewStationSheet;
+- (void) showNewStationSheet;
 - (void) cacheAuth: (NSString*) username : (NSString*) password;
 - (void) showSpinner;
 - (void) hideSpinner;

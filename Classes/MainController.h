@@ -11,17 +11,35 @@
 #import "Pandora.h"
 #import "Station.h"
 
-@interface MainController : NSObject < NSTableViewDataSource > {
+@interface MainController : NSObject < NSTableViewDataSource, NSOutlineViewDataSource > {
   IBOutlet NSTextField *selectStation;
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
+
+  // New station things
+  IBOutlet NSTextField *search;
+  IBOutlet NSOutlineView *results;
+  IBOutlet NSProgressIndicator *searchSpinner;
+  IBOutlet NSImageView *errorIndicator;
+
+  // Last known results
+  NSDictionary *lastResults;
 }
 
 - (void) showDrawer;
 - (void) hideDrawer;
 - (void)afterAuthentication;
-- (IBAction)tableViewSelected: (id)sender;
+
+// Buttons at bottom of drawer
+- (IBAction)deleteSelected: (id)sender;
+- (IBAction)playSelected: (id)sender;
 - (IBAction)refreshList: (id)sender;
+- (IBAction)addStation: (id)sender;
+
+// Actions from new station sheet
+- (IBAction)search: (id)sender;
+- (IBAction)cancelCreateStation: (id)sender;
+- (IBAction)createStation: (id)sender;
 
 @end

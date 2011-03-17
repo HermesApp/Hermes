@@ -9,6 +9,16 @@
 #import "Song.h"
 #import "API.h"
 
+@interface SearchResult : NSObject {
+  NSString *name;
+  NSString *value;
+}
+
+@property (retain) NSString *name;
+@property (retain) NSString *value;
+
+@end
+
 @interface Pandora : API {
   NSString *authToken;
   NSMutableArray *stations;
@@ -24,6 +34,9 @@
 - (BOOL) sync;
 - (BOOL) rateSong: (Song*)song : (NSString*)rating;
 - (BOOL) tiredOfSong: (Song*)song;
+- (BOOL) search: (NSString*) search;
+- (BOOL) createStation: (NSString*) musicId;
+- (BOOL) removeStation: (NSString*) stationId;
 - (void) logout;
 
 @end
