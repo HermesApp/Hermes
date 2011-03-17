@@ -10,6 +10,7 @@
 
 @interface ImageLoader : NSObject {
   NSURLConnection *prev;
+  NSMutableData *data;
 }
 
 @property (retain) NSMutableData *data;

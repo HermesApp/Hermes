@@ -24,7 +24,7 @@
 
 + (SecKeychainItemRef) keychainItemFor: (NSString*) username {
   SecKeychainSearchRef search;
-  SecKeychainItemRef item;
+  SecKeychainItemRef item = NULL;
   SecKeychainAttribute attributes[3];
   OSErr result;
 
@@ -35,11 +35,17 @@
   result = SecKeychainSearchCreateFromAttributes(NULL,
       kSecGenericPasswordItemClass, &list, &search);
 
-  if (result == noErr && SecKeychainSearchCopyNext (search, &item) != noErr) {
-    item = NULL;
+  if (result == noErr) {
+    result = SecKeychainSearchCopyNext(search, &item);
+
+    if (result != noErr) {
+      item = NULL;
+    }
   }
 
-  CFRelease (search);
+  if (search)
+    CFRelease(search);
+
   return item;
 }
 
@@ -47,7 +53,7 @@
     password: (NSString*) password {
   SecKeychainAttribute attributes[3];
   SecKeychainAttributeList list;
-  SecKeychainItemRef item;
+  SecKeychainItemRef item = NULL;
   OSStatus status;
 
   [self initializeAttributes: attributes username:username];

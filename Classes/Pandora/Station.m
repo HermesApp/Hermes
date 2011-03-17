@@ -27,7 +27,11 @@
 }
 
 - (void) dealloc {
+  [self stop];
   [self stopObserving];
+  [songs release];
+  [stationId release];
+  [name release];
   [super dealloc];
 }
 
@@ -119,12 +123,13 @@
 }
 
 - (void) stop {
-  if (!stream) {
+  if (!stream || !playing) {
     return;
   }
 
   [stream stop];
   [stream release];
+  [playing release];
   stream = nil;
 }
 

@@ -94,7 +94,6 @@ typedef struct connection_data {
     [ret retain];
   }
 
-  //  [arr release];
   return ret;
 }
 
@@ -140,6 +139,8 @@ typedef struct connection_data {
     initWithRequest:request delegate:self
     startImmediately:NO];
 
+  [request release];
+
   if (conn == nil) {
     return NO;
   }
@@ -168,6 +169,7 @@ typedef struct connection_data {
   connection_data_t *cdata = [self dataForConnection:connection];
   [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
 
+  [connection release];
   [cdata->data release]; /* TODO: does this cause errors? */
 
   SEL selector = cdata->selector;

@@ -12,14 +12,21 @@
 
 @interface Station : NSObject {
   BOOL shouldPlaySongOnFetch;
+
+  NSString *name;
+  NSString *stationId;
+  NSMutableArray *songs;
+  Pandora *radio;
+  AudioStreamer *stream;
+  Song *playing;
 }
 
-@property (retain) NSString* name;
-@property (retain) NSString* stationId;
-@property (retain) NSMutableArray* songs;
-@property (retain) Pandora* radio;
-@property (retain) AudioStreamer* stream;
-@property (retain) Song* playing;
+@property (retain) NSString *name;
+@property (retain) NSString *stationId;
+@property (retain) NSMutableArray *songs;
+@property (retain) Pandora *radio;
+@property (retain) AudioStreamer *stream;
+@property (retain) Song *playing;
 
 - (void) play;
 - (void) next;

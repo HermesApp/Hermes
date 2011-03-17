@@ -83,6 +83,7 @@
 
 - (void) imageLoaded: (NSNotification*) not {
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
+  [image autorelease];
   [[art animator] setImage:image];
 }
 

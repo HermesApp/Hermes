@@ -31,6 +31,8 @@
   IBOutlet NSToolbarItem *playpause;
   IBOutlet NSToolbarItem *next;
   IBOutlet NSToolbar *toolbar;
+
+  Station *playing;
 }
 
 @property (assign) Station *playing;

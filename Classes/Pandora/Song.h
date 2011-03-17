@@ -7,7 +7,18 @@
 //
 
 @interface Song : NSObject {
-
+  NSString *artist;
+  NSString *title;
+  NSString *art;
+  NSString *url;
+  NSString *stationId;
+  NSString *musicId;
+  NSString *userSeed;
+  NSString *rating;
+  NSString *songType;
+  NSString *albumUrl;
+  NSString *artistUrl;
+  NSString *titleUrl;
 }
 
 @property (retain) NSString *artist;

@@ -30,6 +30,10 @@
     [self cancel:nil];
     [auth setHidden:YES];
     [[[NSApp delegate] mainC] afterAuthentication];
+
+    if ([password stringValue] != nil && ![[password stringValue] isEqual:@""]) {
+      [[NSApp delegate] cacheAuth:[username stringValue] : [password stringValue]];
+    }
   } else {
     [self showAuth:nil];
     [error setHidden:NO];

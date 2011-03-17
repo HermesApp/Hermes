@@ -14,6 +14,23 @@
 @synthesize artist, title, art, url, stationId, musicId, userSeed, rating,
   songType, albumUrl, artistUrl, titleUrl;
 
+- (void) dealloc {
+  [artist release];
+  [title release];
+  [art release];
+  [url release];
+  [stationId release];
+  [musicId release];
+  [userSeed release];
+  [rating release];
+  [songType release];
+  [albumUrl release];
+  [artistUrl release];
+  [titleUrl release];
+
+  [super dealloc];
+}
+
 /**
  * Decrypts the URL received from Pandora
  */

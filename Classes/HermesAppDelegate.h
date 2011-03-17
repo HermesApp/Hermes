@@ -17,6 +17,12 @@
   Pandora *pandora;
 
   IBOutlet NSProgressIndicator *appLoading;
+
+  NSWindow *window;
+  NSWindow *authSheet;
+  MainController *mainC;
+  AuthController *auth;
+  PlaybackController *playback;
 }
 
 @property (assign) IBOutlet NSWindow *window;
