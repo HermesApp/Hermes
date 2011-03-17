@@ -10,7 +10,7 @@
 
 @implementation ImageLoader
 
-@synthesize data;
+@synthesize data, loadedURL;
 
 - (void) notify {
   [[NSNotificationCenter defaultCenter] postNotificationName:@"image-loaded" object:self];
@@ -21,6 +21,8 @@
     [prev cancel];
     [prev release];
   }
+
+  loadedURL = url;
 
   [self setData:[NSMutableData dataWithCapacity:100]];
 

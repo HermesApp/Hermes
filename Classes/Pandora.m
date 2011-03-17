@@ -168,7 +168,8 @@
   NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
 
   NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
-    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls;
+    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
+    *albums;
   NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 1];
 
   if (doc == NULL) {
@@ -178,6 +179,7 @@
 
   artists     = [self xpath: doc : "//member[name='artistSummary']/value"];
   titles      = [self xpath: doc : "//member[name='songTitle']/value"];
+  albums      = [self xpath: doc : "//member[name='albumTitle']/value"];
   arts        = [self xpath: doc : "//member[name='artRadio']/value"];
   urls        = [self xpath: doc : "//member[name='audioURL']/value"];
   station_ids = [self xpath: doc : "//member[name='stationId']/value"];
@@ -196,6 +198,7 @@
 
     [song setArtist: [artists objectAtIndex: i]];
     [song setTitle: [titles objectAtIndex: i]];
+    [song setAlbum: [albums objectAtIndex:i]];
     [song setArt: [arts objectAtIndex: i]];
     [song setUrl: [Song decryptURL: [urls objectAtIndex: i]]];
     [song setStationId: [station_ids objectAtIndex: i]];

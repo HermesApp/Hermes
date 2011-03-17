@@ -9,7 +9,9 @@
 @interface Song : NSObject {
   NSString *artist;
   NSString *title;
+  NSString *album;
   NSString *art;
+  NSString *otherArt;
   NSString *url;
   NSString *stationId;
   NSString *musicId;
@@ -23,7 +25,9 @@
 
 @property (retain) NSString *artist;
 @property (retain) NSString *title;
+@property (retain) NSString *album;
 @property (retain) NSString *art;
+@property (retain) NSString *otherArt;
 @property (retain) NSString *url;
 @property (retain) NSString *stationId;
 @property (retain) NSString *musicId;

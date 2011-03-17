@@ -14,10 +14,15 @@
   IBOutlet NSProgressIndicator *songLoadingProgress;
 
   IBOutlet NSTextField *artistLabel;
+  IBOutlet NSButton *artistURL;
   IBOutlet NSTextField *songLabel;
+  IBOutlet NSButton *songURL;
   IBOutlet NSTextField *progressLabel;
   IBOutlet NSProgressIndicator *playbackProgress;
   IBOutlet NSImageView *art;
+  IBOutlet NSProgressIndicator *artLoading;
+  IBOutlet NSButton *albumURL;
+  IBOutlet NSTextField *albumLabel;
 
   NSTimer *progressUpdateTimer;
   ImageLoader *loader;
@@ -49,5 +54,8 @@
 - (IBAction)dislike: (id) sender;
 - (IBAction)tired: (id) sender;
 - (IBAction)loadMore: (id)sender;
+- (IBAction)songURL: (id)sender;
+- (IBAction)artistURL: (id)sender;
+- (IBAction)albumURL: (id)sender;
 
 @end

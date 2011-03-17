@@ -11,13 +11,15 @@
 
 @implementation Song
 
-@synthesize artist, title, art, url, stationId, musicId, userSeed, rating,
-  songType, albumUrl, artistUrl, titleUrl;
+@synthesize artist, title, album, art, url, stationId, musicId, userSeed, rating,
+  songType, albumUrl, artistUrl, titleUrl, otherArt;
 
 - (void) dealloc {
   [artist release];
   [title release];
+  [album release];
   [art release];
+  [otherArt release];
   [url release];
   [stationId release];
   [musicId release];
@@ -29,6 +31,15 @@
   [titleUrl release];
 
   [super dealloc];
+}
+
+- (void) setArt:(NSString*)a {
+  art = [a stringByReplacingOccurrencesOfString:@"130W_130H"
+      withString:@"500W_500H"];
+
+  otherArt = a;
+  [otherArt retain];
+  [art retain];
 }
 
 /**

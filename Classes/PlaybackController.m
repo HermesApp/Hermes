@@ -100,22 +100,50 @@
 }
 
 - (void) loggedOut: (NSNotification*) not {
+  [playing stop];
   playing = nil;
+
   [sorryLabel setHidden:YES];
   [loadMore setHidden:YES];
   [art setHidden:YES];
   [songLabel setHidden:YES];
+  [songURL setHidden:YES];
   [artistLabel setHidden:YES];
+  [artistURL setHidden:YES];
+  [albumLabel setHidden:YES];
+  [albumURL setHidden:YES];
   [playbackProgress setHidden:YES];
   [progressLabel setHidden:YES];
   [toolbar setVisible:NO];
+
+  [artLoading setHidden:YES];
+  [artLoading stopAnimation:nil];
   [self hideSpinner];
 }
 
 - (void) imageLoaded: (NSNotification*) not {
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  [image autorelease];
+
+  if (image == nil) {
+    // Try the second art if this was just the first art
+    NSString *prev = [loader loadedURL];
+    NSString *orig = [[playing playing] art];
+    NSString *nxt  = [[playing playing] otherArt];
+    if ([prev isEqual:orig] && nxt != nil) {
+      [loader loadImageURL:nxt];
+      NSLog(@"Failed retrieving: %@, now trying: %@", orig, nxt);
+      return;
+    }
+
+    image = [NSImage imageNamed:@"missing-album.png"];
+  } else {
+    [image autorelease];
+  }
+
+  [art setHidden:NO];
   [[art animator] setImage:image];
+  [artLoading setHidden:YES];
+  [artLoading stopAnimation:nil];
 }
 
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */
@@ -182,14 +210,21 @@
 
   if ([song art] == nil || [[song art] isEqual: @""]) {
     [art setImage: [NSImage imageNamed:@"missing-album.png"]];
+    [art setHidden:NO];
   } else {
+    [artLoading setHidden:NO];
+    [artLoading startAnimation:nil];
+    [art setHidden:YES];
     [loader loadImageURL:[song art]];
   }
 
-  if ([art isHidden]) {
-    [art setHidden:NO];
+  if ([artistLabel isHidden]) {
     [artistLabel setHidden:NO];
+    [artistURL setHidden:NO];
     [songLabel setHidden:NO];
+    [songURL setHidden:NO];
+    [albumLabel setHidden:NO];
+    [albumURL setHidden:NO];
     [playbackProgress setHidden:NO];
     [progressLabel setHidden:NO];
   }
@@ -201,6 +236,7 @@
 
   [songLabel setStringValue: [song title]];
   [artistLabel setStringValue: [song artist]];
+  [albumLabel setStringValue:[song album]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
 
@@ -316,6 +352,36 @@
 - (IBAction)loadMore: (id)sender {
   [self showSpinner];
   [[self playing] play];
+}
+
+/* Go to the song URL */
+- (IBAction)songURL: (id) sender {
+  if ([playing playing] == nil) {
+    return;
+  }
+
+  NSURL *url = [NSURL URLWithString:[[playing playing] titleUrl]];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
+/* Go to the artist URL */
+- (IBAction)artistURL: (id) sender {
+  if ([playing playing] == nil) {
+    return;
+  }
+
+  NSURL *url = [NSURL URLWithString:[[playing playing] artistUrl]];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
+/* Go to the album URL */
+- (IBAction)albumURL: (id) sender {
+  if ([playing playing] == nil) {
+    return;
+  }
+
+  NSURL *url = [NSURL URLWithString:[[playing playing] albumUrl]];
+  [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
 @end
