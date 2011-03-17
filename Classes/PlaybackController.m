@@ -108,6 +108,7 @@
   [artistLabel setHidden:YES];
   [playbackProgress setHidden:YES];
   [progressLabel setHidden:YES];
+  [toolbar setVisible:NO];
   [self hideSpinner];
 }
 
