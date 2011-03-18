@@ -27,6 +27,7 @@
   IBOutlet PlaybackController *playback;
 }
 
+@property (readonly) NSWindow *window;
 @property (assign) MainController *mainC;
 @property (assign) AuthController *auth;
 @property (assign) PlaybackController *playback;

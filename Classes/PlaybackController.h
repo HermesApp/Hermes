@@ -46,7 +46,6 @@
 
 @property (assign) Station *playing;
 
-- (void) afterStationsLoaded;
 - (void) playStation: (Station*) station;
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;

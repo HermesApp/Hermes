@@ -45,6 +45,12 @@
     name:@"hermes.logged-out"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(afterStationsLoaded)
+    name:@"hermes.stations"
+    object:[[NSApp delegate] pandora]];
+
   loader = [[ImageLoader alloc] init];
 
   [[NSNotificationCenter defaultCenter]

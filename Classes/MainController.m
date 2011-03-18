@@ -222,7 +222,6 @@
 /* Called whenever stations finish loading from pandora */
 - (void) stationsLoaded: (NSNotification*) not {
   [stationsTable reloadData];
-  [[[NSApp delegate] playback] afterStationsLoaded];
 
   [self showDrawer];
 
@@ -259,7 +258,6 @@
 /* Called after the user has authenticated */
 - (void) afterAuthentication {
   [selectStation setHidden:NO];
-  [stationsTable setDataSource: self];
 
   [self refreshList:nil];
 }
@@ -289,7 +287,6 @@
   }
 
   [[NSApp delegate] showNewStationSheet];
-  [results setDataSource:self];
   [results reloadData];
 }
 
@@ -322,6 +319,26 @@
   [[self pandora] createStation:[result value]];
 }
 
+- (void) alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode
+    contextInfo:(void *)contextInfo {
+
+  Station *selected = [self selectedStation];
+
+  // -1 means that OK was hit (it's not the default
+  if (returnCode != -1) {
+    return;
+  }
+
+  if ([selected isEqual: [self playingStation]]) {
+    [[[NSApp delegate] playback] loggedOut:nil];
+    [selectStation setHidden:NO];
+  }
+
+  [stationsRefreshing setHidden:NO];
+  [stationsRefreshing startAnimation:nil];
+  [[self pandora] removeStation:[selected stationId]];
+}
+
 - (IBAction)deleteSelected: (id)sender {
   Station *selected = [self selectedStation];
 
@@ -339,19 +356,10 @@
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert setIcon:[NSImage imageNamed:@"error_icon.png"]];
 
-  // -1 means that OK was hit (it's not the default
-  if ([alert runModal] != -1) {
-    return;
-  }
-
-  if ([selected isEqual: [self playingStation]]) {
-    [[[NSApp delegate] playback] loggedOut:nil];
-    [selectStation setHidden:NO];
-  }
-
-  [stationsRefreshing setHidden:NO];
-  [stationsRefreshing startAnimation:nil];
-  [[self pandora] removeStation:[selected stationId]];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window]
+      modalDelegate:self
+      didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
+      contextInfo:NULL];
 }
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize mainC, auth, playback, pandora;
+@synthesize mainC, auth, playback, pandora, window;
 
 - (id) init {
   pandora = [[Pandora alloc] init];
