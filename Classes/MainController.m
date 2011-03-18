@@ -143,7 +143,7 @@
   Station *s = [[[self pandora] stations] objectAtIndex: rowIndex];
   if ([[aTableColumn identifier] isEqual:@"image"]) {
     if ([s isEqual:[self playingStation]]) {
-      return [NSImage imageNamed:@"volume_up.png"];
+      return [NSImage imageNamed:@"volume_up"];
     }
 
     return nil;
@@ -354,7 +354,7 @@
       otherButton:@"OK"
       informativeTextWithFormat:@"You cannot undo this deletion"];
   [alert setAlertStyle:NSWarningAlertStyle];
-  [alert setIcon:[NSImage imageNamed:@"error_icon.png"]];
+  [alert setIcon:[NSImage imageNamed:@"error_icon"]];
 
   [alert beginSheetModalForWindow:[[NSApp delegate] window]
       modalDelegate:self

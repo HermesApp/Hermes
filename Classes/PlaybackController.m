@@ -82,6 +82,12 @@
     name:@"song.playing"
     object:nil];
 
+  double saved = [[NSUserDefaults standardUserDefaults] doubleForKey:@"hermes.volume"];
+  if (saved == 0) {
+    saved = 1.0;
+  }
+  [volume setDoubleValue:saved];
+
   for (Station *station in [[self pandora] stations]) {
     [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -117,6 +123,9 @@
   [albumURL setHidden:YES];
   [playbackProgress setHidden:YES];
   [progressLabel setHidden:YES];
+  [volup setHidden:YES];
+  [voldown setHidden:YES];
+  [volume setHidden:YES];
 
   [artLoading setHidden:YES];
   [artLoading stopAnimation:nil];
@@ -146,7 +155,7 @@
       return;
     }
 
-    image = [NSImage imageNamed:@"missing-album.png"];
+    image = [NSImage imageNamed:@"missing-album"];
   } else {
     [image autorelease];
   }
@@ -169,9 +178,9 @@
   if ([streamer errorCode] != 0) {
     NSLog(@"error! prog:%f dur:%f", [streamer progress], [streamer duration]);
   } else if ([streamer isPlaying]) {
-    [playpause setImage:[NSImage imageNamed:@"pause.png"]];
+    [playpause setImage:[NSImage imageNamed:@"pause"]];
   } else if ([streamer isPaused]) {
-    [playpause setImage:[NSImage imageNamed:@"play.png"]];
+    [playpause setImage:[NSImage imageNamed:@"play"]];
   } else if ([streamer isIdle]) {
     /* The currently playing song finished playing */
     [self next:nil];
@@ -221,8 +230,10 @@
     name:ASStatusChangedNotification
     object:[playing stream]];
 
+  [[playing stream] setVolume:[volume doubleValue]];
+
   if ([song art] == nil || [[song art] isEqual: @""]) {
-    [art setImage: [NSImage imageNamed:@"missing-album.png"]];
+    [art setImage: [NSImage imageNamed:@"missing-album"]];
     [art setHidden:NO];
   } else {
     [artLoading setHidden:NO];
@@ -240,6 +251,9 @@
     [albumURL setHidden:NO];
     [playbackProgress setHidden:NO];
     [progressLabel setHidden:NO];
+    [volup setHidden:NO];
+    [voldown setHidden:NO];
+    [volume setHidden:NO];
   }
 
   if (![loadMore isHidden]) {
@@ -393,6 +407,15 @@
 
   NSURL *url = [NSURL URLWithString:[[playing playing] albumUrl]];
   [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
+- (IBAction) volumeChanged: (id) sender {
+  if (playing && [playing stream]) {
+    [[playing stream] setVolume: [volume doubleValue]];
+    [[NSUserDefaults standardUserDefaults]
+      setDouble:[volume doubleValue]
+      forKey:@"hermes.volume"];
+  }
 }
 
 @end

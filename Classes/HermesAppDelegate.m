@@ -82,9 +82,10 @@
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
 
-  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-      selector: @selector(receiveWakeNote:)
-      name: NSWorkspaceDidWakeNotification object: NULL];
+  /* In case we need to do something on wake, here's the code */
+  //[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+  //    selector: @selector(receiveWakeNote:)
+  //    name: NSWorkspaceDidWakeNotification object: NULL];
 
   NSString *savedUsername = [[NSUserDefaults standardUserDefaults]
       stringForKey:USERNAME_KEY];
@@ -108,11 +109,7 @@
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
-  NSLog(@"receiveSleepNote: %@", [note name]);
-}
-
-- (void) receiveWakeNote: (NSNotification*) note {
-  NSLog(@"receiveWakeNote: %@", [note name]);
+  [[playback playing] pause];
 }
 
 @end

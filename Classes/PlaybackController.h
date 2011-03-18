@@ -32,6 +32,11 @@
   IBOutlet NSToolbarItem *dislike;
   IBOutlet NSToolbarItem *tired;
 
+  // Volume
+  IBOutlet NSImageView *volup;
+  IBOutlet NSImageView *voldown;
+  IBOutlet NSSlider *volume;
+
   // Toolbar Items
   IBOutlet NSToolbarItem *playpause;
   IBOutlet NSToolbarItem *next;
@@ -56,6 +61,7 @@
 - (IBAction)songURL: (id)sender;
 - (IBAction)artistURL: (id)sender;
 - (IBAction)albumURL: (id)sender;
+- (IBAction)volumeChanged: (id)sender;
 
 - (void) loggedOut:(NSNotification *)not;
 
