@@ -448,4 +448,30 @@
   [self notify:@"hermes.station-removed" with:nil];
 }
 
+/**
+ * Rename a station to have a different name
+ */
+- (BOOL) renameStation: (NSString*)stationId to:(NSString*)name {
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>station.setStationName</methodName>"
+      "<params>"
+        "<param><value><int>%d</int></value></param>"
+        "<param><value><string>%@</string></value></param>"
+        "<param><value><string>%@</string></value></param>"
+        "<param><value><string>%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, stationId, name
+  ];
+
+  return [self sendRequest: @"setStationName" : [Crypt encrypt: xml] :
+          @selector(handleRenamedStation:)];
+}
+
+- (void) handleRenamedStation: (xmlDocPtr)doc {
+  [self notify:@"hermes.station-renamed" with:nil];
+}
+
 @end

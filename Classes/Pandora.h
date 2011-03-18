@@ -37,6 +37,7 @@
 - (BOOL) search: (NSString*) search;
 - (BOOL) createStation: (NSString*) musicId;
 - (BOOL) removeStation: (NSString*) stationId;
+- (BOOL) renameStation: (NSString*)stationId to:(NSString*)name;
 - (void) logout;
 
 @end

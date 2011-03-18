@@ -43,6 +43,12 @@
     name:@"hermes.station-removed"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(stationRenamed:)
+    name:@"hermes.station-renamed"
+    object:[[NSApp delegate] pandora]];
+
   return self;
 }
 
@@ -146,6 +152,18 @@
   return [s name];
 }
 
+- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject
+    forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
+
+  Station *s = [[[self pandora] stations] objectAtIndex:rowIndex];
+
+  if ([[self pandora] renameStation:[s stationId] to:anObject]) {
+    [stationsRefreshing setHidden:NO];
+    [stationsRefreshing startAnimation:nil];
+    [s setName:anObject];
+  }
+}
+
 /* ============================ NSOutlineViewDataSource protocol */
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
   if (item == nil) {
@@ -194,6 +212,11 @@
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
   [stationsTable reloadData];
+}
+
+- (void) stationRenamed: (NSNotification*) not {
+  [stationsRefreshing setHidden:YES];
+  [stationsRefreshing stopAnimation:nil];
 }
 
 /* Called whenever stations finish loading from pandora */
@@ -308,7 +331,7 @@
 
   NSAlert *alert =
     [NSAlert
-      alertWithMessageText:@"Are you sure?"
+      alertWithMessageText:@"Are you sure you want to delete this station?"
       defaultButton:@"Cancel"
       alternateButton:nil
       otherButton:@"OK"
