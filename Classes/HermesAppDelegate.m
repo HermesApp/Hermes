@@ -77,6 +77,15 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [self showSpinner];
 
+  // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+      selector: @selector(receiveSleepNote:)
+      name: NSWorkspaceWillSleepNotification object: NULL];
+
+  [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
+      selector: @selector(receiveWakeNote:)
+      name: NSWorkspaceDidWakeNotification object: NULL];
+
   NSString *savedUsername = [[NSUserDefaults standardUserDefaults]
       stringForKey:USERNAME_KEY];
   NSString *savedPassword = [Keychain getKeychainPassword: savedUsername];
@@ -96,6 +105,14 @@
   if ([pandora authToken] != nil) {
     [mainC showDrawer];
   }
+}
+
+- (void) receiveSleepNote: (NSNotification*) note {
+  NSLog(@"receiveSleepNote: %@", [note name]);
+}
+
+- (void) receiveWakeNote: (NSNotification*) note {
+  NSLog(@"receiveWakeNote: %@", [note name]);
 }
 
 @end

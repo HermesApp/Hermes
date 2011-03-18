@@ -160,7 +160,9 @@
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   AudioStreamer *streamer = [playing stream];
 
-  if ([streamer isPlaying]) {
+  if ([streamer errorCode] != 0) {
+    NSLog(@"error! prog:%f dur:%f", [streamer progress], [streamer duration]);
+  } else if ([streamer isPlaying]) {
     [playpause setImage:[NSImage imageNamed:@"pause.png"]];
   } else if ([streamer isPaused]) {
     [playpause setImage:[NSImage imageNamed:@"play.png"]];

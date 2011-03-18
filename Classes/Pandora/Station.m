@@ -107,10 +107,10 @@
     return;
   }
 
-  playing = [songs objectAtIndex:0];
+  [self setPlaying:[songs objectAtIndex:0]];
   [songs removeObjectAtIndex:0];
 
-  stream = [[AudioStreamer alloc] initWithURL: [NSURL URLWithString: playing.url]];
+  [self setStream:[[AudioStreamer alloc] initWithURL: [NSURL URLWithString: playing.url]]];
   [stream start];
 
   [[NSNotificationCenter defaultCenter]

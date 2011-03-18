@@ -22,7 +22,7 @@
     [prev release];
   }
 
-  loadedURL = url;
+  [self setLoadedURL:url];
 
   [self setData:[NSMutableData dataWithCapacity:100]];
 
