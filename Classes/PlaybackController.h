@@ -58,4 +58,6 @@
 - (IBAction)artistURL: (id)sender;
 - (IBAction)albumURL: (id)sender;
 
+- (void) loggedOut:(NSNotification *)not;
+
 @end

@@ -307,18 +307,23 @@
   }
 
   NSAlert *alert =
-  [NSAlert
-   alertWithMessageText:@"Are you sure?"
-   defaultButton:@"Cancel"
-   alternateButton:nil
-   otherButton:@"OK"
-   informativeTextWithFormat:@"You cannot undo this deletion"];
+    [NSAlert
+      alertWithMessageText:@"Are you sure?"
+      defaultButton:@"Cancel"
+      alternateButton:nil
+      otherButton:@"OK"
+      informativeTextWithFormat:@"You cannot undo this deletion"];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert setIcon:[NSImage imageNamed:@"error_icon.png"]];
 
   // -1 means that OK was hit (it's not the default
   if ([alert runModal] != -1) {
     return;
+  }
+
+  if ([selected isEqual: [self playingStation]]) {
+    [[[NSApp delegate] playback] loggedOut:nil];
+    [selectStation setHidden:NO];
   }
 
   [stationsRefreshing setHidden:NO];
