@@ -243,6 +243,20 @@ void ASReadStreamCallBack
 }
 
 //
+// setVolume:
+//
+// Sets the volume of this audio stream.
+//
+// @param volume a double from 0.0 to 1.0 which is the volume of this stream
+//
+- (BOOL)setVolume:(double)volume {
+  OSStatus rc = AudioQueueSetParameter(audioQueue,
+      kAudioQueueParam_Volume, volume);
+
+  return rc == 0;
+}
+
+//
 // isFinishing
 //
 // returns YES if the audio has reached a stopping condition.

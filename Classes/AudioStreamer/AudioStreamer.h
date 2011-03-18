@@ -177,5 +177,6 @@ extern NSString * const ASStatusChangedNotification;
 - (BOOL)isIdle;
 - (void)seekToTime:(double)newSeekTime;
 - (double)calculatedBitRate;
+- (BOOL)setVolume:(double)volume;
 
 @end
