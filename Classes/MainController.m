@@ -206,7 +206,7 @@
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
 
-  if ([self playSavedStation]) {
+  if ([self playingStation] == nil && [self playSavedStation]) {
     [selectStation setHidden:YES];
   }
 }
@@ -303,6 +303,21 @@
   Station *selected = [self selectedStation];
 
   if (selected == nil) {
+    return;
+  }
+
+  NSAlert *alert =
+  [NSAlert
+   alertWithMessageText:@"Are you sure?"
+   defaultButton:@"Cancel"
+   alternateButton:nil
+   otherButton:@"OK"
+   informativeTextWithFormat:@"You cannot undo this deletion"];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  [alert setIcon:[NSImage imageNamed:@"error_icon.png"]];
+
+  // -1 means that OK was hit (it's not the default
+  if ([alert runModal] != -1) {
     return;
   }
 

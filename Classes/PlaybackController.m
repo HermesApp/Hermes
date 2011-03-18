@@ -99,10 +99,7 @@
   [loadMore setHidden:NO];
 }
 
-- (void) loggedOut: (NSNotification*) not {
-  [playing stop];
-  playing = nil;
-
+- (void) hideAllPlaybackItems {
   [sorryLabel setHidden:YES];
   [loadMore setHidden:YES];
   [art setHidden:YES];
@@ -114,11 +111,19 @@
   [albumURL setHidden:YES];
   [playbackProgress setHidden:YES];
   [progressLabel setHidden:YES];
-  [toolbar setVisible:NO];
 
   [artLoading setHidden:YES];
   [artLoading stopAnimation:nil];
+
   [self hideSpinner];
+}
+
+- (void) loggedOut: (NSNotification*) not {
+  [playing stop];
+  playing = nil;
+
+  [self hideAllPlaybackItems];
+  [toolbar setVisible:NO];
 }
 
 - (void) imageLoaded: (NSNotification*) not {
@@ -255,16 +260,14 @@
     return;
   }
 
-  [self showSpinner];
-
-  if (playing == nil) {
-    [toolbar setVisible:YES];
-  } else {
+  if (playing != nil) {
     [art setHidden:YES];
-    [playbackProgress setHidden:YES];
-    [progressLabel setHidden:YES];
+    [self hideAllPlaybackItems];
     [playing stop];
   }
+
+  [self showSpinner];
+  [toolbar setVisible:YES];
 
   [[NSUserDefaults standardUserDefaults]
     setObject:[station stationId]
