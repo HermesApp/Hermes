@@ -178,6 +178,7 @@
   if ([streamer errorCode] != 0) {
     NSLog(@"error! prog:%f dur:%f", [streamer progress], [streamer duration]);
   } else if ([streamer isPlaying]) {
+    [[playing stream] setVolume:[volume doubleValue]];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
   } else if ([streamer isPaused]) {
     [playpause setImage:[NSImage imageNamed:@"play"]];
@@ -229,8 +230,6 @@
     selector:@selector(playbackStateChanged:)
     name:ASStatusChangedNotification
     object:[playing stream]];
-
-  [[playing stream] setVolume:[volume doubleValue]];
 
   if ([song art] == nil || [[song art] isEqual: @""]) {
     [art setImage: [NSImage imageNamed:@"missing-album"]];
