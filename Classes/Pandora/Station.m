@@ -110,7 +110,10 @@
   [self setPlaying:[songs objectAtIndex:0]];
   [songs removeObjectAtIndex:0];
 
-  [self setStream:[[AudioStreamer alloc] initWithURL: [NSURL URLWithString: playing.url]]];
+  NSURL *url = [NSURL URLWithString:[playing url]];
+  AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
+  [s autorelease];
+  [self setStream:s];
   [stream start];
 
   [[NSNotificationCenter defaultCenter]
@@ -139,6 +142,7 @@
   [stream release];
   [playing release];
   stream = nil;
+  playing = nil;
 }
 
 @end

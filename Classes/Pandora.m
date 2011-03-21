@@ -117,6 +117,7 @@
 
   for (i = 0; i < [names count]; i++) {
     Station *station = [[Station alloc] init];
+    [station autorelease];
 
     [station setName:[names objectAtIndex: i]];
     [station setStationId:[ids objectAtIndex: i]];
@@ -195,6 +196,7 @@
 
   for (i = 0; i < [artists count]; i++) {
     Song *song = [[Song alloc] init];
+    [song autorelease];
 
     [song setArtist: [artists objectAtIndex: i]];
     [song setTitle: [titles objectAtIndex: i]];
@@ -260,7 +262,7 @@
        [song userSeed], @"undefined", rating, [song songType]
    ];
 
-  song.rating = rating;
+  [song setRating: rating];
   return [self sendRequest: @"station.addFeedback" : [Crypt encrypt: xml] :
       @selector(handleRating:)];
 }
