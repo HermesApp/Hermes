@@ -1,14 +1,16 @@
 #!/bin/sh
-echo $0
-source=$0/../build/Release
+source=`dirname $0`/build/Release
+
 title=Hermes
 applicationName=$title
 size=20000
 finalDMGName=$title
 
 rm -f $finalDMGName.dmg
+mkdir "$source/tmp"
+cp -r $source/$title.app $source/tmp
 
-hdiutil create -srcfolder "${source}" -volname "${title}" -fs HFS+ \
+hdiutil create -srcfolder "${source}/tmp" -volname "${title}" -fs HFS+ \
       -fsargs "-c c=64,a=16,e=16" -format UDRW -size ${size}k pack.temp.dmg
 
 device=$(hdiutil attach -readwrite -noverify -noautoopen "pack.temp.dmg" | \
@@ -46,3 +48,4 @@ sync
 hdiutil detach ${device}
 hdiutil convert "pack.temp.dmg" -format UDZO -imagekey zlib-level=9 -o "${finalDMGName}"
 rm -f pack.temp.dmg
+rm -rf $source/tmp
