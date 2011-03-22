@@ -388,18 +388,18 @@ void ASReadStreamCallBack
     withObject:nil
     waitUntilDone:NO];
 #else
-  NSAlert *alert =
-    [NSAlert
-      alertWithMessageText:title
-      defaultButton:NSLocalizedString(@"OK", @"")
-      alternateButton:nil
-      otherButton:nil
-      informativeTextWithFormat:message];
-  [alert
-    performSelector:@selector(runModal)
-    onThread:[NSThread mainThread]
-    withObject:nil
-    waitUntilDone:NO];
+//  NSAlert *alert =
+//    [NSAlert
+//      alertWithMessageText:title
+//      defaultButton:NSLocalizedString(@"OK", @"")
+//      alternateButton:nil
+//      otherButton:nil
+//      informativeTextWithFormat:message];
+//  [alert
+//    performSelector:@selector(runModal)
+//    onThread:[NSThread mainThread]
+//    withObject:nil
+//    waitUntilDone:NO];
 #endif
 }
 

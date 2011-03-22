@@ -14,6 +14,14 @@
 
 - (id) init {
   [self setSongs:[NSMutableArray arrayWithCapacity:10]];
+
+  /* Watch for error notifications */
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(playbackStateChanged:)
+    name:ASStatusChangedNotification
+    object:nil];
+
   return self;
 }
 
@@ -29,6 +37,11 @@
 - (void) dealloc {
   [self stop];
   [self stopObserving];
+
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name:ASStatusChangedNotification
+    object:nil];
 
   while ([songs count] > 0) {
     Song *s = [songs objectAtIndex:0];
@@ -88,6 +101,50 @@
   }
 }
 
+- (void) setAudioStream {
+  NSURL *url = [NSURL URLWithString:[playing url]];
+  AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
+  [s autorelease];
+  [self setStream:s];
+}
+
+- (void)playbackStateChanged: (NSNotification *)aNotification {
+  if ([stream errorCode] != 0) {
+    /* Try a few times to re-initialize the stream just in case it was a fluke
+     * which caused the stream to fail */
+    if (tries <= 5) {
+      NSLog(@"Error on playback stream! Retrying...");
+      [self retry];
+      tries++;
+    } else {
+      /* Well looks like we can't do anything, let the UI know that it needs
+       * to ask the user about what's going on */
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:@"hermes.song-error" object:self];
+    }
+  }
+}
+
+- (void) retry {
+  double progress = [stream progress];
+
+  [self setAudioStream];
+  [stream start];
+
+  /* The AudioStreamer class takes a bit to get a bitrate and a file length,
+   * so calling seekToTime won't work right here. Instead, delay this operation
+   * for just half a second */
+  NSNumber *num = [NSNumber numberWithDouble:progress];
+  [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
+      selector:@selector(seekToLastKnownTime:)
+      userInfo:num repeats:NO];
+}
+
+- (void) seekToLastKnownTime: (NSTimer *)updatedTimer {
+  NSNumber *num = [updatedTimer userInfo];
+  [stream seekToTime:[num doubleValue]];
+}
+
 - (void) play {
   if (stream) {
     if ([stream isPlaying]) {
@@ -110,10 +167,9 @@
   [self setPlaying:[songs objectAtIndex:0]];
   [songs removeObjectAtIndex:0];
 
-  NSURL *url = [NSURL URLWithString:[playing url]];
-  AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
-  [s autorelease];
-  [self setStream:s];
+  [self setAudioStream];
+  tries = 0;
+
   [stream start];
 
   [[NSNotificationCenter defaultCenter]

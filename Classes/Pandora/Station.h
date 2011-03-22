@@ -13,6 +13,7 @@
 @interface Station : NSObject {
   BOOL shouldPlaySongOnFetch;
 
+  NSInteger tries;
   NSString *name;
   NSString *stationId;
   NSMutableArray *songs;
@@ -32,5 +33,6 @@
 - (void) next;
 - (void) pause;
 - (void) stop;
+- (void) retry;
 
 @end

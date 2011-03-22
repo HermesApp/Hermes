@@ -41,6 +41,12 @@
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
+    selector:@selector(songError:)
+    name:@"hermes.song-error"
+    object:nil];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
     selector:@selector(loggedOut:)
     name:@"hermes.logged-out"
     object:[[NSApp delegate] pandora]];
@@ -50,6 +56,12 @@
     selector:@selector(afterStationsLoaded)
     name:@"hermes.stations"
     object:[[NSApp delegate] pandora]];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(playbackStateChanged:)
+    name:ASStatusChangedNotification
+    object:nil];
 
   loader = [[ImageLoader alloc] init];
 
@@ -133,6 +145,13 @@
   [self hideSpinner];
 }
 
+- (void) songError: (NSNotification*) not {
+  /* Probably show more things here? */
+  [self hideAllPlaybackItems];
+  [toolbar setVisible:NO];
+  [loadMore setHidden:NO];
+}
+
 - (void) loggedOut: (NSNotification*) not {
   [playing stop];
   playing = nil;
@@ -176,7 +195,8 @@
   AudioStreamer *streamer = [playing stream];
 
   if ([streamer errorCode] != 0) {
-    NSLog(@"error! prog:%f dur:%f", [streamer progress], [streamer duration]);
+    /* Errors are handle elsewhere, we just need to make sure we take no
+     * action here to muck up with whatever else is going on */
   } else if ([streamer isPlaying]) {
     [[playing stream] setVolume:[volume doubleValue]];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
@@ -220,16 +240,6 @@
     NSLog(@"No song to play!?");
     return;
   }
-
-  [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:ASStatusChangedNotification
-    object:nil];
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(playbackStateChanged:)
-    name:ASStatusChangedNotification
-    object:[playing stream]];
 
   if ([song art] == nil || [[song art] isEqual: @""]) {
     [art setImage: [NSImage imageNamed:@"missing-album"]];
@@ -375,7 +385,12 @@
 /* Load more songs manually */
 - (IBAction)loadMore: (id)sender {
   [self showSpinner];
-  [[self playing] play];
+
+  if ([playing playing] != nil) {
+    [playing retry];
+  } else {
+    [playing play];
+  }
 }
 
 /* Go to the song URL */

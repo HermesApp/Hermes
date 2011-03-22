@@ -1732,6 +1732,7 @@
 								</object>
 								<string key="NSFrame">{{1, 17}, {301, 255}}</string>
 								<reference key="NSSuperview" ref="895953141"/>
+								<reference key="NSNextKeyView" ref="802382413"/>
 								<reference key="NSDocView" ref="802382413"/>
 								<reference key="NSBGColor" ref="475079847"/>
 								<int key="NScvFlags">4</int>
@@ -1765,6 +1766,7 @@
 								</object>
 								<string key="NSFrame">{{1, 0}, {301, 17}}</string>
 								<reference key="NSSuperview" ref="895953141"/>
+								<reference key="NSNextKeyView" ref="109894432"/>
 								<reference key="NSDocView" ref="109894432"/>
 								<reference key="NSBGColor" ref="475079847"/>
 								<int key="NScvFlags">4</int>
@@ -1773,6 +1775,7 @@
 						</object>
 						<string key="NSFrame">{{0, 26}, {303, 273}}</string>
 						<reference key="NSSuperview" ref="889557454"/>
+						<reference key="NSNextKeyView" ref="922103838"/>
 						<int key="NSsFlags">562</int>
 						<reference key="NSVScroller" ref="185912490"/>
 						<reference key="NSHScroller" ref="441209787"/>
@@ -1944,6 +1947,7 @@
 									</object>
 									<string key="NSFrame">{{1, 17}, {438, 185}}</string>
 									<reference key="NSSuperview" ref="883990660"/>
+									<reference key="NSNextKeyView" ref="162724941"/>
 									<reference key="NSDocView" ref="162724941"/>
 									<reference key="NSBGColor" ref="475079847"/>
 									<int key="NScvFlags">4</int>
@@ -1976,6 +1980,7 @@
 									</object>
 									<string key="NSFrame">{{1, 0}, {438, 17}}</string>
 									<reference key="NSSuperview" ref="883990660"/>
+									<reference key="NSNextKeyView" ref="285414913"/>
 									<reference key="NSDocView" ref="285414913"/>
 									<reference key="NSBGColor" ref="475079847"/>
 									<int key="NScvFlags">4</int>
@@ -1984,6 +1989,7 @@
 							</object>
 							<string key="NSFrame">{{20, 49}, {440, 203}}</string>
 							<reference key="NSSuperview" ref="931582578"/>
+							<reference key="NSNextKeyView" ref="407281338"/>
 							<int key="NSsFlags">562</int>
 							<reference key="NSVScroller" ref="378584589"/>
 							<reference key="NSHScroller" ref="580234420"/>
@@ -4636,9 +4642,9 @@
 					<string>{{475, 832}, {234, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{717, 344}, {240, 303}}</string>
+					<string>{{791, 253}, {240, 303}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{717, 344}, {240, 303}}</string>
+					<string>{{791, 253}, {240, 303}}</string>
 					<integer value="1"/>
 					<string>{{33, 99}, {480, 360}}</string>
 					<boolean value="NO"/>
@@ -4949,7 +4955,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">997</int>
+			<int key="maxID">999</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
