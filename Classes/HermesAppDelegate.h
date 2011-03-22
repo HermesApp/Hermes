@@ -13,11 +13,11 @@
 #import "PlaybackController.h"
 #import "Pandora.h"
 
+@interface HermesAppDelegate : NSObject
 #ifdef MAC_OS_X_VERSION_10_6
-@interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
-#else
-@interface HermesAppDelegate : NSObject {
+  <NSApplicationDelegate>
 #endif
+{
 
   Pandora *pandora;
 
