@@ -113,9 +113,9 @@
     /* Try a few times to re-initialize the stream just in case it was a fluke
      * which caused the stream to fail */
     if (tries <= 5) {
-      NSLog(@"Error on playback stream! Retrying...");
-      [self retry];
       tries++;
+      NSLog(@"Error on playback stream! count:%d, Retrying...", tries);
+      [self retry];
     } else {
       /* Well looks like we can't do anything, let the UI know that it needs
        * to ask the user about what's going on */
@@ -126,6 +126,12 @@
 }
 
 - (void) retry {
+  if (tries > 7) {
+    NSLog(@"Retried too many times, just nexting...");
+    [self next];
+    return;
+  }
+
   double progress = [stream progress];
 
   [self setAudioStream];

@@ -46,4 +46,7 @@
 - (void) showSpinner;
 - (void) hideSpinner;
 
+- (NSString*) getCachedUsername;
+- (NSString*) getCachedPassword;
+
 @end

@@ -2,10 +2,23 @@
 #import "Crypt.h"
 #import "Station.h"
 #import "Song.h"
+#import "HermesAppDelegate.h"
 
 @implementation SearchResult
 
 @synthesize value, name;
+
+@end
+
+@implementation RetryRequest
+
+@synthesize payload1, payload2, callback;
+
+- (id) init {
+  payload1 = nil;
+  payload2 = nil;
+  return self;
+}
 
 @end
 
@@ -15,6 +28,7 @@
 
 - (id) init {
   stations = [[NSMutableArray alloc] init];
+  retries  = 0;
   return [super init];
 }
 
@@ -50,10 +64,28 @@
   return authToken != nil && listenerID != nil;
 }
 
+- (BOOL) retryPossible {
+  return [self authenticated] && retries < 1;
+}
+
+- (BOOL) retryAuthenticate:(RetryRequest*) req {
+  NSString *username = [[NSApp delegate] getCachedUsername];
+  NSString *password = [[NSApp delegate] getCachedPassword];
+
+  NSLog(@"Retrying authentication by fetching new token...");
+
+  retries++;
+  return [self authenticate: username : password : req];
+}
+
+- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
+  return [self authenticate:user : pass : nil];
+}
+
 /**
  * Authenticates with Pandora. Stores information from the response
  */
-- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
+- (BOOL) authenticate:(NSString*)user :(NSString*)pass : (RetryRequest*) req {
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -68,10 +100,10 @@
     ];
 
   return [self sendRequest: @"authenticateListener" : [Crypt encrypt: xml] :
-    @selector(handleAuthenticate:)];
+    @selector(handleAuthenticate::) : req];
 }
 
-- (void) handleAuthenticate: (xmlDocPtr) doc {
+- (void) handleAuthenticate: (xmlDocPtr) doc : (RetryRequest*) req {
   authToken = nil;
   listenerID = nil;
 
@@ -80,13 +112,74 @@
     listenerID = [self xpathText: doc : "//member[name='listenerId']/value"];
   }
 
-  [self notify:@"hermes.authenticated" with:nil];
+  if ([self authenticated]) {
+    retries = 0;
+  }
+
+  if (req != nil) {
+    NSLog(@"Retrying failed request...");
+
+    [self performSelector:[req callback]
+               withObject:[req payload1]
+               withObject:[req payload2]];
+//    [req release];
+  } else {
+    [self notify:@"hermes.authenticated" with:nil];
+  }
+}
+
+- (void) handleStations: (xmlDocPtr) doc {
+  int i;
+  NSArray *names, *ids;
+
+  if (doc == NULL) {
+    if ([self retryPossible]) {
+      RetryRequest *req = [[RetryRequest alloc] init];
+      [req retain];
+
+      [req setCallback:@selector(fetchStations)];
+      if ([self retryAuthenticate:req]) {
+        return;
+      }
+    }
+
+    [self notify:@"hermes.stations" with:nil];
+    return;
+  }
+
+  names = [self xpath: doc : "//member[name='stationName']/value"];
+  ids   = [self xpath: doc : "//member[name='stationId']/value"];
+
+  for (i = 0; i < [names count]; i++) {
+    Station *station = [[Station alloc] init];
+
+    [station setName:[names objectAtIndex: i]];
+    [station setStationId:[ids objectAtIndex: i]];
+    [station setRadio:self];
+
+    if ([[station name] rangeOfString: @"QuickMix"].length != 0) {
+      [station setName:@"QuickMix"];
+    }
+
+    if ([stations containsObject:station]) {
+      [station release];
+    } else {
+      [station autorelease];
+      [stations addObject:station];
+    }
+  }
+
+  [self notify:@"hermes.stations" with:nil];
 }
 
 /**
  * Fetches a list of stations for the logged in user
  */
 - (BOOL) fetchStations {
+  if (![self authenticated]) {
+    [self handleStations:NULL];
+  }
+
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
      "<methodCall>"
@@ -103,77 +196,25 @@
       @selector(handleStations:)];
 }
 
-- (void) handleStations: (xmlDocPtr) doc {
-  int i;
-  NSArray *names, *ids;
-
-  if (doc == NULL) {
-    [self notify:@"hermes.stations" with:nil];
-    return;
-  }
-
-  names = [self xpath: doc : "//member[name='stationName']/value"];
-  ids   = [self xpath: doc : "//member[name='stationId']/value"];
-
-  for (i = 0; i < [names count]; i++) {
-    Station *station = [[Station alloc] init];
-    [station autorelease];
-
-    [station setName:[names objectAtIndex: i]];
-    [station setStationId:[ids objectAtIndex: i]];
-    [station setRadio:self];
-
-    if ([[station name] rangeOfString: @"QuickMix"].length != 0) {
-      [station setName:@"QuickMix"];
-    }
-
-    if ([stations containsObject:station]) {
-      [station release];
-    } else {
-      [stations addObject:station];
-    }
-  }
-
-  [self notify:@"hermes.stations" with:nil];
-}
-
-/**
- * Gets a fragment of songs from Pandora for the specified station
- */
-- (BOOL) getFragment: (NSString*) station_id {
-  NSString *xml = [NSString stringWithFormat:
-     @"<?xml version=\"1.0\"?>"
-     "<methodCall>"
-       "<methodName>playlist.getFragment</methodName>"
-       "<params>"
-         "<param><value><int>%d</int></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-         "<param><value><string></string></value></param>"
-         "<param><value><string></string></value></param>"
-         "<param><value><string>mp3</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-       "</params>"
-     "</methodCall>",
-     [self time], authToken, station_id
-   ];
-
-  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
-          @selector(handleFragment::) : station_id];
-}
-
 - (void) handleFragment: (xmlDocPtr) doc : (NSString*) station_id {
   int i;
   NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
 
   NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
-    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
-    *albums;
+  *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
+  *albums;
   NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 1];
 
   if (doc == NULL) {
+    if ([self retryPossible]) {
+      RetryRequest *req = [[RetryRequest alloc] init];
+      [req setCallback:@selector(getFragment:)];
+      [req setPayload1:station_id];
+      if ([self retryAuthenticate:req]) {
+        return;
+      }
+    }
+
     [self notify:name with:dict];
     return;
   }
@@ -221,6 +262,41 @@
 }
 
 /**
+ * Gets a fragment of songs from Pandora for the specified station
+ */
+- (BOOL) getFragment: (NSString*) station_id {
+  if (![self authenticated]) {
+    [self handleFragment:NULL : station_id];
+  }
+
+  NSString *xml = [NSString stringWithFormat:
+     @"<?xml version=\"1.0\"?>"
+     "<methodCall>"
+       "<methodName>playlist.getFragment</methodName>"
+       "<params>"
+         "<param><value><int>%d</int></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value><string>%@</string></value></param>"
+         "<param><value><string>0</string></value></param>"
+         "<param><value><string></string></value></param>"
+         "<param><value><string></string></value></param>"
+         "<param><value><string>mp3</string></value></param>"
+         "<param><value><string>0</string></value></param>"
+         "<param><value><string>0</string></value></param>"
+       "</params>"
+     "</methodCall>",
+     [self time], authToken, station_id
+   ];
+
+  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
+          @selector(handleFragment::) : station_id];
+}
+
+- (void) handleSync: (xmlDocPtr) doc {
+  [self notify:@"hermes.sync" with:nil];
+}
+
+/**
  * Sync with Pandora
  */
 - (BOOL) sync {
@@ -234,14 +310,18 @@
   return [self sendRequest: @"sync" : [Crypt encrypt: xml] : @selector(handleSync:)];
 }
 
-- (void) handleSync: (xmlDocPtr) doc {
-  [self notify:@"hermes.sync" with:nil];
+- (void) handleRating: (xmlDocPtr) doc {
+  [self notify:@"hermes.song-rated" with:nil];
 }
 
 /**
  * Rate a song, "0" = dislike, "1" = like
  */
 - (BOOL) rateSong: (Song*) song : (NSString*) rating {
+  if (![self authenticated]) {
+    [self handleRating:NULL];
+  }
+
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
      "<methodCall>"
@@ -267,14 +347,18 @@
       @selector(handleRating:)];
 }
 
-- (void) handleRating: (xmlDocPtr) doc {
-  [self notify:@"hermes.song-rated" with:nil];
+- (void) handleTired: (xmlDocPtr) doc {
+  [self notify:@"hermes.song-tired" with:nil];
 }
 
 /**
  * Tell Pandora that we're tired of a specific song
  */
 - (BOOL) tiredOfSong: (Song*) song {
+  if (![self authenticated]) {
+    [self handleTired:NULL];
+  }
+
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -292,28 +376,6 @@
 
   return [self sendRequest: @"addTiredSong" : [Crypt encrypt: xml] :
       @selector(handleTired:)];
-}
-
-- (void) handleTired: (xmlDocPtr) doc {
-  [self notify:@"hermes.song-tired" with:nil];
-}
-
-- (BOOL) search: (NSString*) search {
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>music.search</methodName>"
-      "<params>"
-      "<param><value><int>%d</int></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "<param><value><string>mi%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, search
-  ];
-
-  return [self sendRequest: @"search" : [Crypt encrypt: xml] :
-          @selector(handleSearch:)];
 }
 
 - (void) handleSearch: (xmlDocPtr) doc {
@@ -335,14 +397,14 @@
   }
 
   NSArray *songs = [self xpath:doc :
-      "//member[name='songs']//member[name='musicId' or name='artistSummary'"
-      " or name='songTitle']/value"];
+                    "//member[name='songs']//member[name='musicId' or name='artistSummary'"
+                    " or name='songTitle']/value"];
   NSArray *stats = [self xpath:doc :
-      "//member[name='stations']//member[name='musicId'"
-      " or name='stationName']/value"];
+                    "//member[name='stations']//member[name='musicId'"
+                    " or name='stationName']/value"];
   NSArray *artists = [self xpath:doc :
-      "//member[name='artists']//member[name='artistName'"
-      " or name='musicId']/value"];
+                      "//member[name='artists']//member[name='artistName'"
+                      " or name='musicId']/value"];
 
   SearchResult *r;
 
@@ -350,8 +412,8 @@
     r = [[[SearchResult alloc] init] autorelease];
 
     [r setName:
-        [NSString stringWithFormat:@"%@ - %@",
-        [songs objectAtIndex:i + 1], [songs objectAtIndex:i + 2]]];
+     [NSString stringWithFormat:@"%@ - %@",
+      [songs objectAtIndex:i + 1], [songs objectAtIndex:i + 2]]];
 
     [r setValue:[songs objectAtIndex:i]];
 
@@ -379,10 +441,40 @@
   [self notify:@"hermes.search-results" with:map];
 }
 
+- (BOOL) search: (NSString*) search {
+  if (![self authenticated]) {
+    [self handleSearch:NULL];
+  }
+
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>music.search</methodName>"
+      "<params>"
+      "<param><value><int>%d</int></value></param>"
+      "<param><value><string>%@</string></value></param>"
+      "<param><value><string>mi%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, search
+  ];
+
+  return [self sendRequest: @"search" : [Crypt encrypt: xml] :
+          @selector(handleSearch:)];
+}
+
+- (void) handleCreateStation: (xmlDocPtr) doc {
+  [self notify:@"hermes.station-created" with:nil];
+}
+
 /**
  * Create a new station, just for kicks
  */
 - (BOOL) createStation: (NSString*)musicId {
+  if (![self authenticated]) {
+    [self handleCreateStation:NULL];
+  }
+
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -398,31 +490,6 @@
 
   return [self sendRequest: @"createStation" : [Crypt encrypt: xml] :
           @selector(handleCreateStation:)];
-}
-
-- (void) handleCreateStation: (xmlDocPtr) doc {
-  [self notify:@"hermes.station-created" with:nil];
-}
-
-/**
- * Remove a station from the list, only removing if
- */
-- (BOOL) removeStation: (NSString*)stationId {
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>station.removeStation</methodName>"
-      "<params>"
-        "<param><value><int>%d</int></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, stationId
-  ];
-
-  return [self sendRequest: @"removeStation" : [Crypt encrypt: xml] :
-          @selector(handleRemoveStation::) : stationId];
 }
 
 - (void) handleRemoveStation: (xmlDocPtr)doc : (NSString*)stationId {
@@ -451,9 +518,42 @@
 }
 
 /**
+ * Remove a station from the list, only removing if
+ */
+- (BOOL) removeStation: (NSString*)stationId {
+  if (![self authenticated]) {
+    [self handleRemoveStation:NULL : stationId];
+  }
+
+  NSString *xml = [NSString stringWithFormat:
+    @"<?xml version=\"1.0\"?>"
+    "<methodCall>"
+      "<methodName>station.removeStation</methodName>"
+      "<params>"
+        "<param><value><int>%d</int></value></param>"
+        "<param><value><string>%@</string></value></param>"
+        "<param><value><string>%@</string></value></param>"
+      "</params>"
+    "</methodCall>",
+    [self time], authToken, stationId
+  ];
+
+  return [self sendRequest: @"removeStation" : [Crypt encrypt: xml] :
+          @selector(handleRemoveStation::) : stationId];
+}
+
+- (void) handleRenamedStation: (xmlDocPtr)doc {
+  [self notify:@"hermes.station-renamed" with:nil];
+}
+
+/**
  * Rename a station to have a different name
  */
 - (BOOL) renameStation: (NSString*)stationId to:(NSString*)name {
+  if (![self authenticated]) {
+    [self handleRenamedStation:NULL];
+  }
+
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -470,10 +570,6 @@
 
   return [self sendRequest: @"setStationName" : [Crypt encrypt: xml] :
           @selector(handleRenamedStation:)];
-}
-
-- (void) handleRenamedStation: (xmlDocPtr)doc {
-  [self notify:@"hermes.station-renamed" with:nil];
 }
 
 @end

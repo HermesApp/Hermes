@@ -11,11 +11,16 @@
 #include <libxml/xpath.h>
 #include <string.h>
 
-typedef struct connection_data {
-  SEL selector;
-  NSMutableData *data;
-  id info;
-} connection_data_t;
+@implementation ConnectionData
+@synthesize callback, data, info;
+
+- (void) dealloc {
+  [data release];
+  [info release];
+  [super dealloc];
+}
+
+@end
 
 @implementation API
 
@@ -115,11 +120,6 @@ typedef struct connection_data {
     url = [url stringByAppendingString:lid];
   }
 
-  connection_data_t *conn_data = malloc(sizeof(connection_data_t));
-  if (conn_data == NULL) {
-    return NO;
-  }
-
   // Prepare the request
   NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 
@@ -144,12 +144,13 @@ typedef struct connection_data {
   if (conn == nil) {
     return NO;
   }
-  conn_data->selector = callback;
-  conn_data->data     = [NSMutableData dataWithCapacity:1024];
-  conn_data->info     = info;
-  [conn_data->data retain];
 
-  [activeRequests setObject:[NSValue valueWithPointer:conn_data]
+  ConnectionData *conn_data = [[ConnectionData alloc] init];
+  [conn_data setCallback:callback];
+  [conn_data setData:[NSMutableData dataWithCapacity:1024]];
+  [conn_data setInfo:info];
+
+  [activeRequests setObject:conn_data
     forKey:[NSNumber numberWithInteger: [conn hash]]];
 
   // Schedule the defaults
@@ -159,31 +160,27 @@ typedef struct connection_data {
   return YES;
 }
 
-- (connection_data_t*) dataForConnection: (NSURLConnection*)connection {
-  NSValue *val = [activeRequests objectForKey:
+- (ConnectionData*) dataForConnection: (NSURLConnection*)connection {
+  return [activeRequests objectForKey:
       [NSNumber numberWithInteger:[connection hash]]];
-  return [val pointerValue];
 }
 
 - (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc {
-  connection_data_t *cdata = [self dataForConnection:connection];
-  [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
+  ConnectionData *cdata = [self dataForConnection:connection];
 
-  [connection release];
-  [cdata->data release]; /* TODO: does this cause errors? */
-
-  SEL selector = cdata->selector;
-  id info = cdata->info;
-  free(cdata);
+  SEL selector = [cdata callback];
+  id info = [cdata info];
 
   [self performSelector:selector withObject:(id)doc withObject:info];
+  [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
   xmlFreeDoc(doc);
+  [connection release];
 }
 
 - (void)connection:(NSURLConnection *)connection
     didReceiveData:(NSData *)data {
-  connection_data_t *cdata = [self dataForConnection:connection];
-  [cdata->data appendData:data];
+  ConnectionData *cdata = [self dataForConnection:connection];
+  [[cdata data] appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection
@@ -199,15 +196,15 @@ typedef struct connection_data {
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  connection_data_t *cdata = [self dataForConnection:connection];
+  ConnectionData *cdata = [self dataForConnection:connection];
 
-  xmlDocPtr doc = xmlReadMemory([cdata->data bytes], [cdata->data length], "",
+  xmlDocPtr doc = xmlReadMemory([[cdata data] bytes], [[cdata data] length], "",
                                 NULL, XML_PARSE_RECOVER);
 
   NSArray *fault = [self xpath: doc : "//methodResponse/fault"];
 
   if ([fault count] > 0) {
-    NSString *resp = [[NSString alloc] initWithData:cdata->data
+    NSString *resp = [[NSString alloc] initWithData:[cdata data]
                                            encoding:NSASCIIStringEncoding];
     NSLog(@"Fault!: %@", resp);
     [resp release];

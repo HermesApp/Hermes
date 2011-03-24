@@ -197,6 +197,7 @@
   if ([streamer errorCode] != 0) {
     /* Errors are handle elsewhere, we just need to make sure we take no
      * action here to muck up with whatever else is going on */
+    NSLog(@"error registered in stream");
   } else if ([streamer isPlaying]) {
     [[playing stream] setVolume:[volume doubleValue]];
     [playpause setImage:[NSImage imageNamed:@"pause"]];

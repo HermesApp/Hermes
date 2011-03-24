@@ -87,15 +87,22 @@
   //    selector: @selector(receiveWakeNote:)
   //    name: NSWorkspaceDidWakeNotification object: NULL];
 
-  NSString *savedUsername = [[NSUserDefaults standardUserDefaults]
-      stringForKey:USERNAME_KEY];
-  NSString *savedPassword = [Keychain getKeychainPassword: savedUsername];
+  NSString *savedUsername = [self getCachedUsername];
+  NSString *savedPassword = [self getCachedPassword];
 
   if (savedUsername != nil && savedPassword != nil) {
     [pandora authenticate: savedUsername : savedPassword];
   } else {
     [self showAuthSheet];
   }
+}
+
+- (NSString*) getCachedUsername {
+  return [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
+}
+
+- (NSString*) getCachedPassword {
+  return [Keychain getKeychainPassword: [self getCachedUsername]];
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {

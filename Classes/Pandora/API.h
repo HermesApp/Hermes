@@ -8,6 +8,18 @@
 
 #include <libxml/parser.h>
 
+@interface ConnectionData : NSObject {
+  SEL callback;
+  NSMutableData *data;
+  id info;
+}
+
+@property (readwrite) SEL callback;
+@property (retain) NSMutableData *data;
+@property (retain) id info;
+
+@end
+
 @interface API : NSObject {
   NSString *listenerID;
 
