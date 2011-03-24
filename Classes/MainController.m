@@ -223,6 +223,10 @@
 - (void) stationsLoaded: (NSNotification*) not {
   [stationsTable reloadData];
 
+  if (![[self pandora] authenticated]) {
+    return;
+  }
+  
   [self showDrawer];
 
   [stationsRefreshing setHidden:YES];

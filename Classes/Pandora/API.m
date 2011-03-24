@@ -96,7 +96,6 @@
 
   if (arr != nil && [arr objectAtIndex: 0] != nil) {
     ret = [arr objectAtIndex: 0];
-    [ret retain];
   }
 
   return ret;
@@ -175,6 +174,7 @@
   [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
   xmlFreeDoc(doc);
   [connection release];
+  [cdata release];
 }
 
 - (void)connection:(NSURLConnection *)connection

@@ -20,6 +20,12 @@
   return self;
 }
 
+- (void) dealloc {
+  [payload1 release];
+  [payload2 release];
+  [super dealloc];
+}
+
 @end
 
 @implementation Pandora
@@ -34,6 +40,7 @@
 
 - (void) dealloc {
   [stations release];
+  [authToken release];
   [super dealloc];
 }
 
@@ -43,21 +50,11 @@
 }
 
 - (void) logout {
-  Station *station;
-
   [self notify: @"hermes.logged-out" with:nil];
 
-  while ([stations count] > 0) {
-    station = [stations objectAtIndex:0];
-    [stations removeObjectAtIndex:0];
-    [station release];
-  }
-
-  [authToken release];
-  [listenerID release];
-
-  authToken = nil;
-  listenerID = nil;
+  [stations removeAllObjects];
+  [self setAuthToken:nil];
+  [self setListenerID:nil];
 }
 
 - (BOOL) authenticated {
@@ -104,12 +101,12 @@
 }
 
 - (void) handleAuthenticate: (xmlDocPtr) doc : (RetryRequest*) req {
-  authToken = nil;
-  listenerID = nil;
+  [self setAuthToken:nil];
+  [self setListenerID:nil];
 
   if (doc != NULL) {
-    authToken  = [self xpathText: doc : "//member[name='authToken']/value"];
-    listenerID = [self xpathText: doc : "//member[name='listenerId']/value"];
+    [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
+    [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
   }
 
   if ([self authenticated]) {
@@ -122,7 +119,11 @@
     [self performSelector:[req callback]
                withObject:[req payload1]
                withObject:[req payload2]];
-//    [req release];
+    [req release];
+
+    if (![self authenticated]) {
+      [self notify:@"hermes.need-reauth" with:nil];
+    }
   } else {
     [self notify:@"hermes.authenticated" with:nil];
   }
@@ -135,8 +136,6 @@
   if (doc == NULL) {
     if ([self retryPossible]) {
       RetryRequest *req = [[RetryRequest alloc] init];
-      [req retain];
-
       [req setCallback:@selector(fetchStations)];
       if ([self retryAuthenticate:req]) {
         return;

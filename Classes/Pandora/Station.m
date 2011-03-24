@@ -43,12 +43,7 @@
     name:ASStatusChangedNotification
     object:nil];
 
-  while ([songs count] > 0) {
-    Song *s = [songs objectAtIndex:0];
-    [songs removeObjectAtIndex:0];
-    [s release];
-  }
-
+  [songs removeAllObjects];
   [songs release];
   [stationId release];
   [name release];

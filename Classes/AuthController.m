@@ -18,6 +18,12 @@
     name:@"hermes.authenticated"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(logout:)
+    name:@"hermes.need-reauth"
+    object:[[NSApp delegate] pandora]];
+  
   return self;
 }
 
