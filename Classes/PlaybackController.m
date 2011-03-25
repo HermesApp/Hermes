@@ -41,12 +41,6 @@
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
-    selector:@selector(songError:)
-    name:@"hermes.song-error"
-    object:nil];
-
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
     selector:@selector(loggedOut:)
     name:@"hermes.logged-out"
     object:[[NSApp delegate] pandora]];
@@ -143,13 +137,6 @@
   [artLoading stopAnimation:nil];
 
   [self hideSpinner];
-}
-
-- (void) songError: (NSNotification*) not {
-  /* Probably show more things here? */
-  [self hideAllPlaybackItems];
-  [toolbar setVisible:NO];
-  [loadMore setHidden:NO];
 }
 
 - (void) loggedOut: (NSNotification*) not {
