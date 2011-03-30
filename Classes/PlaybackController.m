@@ -187,9 +187,11 @@
     NSLog(@"error registered in stream");
   } else if ([streamer isPlaying]) {
     [[playing stream] setVolume:[volume doubleValue]];
+    [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
   } else if ([streamer isPaused]) {
     [playpause setImage:[NSImage imageNamed:@"play"]];
+    [playbackProgress stopAnimation:nil];
   } else if ([streamer isIdle]) {
     /* The currently playing song finished playing */
     [self next:nil];

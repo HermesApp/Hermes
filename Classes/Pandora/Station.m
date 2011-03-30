@@ -109,8 +109,6 @@
      * which caused the stream to fail */
     NSLog(@"Error on playback stream! count:%d, Retrying...", tries);
     [self retry];
-  } else {
-    tries = 0;
   }
 }
 
