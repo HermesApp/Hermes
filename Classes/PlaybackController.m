@@ -366,6 +366,9 @@
   [self showSpinner];
 
   if ([[self pandora] rateSong: playingSong : @"0"]) {
+    /* Remaining songs in the queue are probably related to this one. If we
+     * dislike this one, remove all related songs to grab another 4 */
+    [[[self playing] songs] removeAllObjects];
     [self next:sender];
   } else {
     NSLog(@"Couldn't rate song?!");
