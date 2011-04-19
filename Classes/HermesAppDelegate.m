@@ -6,6 +6,7 @@
 //  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
+#import "AppleMediaKeyController.h"
 #import "HermesAppDelegate.h"
 #import "Keychain.h"
 
@@ -75,6 +76,7 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  mediaKeyController = [[AppleMediaKeyController alloc] init];
   [self showSpinner];
 
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html

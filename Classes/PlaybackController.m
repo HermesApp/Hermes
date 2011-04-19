@@ -6,6 +6,7 @@
 //  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
+#import "AppleMediaKeyController.h"
 #import "PlaybackController.h"
 #import "HermesAppDelegate.h"
 
@@ -14,6 +15,8 @@
 @synthesize playing;
 
 - (id) init {
+  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
   progressUpdateTimer = [NSTimer
     scheduledTimerWithTimeInterval:.3
     target:self
@@ -21,37 +24,37 @@
     userInfo:nil
     repeats:YES];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(songRated:)
     name:@"hermes.song-rated"
     object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(songTired:)
     name:@"hermes.song-tired"
     object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(noSongs:)
     name:@"hermes.no-songs"
     object:nil];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(loggedOut:)
     name:@"hermes.logged-out"
     object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(afterStationsLoaded)
     name:@"hermes.stations"
     object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(playbackStateChanged:)
     name:ASStatusChangedNotification
@@ -59,11 +62,23 @@
 
   loader = [[ImageLoader alloc] init];
 
-  [[NSNotificationCenter defaultCenter]
+  [center
     addObserver:self
     selector:@selector(imageLoaded:)
     name:@"image-loaded"
     object:loader];
+
+  [center
+    addObserver:self
+    selector:@selector(playpause:)
+    name:MediaKeyPlayPauseNotification
+    object:nil];
+
+  [center
+    addObserver:self
+    selector:@selector(next:)
+    name:MediaKeyNextNotification
+    object:nil];
 
   return self;
 }
