@@ -26,6 +26,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FA02692F1367E0B9002652C2 /* Keys.m in Sources */ = {isa = PBXBuildFile; fileRef = FA02692E1367E0B9002652C2 /* Keys.m */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
 		FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10651A132CAE7C00D6DE42 /* Security.framework */; };
 		FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* MainController.m */; };
@@ -96,6 +97,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA02692E1367E0B9002652C2 /* Keys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keys.m; sourceTree = "<group>"; };
 		FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		FA10651A132CAE7C00D6DE42 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -260,6 +262,7 @@
 				FA2A3F91132BF9F50089AECC /* Crypt.h */,
 				FA2A3F92132BF9F50089AECC /* Crypt.m */,
 				FA2A3F93132BF9F50089AECC /* Keys.h */,
+				FA02692E1367E0B9002652C2 /* Keys.m */,
 				FA2A3F94132BF9F50089AECC /* Song.h */,
 				FA2A3F95132BF9F50089AECC /* Song.m */,
 				FA2A3F96132BF9F50089AECC /* Station.h */,
@@ -410,6 +413,7 @@
 				FA560C511331701E00215F71 /* ImageLoader.m in Sources */,
 				FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */,
 				FAD9EC15135DB41700560C5A /* AppleMediaKeyController.m in Sources */,
+				FA02692F1367E0B9002652C2 /* Keys.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

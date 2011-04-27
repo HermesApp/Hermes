@@ -112,7 +112,7 @@
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
   NSString *url  = [NSString stringWithFormat:
-      @"http://www.pandora.com/radio/xmlrpc/v29?rid=%@P&method=%@", rid, method];
+      @"http://www.pandora.com/radio/xmlrpc/v30?rid=%@P&method=%@", rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
     NSString *lid = [NSString stringWithFormat:@"lid=%@", listenerID];
