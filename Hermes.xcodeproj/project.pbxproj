@@ -6,6 +6,21 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		FA7F974A1367A231004B82C3 /* Distribution */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FA7F97541367A23B004B82C3 /* Build configuration list for PBXAggregateTarget "Distribution" */;
+			buildPhases = (
+				FA7F97491367A231004B82C3 /* ShellScript */,
+			);
+			dependencies = (
+				FA7F977C1367A2FD004B82C3 /* PBXTargetDependency */,
+			);
+			name = Distribution;
+			productName = Distribution;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -32,6 +47,9 @@
 		FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */; };
 		FA949679133AF3AD007B6F36 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = FA949678133AF3AD007B6F36 /* Credits.html */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
+		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
+		FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
+		FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FAD42FA3136790DE00E935CA /* dsa_pub.pem */; };
 		FAD9EC15135DB41700560C5A /* AppleMediaKeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */; };
 		FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
 		FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
@@ -41,6 +59,29 @@
 		FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50CE132EFDCB00F02CE0 /* accept.png */; };
 		FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50D0132EFDD800F02CE0 /* delete.png */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA7F977B1367A2FD004B82C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090 /* Hermes */;
+			remoteInfo = Hermes;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FAD42F9E13678F8800E935CA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -86,6 +127,8 @@
 		FA85E6CD1333B257005C96B8 /* volume_down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = volume_down.icns; sourceTree = "<group>"; };
 		FA949678133AF3AD007B6F36 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
+		FAD42F8713678F7500E935CA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		FAD42FA3136790DE00E935CA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleMediaKeyController.h; sourceTree = "<group>"; };
 		FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppleMediaKeyController.m; sourceTree = "<group>"; };
 		FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthController.h; sourceTree = "<group>"; };
@@ -106,6 +149,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */,
 				FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */,
+				FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +184,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FAD42F8713678F7500E935CA /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */,
 				FA10651A132CAE7C00D6DE42 /* Security.framework */,
@@ -189,6 +234,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FAD42FA3136790DE00E935CA /* dsa_pub.pem */,
 				FAAB28CE1336FB0300FC04C4 /* pandora.icns */,
 				FAEFFBFF132D620B007DC6FB /* Icons */,
 				8D1107310486CEB800E47090 /* Hermes-Info.plist */,
@@ -262,6 +308,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				FAD42F9E13678F8800E935CA /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -296,6 +343,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Hermes */,
+				FA7F974A1367A231004B82C3 /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -321,10 +369,27 @@
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
 				FA949679133AF3AD007B6F36 /* Credits.html in Resources */,
+				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FA7F97491367A231004B82C3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\n\nARCHIVE_FILENAME=\"$PROJECT_NAME-$VERSION.zip\"\nKEYCHAIN_PRIVKEY_NAME=\"Hermes Sparkle Private Key\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nditto -ck --keepParent \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64\n)\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -349,6 +414,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA7F977C1367A2FD004B82C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* Hermes */;
+			targetProxy = FA7F977B1367A2FD004B82C3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -375,6 +448,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -392,6 +469,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
@@ -444,6 +525,27 @@
 			};
 			name = Release;
 		};
+		FA7F974B1367A232004B82C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Distribution;
+			};
+			name = Debug;
+		};
+		FA7F974C1367A232004B82C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Distribution;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -461,6 +563,15 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA7F97541367A23B004B82C3 /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA7F974B1367A232004B82C3 /* Debug */,
+				FA7F974C1367A232004B82C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
