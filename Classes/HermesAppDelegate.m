@@ -9,6 +9,8 @@
 #import "AppleMediaKeyController.h"
 #import "HermesAppDelegate.h"
 #import "Keychain.h"
+#import "Scrobbler.h"
+#import "PreferencesController.h"
 
 @implementation HermesAppDelegate
 
@@ -76,7 +78,6 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  mediaKeyController = [[AppleMediaKeyController alloc] init];
   [self showSpinner];
 
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
@@ -96,6 +97,15 @@
     [pandora authenticate: savedUsername : savedPassword];
   } else {
     [self showAuthSheet];
+  }
+
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if ([defaults boolForKey:PLEASE_SCROBBLE]) {
+    [Scrobbler subscribe];
+  }
+
+  if ([defaults boolForKey:PLEASE_BIND_MEDIA]) {
+    [AppleMediaKeyController bindKeys];
   }
 }
 

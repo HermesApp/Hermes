@@ -18,7 +18,7 @@
   attributes[1].length = sizeof(KEYCHAIN_LABEL_ATTR);
 
   attributes[2].tag    = kSecAccountItemAttr;
-  attributes[2].data   = (void*) [username UTF8String];
+  attributes[2].data   = (void*) [username cStringUsingEncoding:NSASCIIStringEncoding];
   attributes[2].length = [username length];
 }
 
@@ -62,7 +62,8 @@
   list.attr  = attributes;
 
   status = SecKeychainItemCreateFromContent(kSecGenericPasswordItemClass, &list,
-    [password length], [password UTF8String], NULL, NULL, &item);
+    [password length], [password cStringUsingEncoding:NSASCIIStringEncoding],
+    NULL, NULL, &item);
 
   if (status != 0) {
     item = NULL;
@@ -77,7 +78,7 @@
   SecKeychainAttribute attributes[1];
 
   attributes[0].tag    = kSecAccountItemAttr;
-  attributes[0].data   = (void*) [username UTF8String];
+  attributes[0].data   = (void*) [username cStringUsingEncoding:NSASCIIStringEncoding];
   attributes[0].length = [username length];
 
   SecKeychainAttributeList list = {1, attributes};
@@ -95,7 +96,7 @@
   }
 
   status = SecKeychainItemModifyContent (item, &list, [password length],
-                                       [password UTF8String]);
+                                       [password cStringUsingEncoding:NSASCIIStringEncoding]);
 
   ret = (status == noErr);
 
