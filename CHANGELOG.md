@@ -1,6 +1,6 @@
-# Version 1.0.2 (unreleased)
+# Version 1.0.2 (4/29/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.1...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.1...v1.0.2)
 
 * [added] Scrobbling via last.fm
 * [added] Binding of media keys on apple keyboards
