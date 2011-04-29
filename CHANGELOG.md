@@ -4,6 +4,7 @@
 
 * [added] Scrobbling via last.fm
 * [added] Binding of media keys on apple keyboards
+* [added] Preferences pane for tweaking configuration
 
 # Version 1.0.1 (4/28/11)
 
