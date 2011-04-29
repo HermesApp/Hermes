@@ -30,6 +30,8 @@
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
 		FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10651A132CAE7C00D6DE42 /* Security.framework */; };
 		FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2442BA136B18DC00E126D3 /* PreferencesController.m */; };
+		FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435E136B3D6C00E126D3 /* CHANGELOG.md */; };
+		FA244361136B3D6C00E126D3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435F136B3D6C00E126D3 /* README.md */; };
 		FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* MainController.m */; };
 		FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F78132BF97E0089AECC /* Pandora.m */; };
 		FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F92132BF9F50089AECC /* Crypt.m */; };
@@ -112,6 +114,8 @@
 		FA10651A132CAE7C00D6DE42 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		FA2442B9136B18DC00E126D3 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		FA2442BA136B18DC00E126D3 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
+		FA24435E136B3D6C00E126D3 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		FA24435F136B3D6C00E126D3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		FA2A3F75132BF97E0089AECC /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
 		FA2A3F76132BF97E0089AECC /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
 		FA2A3F77132BF97E0089AECC /* Pandora.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pandora.h; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
+				FA24435F136B3D6C00E126D3 /* README.md */,
 				FAD42FA3136790DE00E935CA /* dsa_pub.pem */,
 				FAAB28CE1336FB0300FC04C4 /* pandora.icns */,
 				FAEFFBFF132D620B007DC6FB /* Icons */,
@@ -417,6 +423,8 @@
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
 				FA949679133AF3AD007B6F36 /* Credits.html in Resources */,
 				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
+				FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */,
+				FA244361136B3D6C00E126D3 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

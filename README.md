@@ -9,6 +9,14 @@ Why play music in really slow flash when you can play it with really fast non-fl
 
 This is an Xcode project, so point Xcode to the Hermes.xcodeproj here and build away
 
-## DMG Generation
+## Build a Release ZIP
 
-To generate the DMG installer, run the `build_dmg.sh` script after building the 'Release' binary.
+Set your current target to the "Distribution" with the "Release" active
+configuration, and then build the target. This will create a release zip
+file in `build/Release`
+
+There will also be a snipped of XML in `build/Release/versions.xml` to be
+inserted into the [feed](http://alexcrichton.com/hermes/versions.xml) of
+releases. The [website project](https://github.com/alexcrichton/hermes/tree/gh-pages)
+has a [script](https://github.com/alexcrichton/hermes/blob/gh-pages/_config/release.rb)
+for automatically inserting this into the XML file before a release.
