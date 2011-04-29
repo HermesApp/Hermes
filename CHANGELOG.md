@@ -1,3 +1,7 @@
+# Version 1.0.4 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.3...master)
+
 # Version 1.0.3 (4/29/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.2...v1.0.3)
