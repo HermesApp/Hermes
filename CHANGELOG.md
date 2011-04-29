@@ -1,6 +1,8 @@
-# Version 1.0.3 (unreleased
+# Version 1.0.3 (4/29/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.2...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.2...v1.0.3)
+
+* [fixed] Updated the JSON framework to support OSX 10.5+
 
 # Version 1.0.2 (4/29/11)
 
