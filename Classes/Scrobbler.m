@@ -33,6 +33,7 @@ Scrobbler *subscriber = nil;
   }
 
   [subscriber release];
+  subscriber = nil;
 }
 
 - (void) error: (NSString*) message {
