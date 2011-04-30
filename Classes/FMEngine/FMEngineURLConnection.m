@@ -67,6 +67,7 @@
 
 - (void)dealloc {
   [callback release];
+  [_id release];
 
   [super dealloc];
 }
