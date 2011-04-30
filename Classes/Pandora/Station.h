@@ -12,6 +12,8 @@
 
 @interface Station : NSObject {
   BOOL shouldPlaySongOnFetch;
+  BOOL retrying;
+  double lastKnownSeekTime;
 
   NSInteger tries;
   NSString *name;

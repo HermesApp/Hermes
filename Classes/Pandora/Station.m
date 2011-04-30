@@ -103,12 +103,26 @@
   [self setStream:s];
 }
 
+- (void) seekToLastKnownTime {
+  retrying = NO;
+  [stream seekToTime:lastKnownSeekTime];
+}
+
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   if ([stream errorCode] != 0) {
     /* Try a few times to re-initialize the stream just in case it was a fluke
      * which caused the stream to fail */
     NSLog(@"Error on playback stream! count:%d, Retrying...", tries);
     [self retry];
+  } else if (retrying) {
+    /* If we were already retrying things, then we'll get a notification as soon
+       as the stream has enough packets to calculate the bit rate. This means
+       that we can correctly seek into the song. After we seek, we've
+       successfully re-synced the stream with what it was before the error
+       happened */
+    if ([stream calculatedBitRate] != 0) {
+      [self seekToLastKnownTime];
+    }
   }
 }
 
@@ -126,22 +140,11 @@
 
   double progress = [stream progress];
   tries++;
+  retrying = YES;
+  lastKnownSeekTime = progress;
 
   [self setAudioStream];
   [stream start];
-
-  /* The AudioStreamer class takes a bit to get a bitrate and a file length,
-   * so calling seekToTime won't work right here. Instead, delay this operation
-   * for just half a second */
-  NSNumber *num = [NSNumber numberWithDouble:progress];
-  [NSTimer scheduledTimerWithTimeInterval:0.5 target:self
-      selector:@selector(seekToLastKnownTime:)
-      userInfo:num repeats:NO];
-}
-
-- (void) seekToLastKnownTime: (NSTimer *)updatedTimer {
-  NSNumber *num = [updatedTimer userInfo];
-  [stream seekToTime:[num doubleValue]];
 }
 
 - (void) play {

@@ -1705,6 +1705,10 @@ cleanup:
       {
         processedPacketsSizeTotal += packetSize;
         processedPacketsCount += 1;
+
+        if (processedPacketsCount == BitRateEstimationMinPackets + 1) {
+          [self mainThreadStateNotification];
+        }
       }
 
       @synchronized(self)
