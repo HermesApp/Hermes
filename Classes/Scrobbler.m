@@ -37,10 +37,15 @@ Scrobbler *subscriber = nil;
 }
 
 - (void) error: (NSString*) message {
+  NSString *header = @"last.fm error: ";
   NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  message = [header stringByAppendingString:message];
   [alert setMessageText:message];
   [alert addButtonWithTitle:@"OK"];
-  [alert runModal];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window]
+                    modalDelegate:self
+                   didEndSelector:nil
+                      contextInfo:nil];
 }
 
 /**
