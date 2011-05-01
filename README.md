@@ -15,7 +15,7 @@ Set your current target to the "Distribution" with the "Release" active
 configuration, and then build the target. This will create a release zip
 file in `build/Release`
 
-There will also be a snipped of XML in `build/Release/versions.xml` to be
+There will also be a snippet of XML in `build/Release/versions.xml` to be
 inserted into the [feed](http://alexcrichton.com/hermes/versions.xml) of
 releases. The [website project](https://github.com/alexcrichton/hermes/tree/gh-pages)
 has a [script](https://github.com/alexcrichton/hermes/blob/gh-pages/_config/release.rb)
