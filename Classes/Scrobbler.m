@@ -154,6 +154,8 @@ Scrobbler *subscriber = nil;
   NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
   [dictionary setObject:time forKey:@"timestamp"];
 
+  NSLogd(@"Scrobbling: %@", dictionary);
+
   [engine performMethod:@"track.scrobble"
              withTarget:self
          withParameters:dictionary
@@ -171,6 +173,7 @@ Scrobbler *subscriber = nil;
   NSDictionary *object = [parser objectWithData:data];
 
   if ([object objectForKey:@"error"] != nil) {
+    NSLogd(@"%@", object);
     [self error:[object objectForKey:@"message"]];
   }
 
@@ -217,7 +220,6 @@ Scrobbler *subscriber = nil;
  * approve it and we retry with the same authorization token.
  */
 - (void) fetchSessionToken {
-  NSLog(@"fetchinG");
   NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:3];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
   [dict setObject:authToken forKey:@"token"];

@@ -172,7 +172,7 @@
     NSString *nxt  = [[playing playing] otherArt];
     if ([prev isEqual:orig] && nxt != nil) {
       [loader loadImageURL:nxt];
-      NSLog(@"Failed retrieving: %@, now trying: %@", orig, nxt);
+      NSLogd(@"Failed retrieving: %@, now trying: %@", orig, nxt);
       return;
     }
 
@@ -199,7 +199,7 @@
   if ([streamer errorCode] != 0) {
     /* Errors are handle elsewhere, we just need to make sure we take no
      * action here to muck up with whatever else is going on */
-    NSLog(@"error registered in stream");
+    NSLogd(@"error registered in stream");
   } else if ([streamer isPlaying]) {
     [[playing stream] setVolume:[volume doubleValue]];
     [playbackProgress startAnimation:nil];
@@ -242,7 +242,7 @@
   Song *song = [playing playing];
 
   if (song == nil) {
-    NSLog(@"No song to play!?");
+    NSLogd(@"No song to play!?");
     return;
   }
 
@@ -351,7 +351,7 @@
     [like setEnabled:NO];
     [dislike setEnabled:YES];
   } else {
-    NSLog(@"Couldn't rate song?!");
+    NSLogd(@"Couldn't rate song?!");
   }
 
 }
@@ -371,7 +371,7 @@
     [[[self playing] songs] removeAllObjects];
     [self next:sender];
   } else {
-    NSLog(@"Couldn't rate song?!");
+    NSLogd(@"Couldn't rate song?!");
   }
 
 }
@@ -386,7 +386,7 @@
   if ([[self pandora] tiredOfSong:[playing playing]]) {
     [self next:sender];
   } else {
-    NSLog(@"Couldn't get tired of a song?!");
+    NSLogd(@"Couldn't get tired of a song?!");
   }
 }
 

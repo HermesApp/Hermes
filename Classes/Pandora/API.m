@@ -206,7 +206,7 @@
   if ([fault count] > 0) {
     NSString *resp = [[NSString alloc] initWithData:[cdata data]
                                            encoding:NSASCIIStringEncoding];
-    NSLog(@"Fault!: %@", resp);
+    NSLogd(@"Fault!: %@", resp);
     [resp release];
     xmlFreeDoc(doc);
     [self cleanupConnection:connection : NULL];

@@ -69,7 +69,7 @@
   NSString *username = [[NSApp delegate] getCachedUsername];
   NSString *password = [[NSApp delegate] getCachedPassword];
 
-  NSLog(@"Retrying authentication by fetching new token...");
+  NSLogd(@"Retrying authentication by fetching new token...");
 
   retries++;
   return [self authenticate: username : password : req];
@@ -114,7 +114,7 @@
   }
 
   if (req != nil) {
-    NSLog(@"Retrying failed request...");
+    NSLogd(@"Retrying failed request...");
 
     [self performSelector:[req callback]
                withObject:[req payload1]
@@ -506,7 +506,7 @@
   }
 
   if ([stations count] == i) {
-    NSLog(@"Deleted unknown station?!");
+    NSLogd(@"Deleted unknown station?!");
   } else {
     Station *s = [stations objectAtIndex:i];
     [stations removeObjectAtIndex:i];

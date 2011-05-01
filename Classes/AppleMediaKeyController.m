@@ -119,21 +119,21 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
                                   self);
 
     if(_eventPort == NULL) {
-      NSLog(@"Fatal Error: Event Tap could not be created");
+      NSLogd(@"Fatal Error: Event Tap could not be created");
       return self;
     }
 
     _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorSystemDefault, _eventPort, 0);
 
     if(_runLoopSource == NULL) {
-      NSLog(@"Fatal Error: Run Loop Source could not be created");
+      NSLogd(@"Fatal Error: Run Loop Source could not be created");
       return self;
     }
 
     runLoop = CFRunLoopGetCurrent();
 
     if(runLoop == NULL) {
-      NSLog(@"Fatal Error: Couldn't get current threads Run Loop");
+      NSLogd(@"Fatal Error: Couldn't get current threads Run Loop");
       return self;
     }
 

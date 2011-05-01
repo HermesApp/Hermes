@@ -112,7 +112,7 @@
   if ([stream errorCode] != 0) {
     /* Try a few times to re-initialize the stream just in case it was a fluke
      * which caused the stream to fail */
-    NSLog(@"Error on playback stream! count:%d, Retrying...", tries);
+    NSLogd(@"Error on playback stream! count:%d, Retrying...", tries);
     [self retry];
   } else if (retrying) {
     /* If we were already retrying things, then we'll get a notification as soon
@@ -128,7 +128,7 @@
 
 - (void) retry {
   if (tries > 6) {
-    NSLog(@"Retried too many times, just nexting...");
+    NSLogd(@"Retried too many times, just nexting...");
     /* If we retried a bunch and it didn't work, the most likely cause is that
        the listed URL for the song has since expired. This probably also means
        that anything else in the queue (fetched at the same time) is also
@@ -156,7 +156,7 @@
       return;
     }
 
-    NSLog(@"Unknown state?!");
+    NSLogd(@"Unknown state?!");
     return;
   }
 

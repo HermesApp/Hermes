@@ -521,8 +521,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = Hermes;
 			};
 			name = Debug;
