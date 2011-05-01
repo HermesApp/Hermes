@@ -2,6 +2,11 @@
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.3...master)
 
+* [fixed] Correctly escape characters when submitting to last.fm
+* [fixed] Removed some memory leaks in FMEngine
+* [added] Don't log messages in the Release build target
+* [added] Better resuming of interrupted streams
+
 # Version 1.0.3 (4/29/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.2...v1.0.3)
