@@ -38,7 +38,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     dataSig = [self generateSignatureFromDictionary:tempDict];
 
     [tempDict setObject:dataSig forKey:@"api_sig"];
-    NSLogd(@"with signature: %@", tempDict);
+    NSLogd(@"scrobble with signature: %@", tempDict);
   }
 
   #ifdef _USE_JSON_
@@ -84,7 +84,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     dataSig = [self generateSignatureFromDictionary:tempDict];
 
     [tempDict setObject:dataSig forKey:@"api_sig"];
-    NSLogd(@"with signature: %@", tempDict);
   }
 
   #ifdef _USE_JSON_
@@ -122,15 +121,12 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   for(NSString *key in aMutableArray) {
     NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
-    val = [val stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    [rawBody appendString:[NSString stringWithFormat:@"&%@=%@", key, val]];
+    [rawBody appendString:[NSString stringWithFormat:@"&%@=%@", key, [val urlEncoded]]];
   }
 
   NSString *body = [NSString stringWithString:rawBody];
   [rawBody release];
   [aMutableArray release];
-
-  NSLogd(@"postbody: %@", body);
 
   return body;
 }
@@ -146,12 +142,11 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   for(i = 0; i < [aMutableArray count]; i++) {
     NSString *key = [aMutableArray objectAtIndex:i];
     NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
-    val = [val stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     if(i == 0) {
-      [rawURL appendString:[NSString stringWithFormat:@"?%@=%@", key, val]];
+      [rawURL appendString:[NSString stringWithFormat:@"?%@=%@", key, [val urlEncoded]]];
     } else {
-      [rawURL appendString:[NSString stringWithFormat:@"&%@=%@", key, val]];
+      [rawURL appendString:[NSString stringWithFormat:@"&%@=%@", key, [val urlEncoded]]];
     }
   }
 

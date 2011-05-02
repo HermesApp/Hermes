@@ -21,6 +21,13 @@
     return [newUUID autorelease];
 }
 
+- (NSString*) urlEncoded {
+  return (NSString*) (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL,
+    (CFStringRef) self, NULL,
+    (CFStringRef) @"!*'();:@&=+$,/?%#[]",
+    kCFStringEncodingUTF8 );
+}
+
 - (NSString *)md5sum {
   unsigned char digest[CC_MD5_DIGEST_LENGTH], i;
   CC_MD5([self UTF8String], [self lengthOfBytesUsingEncoding:NSUTF8StringEncoding], digest);
