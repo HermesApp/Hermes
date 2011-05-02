@@ -47,6 +47,8 @@
   // Sorry, you're not pandora one and you loaded too many songs
   IBOutlet NSTextField *sorryLabel;
   IBOutlet NSButton *loadMore;
+
+  BOOL scrobbleSent;
 }
 
 @property (assign) Station *playing;

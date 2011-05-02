@@ -36,6 +36,44 @@ Scrobbler *subscriber = nil;
   subscriber = nil;
 }
 
++ (void) scrobble:(Song *)song {
+  if (subscriber == nil) {
+    return;
+  }
+
+  [subscriber scrobble: song];
+}
+
+- (void) scrobble:(Song *)song {
+  /* If we don't have a sesion token yet, just ignore this for now */
+  if (sessionToken == nil || [@"" isEqual:sessionToken]) {
+    return;
+  }
+
+  if (song == nil) {
+    return;
+  }
+
+  NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+  [dictionary setObject:sessionToken forKey:@"sk"];
+  [dictionary setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
+  [dictionary setObject:[song title] forKey:@"track"];
+  [dictionary setObject:[song artist] forKey:@"artist"];
+  [dictionary setObject:[song album] forKey:@"album"];
+  [dictionary setObject:[song musicId] forKey:@"mbid"];
+
+  NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
+  [dictionary setObject:time forKey:@"timestamp"];
+
+  [engine performMethod:@"track.scrobble"
+             withTarget:self
+         withParameters:dictionary
+              andAction:@selector(finishedScrobbling::)
+           useSignature:YES
+             httpMethod:@"POST"];
+}
+
 - (void) error: (NSString*) message {
   NSString *header = @"last.fm error: ";
   NSAlert *alert = [[[NSAlert alloc] init] autorelease];
@@ -100,13 +138,6 @@ Scrobbler *subscriber = nil;
     } else {
       [self setSessionToken:str];
     }
-
-    /* Subscribe to notifications of songs playing */
-    [[NSNotificationCenter defaultCenter]
-      addObserver:self
-      selector:@selector(songPlayed:)
-      name:@"song.playing"
-      object:nil];
   }
 
   return self;
@@ -120,48 +151,7 @@ Scrobbler *subscriber = nil;
   [authToken release];
   [sessionToken release];
 
-  [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:@"song.playing"
-    object:nil];
-
   [super dealloc];
-}
-
-/**
- * Callback for when a song plays. This triggers the actual scrobbling
- */
-- (void) songPlayed: (NSNotification *)aNotification {
-  /* If we don't have a sesion token yet, just ignore this for now */
-  if (sessionToken == nil || [@"" isEqual:sessionToken]) {
-    return;
-  }
-
-  Song *s = [[aNotification object] playing];
-  if (s == nil) {
-    return;
-  }
-
-  NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-
-  [dictionary setObject:sessionToken forKey:@"sk"];
-  [dictionary setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
-  [dictionary setObject:[s title] forKey:@"track"];
-  [dictionary setObject:[s artist] forKey:@"artist"];
-  [dictionary setObject:[s album] forKey:@"album"];
-  [dictionary setObject:[s musicId] forKey:@"mbid"];
-
-  NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
-  [dictionary setObject:time forKey:@"timestamp"];
-
-  NSLogd(@"Scrobbling: %@", dictionary);
-
-  [engine performMethod:@"track.scrobble"
-             withTarget:self
-         withParameters:dictionary
-              andAction:@selector(finishedScrobbling::)
-           useSignature:YES
-             httpMethod:@"POST"];
 }
 
 /**

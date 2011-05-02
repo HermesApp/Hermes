@@ -7,6 +7,7 @@
 //
 
 #import "FMEngine.h"
+#import "Song.h"
 
 #define TOKEN_NOT_AUTHORIZED 14
 
@@ -19,6 +20,7 @@
 
 + (void) subscribe;
 + (void) unsubscribe;
++ (void) scrobble: (Song*) song;
 
 @property (retain) FMEngine *engine;
 @property (retain) NSString *authToken;
@@ -26,5 +28,6 @@
 
 - (void) fetchAuthToken;
 - (void) fetchSessionToken;
+- (void) scrobble: (Song*) song;
 
 @end

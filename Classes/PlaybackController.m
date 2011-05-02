@@ -9,6 +9,7 @@
 #import "AppleMediaKeyController.h"
 #import "PlaybackController.h"
 #import "HermesAppDelegate.h"
+#import "Scrobbler.h"
 
 @implementation PlaybackController
 
@@ -224,14 +225,25 @@
   int prog = streamer.progress;
   int dur = streamer.duration;
 
-  if (dur > 0) {
-    [progressLabel setStringValue:
-     [NSString stringWithFormat:@"%d:%02d/%d:%02d",
-      prog / 60, prog % 60, dur / 60, dur % 60]];
-    [playbackProgress setDoubleValue:100 * prog / dur];
-  } else {
-    //      [progress setEnabled:NO];
+  /* The AudioStreamer class needs some time to figure out how long the song
+     actually is. If the duration listed is less than or equal to 0, just give
+     it some more time to figure this out */
+  if (dur <= 0) {
+    return;
   }
+
+  [progressLabel setStringValue:
+    [NSString stringWithFormat:@"%d:%02d/%d:%02d",
+    prog / 60, prog % 60, dur / 60, dur % 60]];
+  [playbackProgress setDoubleValue:100 * prog / dur];
+
+  /* See http://www.last.fm/api/scrobbling#when-is-a-scrobble-a-scrobble for
+     figuring out when a track should be scrobbled */
+  if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) && !scrobbleSent) {
+    scrobbleSent = YES;
+    [Scrobbler scrobble:[playing playing]];
+  }
+
 }
 
 /*
@@ -280,6 +292,7 @@
   [albumLabel setStringValue:[song album]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
+  scrobbleSent = NO;
 
   if ([song.rating isEqualTo: @"1"]) {
     [like setEnabled:NO];
