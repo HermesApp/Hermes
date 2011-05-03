@@ -17,7 +17,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 }
 
 - (id)init {
-  if (self = [super init]) {
+  if ((self = [super init])) {
     connections = [[NSMutableDictionary alloc] init];
   }
   return self;

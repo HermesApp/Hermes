@@ -128,7 +128,7 @@ Scrobbler *subscriber = nil;
 }
 
 - (id) init {
-  if (self = [super init]) {
+  if ((self = [super init])) {
     [self setEngine:[[FMEngine alloc] init]];
 
     /* Try to get the saved session token, otherwise get a new one */

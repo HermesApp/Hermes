@@ -108,7 +108,7 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 }
 
 - (id)init {
-  if(self = [super init]) {
+  if((self = [super init])) {
     CFRunLoopRef runLoop;
 
     _eventPort = CGEventTapCreate(kCGSessionEventTap,

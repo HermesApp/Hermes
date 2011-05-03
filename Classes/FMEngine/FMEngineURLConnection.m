@@ -13,7 +13,7 @@
 @synthesize callback;
 
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate {
-  if (self = [super initWithRequest:request delegate:delegate]) {
+  if ((self = [super initWithRequest:request delegate:delegate])) {
     _receivedData = [[NSMutableData alloc] initWithCapacity:0];
     _id = [[NSString stringWithNewUUID] retain];
   }
@@ -21,7 +21,7 @@
 }
 
 - (id)initWithRequest:(NSURLRequest *)request {
-  if (self = [super initWithRequest:request delegate:self]) {
+  if ((self = [super initWithRequest:request delegate:self])) {
     _receivedData = [[NSMutableData alloc] initWithCapacity:0];
     _id = [[NSString stringWithNewUUID] retain];
   }
