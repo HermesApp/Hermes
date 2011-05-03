@@ -222,8 +222,8 @@
 
   AudioStreamer *streamer = [playing stream];
 
-  int prog = streamer.progress;
-  int dur = streamer.duration;
+  double prog = [streamer progress];
+  double dur = [streamer duration];
 
   /* The AudioStreamer class needs some time to figure out how long the song
      actually is. If the duration listed is less than or equal to 0, just give
@@ -234,7 +234,7 @@
 
   [progressLabel setStringValue:
     [NSString stringWithFormat:@"%d:%02d/%d:%02d",
-    prog / 60, prog % 60, dur / 60, dur % 60]];
+    (int) (prog / 60), ((int) prog) % 60, (int) (dur / 60), ((int) dur) % 60]];
   [playbackProgress setDoubleValue:100 * prog / dur];
 
   /* See http://www.last.fm/api/scrobbling#when-is-a-scrobble-a-scrobble for
@@ -384,7 +384,7 @@
     [[[self playing] songs] removeAllObjects];
     [self next:sender];
   } else {
-    NSLogd(@"Couldn't rate song?!");
+    NSLog(@"Couldn't rate song?!");
   }
 
 }
@@ -399,7 +399,7 @@
   if ([[self pandora] tiredOfSong:[playing playing]]) {
     [self next:sender];
   } else {
-    NSLogd(@"Couldn't get tired of a song?!");
+    NSLog(@"Couldn't get tired of a song?!");
   }
 }
 

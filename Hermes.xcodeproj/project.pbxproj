@@ -28,7 +28,8 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FA02692F1367E0B9002652C2 /* Keys.m in Sources */ = {isa = PBXBuildFile; fileRef = FA02692E1367E0B9002652C2 /* Keys.m */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
-		FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA10651A132CAE7C00D6DE42 /* Security.framework */; };
+		FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228EC8137045E90070141A /* AudioToolbox.framework */; };
+		FA228ECB137045F40070141A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228ECA137045F40070141A /* Security.framework */; };
 		FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2442BA136B18DC00E126D3 /* PreferencesController.m */; };
 		FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435E136B3D6C00E126D3 /* CHANGELOG.md */; };
 		FA244361136B3D6C00E126D3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435F136B3D6C00E126D3 /* README.md */; };
@@ -38,7 +39,6 @@
 		FA2A3F99132BF9F50089AECC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F95132BF9F50089AECC /* Song.m */; };
 		FA2A3F9A132BF9F50089AECC /* Station.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F97132BF9F50089AECC /* Station.m */; };
 		FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */; };
-		FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */; };
 		FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFE28132F9D30003554E2 /* missing-album.png */; };
 		FA3CFF1D132FB762003554E2 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1B132FB762003554E2 /* thumbdown.png */; };
 		FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1C132FB762003554E2 /* thumbup.png */; };
@@ -111,7 +111,8 @@
 		FA02692E1367E0B9002652C2 /* Keys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keys.m; sourceTree = "<group>"; };
 		FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
-		FA10651A132CAE7C00D6DE42 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		FA228EC8137045E90070141A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		FA228ECA137045F40070141A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		FA2442B9136B18DC00E126D3 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		FA2442BA136B18DC00E126D3 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		FA24435E136B3D6C00E126D3 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
@@ -129,7 +130,6 @@
 		FA2A3F97132BF9F50089AECC /* Station.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Station.m; sourceTree = "<group>"; };
 		FA2A3FBB132BFA6F0089AECC /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
-		FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		FA3CFE28132F9D30003554E2 /* missing-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missing-album.png"; sourceTree = "<group>"; };
 		FA3CFF1B132FB762003554E2 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
 		FA3CFF1C132FB762003554E2 /* thumbup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbup.png; sourceTree = "<group>"; };
@@ -174,9 +174,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
+				FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				FA2A4074132BFB3D0089AECC /* AudioToolbox.framework in Frameworks */,
-				FA10651B132CAE7C00D6DE42 /* Security.framework in Frameworks */,
 				FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */,
 				FAFBFC631369074300355C05 /* JSON.framework in Frameworks */,
 			);
@@ -218,11 +218,11 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA228ECA137045F40070141A /* Security.framework */,
+				FA228EC8137045E90070141A /* AudioToolbox.framework */,
 				FAFBFC621369074300355C05 /* JSON.framework */,
 				FAD42F8713678F7500E935CA /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
-				FA2A4073132BFB3D0089AECC /* AudioToolbox.framework */,
-				FA10651A132CAE7C00D6DE42 /* Security.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -524,8 +524,10 @@
 				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = Hermes;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -544,7 +546,9 @@
 				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = Hermes;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
@@ -563,6 +567,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
@@ -585,6 +590,7 @@
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
@@ -598,6 +604,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = Distribution;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
@@ -608,6 +615,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = Distribution;
+				SDKROOT = macosx10.6;
 				ZERO_LINK = NO;
 			};
 			name = Release;

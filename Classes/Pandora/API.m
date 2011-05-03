@@ -141,6 +141,7 @@
   [request release];
 
   if (conn == nil) {
+    NSLog(@"Couldn't create a connection to send!");
     return NO;
   }
 
@@ -177,8 +178,7 @@
   [cdata release];
 }
 
-- (void)connection:(NSURLConnection *)connection
-    didReceiveData:(NSData *)data {
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
   ConnectionData *cdata = [self dataForConnection:connection];
   [[cdata data] appendData:data];
 }
