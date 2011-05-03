@@ -1,9 +1,3 @@
 
-@interface Keychain : NSObject {
-
-}
-
-+ (BOOL) setKeychainItem: (NSString*)username : (NSString*)password;
-+ (NSString*) getKeychainPassword: (NSString*)username;
-
-@end
+BOOL KeychainSetItem(NSString* username, NSString *password);
+NSString* KeychainGetPassword(NSString *username);

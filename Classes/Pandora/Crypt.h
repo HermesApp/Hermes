@@ -6,11 +6,7 @@
 //  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
-@interface Crypt : NSObject {
+#import <Cocoa/Cocoa.h>
 
-}
-
-+ (NSString*) encrypt: (NSString*) string;
-+ (NSString*) decrypt: (NSString*) string;
-
-@end
+NSString* PandoraEncrypt(NSString* string);
+NSString* PandoraDecrypt(NSString* string);

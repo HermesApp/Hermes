@@ -4,11 +4,8 @@
 #import <Security/Security.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-@implementation Keychain
 
-+ (void) initializeAttributes: (SecKeychainAttribute*) attributes
-    username: (NSString*) username {
-
+void KeychaininitializeAttributes(SecKeychainAttribute* attributes, NSString *username) {
   attributes[0].tag    = kSecGenericItemAttr;
   attributes[0].data   = KEYCHAIN_GENERIC_ATTR;
   attributes[0].length = sizeof(KEYCHAIN_GENERIC_ATTR);
@@ -18,17 +15,17 @@
   attributes[1].length = sizeof(KEYCHAIN_LABEL_ATTR);
 
   attributes[2].tag    = kSecAccountItemAttr;
-  attributes[2].data   = (void*) [username cStringUsingEncoding:NSASCIIStringEncoding];
+  attributes[2].data   = (void*) [username cStringUsingEncoding:NSUTF8StringEncoding];
   attributes[2].length = [username length];
 }
 
-+ (SecKeychainItemRef) keychainItemFor: (NSString*) username {
+SecKeychainItemRef KeychainItemFor(NSString* username) {
   SecKeychainSearchRef search;
   SecKeychainItemRef item = NULL;
   SecKeychainAttribute attributes[3];
   OSErr result;
 
-  [self initializeAttributes: attributes username:username];
+  KeychaininitializeAttributes(attributes, username);
 
   SecKeychainAttributeList list = {3, attributes};
 
@@ -49,20 +46,19 @@
   return item;
 }
 
-+ (SecKeychainItemRef) createKeychainItemFor: (NSString*) username
-    password: (NSString*) password {
+SecKeychainItemRef KeychainCreateItemFor(NSString* username, NSString* password) {
   SecKeychainAttribute attributes[3];
   SecKeychainAttributeList list;
   SecKeychainItemRef item = NULL;
   OSStatus status;
 
-  [self initializeAttributes: attributes username:username];
+  KeychaininitializeAttributes(attributes, username);
 
   list.count = 3;
   list.attr  = attributes;
 
   status = SecKeychainItemCreateFromContent(kSecGenericPasswordItemClass, &list,
-    [password length], [password cStringUsingEncoding:NSASCIIStringEncoding],
+    [password length], [password cStringUsingEncoding:NSUTF8StringEncoding],
     NULL, NULL, &item);
 
   if (status != 0) {
@@ -72,20 +68,20 @@
   return item;
 }
 
-+ (BOOL) setKeychainItem: (NSString*)username : (NSString*)password {
+BOOL KeychainSetItem(NSString* username, NSString* password) {
   OSStatus status;
   BOOL ret = NO;
   SecKeychainAttribute attributes[1];
 
   attributes[0].tag    = kSecAccountItemAttr;
-  attributes[0].data   = (void*) [username cStringUsingEncoding:NSASCIIStringEncoding];
+  attributes[0].data   = (void*) [username cStringUsingEncoding:NSUTF8StringEncoding];
   attributes[0].length = [username length];
 
   SecKeychainAttributeList list = {1, attributes};
 
-  SecKeychainItemRef item = [self keychainItemFor: username];
+  SecKeychainItemRef item = KeychainItemFor(username);
   if (item == NULL) {
-    item = [self createKeychainItemFor:username password:password];
+    item = KeychainCreateItemFor(username, password);
     ret = (item != NULL);
 
     if (ret) {
@@ -95,8 +91,8 @@
     return ret;
   }
 
-  status = SecKeychainItemModifyContent (item, &list, [password length],
-                                       [password cStringUsingEncoding:NSASCIIStringEncoding]);
+  status = SecKeychainItemModifyContent(item, &list, [password length],
+                          [password cStringUsingEncoding:NSUTF8StringEncoding]);
 
   ret = (status == noErr);
 
@@ -104,13 +100,13 @@
   return ret;
 }
 
-+ (NSString*) getKeychainPassword: (NSString*)username {
+NSString *KeychainGetPassword(NSString* username) {
   UInt32 length;
   char *password;
   OSStatus status;
   NSString *ret = nil;
 
-  SecKeychainItemRef item = [self keychainItemFor: username];
+  SecKeychainItemRef item = KeychainItemFor(username);
   if (item == NULL) {
     return nil;
   }
@@ -120,7 +116,7 @@
 
   if (status == noErr) {
     ret = [[NSString alloc] initWithBytes:password
-        length:length encoding:NSASCIIStringEncoding];
+        length:length encoding:NSUTF8StringEncoding];
     [ret autorelease];
     SecKeychainItemFreeContent(NULL, password);
   }
@@ -128,5 +124,3 @@
   CFRelease(item);
   return ret;
 }
-
-@end

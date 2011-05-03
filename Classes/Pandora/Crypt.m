@@ -14,9 +14,7 @@
 
 #define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
 
-@implementation Crypt
-
-+ (NSString*) decrypt: (NSString*) string {
+NSString* PandoraDecrypt(NSString* string) {
   int len, i, j;
   uint32_t l, r, t, a, b, c, d, f;
   const char *hex;
@@ -95,7 +93,7 @@
   return ret;
 }
 
-+ (NSString*) encrypt: (NSString*) string {
+NSString* PandoraEncrypt(NSString* string) {
   NSMutableData *data = [[NSMutableData alloc] init];
 
   const char *cstr = [string cStringUsingEncoding: NSUTF8StringEncoding];
@@ -168,5 +166,3 @@
 
   return ret;
 }
-
-@end

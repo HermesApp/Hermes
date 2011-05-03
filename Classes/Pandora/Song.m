@@ -49,7 +49,7 @@
   int index = [url length] - 48;
 
   NSString *pref = [url substringToIndex: index];
-  NSString *suff = [Crypt decrypt: [url substringFromIndex: index]];
+  NSString *suff = PandoraDecrypt([url substringFromIndex: index]);
 
   return [pref stringByAppendingString: suff];
 }

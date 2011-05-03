@@ -96,7 +96,7 @@
       [self time], user, pass
     ];
 
-  return [self sendRequest: @"authenticateListener" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"authenticateListener" : PandoraEncrypt(xml) :
     @selector(handleAuthenticate::) : req];
 }
 
@@ -191,7 +191,7 @@
      [self time], authToken
    ];
 
-  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"getStations" : PandoraEncrypt(xml) :
       @selector(handleStations:)];
 }
 
@@ -287,7 +287,7 @@
      [self time], authToken, station_id
    ];
 
-  return [self sendRequest: @"getStations" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"getStations" : PandoraEncrypt(xml) :
           @selector(handleFragment::) : station_id];
 }
 
@@ -306,7 +306,7 @@
       "<params></params>"
     "</methodCall>";
 
-  return [self sendRequest: @"sync" : [Crypt encrypt: xml] : @selector(handleSync:)];
+  return [self sendRequest: @"sync" : PandoraEncrypt(xml) : @selector(handleSync:)];
 }
 
 - (void) handleRating: (xmlDocPtr) doc {
@@ -342,7 +342,7 @@
    ];
 
   [song setRating: rating];
-  return [self sendRequest: @"station.addFeedback" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"station.addFeedback" : PandoraEncrypt(xml) :
       @selector(handleRating:)];
 }
 
@@ -373,7 +373,7 @@
     [self time], authToken, [song musicId], [song userSeed], [song stationId]
   ];
 
-  return [self sendRequest: @"addTiredSong" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"addTiredSong" : PandoraEncrypt(xml) :
       @selector(handleTired:)];
 }
 
@@ -458,7 +458,7 @@
     [self time], authToken, search
   ];
 
-  return [self sendRequest: @"search" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"search" : PandoraEncrypt(xml) :
           @selector(handleSearch:)];
 }
 
@@ -487,7 +487,7 @@
     [self time], authToken, musicId
   ];
 
-  return [self sendRequest: @"createStation" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"createStation" : PandoraEncrypt(xml) :
           @selector(handleCreateStation:)];
 }
 
@@ -537,7 +537,7 @@
     [self time], authToken, stationId
   ];
 
-  return [self sendRequest: @"removeStation" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"removeStation" : PandoraEncrypt(xml) :
           @selector(handleRemoveStation::) : stationId];
 }
 
@@ -567,7 +567,7 @@
     [self time], authToken, stationId, name
   ];
 
-  return [self sendRequest: @"setStationName" : [Crypt encrypt: xml] :
+  return [self sendRequest: @"setStationName" : PandoraEncrypt(xml) :
           @selector(handleRenamedStation:)];
 }
 

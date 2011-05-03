@@ -74,7 +74,7 @@
 
 - (void) cacheAuth: (NSString*) username : (NSString*) password {
   [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
-  [Keychain setKeychainItem:username : password];
+  KeychainSetItem(username, password);
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -114,7 +114,7 @@
 }
 
 - (NSString*) getCachedPassword {
-  return [Keychain getKeychainPassword: [self getCachedUsername]];
+  return KeychainGetPassword([self getCachedUsername]);
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {

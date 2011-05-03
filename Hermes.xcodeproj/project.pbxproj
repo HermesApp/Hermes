@@ -494,6 +494,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+				GCC_WARN_PEDANTIC = NO;
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;

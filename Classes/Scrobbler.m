@@ -132,7 +132,7 @@ Scrobbler *subscriber = nil;
     [self setEngine:[[FMEngine alloc] init]];
 
     /* Try to get the saved session token, otherwise get a new one */
-    NSString *str = [Keychain getKeychainPassword:LASTFM_KEYCHAIN_ITEM];
+    NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
     if (str == nil || [str isEqual:@""]) {
       [self fetchAuthToken];
     } else {
@@ -241,7 +241,7 @@ Scrobbler *subscriber = nil;
 
   NSDictionary *session = [object objectForKey:@"session"];
   [self setSessionToken:[session objectForKey:@"key"]];
-  [Keychain setKeychainItem:LASTFM_KEYCHAIN_ITEM : sessionToken];
+  KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken);
 }
 
 @end
