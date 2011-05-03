@@ -4,8 +4,10 @@
 
 * [fixed] Correctly escape characters when submitting to last.fm
 * [fixed] Removed some memory leaks in FMEngine
+* [fixed] Smoother updating of progress on the time lapse bar
 * [added] Don't log messages in the Release build target
 * [added] Better resuming of interrupted streams
+* [added] Updated for Xcode 4
 
 # Version 1.0.3 (4/29/11)
 
