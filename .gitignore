@@ -2,4 +2,6 @@ build
 .DS_Store
 *.xcodeproj/*.mode*
 *.xcodeproj/*.pbxuser
+*.xcodeproj/xcuserdata
+*.xcodeproj/*.xcworkspace
 Hermes.dmg
