@@ -11,11 +11,7 @@
 #import "Pandora.h"
 #import "Station.h"
 
-@interface MainController : NSObject
-#ifdef MAC_OS_X_VERSION_10_6
- < NSTableViewDataSource, NSOutlineViewDataSource >
-#endif
-{
+@interface MainController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
   IBOutlet NSTextField *selectStation;
   IBOutlet NSDrawer *stations;

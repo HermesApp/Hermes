@@ -11,11 +11,7 @@
 #define PLEASE_BIND_MEDIA @"hermes.please-bind-media"
 #define PLEASE_SCROBBLE @"hermes.please-scrobble"
 
-@interface PreferencesController : NSObject
-#ifdef MAC_OS_X_VERSION_10_6
-<NSWindowDelegate>
-#endif
-{
+@interface PreferencesController : NSObject <NSWindowDelegate> {
   NSButton *scrobble;
   NSButton *bindMedia;
 }
