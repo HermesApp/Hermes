@@ -228,6 +228,7 @@ Scrobbler *subscriber = nil;
 - (void) gotSessionToken: (id) _ignored : (NSData*) data {
   SBJsonParser *parser = [[SBJsonParser alloc] init];
   NSDictionary *object = [parser objectWithData:data];
+  [parser release];
 
   if ([object objectForKey:@"error"] != nil) {
     NSNumber *code = [object objectForKey:@"error"];

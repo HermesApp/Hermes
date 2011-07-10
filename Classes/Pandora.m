@@ -509,9 +509,7 @@
   if ([stations count] == i) {
     NSLogd(@"Deleted unknown station?!");
   } else {
-    Station *s = [stations objectAtIndex:i];
     [stations removeObjectAtIndex:i];
-    [s release];
   }
 
   [self notify:@"hermes.station-removed" with:nil];
