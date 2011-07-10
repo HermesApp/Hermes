@@ -5,6 +5,7 @@ set -o errexit
 [ $BUILD_STYLE = Release ] || { echo Distribution target requires "'Release'" build style; false; }
 
 VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleShortVersionString)
+INT_VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleVersion)
 
 ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 DOWNLOAD_URL="https://github.com/downloads/alexcrichton/hermes/$ARCHIVE_FILENAME"
@@ -34,7 +35,8 @@ cat > versions.xml <<EOF
 <pubDate>$PUBDATE</pubDate>
 <enclosure
 url="$DOWNLOAD_URL"
-sparkle:version="$VERSION"
+sparkle:version="$INT_VERSION"
+sparkle:shortVersionString="$VERSION"
 type="application/octet-stream"
 length="$SIZE"
 sparkle:dsaSignature="$SIGNATURE"
