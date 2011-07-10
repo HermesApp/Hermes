@@ -1,10 +1,13 @@
-# Version 1.0.4 (unreleased)
+# Version 1.0.4 (7/9/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.3...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.3...v1.0.4)
 
 * [fixed] Correctly escape characters when submitting to last.fm
 * [fixed] Removed some memory leaks in FMEngine
+* [fixed] Removed memory leaks in Scrobbler
+* [fixed] Removed multiple release bug when deleting a station
 * [fixed] Smoother updating of progress on the time lapse bar
+* [fixed] Updated to new Pandora API version
 * [added] Don't log debug messages in the Release build target
 * [added] Better resuming of interrupted streams
 * [added] Updated for Xcode 4
