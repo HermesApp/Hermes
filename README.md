@@ -7,7 +7,8 @@ Why play music in really slow flash when you can play it with really fast non-fl
 
 ## Development
 
-This is an Xcode project, so point Xcode to the Hermes.xcodeproj here and build away
+This is an Xcode project, so point Xcode to the Hermes.xcodeproj here and build away.
+This project is also meant for Xcode 4.
 
 ## Build a Release ZIP
 
