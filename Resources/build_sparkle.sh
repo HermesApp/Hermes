@@ -43,16 +43,13 @@ sparkle:dsaSignature="$SIGNATURE"
 EOF
 
 hermes_pages=$(dirname $SOURCE_ROOT)/hermes-pages
-echo $hermes_pages
 if [ -d $hermes_pages ]; then
-  echo $VERSION
-  echo `pwd`/versions.xml
-  echo $PROJECT_DIR/CHANGELOG.md
-
+  set -x
   ruby $hermes_pages/_config/release.rb \
     $VERSION \
     "`pwd`/versions.xml" \
     "$PROJECT_DIR/CHANGELOG.md"
+  set +x
 fi
 
 cp $ARCHIVE_FILENAME $HOME/Desktop
