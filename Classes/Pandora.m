@@ -482,6 +482,7 @@
         "<param><value><int>%d</int></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>mi%@</string></value></param>"
+        "<param><value><string></string></value></param>"
       "</params>"
     "</methodCall>",
     [self time], authToken, musicId
