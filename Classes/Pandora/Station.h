@@ -36,5 +36,6 @@
 - (void) pause;
 - (void) stop;
 - (void) retry;
+- (BOOL) isPaused;
 
 @end

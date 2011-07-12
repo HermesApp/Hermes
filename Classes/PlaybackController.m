@@ -216,7 +216,7 @@
 
 /* Re-draws the timer counting up the time of the played song */
 - (void)updateProgress: (NSTimer *)updatedTimer {
-  if (playing == nil || [playing stream] == nil) {
+  if (playing == nil || [playing stream] == nil || [playing isPaused]) {
     return;
   }
 

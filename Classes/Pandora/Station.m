@@ -186,6 +186,10 @@
   }
 }
 
+- (BOOL) isPaused {
+  return [stream isPaused];
+}
+
 - (void) next {
   [self stop];
   [self play];
