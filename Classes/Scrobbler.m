@@ -134,8 +134,10 @@ Scrobbler *subscriber = nil;
     /* Try to get the saved session token, otherwise get a new one */
     NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
     if (str == nil || [str isEqual:@""]) {
+      NSLogd(@"No saved sesssion token for last.fm, fetching another");
       [self fetchAuthToken];
     } else {
+      NSLogd(@"Found saved sessionn token found for last.fm");
       [self setSessionToken:str];
     }
   }
@@ -210,7 +212,8 @@ Scrobbler *subscriber = nil;
  * approve it and we retry with the same authorization token.
  */
 - (void) fetchSessionToken {
-  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:3];
+  NSLogd(@"Fetching session token for last.fm...");
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
   [dict setObject:authToken forKey:@"token"];
 
@@ -238,11 +241,15 @@ Scrobbler *subscriber = nil;
     } else {
       [self error:[object objectForKey:@"message"]];
     }
+    [self setSessionToken:nil];
+    return;
   }
 
   NSDictionary *session = [object objectForKey:@"session"];
   [self setSessionToken:[session objectForKey:@"key"]];
-  KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken);
+  if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
+    [self error:@"Couldn't save session token to keychain!"];
+  }
 }
 
 @end
