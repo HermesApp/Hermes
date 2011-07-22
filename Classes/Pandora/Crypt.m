@@ -6,6 +6,7 @@
 //  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -94,16 +95,16 @@ NSString* PandoraDecrypt(NSString* string) {
 }
 
 NSString* PandoraEncrypt(NSString* string) {
-  NSMutableData *data = [[NSMutableData alloc] init];
-
-  const char *cstr = [string cStringUsingEncoding: NSUTF8StringEncoding];
-  int len, h, i;
+  const char *cstr = [string UTF8String];
+  int len, i;
   uint32_t l, r, t, j, a, b, c, d, f;
 
-  len = strlen(cstr);
-  for (h = 0; h <= len / 8; h++) {
-    i = h << 3;
+  len = [string length];
+  /* Build the hex encryption in a C string with the correct length allocated */
+  NSMutableData *nsdata = [NSMutableData dataWithLength:ceil(len / 8.0) * 16];
+  char *data = [nsdata mutableBytes];
 
+  for (i = 0; i < len; i += 8) {
     l = (FETCH(cstr, i, len) << 24) |
         (FETCH(cstr, i + 1, len) << 16) |
         (FETCH(cstr, i + 2, len) << 8) |
@@ -140,28 +141,12 @@ NSString* PandoraEncrypt(NSString* string) {
     r ^= OutputKey_p[OutputKey_n];
     l ^= OutputKey_p[OutputKey_n + 1];
 
-    l = htonl(l);
-    r = htonl(r);
-    [data appendBytes: &l length: sizeof(l)];
-    [data appendBytes: &r length: sizeof(r)];
+    sprintf(data, "%08x%08x", l, r);
+    data += 16;
   }
 
-  unsigned char *bytes = [data mutableBytes];
-  char buf[3];
-  NSMutableData *hex = [[NSMutableData alloc] init];
-
-  l = [data length];
-  for (i = 0; i < l; i++) {
-    sprintf(buf, "%02x", bytes[i]);
-    [hex appendBytes: buf length: 2];
-  }
-
-  NSString *ret = [[NSString alloc] initWithData:hex
-    encoding:NSASCIIStringEncoding];
-
-  [hex release];
-  [data release];
-
+  NSString *ret = [[NSString alloc] initWithData:nsdata
+                                        encoding:NSUTF8StringEncoding];
   [ret autorelease];
 
   return ret;
