@@ -133,13 +133,10 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
 - (NSURL *)generateURLFromDictionary:(NSDictionary *)dict {
   NSMutableArray *aMutableArray = [[NSMutableArray alloc] initWithArray:[dict allKeys]];
-  NSMutableString *rawURL = [[NSMutableString alloc] init];
+  NSMutableString *rawURL = [NSMutableString stringWithString:_LASTFM_BASEURL_];
   [aMutableArray sortUsingFunction:sortAlpha context:self];
-  [rawURL appendString:_LASTFM_BASEURL_];
 
-  int i;
-
-  for(i = 0; i < [aMutableArray count]; i++) {
+  for(int i = 0; i < [aMutableArray count]; i++) {
     NSString *key = [aMutableArray objectAtIndex:i];
     NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
 
@@ -150,9 +147,8 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     }
   }
 
-  NSString *encodedURL = [(NSString *)rawURL stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+  NSString *encodedURL = [rawURL stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
   NSURL *url = [NSURL URLWithString:encodedURL];
-  [rawURL release];
   [aMutableArray release];
 
   return url;
