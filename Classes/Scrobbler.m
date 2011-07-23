@@ -176,7 +176,7 @@ Scrobbler *subscriber = nil;
  * Fetch an authorization token. This is then used to get a session token
  */
 - (void) fetchAuthToken {
-  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:1];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
 
   [engine performMethod:@"auth.getToken"

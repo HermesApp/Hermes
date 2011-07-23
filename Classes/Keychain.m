@@ -8,7 +8,7 @@ BOOL KeychainLogError(OSStatus status) {
     return TRUE;
   } else {
     CFStringRef error = SecCopyErrorMessageString(status, NULL);
-    NSLog(@"Keychain error: %@", status);
+    NSLog(@"Keychain error: %@", error);
     CFRelease(error);
     return FALSE;
   }
