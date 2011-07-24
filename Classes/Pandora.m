@@ -61,7 +61,7 @@
     ];
 
   return [self sendRequest: @"authenticateListener" : PandoraEncrypt(xml) :
-    @selector(handleAuthenticate::)];
+    @selector(handleAuthenticate:)];
 }
 
 - (void) handleAuthenticate: (xmlDocPtr) doc {

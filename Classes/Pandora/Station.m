@@ -67,14 +67,9 @@
     [songs addObjectsFromArray: more];
   }
 
-  if ([songs count] > 0) {
-    if (shouldPlaySongOnFetch) {
-      shouldPlaySongOnFetch = NO;
-      [self play];
-    }
-  } else {
-    [[NSNotificationCenter defaultCenter]
-      postNotificationName:@"hermes.no-songs" object:self];
+  if (shouldPlaySongOnFetch) {
+    shouldPlaySongOnFetch = NO;
+    [self play];
   }
 }
 

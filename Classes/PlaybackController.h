@@ -31,6 +31,7 @@
 
 @property (assign) Station *playing;
 
+- (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;

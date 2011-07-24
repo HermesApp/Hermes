@@ -31,12 +31,6 @@
 
   [center
     addObserver:self
-    selector:@selector(noSongs:)
-    name:@"hermes.no-songs"
-    object:nil];
-
-  [center
-    addObserver:self
     selector:@selector(afterStationsLoaded)
     name:@"hermes.stations"
     object:[[NSApp delegate] pandora]];
@@ -114,7 +108,9 @@
 }
 
 - (void) noSongs: (NSNotification*) not {
-  [[NSApp delegate] setCurrentView:noSongsView];
+  if ([playing playing] == nil) {
+    [[NSApp delegate] setCurrentView:noSongsView];
+  }
 }
 
 - (void) imageLoaded: (NSNotification*) not {
@@ -268,10 +264,6 @@
 
 /* Toggle between playing and pausing */
 - (IBAction)playpause: (id) sender {
-//  if (![[self pandora] authenticated]) {
-//    return;
-//  }
-
   if ([[playing stream] isPlaying]) {
     [playing pause];
   } else {
@@ -281,10 +273,6 @@
 
 /* Stop this song and go to the next */
 - (IBAction)next: (id) sender {
-//  if (![[self pandora] authenticated]) {
-//    return;
-//  }
-
   [art setImage:nil];
   [self showSpinner];
 
@@ -345,6 +333,7 @@
 /* Load more songs manually */
 - (IBAction)loadMore: (id)sender {
   [self showSpinner];
+  [[NSApp delegate] setCurrentView:playbackView];
 
   if ([playing playing] != nil) {
     [playing retry];

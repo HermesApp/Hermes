@@ -130,6 +130,8 @@
 
   if ([err isEqualToString:@"AUTH_INVALID_USERNAME_PASSWORD"]) {
     [auth authenticationFailed:notification];
+  } else if ([err isEqualToString:@"PLAYLIST_END"]) {
+    [playback noSongs:notification];
   } else {
     [self setCurrentView:errorView];
     [errorLabel setStringValue:err];
