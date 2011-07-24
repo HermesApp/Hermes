@@ -108,11 +108,13 @@
 /**
  * Sends a request to the server and parses the response as XML
  */
-- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info{
+- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info {
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
   NSString *url  = [NSString stringWithFormat:
-      @"http://www.pandora.com/radio/xmlrpc/v31?rid=%@P&method=%@", rid, method];
+      @"http://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
+      @"?rid=%@P&method=%@",
+      rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
     NSString *lid = [NSString stringWithFormat:@"lid=%@", listenerID];

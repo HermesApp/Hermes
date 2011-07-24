@@ -8,6 +8,12 @@
 
 #include <libxml/parser.h>
 
+#pragma once
+
+#define PANDORA_API_HOST @"www.pandora.com"
+#define PANDORA_API_PATH @"/radio/xmlrpc/"
+#define PANDORA_API_VERSION @"v31"
+
 @interface ConnectionData : NSObject {
   SEL callback;
   NSMutableData *data;
