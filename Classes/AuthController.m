@@ -1,11 +1,3 @@
-//
-//  AuthController.m
-//  Hermes
-//
-//  Created by Alex Crichton on 3/13/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "AuthController.h"
 #import "HermesAppDelegate.h"
 
@@ -14,64 +6,53 @@
 - (id) init {
   [[NSNotificationCenter defaultCenter]
     addObserver:self
-    selector:@selector(authenticationFinished:)
+    selector:@selector(authenticationSucceeded:)
     name:@"hermes.authenticated"
     object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(logout:)
-    name:@"hermes.need-reauth"
-    object:[[NSApp delegate] pandora]];
-  
   return self;
 }
 
-- (void)authenticationFinished: (NSNotification *)aNotification {
-  [[NSApp delegate] hideSpinner]; // Big app spinner
-  [spinner setHidden:YES];        // Local login sheet spinner
+- (void) authenticationFailed: (NSNotification*) notification {
+  [spinner setHidden:YES];
   [spinner stopAnimation:nil];
-
-  if ([[[NSApp delegate] pandora] authenticated]) {
-    [self cancel:nil];
-    [auth setHidden:YES];
-    [[[NSApp delegate] mainC] afterAuthentication];
-
-    if ([password stringValue] != nil && ![[password stringValue] isEqual:@""]) {
-      [[NSApp delegate] cacheAuth:[username stringValue] : [password stringValue]];
-    }
+  [self show];
+  [error setHidden:NO];
+  if ([username stringValue] == nil || [[username stringValue] isEqual:@""]) {
+    [username becomeFirstResponder];
   } else {
-    [self showAuth:nil];
-    [error setHidden:NO];
+    [password becomeFirstResponder];
   }
+  [login setEnabled:YES];
 }
 
-/* Cancel was hit, hide the sheet */
-- (IBAction)cancel: (id)sender {
-  [[NSApp delegate] closeAuthSheet];
-  [error setHidden: YES];
+- (void) authenticationSucceeded: (NSNotification*) notification {
+  [spinner setHidden:YES];
+  [spinner stopAnimation:nil];
 
-  [auth setHidden:NO];
+  if (![[username stringValue] isEqualToString:@""]) {
+    [[NSApp delegate] cacheAuth:[username stringValue] : [password stringValue]];
+  }
+
+  HermesAppDelegate *delegate = [NSApp delegate];
+  [[delegate stations] show];
 }
 
 /* Login button in sheet hit, should authenticate */
-- (IBAction)authenticate: (id)sender {
+- (IBAction) authenticate: (id) sender {
   [error setHidden: YES];
   [spinner setHidden:NO];
   [spinner startAnimation: sender];
 
   [[[NSApp delegate] pandora] authenticate:[username stringValue] : [password stringValue]];
+  [login setEnabled:NO];
 }
 
-/* Login button in main window hit, should show sheet */
-- (IBAction)showAuth: (id)sender {
-  [[NSApp delegate] showAuthSheet];
-}
-
-/* Logout the current user */
-- (IBAction)logout: (id)sender {
-  [[[NSApp delegate] pandora] logout];
-  [auth setHidden:NO];
+/* Show the authentication view */
+- (void) show {
+  [[NSApp delegate] setCurrentView:view];
+  [username becomeFirstResponder];
+  [login setEnabled:YES];
 }
 
 @end

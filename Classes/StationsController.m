@@ -1,28 +1,14 @@
-//
-//  MainController.m
-//  Pithos
-//
-//  Created by Alex Crichton on 3/11/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
-#import "MainController.h"
+#import "StationsController.h"
 #import "Pandora.h"
 #import "HermesAppDelegate.h"
 
-@implementation MainController
+@implementation StationsController
 
 - (id) init {
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationsLoaded:)
     name:@"hermes.stations"
-    object:[[NSApp delegate] pandora]];
-
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(loggedOut:)
-    name:@"hermes.logged-out"
     object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
@@ -72,10 +58,6 @@
   return [[[self pandora] stations] objectAtIndex:row];
 }
 
-- (void) playStation: (Station*) station {
-  [[[NSApp delegate] playback] playStation:station];
-}
-
 - (void) showDrawer {
   [stations open];
 }
@@ -110,23 +92,23 @@
   NSString *lastPlayed = [[NSUserDefaults standardUserDefaults]
                           stringForKey:LAST_STATION_KEY];
 
-  if (lastPlayed != nil) {
-    Station *last = nil;
+  if (lastPlayed == nil) {
+    return NO;
+  }
+  Station *last = nil;
 
-    for (Station *cur in [[self pandora] stations]) {
-      if ([lastPlayed isEqual: [cur stationId]]) {
-        last = cur;
-        break;
-      }
-    }
-
-    if (last != nil) {
-      [self playStation: last];
-      [self selectStation: last];
-      return YES;
+  for (Station *cur in [[self pandora] stations]) {
+    if ([lastPlayed isEqual: [cur stationId]]) {
+      last = cur;
+      break;
     }
   }
 
+  if (last != nil) {
+    [[[NSApp delegate] playback] playStation:last];
+    [self selectStation: last];
+    return YES;
+  }
   return NO;
 }
 
@@ -196,10 +178,6 @@
 
 /* ============================ Other callbacks */
 
-- (void) loggedOut: (NSNotification*) not {
-  [self hideDrawer];
-}
-
 - (void) stationCreated: (NSNotification*) not {
   [[NSApp delegate] closeNewStationSheet];
 
@@ -223,17 +201,11 @@
 - (void) stationsLoaded: (NSNotification*) not {
   [stationsTable reloadData];
 
-  if (![[self pandora] authenticated]) {
-    return;
-  }
-  
-  [self showDrawer];
-
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
 
-  if ([self playingStation] == nil && [self playSavedStation]) {
-    [selectStation setHidden:YES];
+  if ([self playingStation] == nil && ![self playSavedStation]) {
+    [[NSApp delegate] setCurrentView:view];
   }
 }
 
@@ -259,13 +231,17 @@
   }
 }
 
+/* ============================ Callbacks for IBActions and such */
+
 /* Called after the user has authenticated */
-- (void) afterAuthentication {
-  [selectStation setHidden:NO];
+- (void) show {
+  [[NSApp delegate] showLoader];
+  [self showDrawer];
 
   [self refreshList:nil];
 }
 
+/* Callback for when the play button is hit for a station */
 - (IBAction)playSelected: (id)sender {
   Station *selected = [self selectedStation];
 
@@ -274,26 +250,28 @@
   }
 
   [self selectStation:selected];
-  [selectStation setHidden:YES];
-  [self playStation:selected];
+  [[[NSApp delegate] playback] playStation:selected];
   [stationsTable reloadData];
 }
 
+/* Callback for when the refresh stations button is hit */
 - (IBAction)refreshList: (id)sender {
   [stationsRefreshing setHidden:NO];
   [stationsRefreshing startAnimation:nil];
   [[self pandora] fetchStations];
 }
 
+/* Callback for when the add station button is hit */
 - (IBAction)addStation: (id)sender {
-  if (![[self pandora] authenticated]) {
-    return;
-  }
+//  if (![[self pandora] authenticated]) {
+//    return;
+//  }
 
   [[NSApp delegate] showNewStationSheet];
   [results reloadData];
 }
 
+/* Callback for the search box on the create sheet */
 - (IBAction)search: (id)sender {
   [errorIndicator setHidden:YES];
   [searchSpinner setHidden:NO];
@@ -302,10 +280,12 @@
   [[self pandora] search:[search stringValue]];
 }
 
+/* Callback for the cancel button is hit on the create sheet */
 - (IBAction)cancelCreateStation: (id)sender {
   [[NSApp delegate] closeNewStationSheet];
 }
 
+/* Callback for the create button on the create sheet */
 - (IBAction)createStation: (id)sender {
   [errorIndicator setHidden:YES];
   id item = [results itemAtRow:[results selectedRow]];
@@ -323,6 +303,7 @@
   [[self pandora] createStation:[result value]];
 }
 
+/* Callback for the dialog which is shown when deleting a station */
 - (void) alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode
     contextInfo:(void *)contextInfo {
 
@@ -334,8 +315,8 @@
   }
 
   if ([selected isEqual: [self playingStation]]) {
-    [[[NSApp delegate] playback] loggedOut:nil];
-    [selectStation setHidden:NO];
+    [[[NSApp delegate] playback] playStation: nil];
+    [[NSApp delegate] setCurrentView:view];
   }
 
   [stationsRefreshing setHidden:NO];
@@ -343,6 +324,7 @@
   [[self pandora] removeStation:[selected stationId]];
 }
 
+/* Callback for the delete button on the stations drawer */
 - (IBAction)deleteSelected: (id)sender {
   Station *selected = [self selectedStation];
 

@@ -1,11 +1,3 @@
-//
-//  PlaybackController.m
-//  Hermes
-//
-//  Created by Alex Crichton on 3/15/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "AppleMediaKeyController.h"
 #import "PlaybackController.h"
 #import "HermesAppDelegate.h"
@@ -42,12 +34,6 @@
     selector:@selector(noSongs:)
     name:@"hermes.no-songs"
     object:nil];
-
-  [center
-    addObserver:self
-    selector:@selector(loggedOut:)
-    name:@"hermes.logged-out"
-    object:[[NSApp delegate] pandora]];
 
   [center
     addObserver:self
@@ -128,39 +114,7 @@
 }
 
 - (void) noSongs: (NSNotification*) not {
-  [self hideSpinner];
-  [sorryLabel setHidden:NO];
-  [loadMore setHidden:NO];
-}
-
-- (void) hideAllPlaybackItems {
-  [sorryLabel setHidden:YES];
-  [loadMore setHidden:YES];
-  [art setHidden:YES];
-  [songLabel setHidden:YES];
-  [songURL setHidden:YES];
-  [artistLabel setHidden:YES];
-  [artistURL setHidden:YES];
-  [albumLabel setHidden:YES];
-  [albumURL setHidden:YES];
-  [playbackProgress setHidden:YES];
-  [progressLabel setHidden:YES];
-  [volup setHidden:YES];
-  [voldown setHidden:YES];
-  [volume setHidden:YES];
-
-  [artLoading setHidden:YES];
-  [artLoading stopAnimation:nil];
-
-  [self hideSpinner];
-}
-
-- (void) loggedOut: (NSNotification*) not {
-  [playing stop];
-  playing = nil;
-
-  [self hideAllPlaybackItems];
-  [toolbar setVisible:NO];
+  [[NSApp delegate] setCurrentView:noSongsView];
 }
 
 - (void) imageLoaded: (NSNotification*) not {
@@ -170,7 +124,9 @@
     // Try the second art if this was just the first art
     NSString *prev = [loader loadedURL];
     NSString *orig = [[playing playing] art];
-    NSString *nxt  = [[playing playing] otherArt];
+    NSString *nxt  = [orig stringByReplacingOccurrencesOfString:@"130W_130H"
+                                                     withString:@"500W_500H"];
+
     if ([prev isEqual:orig] && nxt != nil) {
       [loader loadImageURL:nxt];
       NSLogd(@"Failed retrieving: %@, now trying: %@", orig, nxt);
@@ -182,7 +138,6 @@
     [image autorelease];
   }
 
-  [art setHidden:NO];
   [[art animator] setImage:image];
   [artLoading setHidden:YES];
   [artLoading stopAnimation:nil];
@@ -263,32 +218,14 @@
 
   if ([song art] == nil || [[song art] isEqual: @""]) {
     [art setImage: [NSImage imageNamed:@"missing-album"]];
-    [art setHidden:NO];
   } else {
-    [artLoading setHidden:NO];
     [artLoading startAnimation:nil];
-    [art setHidden:YES];
+    [artLoading setHidden:NO];
+    [art setImage:nil];
     [loader loadImageURL:[song art]];
   }
 
-  if ([artistLabel isHidden]) {
-    [artistLabel setHidden:NO];
-    [artistURL setHidden:NO];
-    [songLabel setHidden:NO];
-    [songURL setHidden:NO];
-    [albumLabel setHidden:NO];
-    [albumURL setHidden:NO];
-    [playbackProgress setHidden:NO];
-    [progressLabel setHidden:NO];
-    [volup setHidden:NO];
-    [voldown setHidden:NO];
-    [volume setHidden:NO];
-  }
-
-  if (![loadMore isHidden]) {
-    [loadMore setHidden:YES];
-    [sorryLabel setHidden:YES];
-  }
+  [[NSApp delegate] setCurrentView:playbackView];
 
   [songLabel setStringValue: [song title]];
   [artistLabel setStringValue: [song artist]];
@@ -308,22 +245,22 @@
 
 /* Plays a new station */
 - (void) playStation: (Station*) station {
-  if (![[self pandora] authenticated] || playing == station) {
+  if (playing == station) {
     return;
   }
 
-  if (playing != nil) {
-    [art setHidden:YES];
-    [self hideAllPlaybackItems];
-    [playing stop];
-  }
-
+  [playing stop];
+  [[NSApp delegate] setCurrentView:playbackView];
   [self showSpinner];
   [toolbar setVisible:YES];
 
-  [[NSUserDefaults standardUserDefaults]
-    setObject:[station stationId]
-    forKey:LAST_STATION_KEY];
+  if (station == nil) {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
+  } else {
+    [[NSUserDefaults standardUserDefaults]
+      setObject:[station stationId]
+      forKey:LAST_STATION_KEY];
+  }
 
   playing = station;
   [playing play];
@@ -331,9 +268,9 @@
 
 /* Toggle between playing and pausing */
 - (IBAction)playpause: (id) sender {
-  if (![[self pandora] authenticated]) {
-    return;
-  }
+//  if (![[self pandora] authenticated]) {
+//    return;
+//  }
 
   if ([[playing stream] isPlaying]) {
     [playing pause];
@@ -344,11 +281,11 @@
 
 /* Stop this song and go to the next */
 - (IBAction)next: (id) sender {
-  if (![[self pandora] authenticated]) {
-    return;
-  }
+//  if (![[self pandora] authenticated]) {
+//    return;
+//  }
 
-  [art setHidden:YES];
+  [art setImage:nil];
   [self showSpinner];
 
   [playing next];
@@ -357,7 +294,7 @@
 /* Like button was hit */
 - (IBAction)like: (id) sender {
   Song *playingSong = [playing playing];
-  if (![[self pandora] authenticated] || playingSong == nil) {
+  if (/*![[self pandora] authenticated] || */playingSong == nil) {
     return;
   }
 
@@ -365,7 +302,6 @@
 
   if ([[self pandora] rateSong: playingSong : @"1"]) {
     [like setEnabled:NO];
-    [dislike setEnabled:YES];
   } else {
     NSLogd(@"Couldn't rate song?!");
   }
@@ -375,7 +311,7 @@
 /* Dislike button was hit */
 - (IBAction)dislike: (id) sender {
   Song *playingSong = [playing playing];
-  if (![[self pandora] authenticated] || playingSong == nil) {
+  if (/*![[self pandora] authenticated] || */playingSong == nil) {
     return;
   }
 
@@ -394,7 +330,7 @@
 
 /* We are tired o fthe currently playing song, play another */
 - (IBAction)tired: (id) sender {
-  if (![[self pandora] authenticated] ||
+  if (/*![[self pandora] authenticated] || */
       playing == nil || [playing playing] == nil) {
     return;
   }

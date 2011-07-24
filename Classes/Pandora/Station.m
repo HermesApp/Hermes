@@ -1,16 +1,8 @@
-//
-//  Station.m
-//  Pithos
-//
-//  Created by Alex Crichton on 3/12/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "Station.h"
 
 @implementation Station
 
-@synthesize stationId, name, songs, radio, stream, playing;
+@synthesize stationId, name, songs, stream, playing;
 
 - (id) init {
   [self setSongs:[NSMutableArray arrayWithCapacity:10]];
@@ -112,7 +104,7 @@
   if ([stream errorCode] != 0) {
     /* Try a few times to re-initialize the stream just in case it was a fluke
      * which caused the stream to fail */
-    NSLogd(@"Error on playback stream! count:%d, Retrying...", tries);
+    NSLogd(@"Error on playback stream! count:%lu, Retrying...", tries);
     [self retry];
   } else if (retrying) {
     /* If we were already retrying things, then we'll get a notification as soon

@@ -1,12 +1,4 @@
-//
-//  Keys.m
-//  Hermes
-//
-//  Created by Alex Crichton on 4/27/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-// 
 //  Thanks to pianobar for getting these keys
-
 
 int InputKey_n = 16;
 int InputKey_p[] = {

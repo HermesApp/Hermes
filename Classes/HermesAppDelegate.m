@@ -1,11 +1,3 @@
-//
-//  PithosAppDelegate.m
-//  Pithos
-//
-//  Created by Alex Crichton on 3/11/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "AppleMediaKeyController.h"
 #import "HermesAppDelegate.h"
 #import "Keychain.h"
@@ -14,7 +6,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize mainC, auth, playback, pandora, window;
+@synthesize stations, auth, playback, pandora, window;
 
 - (id) init {
   pandora = [[Pandora alloc] init];
@@ -35,20 +27,6 @@
   return YES;
 }
 
-- (void) closeAuthSheet {
-  [NSApp endSheet:authSheet];
-  [authSheet orderOut:self];
-}
-
-- (void) showAuthSheet {
-  [self hideSpinner];
-  [NSApp beginSheet: authSheet
-     modalForWindow: window
-      modalDelegate: self
-     didEndSelector: NULL
-        contextInfo: nil];
-}
-
 - (void) closeNewStationSheet {
   [NSApp endSheet:newStationSheet];
   [newStationSheet orderOut:self];
@@ -62,14 +40,9 @@
         contextInfo: nil];
 }
 
-- (void) showSpinner {
-  [appLoading setHidden:NO];
-  [appLoading startAnimation:nil];
-}
-
-- (void) hideSpinner {
-  [appLoading setHidden:YES];
-  [appLoading stopAnimation:nil];
+- (void) showLoader {
+  [self setCurrentView:loadingView];
+  [loadingIcon startAnimation:nil];
 }
 
 - (void) cacheAuth: (NSString*) username : (NSString*) password {
@@ -77,26 +50,47 @@
   KeychainSetItem(username, password);
 }
 
+- (void) setCurrentView:(NSView *)view {
+  NSView *superview = [window contentView];
+
+  if ([[superview subviews] count] > 0) {
+    NSView *prev_view = [[superview subviews] objectAtIndex:0];
+    if (prev_view == view) {
+      return;
+    }
+    [[superview animator] replaceSubview:prev_view with:view];
+  } else {
+    [superview addSubview:view];
+  }
+
+  NSRect frame = [view frame];
+  NSRect superFrame = [superview frame];
+  frame.size.width = superFrame.size.width;
+  frame.size.height = superFrame.size.height;
+  [view setFrame:frame];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [self showSpinner];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(handlePandoraError:)
+    name:@"hermes.pandora-error"
+    object:[[NSApp delegate] pandora]];
 
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
 
-  /* In case we need to do something on wake, here's the code */
-  //[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
-  //    selector: @selector(receiveWakeNote:)
-  //    name: NSWorkspaceDidWakeNotification object: NULL];
+  @try {
+    NSString *savedUsername = [self getCachedUsername];
+    NSString *savedPassword = [self getCachedPassword];
 
-  NSString *savedUsername = [self getCachedUsername];
-  NSString *savedPassword = [self getCachedPassword];
-
-  if (savedUsername != nil && savedPassword != nil) {
+    [self showLoader];
     [pandora authenticate: savedUsername : savedPassword];
-  } else {
-    [self showAuthSheet];
+    /* Callback in AuthController will handle everything else */
+  } @catch (KeychainException *e) {
+    [auth show];
   }
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -118,17 +112,28 @@
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
-  [mainC hideDrawer];
+  [stations hideDrawer];
 }
 
 - (void)applicationWillBecomeActive:(NSNotification *)aNotification {
   if ([pandora authToken] != nil) {
-    [mainC showDrawer];
+    [stations showDrawer];
   }
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
   [[playback playing] pause];
+}
+
+- (void) handlePandoraError: (NSNotification*) notification {
+  NSString *err = [[notification userInfo] objectForKey:@"error"];
+
+  if ([err isEqualToString:@"AUTH_INVALID_USERNAME_PASSWORD"]) {
+    [auth authenticationFailed:notification];
+  } else {
+    [self setCurrentView:errorView];
+    [errorLabel setStringValue:err];
+  }
 }
 
 @end

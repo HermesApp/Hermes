@@ -10,24 +10,6 @@
 
 @end
 
-@implementation RetryRequest
-
-@synthesize payload1, payload2, callback;
-
-- (id) init {
-  payload1 = nil;
-  payload2 = nil;
-  return self;
-}
-
-- (void) dealloc {
-  [payload1 release];
-  [payload2 release];
-  [super dealloc];
-}
-
-@end
-
 @implementation Pandora
 
 @synthesize authToken, stations;
@@ -61,28 +43,10 @@
   return authToken != nil && listenerID != nil;
 }
 
-- (BOOL) retryPossible {
-  return [self authenticated] && retries < 1;
-}
-
-- (BOOL) retryAuthenticate:(RetryRequest*) req {
-  NSString *username = [[NSApp delegate] getCachedUsername];
-  NSString *password = [[NSApp delegate] getCachedPassword];
-
-  NSLogd(@"Retrying authentication by fetching new token...");
-
-  retries++;
-  return [self authenticate: username : password : req];
-}
-
-- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
-  return [self authenticate:user : pass : nil];
-}
-
 /**
  * Authenticates with Pandora. Stores information from the response
  */
-- (BOOL) authenticate:(NSString*)user :(NSString*)pass : (RetryRequest*) req {
+- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -97,54 +61,19 @@
     ];
 
   return [self sendRequest: @"authenticateListener" : PandoraEncrypt(xml) :
-    @selector(handleAuthenticate::) : req];
+    @selector(handleAuthenticate::)];
 }
 
-- (void) handleAuthenticate: (xmlDocPtr) doc : (RetryRequest*) req {
-  [self setAuthToken:nil];
-  [self setListenerID:nil];
+- (void) handleAuthenticate: (xmlDocPtr) doc {
+  [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
+  [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
 
-  if (doc != NULL) {
-    [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
-    [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
-  }
-
-  if ([self authenticated]) {
-    retries = 0;
-  }
-
-  if (req != nil) {
-    NSLogd(@"Retrying failed request...");
-
-    [self performSelector:[req callback]
-               withObject:[req payload1]
-               withObject:[req payload2]];
-    [req release];
-
-    if (![self authenticated]) {
-      [self notify:@"hermes.need-reauth" with:nil];
-    }
-  } else {
-    [self notify:@"hermes.authenticated" with:nil];
-  }
+  [self notify:@"hermes.authenticated" with:nil];
 }
 
 - (void) handleStations: (xmlDocPtr) doc {
   int i;
   NSArray *names, *ids;
-
-  if (doc == NULL) {
-    if ([self retryPossible]) {
-      RetryRequest *req = [[RetryRequest alloc] init];
-      [req setCallback:@selector(fetchStations)];
-      if ([self retryAuthenticate:req]) {
-        return;
-      }
-    }
-
-    [self notify:@"hermes.stations" with:nil];
-    return;
-  }
 
   names = [self xpath: doc : "//member[name='stationName']/value"];
   ids   = [self xpath: doc : "//member[name='stationId']/value"];
@@ -176,7 +105,9 @@
  */
 - (BOOL) fetchStations {
   if (![self authenticated]) {
-    [self handleStations:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -200,23 +131,8 @@
   NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
 
   NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
-  *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
-  *albums;
-  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 1];
-
-  if (doc == NULL) {
-    if ([self retryPossible]) {
-      RetryRequest *req = [[RetryRequest alloc] init];
-      [req setCallback:@selector(getFragment:)];
-      [req setPayload1:station_id];
-      if ([self retryAuthenticate:req]) {
-        return;
-      }
-    }
-
-    [self notify:name with:dict];
-    return;
-  }
+    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
+    *albums;
 
   artists     = [self xpath: doc : "//member[name='artistSummary']/value"];
   titles      = [self xpath: doc : "//member[name='songTitle']/value"];
@@ -255,8 +171,8 @@
     [songs addObject: song];
   }
 
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:songs forKey:@"songs"];
-
   [self notify:name with:dict];
 }
 
@@ -265,7 +181,9 @@
  */
 - (BOOL) getFragment: (NSString*) station_id {
   if (![self authenticated]) {
-    [self handleFragment:NULL : station_id];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -318,7 +236,9 @@
  */
 - (BOOL) rateSong: (Song*) song : (NSString*) rating {
   if (![self authenticated]) {
-    [self handleRating:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -355,7 +275,9 @@
  */
 - (BOOL) tiredOfSong: (Song*) song {
   if (![self authenticated]) {
-    [self handleTired:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -389,11 +311,6 @@
   [map setObject:foundSongs forKey:@"Songs"];
   [map setObject:foundStations forKey:@"Stations"];
   [map setObject:foundArtists forKey:@"Artists"];
-
-  if (doc == NULL) {
-    [self notify:@"hermes.search-results" with:map];
-    return;
-  }
 
   NSArray *songs = [self xpath:doc :
                     "//member[name='songs']//member[name='musicId' or name='artistSummary'"
@@ -442,7 +359,9 @@
 
 - (BOOL) search: (NSString*) search {
   if (![self authenticated]) {
-    [self handleSearch:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -471,7 +390,9 @@
  */
 - (BOOL) createStation: (NSString*)musicId {
   if (![self authenticated]) {
-    [self handleCreateStation:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -495,11 +416,6 @@
 - (void) handleRemoveStation: (xmlDocPtr)doc : (NSString*)stationId {
   int i;
 
-  if (doc == NULL) {
-    [self notify:@"hermes.station-removed" with:nil];
-    return;
-  }
-
   for (i = 0; i < [stations count]; i++) {
     if ([[[stations objectAtIndex:i] stationId] isEqual:stationId]) {
       break;
@@ -520,7 +436,9 @@
  */
 - (BOOL) removeStation: (NSString*)stationId {
   if (![self authenticated]) {
-    [self handleRemoveStation:NULL : stationId];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:
@@ -549,7 +467,9 @@
  */
 - (BOOL) renameStation: (NSString*)stationId to:(NSString*)name {
   if (![self authenticated]) {
-    [self handleRenamedStation:NULL];
+    @throw [NSException exceptionWithName:@"pandora.need-authentication"
+                                   reason:@"Not authenticated yet"
+                                 userInfo:nil];
   }
 
   NSString *xml = [NSString stringWithFormat:

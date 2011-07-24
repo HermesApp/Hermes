@@ -1,11 +1,3 @@
-//
-//  API.m
-//  Hermes
-//
-//  Created by Alex Crichton on 3/15/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "API.h"
 
 #include <libxml/xpath.h>
@@ -113,39 +105,27 @@
   NSString *rid  = [time substringFromIndex: 3];
   NSString *url  = [NSString stringWithFormat:
       @"http://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
-      @"?rid=%@P&method=%@",
-      rid, method];
+      @"?rid=%@P&method=%@", rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
-    NSString *lid = [NSString stringWithFormat:@"lid=%@", listenerID];
+    NSString *lid = [NSString stringWithFormat:@"&lid=%@", listenerID];
     url = [url stringByAppendingString:lid];
   }
 
   // Prepare the request
-  NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+  NSURL *nsurl = [NSURL URLWithString:url];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl];
 
-  [request setURL: [NSURL URLWithString:url]];
   [request setHTTPMethod: @"POST"];
   [request addValue: @"application/xml" forHTTPHeaderField: @"Content-Type"];
 
   // Create the body
-  NSMutableData *postBody = [NSMutableData data];
-  [postBody appendData: [data dataUsingEncoding:NSUTF8StringEncoding]];
-  [request setHTTPBody:postBody];
+  [request setHTTPBody:[data dataUsingEncoding:NSUTF8StringEncoding]];
 
-  // get response asynchronously. Don't start the connection
-  // just yet because we need to make sure we put it in the
-  // hash table first
+  // Fetch the response asynchronously, storing the callback information we're
+  // going to call at the end.
   NSURLConnection *conn = [[NSURLConnection alloc]
-    initWithRequest:request delegate:self
-    startImmediately:NO];
-
-  [request release];
-
-  if (conn == nil) {
-    NSLog(@"Couldn't create a connection to send!");
-    return NO;
-  }
+    initWithRequest:request delegate:self];
 
   ConnectionData *conn_data = [[ConnectionData alloc] init];
   [conn_data setCallback:callback];
@@ -154,10 +134,6 @@
 
   [activeRequests setObject:conn_data
     forKey:[NSNumber numberWithInteger: [conn hash]]];
-
-  // Schedule the defaults
-  [conn scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-  [conn start];
 
   return YES;
 }
@@ -170,12 +146,37 @@
 - (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc {
   ConnectionData *cdata = [self dataForConnection:connection];
 
-  SEL selector = [cdata callback];
-  id info = [cdata info];
+  NSString *fault = nil;
+  if (doc != NULL) {
+    fault = [self xpathText: doc : "//fault//member[name='faultString']/value"];
+  }
 
-  [self performSelector:selector withObject:(id)doc withObject:info];
+  if (doc == NULL || fault != nil) {
+    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    [info setValue:cdata forKey:@"connection-data"];
+    if (doc == NULL) {
+      [info setValue:@"Connection error" forKey:@"error"];
+    } else {
+      NSArray *parts = [fault componentsSeparatedByString:@"|"];
+      if ([parts count] >= 3) {
+        fault = [parts objectAtIndex:2];
+      }
+      [info setValue:fault forKey:@"error"];
+    }
+    NSLogd(@"Fault: %@", fault);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
+                                                        object:self
+                                                      userInfo:info];
+  } else {
+    SEL selector = [cdata callback];
+    id info = [cdata info];
+    [self performSelector:selector withObject:(id)doc withObject:info];
+  }
+
   [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
-  xmlFreeDoc(doc);
+  if (doc != NULL) {
+    xmlFreeDoc(doc);
+  }
   [connection release];
   [cdata release];
 }
@@ -202,19 +203,6 @@
 
   xmlDocPtr doc = xmlReadMemory([[cdata data] bytes], [[cdata data] length], "",
                                 NULL, XML_PARSE_RECOVER);
-
-  NSArray *fault = [self xpath: doc : "//methodResponse/fault"];
-
-  if ([fault count] > 0) {
-    NSString *resp = [[NSString alloc] initWithData:[cdata data]
-                                           encoding:NSASCIIStringEncoding];
-    NSLogd(@"Fault!: %@", resp);
-    [resp release];
-    xmlFreeDoc(doc);
-    [self cleanupConnection:connection : NULL];
-
-    return;
-  }
 
   [self cleanupConnection:connection : doc];
 }

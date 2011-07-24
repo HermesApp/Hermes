@@ -3,14 +3,18 @@
 
 #import <Security/Security.h>
 
-BOOL KeychainLogError(OSStatus status) {
+@implementation KeychainException
+@end 
+
+BOOL KeychainHandleError(OSStatus status) {
   if (status == noErr) {
     return TRUE;
   } else {
-    CFStringRef error = SecCopyErrorMessageString(status, NULL);
-    NSLog(@"Keychain error: %@", error);
-    CFRelease(error);
-    return FALSE;
+    NSString *error = (NSString*) SecCopyErrorMessageString(status, NULL);
+    [error autorelease];
+    @throw [KeychainException exceptionWithName:@"Keychain Error"
+                                         reason:error
+                                       userInfo:nil];
   }
 }
 
@@ -29,7 +33,7 @@ BOOL KeychainSetItem(NSString* username, NSString* password) {
   if (result == noErr) {
     result = SecKeychainItemModifyContent(item, NULL, [password length],
                                           [password UTF8String]);
-    return KeychainLogError(result);
+    return KeychainHandleError(result);
   } else {
     result = SecKeychainAddGenericPassword(
       NULL,
@@ -41,7 +45,7 @@ BOOL KeychainSetItem(NSString* username, NSString* password) {
       [password UTF8String],
       NULL);
 
-    return KeychainLogError(result);
+    return KeychainHandleError(result);
   }
 }
 
@@ -59,7 +63,7 @@ NSString *KeychainGetPassword(NSString* username) {
     NULL);
 
   if (result != noErr) {
-    KeychainLogError(result);
+    KeychainHandleError(result);
     return nil;
   }
 

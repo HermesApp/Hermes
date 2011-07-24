@@ -18,7 +18,7 @@
 		FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2442BA136B18DC00E126D3 /* PreferencesController.m */; };
 		FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435E136B3D6C00E126D3 /* CHANGELOG.md */; };
 		FA244361136B3D6C00E126D3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435F136B3D6C00E126D3 /* README.md */; };
-		FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* MainController.m */; };
+		FA2A3F7F132BF97E0089AECC /* StationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* StationsController.m */; };
 		FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F78132BF97E0089AECC /* Pandora.m */; };
 		FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F92132BF9F50089AECC /* Crypt.m */; };
 		FA2A3F99132BF9F50089AECC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F95132BF9F50089AECC /* Song.m */; };
@@ -103,8 +103,8 @@
 		FA2442BA136B18DC00E126D3 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		FA24435E136B3D6C00E126D3 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		FA24435F136B3D6C00E126D3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		FA2A3F75132BF97E0089AECC /* MainController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainController.h; sourceTree = "<group>"; };
-		FA2A3F76132BF97E0089AECC /* MainController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainController.m; sourceTree = "<group>"; };
+		FA2A3F75132BF97E0089AECC /* StationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationsController.h; sourceTree = "<group>"; };
+		FA2A3F76132BF97E0089AECC /* StationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationsController.m; sourceTree = "<group>"; };
 		FA2A3F77132BF97E0089AECC /* Pandora.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pandora.h; sourceTree = "<group>"; };
 		FA2A3F78132BF97E0089AECC /* Pandora.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pandora.m; sourceTree = "<group>"; };
 		FA2A3F91132BF9F50089AECC /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
@@ -177,8 +177,8 @@
 			children = (
 				FA2A3FBA132BFA6F0089AECC /* AudioStreamer */,
 				FA2A3F90132BF9F50089AECC /* Pandora */,
-				FA2A3F75132BF97E0089AECC /* MainController.h */,
-				FA2A3F76132BF97E0089AECC /* MainController.m */,
+				FA2A3F75132BF97E0089AECC /* StationsController.h */,
+				FA2A3F76132BF97E0089AECC /* StationsController.m */,
 				FA2A3F77132BF97E0089AECC /* Pandora.h */,
 				FA2A3F78132BF97E0089AECC /* Pandora.m */,
 				256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
@@ -444,7 +444,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				FA2A3F7F132BF97E0089AECC /* MainController.m in Sources */,
+				FA2A3F7F132BF97E0089AECC /* StationsController.m in Sources */,
 				FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */,
 				FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */,
 				FA2A3F99132BF9F50089AECC /* Song.m in Sources */,

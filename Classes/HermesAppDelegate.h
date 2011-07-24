@@ -1,14 +1,4 @@
-//
-//  PithosAppDelegate.h
-//  Pithos
-//
-//  Created by Alex Crichton on 3/11/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
-#import <Cocoa/Cocoa.h>
-
-#import "MainController.h"
+#import "StationsController.h"
 #import "AuthController.h"
 #import "PlaybackController.h"
 #import "Pandora.h"
@@ -17,30 +7,33 @@
 
   Pandora *pandora;
 
-  IBOutlet NSProgressIndicator *appLoading;
+  /* Generic loading view */
+  IBOutlet NSView *loadingView;
+  IBOutlet NSProgressIndicator *loadingIcon;
 
+  /* Pandora error view */
+  IBOutlet NSView *errorView;
+  IBOutlet NSTextField *errorLabel;
+  
   IBOutlet NSWindow *window;
-  IBOutlet NSWindow *authSheet;
   IBOutlet NSWindow *newStationSheet;
-
-  IBOutlet MainController *mainC;
+  
+  IBOutlet StationsController *stations;
   IBOutlet AuthController *auth;
   IBOutlet PlaybackController *playback;
 }
 
 @property (readonly) NSWindow *window;
-@property (assign) MainController *mainC;
+@property (readonly) StationsController *stations;
 @property (assign) AuthController *auth;
 @property (assign) PlaybackController *playback;
 @property (retain) Pandora *pandora;
 
-- (void) closeAuthSheet;
-- (void) showAuthSheet;
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
 - (void) cacheAuth: (NSString*) username : (NSString*) password;
-- (void) showSpinner;
-- (void) hideSpinner;
+- (void) setCurrentView: (NSView*) view;
+- (void) showLoader;
 
 - (NSString*) getCachedUsername;
 - (NSString*) getCachedPassword;

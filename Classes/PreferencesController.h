@@ -1,13 +1,3 @@
-//
-//  PreferencesController.h
-//  Hermes
-//
-//  Created by Alex Crichton on 4/29/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
-#import <Cocoa/Cocoa.h>
-
 #define PLEASE_BIND_MEDIA @"hermes.please-bind-media"
 #define PLEASE_SCROBBLE @"hermes.please-scrobble"
 

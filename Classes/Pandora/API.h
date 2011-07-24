@@ -1,11 +1,3 @@
-//
-//  API.h
-//  Hermes
-//
-//  Created by Alex Crichton on 3/15/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #include <libxml/parser.h>
 
 #pragma once

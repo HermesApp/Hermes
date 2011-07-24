@@ -1,11 +1,3 @@
-//
-//  ImageLoader.m
-//  Hermes
-//
-//  Created by Alex Crichton on 3/16/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "ImageLoader.h"
 
 @implementation ImageLoader

@@ -1,19 +1,12 @@
-//
-//  MainController.h
-//  Pithos
-//
-//  Created by Alex Crichton on 3/11/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import <Cocoa/Cocoa.h>
 #import <Quartz/Quartz.h>
 #import "Pandora.h"
 #import "Station.h"
 
-@interface MainController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
+@interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
-  IBOutlet NSTextField *selectStation;
+  IBOutlet NSView *view;
+  
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
@@ -30,7 +23,7 @@
 
 - (void) showDrawer;
 - (void) hideDrawer;
-- (void)afterAuthentication;
+- (void) show;
 
 // Buttons at bottom of drawer
 - (IBAction)deleteSelected: (id)sender;

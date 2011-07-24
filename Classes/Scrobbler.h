@@ -1,15 +1,5 @@
-//
-//  Scrobbler.h
-//  Hermes
-//
-//  Created by Alex Crichton on 4/27/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "FMEngine.h"
 #import "Song.h"
-
-#define TOKEN_NOT_AUTHORIZED 14
 
 @interface Scrobbler : NSObject {
   FMEngine *engine;

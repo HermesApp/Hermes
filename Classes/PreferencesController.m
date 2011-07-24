@@ -1,11 +1,3 @@
-//
-//  PreferencesController.m
-//  Hermes
-//
-//  Created by Alex Crichton on 4/29/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "PreferencesController.h"
 #import "Scrobbler.h"
 #import "AppleMediaKeyController.h"

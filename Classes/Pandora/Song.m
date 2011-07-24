@@ -1,25 +1,16 @@
-//
-//  Song.m
-//  Pithos
-//
-//  Created by Alex Crichton on 3/12/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
-//
-
 #import "Song.h"
 #import "Crypt.h"
 
 @implementation Song
 
-@synthesize artist, title, album, art, url, stationId, musicId, userSeed, rating,
-  songType, albumUrl, artistUrl, titleUrl, otherArt;
+@synthesize artist, title, album, url, stationId, musicId, userSeed, rating,
+  songType, albumUrl, artistUrl, titleUrl, art;
 
 - (void) dealloc {
   [artist release];
   [title release];
   [album release];
   [art release];
-  [otherArt release];
   [url release];
   [stationId release];
   [musicId release];
@@ -31,15 +22,6 @@
   [titleUrl release];
 
   [super dealloc];
-}
-
-- (void) setArt:(NSString*)a {
-  art = [a stringByReplacingOccurrencesOfString:@"130W_130H"
-      withString:@"500W_500H"];
-
-  otherArt = a;
-  [otherArt retain];
-  [art retain];
 }
 
 /**
