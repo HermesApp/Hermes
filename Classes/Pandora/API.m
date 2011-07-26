@@ -1,14 +1,32 @@
 #import "API.h"
+#import "Crypt.h"
 
 #include <libxml/xpath.h>
 #include <string.h>
 
-@implementation ConnectionData
-@synthesize callback, data, info;
+@implementation PandoraRequest
+
+@synthesize requestData, requestMethod, callback, info, responseData;
+
++ (PandoraRequest*) requestWithMethod: (NSString*) method
+                                 data: (NSString*) data
+                             callback: (SEL) callback
+                                 info: (NSObject*) info {
+  PandoraRequest *req = [[PandoraRequest alloc] init];
+  req->requestMethod = [method retain];
+  req->requestData = [PandoraEncrypt(data) retain];
+  req->callback = callback;
+  req->info = [info retain];
+  req->responseData = [[NSMutableData alloc] initWithCapacity:1024];
+
+  return [req autorelease];
+}
 
 - (void) dealloc {
-  [data release];
+  [requestMethod release];
   [info release];
+  [requestData release];
+  [responseData release];
   [super dealloc];
 }
 
@@ -21,6 +39,12 @@
 - (id) init {
   activeRequests = [[NSMutableDictionary alloc] init];
   return [super init];
+}
+
+- (void) dealloc {
+  [activeRequests release];
+  [listenerID release];
+  return [super dealloc];
 }
 
 /**
@@ -93,14 +117,11 @@
   return ret;
 }
 
-- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback {
-  return [self sendRequest:method : data : callback : nil];
-}
-
 /**
  * Sends a request to the server and parses the response as XML
  */
-- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info {
+- (BOOL) sendRequest: (PandoraRequest*) request {
+  NSString *method = [request requestMethod];
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
   NSString *url  = [NSString stringWithFormat:
@@ -112,39 +133,38 @@
     url = [url stringByAppendingString:lid];
   }
 
-  // Prepare the request
+  /* Prepare the request */
   NSURL *nsurl = [NSURL URLWithString:url];
-  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:nsurl];
+  NSMutableURLRequest *nsrequest = [NSMutableURLRequest requestWithURL:nsurl];
 
-  [request setHTTPMethod: @"POST"];
-  [request addValue: @"application/xml" forHTTPHeaderField: @"Content-Type"];
+  [nsrequest setHTTPMethod: @"POST"];
+  [nsrequest addValue: @"application/xml" forHTTPHeaderField: @"Content-Type"];
 
-  // Create the body
-  [request setHTTPBody:[data dataUsingEncoding:NSUTF8StringEncoding]];
+  /* Create the body */
+  [nsrequest setHTTPBody:[[request requestData] dataUsingEncoding:NSUTF8StringEncoding]];
 
-  // Fetch the response asynchronously, storing the callback information we're
-  // going to call at the end.
+  /* Fetch the response asynchronously */
   NSURLConnection *conn = [[NSURLConnection alloc]
-    initWithRequest:request delegate:self];
+    initWithRequest:nsrequest delegate:self];
 
-  ConnectionData *conn_data = [[ConnectionData alloc] init];
-  [conn_data setCallback:callback];
-  [conn_data setData:[NSMutableData dataWithCapacity:1024]];
-  [conn_data setInfo:info];
-
-  [activeRequests setObject:conn_data
+  [activeRequests setObject:request
     forKey:[NSNumber numberWithInteger: [conn hash]]];
 
   return YES;
 }
 
-- (ConnectionData*) dataForConnection: (NSURLConnection*)connection {
+/* Helper method for getting the PandoraRequest for a connection */
+- (PandoraRequest*) dataForConnection: (NSURLConnection*)connection {
   return [activeRequests objectForKey:
       [NSNumber numberWithInteger:[connection hash]]];
 }
 
+/* Cleans up the specified connection with the parsed XML. This method will
+   check the document for errors (if the document exists. The error event
+   will be published through the default NSNotificationCenter, or the
+   callback for the connection will be invoked */
 - (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc {
-  ConnectionData *cdata = [self dataForConnection:connection];
+  PandoraRequest *request = [self dataForConnection:connection];
 
   NSString *fault = nil;
   if (doc != NULL) {
@@ -153,39 +173,43 @@
 
   if (doc == NULL || fault != nil) {
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    [info setValue:cdata forKey:@"connection-data"];
     if (doc == NULL) {
-      [info setValue:@"Connection error" forKey:@"error"];
+      fault = @"Connection error";
     } else {
       NSArray *parts = [fault componentsSeparatedByString:@"|"];
       if ([parts count] >= 3) {
         fault = [parts objectAtIndex:2];
       }
-      [info setValue:fault forKey:@"error"];
     }
     NSLogd(@"Fault: %@", fault);
+
+    [info setValue:request forKey:@"request"];
+    [info setValue:fault   forKey:@"error"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
                                                         object:self
                                                       userInfo:info];
   } else {
-    SEL selector = [cdata callback];
-    id info = [cdata info];
-    [self performSelector:selector withObject:(id)doc withObject:info];
+    /* Only invoke the callback if there's no faults */
+    [self performSelector:[request callback]
+               withObject:(id)doc
+               withObject:[request info]];
   }
 
+  /* Always free these up */
   [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
   if (doc != NULL) {
     xmlFreeDoc(doc);
   }
   [connection release];
-  [cdata release];
 }
 
+/* Collect the data received */
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  ConnectionData *cdata = [self dataForConnection:connection];
-  [[cdata data] appendData:data];
+  PandoraRequest *request = [self dataForConnection:connection];
+  [[request responseData] appendData:data];
 }
 
+/* Immediately cleans up if we have a bad response */
 - (void)connection:(NSURLConnection *)connection
     didReceiveResponse:(NSHTTPURLResponse *)response {
   if ([response statusCode] < 200 || [response statusCode] >= 300) {
@@ -194,15 +218,21 @@
   }
 }
 
+/* Immediately cleans up the connection with no XML document */
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+  NSLogd(@"Connection failed with: %@", [error localizedDescription]);
   [self cleanupConnection:connection : NULL];
 }
 
+/* Parses the XML received from the connection, then cleans up */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  ConnectionData *cdata = [self dataForConnection:connection];
+  PandoraRequest *request = [self dataForConnection:connection];
 
-  xmlDocPtr doc = xmlReadMemory([[cdata data] bytes], [[cdata data] length], "",
-                                NULL, XML_PARSE_RECOVER);
+  xmlDocPtr doc = xmlReadMemory([[request responseData] bytes],
+                                [[request responseData] length],
+                                "",
+                                NULL,
+                                XML_PARSE_RECOVER);
 
   [self cleanupConnection:connection : doc];
 }

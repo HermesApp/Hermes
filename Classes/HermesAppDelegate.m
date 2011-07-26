@@ -87,7 +87,9 @@
     NSString *savedPassword = [self getCachedPassword];
 
     [self showLoader];
-    [pandora authenticate: savedUsername : savedPassword];
+    [pandora authenticate:savedUsername
+                         :savedPassword
+                         :nil];
     /* Callback in AuthController will handle everything else */
   } @catch (KeychainException *e) {
     [auth show];
@@ -129,9 +131,19 @@
   NSString *err = [[notification userInfo] objectForKey:@"error"];
 
   if ([err isEqualToString:@"AUTH_INVALID_USERNAME_PASSWORD"]) {
+    [[playback playing] pause];
     [auth authenticationFailed:notification];
   } else if ([err isEqualToString:@"PLAYLIST_END"]) {
     [playback noSongs:notification];
+  } else if ([err isEqualToString:@"AUTH_INVALID_TOKEN"]) {
+    @try {
+      [pandora authenticate:[self getCachedUsername]
+                           :[self getCachedPassword]
+                           :[[notification userInfo] objectForKey:@"request"]];
+    } @catch (KeychainException *e) {
+      [[playback playing] pause];
+      [auth authenticationFailed:notification];
+    }
   } else {
     [self setCurrentView:errorView];
     [errorLabel setStringValue:err];

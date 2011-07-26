@@ -6,16 +6,25 @@
 #define PANDORA_API_PATH @"/radio/xmlrpc/"
 #define PANDORA_API_VERSION @"v31"
 
-@interface ConnectionData : NSObject {
+@interface PandoraRequest : NSObject {
+  @private
   SEL callback;
-  NSMutableData *data;
-  id info;
+  NSObject *info;
+  NSString *requestData;
+  NSString *requestMethod;
+  NSMutableData *responseData;
 }
 
-@property (readwrite) SEL callback;
-@property (retain) NSMutableData *data;
-@property (retain) id info;
+@property (readonly) NSString *requestData;
+@property (readonly) NSString *requestMethod;
+@property (readonly) NSMutableData *responseData;
+@property (readonly) NSObject *info;
+@property (readonly) SEL callback;
 
++ (PandoraRequest*) requestWithMethod: (NSString*)requestMethod
+                                 data: (NSString*) data
+                             callback: (SEL) callback
+                                 info: (NSObject*) info;
 @end
 
 @interface API : NSObject {
@@ -29,7 +38,6 @@
 - (int) time;
 - (NSArray*) xpath: (xmlDocPtr) doc : (char*) xpath;
 - (NSString*) xpathText: (xmlDocPtr)doc : (char*) xpath;
-- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback;
-- (BOOL) sendRequest: (NSString*)method : (NSString*)data : (SEL)callback : (id)info;
+- (BOOL) sendRequest: (PandoraRequest*) request;
 
 @end

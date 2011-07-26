@@ -44,7 +44,9 @@
   [spinner setHidden:NO];
   [spinner startAnimation: sender];
 
-  [[[NSApp delegate] pandora] authenticate:[username stringValue] : [password stringValue]];
+  [[[NSApp delegate] pandora] authenticate:[username stringValue]
+                                          :[password stringValue]
+                                          :nil];
   [login setEnabled:NO];
 }
 

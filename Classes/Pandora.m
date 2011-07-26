@@ -46,7 +46,7 @@
 /**
  * Authenticates with Pandora. Stores information from the response
  */
-- (BOOL) authenticate:(NSString*)user :(NSString*)pass {
+- (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -60,15 +60,23 @@
       [self time], user, pass
     ];
 
-  return [self sendRequest: @"authenticateListener" : PandoraEncrypt(xml) :
-    @selector(handleAuthenticate:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"authenticateListener"
+                                       data:xml
+                                   callback:@selector(handleAuthenticate::)
+                                       info:req]];
 }
 
-- (void) handleAuthenticate: (xmlDocPtr) doc {
+- (void) handleAuthenticate: (xmlDocPtr) doc : (PandoraRequest*) req {
   [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
   [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
 
-  [self notify:@"hermes.authenticated" with:nil];
+  if (req == nil) {
+    [self notify:@"hermes.authenticated" with:nil];
+  } else {
+    NSLogd(@"Retrying request...");
+    [self sendRequest:req];
+  }
 }
 
 - (void) handleStations: (xmlDocPtr) doc {
@@ -122,8 +130,11 @@
      [self time], authToken
    ];
 
-  return [self sendRequest: @"getStations" : PandoraEncrypt(xml) :
-      @selector(handleStations:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"getStations"
+                                       data:xml
+                                   callback:@selector(handleStations:)
+                                       info:nil]];
 }
 
 - (void) handleFragment: (xmlDocPtr) doc : (NSString*) station_id {
@@ -205,8 +216,11 @@
      [self time], authToken, station_id
    ];
 
-  return [self sendRequest: @"getStations" : PandoraEncrypt(xml) :
-          @selector(handleFragment::) : station_id];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"getFragment"
+                                       data:xml
+                                   callback:@selector(handleFragment::)
+                                       info:station_id]];
 }
 
 - (void) handleSync: (xmlDocPtr) doc {
@@ -224,7 +238,11 @@
       "<params></params>"
     "</methodCall>";
 
-  return [self sendRequest: @"sync" : PandoraEncrypt(xml) : @selector(handleSync:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"sync"
+                                       data:xml
+                                   callback:@selector(handleSync:)
+                                       info:nil]];
 }
 
 - (void) handleRating: (xmlDocPtr) doc {
@@ -262,8 +280,11 @@
    ];
 
   [song setRating: rating];
-  return [self sendRequest: @"station.addFeedback" : PandoraEncrypt(xml) :
-      @selector(handleRating:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"station.addFeedback"
+                                       data:xml
+                                   callback:@selector(handleRating:)
+                                       info:nil]];
 }
 
 - (void) handleTired: (xmlDocPtr) doc {
@@ -295,8 +316,11 @@
     [self time], authToken, [song musicId], [song userSeed], [song stationId]
   ];
 
-  return [self sendRequest: @"addTiredSong" : PandoraEncrypt(xml) :
-      @selector(handleTired:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"addTiredSong"
+                                       data:xml
+                                   callback:@selector(handleTired:)
+                                       info:nil]];
 }
 
 - (void) handleSearch: (xmlDocPtr) doc {
@@ -377,8 +401,11 @@
     [self time], authToken, search
   ];
 
-  return [self sendRequest: @"search" : PandoraEncrypt(xml) :
-          @selector(handleSearch:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"search"
+                                       data:xml
+                                   callback:@selector(handleSearch:)
+                                       info:nil]];
 }
 
 - (void) handleCreateStation: (xmlDocPtr) doc {
@@ -409,8 +436,11 @@
     [self time], authToken, musicId
   ];
 
-  return [self sendRequest: @"createStation" : PandoraEncrypt(xml) :
-          @selector(handleCreateStation:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"createStation"
+                                       data:xml
+                                   callback:@selector(handleCreateStation:)
+                                       info:nil]];
 }
 
 - (void) handleRemoveStation: (xmlDocPtr)doc : (NSString*)stationId {
@@ -454,8 +484,11 @@
     [self time], authToken, stationId
   ];
 
-  return [self sendRequest: @"removeStation" : PandoraEncrypt(xml) :
-          @selector(handleRemoveStation::) : stationId];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"removeStation"
+                                       data:xml
+                                   callback:@selector(handleRemoveStation::)
+                                       info:stationId]];
 }
 
 - (void) handleRenamedStation: (xmlDocPtr)doc {
@@ -486,8 +519,11 @@
     [self time], authToken, stationId, name
   ];
 
-  return [self sendRequest: @"setStationName" : PandoraEncrypt(xml) :
-          @selector(handleRenamedStation:)];
+  return [self sendRequest:
+          [PandoraRequest requestWithMethod:@"setStationName"
+                                       data:xml
+                                   callback:@selector(handleRenamedStation:)
+                                       info:nil]];
 }
 
 @end

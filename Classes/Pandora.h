@@ -22,7 +22,7 @@
 @property (retain) NSString* authToken;
 @property (retain) NSArray* stations;
 
-- (BOOL) authenticate: (NSString*)user :(NSString*)pass;
+- (BOOL) authenticate: (NSString*)user :(NSString*)pass :(PandoraRequest*)req;
 - (BOOL) fetchStations;
 - (BOOL) getFragment: (NSString*)station_id;
 - (BOOL) sync;
