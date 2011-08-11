@@ -2,8 +2,8 @@
 
 set -o errexit
 
-[ $ACTION = clean ] && exit 0
-[ $BUILD_STYLE = Release ] || { echo Distribution target requires "'Release'" build style; false; }
+[ "$ACTION" = "clean" ] && exit 0
+[ "$CONFIGURATION" = "Release" ] || { echo Distribution target requires "'Release'" build style; false; }
 
 VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleShortVersionString)
 INT_VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleVersion)
