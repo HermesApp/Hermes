@@ -1,6 +1,6 @@
-# Version 1.0.5 (unreleased)
+# Version 1.0.5 (8/16/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.4...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.4...v1.0.5)
 
 * [added] Much better error handling/reporting
 * [added] App now slides between windows instead of appearing
