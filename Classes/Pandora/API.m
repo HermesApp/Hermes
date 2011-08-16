@@ -13,13 +13,24 @@
                              callback: (SEL) callback
                                  info: (NSObject*) info {
   PandoraRequest *req = [[PandoraRequest alloc] init];
-  req->requestMethod = [method retain];
-  req->requestData = [PandoraEncrypt(data) retain];
-  req->callback = callback;
-  req->info = [info retain];
-  req->responseData = [[NSMutableData alloc] initWithCapacity:1024];
+
+  [req setRequestData:data];
+  [req setRequestMethod:method];
+  [req setCallback:callback];
+  [req setInfo:info];
+  [req resetResponse];
 
   return [req autorelease];
+}
+
+- (void) resetResponse {
+  [self setResponseData:[NSMutableData dataWithCapacity:1024]];
+}
+
+- (void) replaceAuthToken:(NSString*)token with:(NSString*)replacement {
+  NSString *new_data = [requestData stringByReplacingOccurrencesOfString:token
+                                                              withString:replacement];
+  [self setRequestData:new_data];
 }
 
 - (void) dealloc {
@@ -141,7 +152,8 @@
   [nsrequest addValue: @"application/xml" forHTTPHeaderField: @"Content-Type"];
 
   /* Create the body */
-  [nsrequest setHTTPBody:[[request requestData] dataUsingEncoding:NSUTF8StringEncoding]];
+  NSString *encrypted_data = PandoraEncrypt([request requestData]);
+  [nsrequest setHTTPBody:[encrypted_data dataUsingEncoding:NSUTF8StringEncoding]];
 
   /* Fetch the response asynchronously */
   NSURLConnection *conn = [[NSURLConnection alloc]
@@ -163,12 +175,11 @@
    check the document for errors (if the document exists. The error event
    will be published through the default NSNotificationCenter, or the
    callback for the connection will be invoked */
-- (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc {
+- (void)cleanupConnection:(NSURLConnection *)connection : (xmlDocPtr)doc : (NSString*) fault {
   PandoraRequest *request = [self dataForConnection:connection];
 
-  NSString *fault = nil;
-  if (doc != NULL) {
-    fault = [self xpathText: doc : "//fault//member[name='faultString']/value"];
+  if (doc != NULL && fault == nil) {
+    fault = xpathRelative(doc, "//fault//member[name='faultString']/value", NULL);
   }
 
   if (doc == NULL || fault != nil) {
@@ -214,14 +225,13 @@
     didReceiveResponse:(NSHTTPURLResponse *)response {
   if ([response statusCode] < 200 || [response statusCode] >= 300) {
     [connection cancel];
-    [self cleanupConnection:connection : NULL];
+    [self cleanupConnection:connection : NULL : @"Didn't receive 2xx response"];
   }
 }
 
 /* Immediately cleans up the connection with no XML document */
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-  NSLogd(@"Connection failed with: %@", [error localizedDescription]);
-  [self cleanupConnection:connection : NULL];
+  [self cleanupConnection:connection : NULL : [error localizedDescription]];
 }
 
 /* Parses the XML received from the connection, then cleans up */
@@ -233,8 +243,7 @@
                                 "",
                                 NULL,
                                 XML_PARSE_RECOVER);
-
-  [self cleanupConnection:connection : doc];
+  [self cleanupConnection:connection : doc : nil];
 }
 
 @end

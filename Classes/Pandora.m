@@ -68,6 +68,7 @@
 }
 
 - (void) handleAuthenticate: (xmlDocPtr) doc : (PandoraRequest*) req {
+  NSString *oldAuthToken = [authToken retain];
   [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
   [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
 
@@ -75,8 +76,11 @@
     [self notify:@"hermes.authenticated" with:nil];
   } else {
     NSLogd(@"Retrying request...");
+    [req resetResponse];
+    [req replaceAuthToken:oldAuthToken with:authToken];
     [self sendRequest:req];
   }
+  [oldAuthToken release];
 }
 
 - (void) handleStations: (xmlDocPtr) doc {

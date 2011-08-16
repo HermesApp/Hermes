@@ -15,16 +15,18 @@
   NSMutableData *responseData;
 }
 
-@property (readonly) NSString *requestData;
-@property (readonly) NSString *requestMethod;
-@property (readonly) NSMutableData *responseData;
-@property (readonly) NSObject *info;
-@property (readonly) SEL callback;
+@property (retain) NSString *requestData;
+@property (retain) NSString *requestMethod;
+@property (retain) NSMutableData *responseData;
+@property (retain) NSObject *info;
+@property (readwrite) SEL callback;
 
-+ (PandoraRequest*) requestWithMethod: (NSString*)requestMethod
++ (PandoraRequest*) requestWithMethod: (NSString*) requestMethod
                                  data: (NSString*) data
                              callback: (SEL) callback
                                  info: (NSObject*) info;
+- (void) resetResponse;
+- (void) replaceAuthToken:(NSString*) token with:(NSString*) replacement;
 @end
 
 @interface API : NSObject {
