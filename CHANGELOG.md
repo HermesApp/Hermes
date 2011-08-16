@@ -1,3 +1,13 @@
+# Version 1.0.5 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.4...master)
+
+* [added] Much better error handling/reporting
+* [added] App now slides between windows instead of appearing
+* [fixed] Much more developer-friendly interface design
+* [fixed] Addressed some issues with receiving a station list from Pandora
+* [changed] Supporting 10.7+ now
+
 # Version 1.0.4 (7/9/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.3...v1.0.4)
