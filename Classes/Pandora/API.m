@@ -43,6 +43,80 @@
 
 @end
 
+BOOL xpathNodes(xmlDocPtr doc, char* xpath, void (^callback)(xmlNodePtr)) {
+  BOOL success = NO;
+  xmlXPathContextPtr xpathCtx;
+  xmlXPathObjectPtr xpathObj;
+  
+  /* Create xpath evaluation context */
+  xpathCtx = xmlXPathNewContext(doc);
+  if (xpathCtx == NULL) {
+    return NO;
+  }
+  
+  /* Evaluate xpath expression */
+  xpathObj = xmlXPathEvalExpression((xmlChar *)xpath, xpathCtx);
+  if (xpathObj == NULL) {
+    goto doneContext;
+  }
+
+  xmlNodeSetPtr nodes = xpathObj->nodesetval;
+  if (!nodes) {
+    goto done;
+  }
+
+  for (NSInteger i = 0; i < nodes->nodeNr; i++) {
+    callback(nodes->nodeTab[i]);
+  }
+  
+done:
+  /* Cleanup */
+  xmlXPathFreeObject(xpathObj);
+doneContext:
+  xmlXPathFreeContext(xpathCtx);
+  return success;
+}
+
+NSString* xpathRelative(xmlDocPtr doc, char* xpath, xmlNodePtr node) {
+  NSString *result = nil;
+  xmlXPathContextPtr xpathCtx;
+  xmlXPathObjectPtr xpathObj;
+
+  /* Create xpath evaluation context */
+  xpathCtx = xmlXPathNewContext(doc);
+  if (xpathCtx == NULL) {
+    return nil;
+  }
+  xpathCtx->node = node;
+
+  /* Evaluate xpath expression */
+  xpathObj = xmlXPathEvalExpression((xmlChar *)xpath, xpathCtx);
+  if (xpathObj == NULL) {
+    xmlXPathFreeContext(xpathCtx);
+    return nil;
+  }
+
+  xmlNodeSetPtr nodes = xpathObj->nodesetval;
+  if (!nodes || nodes->nodeNr < 1) {
+    goto done;
+  }
+  xmlNodePtr child = nodes->nodeTab[0];
+  char *content;
+  if (child->children == NULL || child->children->content == NULL) {
+    content = "";
+  } else {
+    content = (char*) child->children->content;
+  }
+  result = [NSString stringWithCString:content
+                              encoding:NSUTF8StringEncoding];
+
+done:
+  /* Cleanup */
+  xmlXPathFreeObject(xpathObj);
+  xmlXPathFreeContext(xpathCtx);
+  return result;
+}
+
 @implementation API
 
 @synthesize listenerID;
@@ -63,69 +137,6 @@
  */
 - (int) time {
   return [[NSDate date] timeIntervalSince1970];
-}
-
-/**
- * Performs and XPATH query on the specified document, returning the array of
- * contents for each node matched
- */
-- (NSArray*) xpath: (xmlDocPtr) doc : (char*) xpath {
-  xmlXPathContextPtr xpathCtx;
-  xmlXPathObjectPtr xpathObj;
-
-  /* Create xpath evaluation context */
-  xpathCtx = xmlXPathNewContext(doc);
-  if(xpathCtx == NULL) {
-    return nil;
-  }
-
-  /* Evaluate xpath expression */
-  xpathObj = xmlXPathEvalExpression((xmlChar *)xpath, xpathCtx);
-  if(xpathObj == NULL) {
-    xmlXPathFreeContext(xpathCtx);
-    return nil;
-  }
-
-  xmlNodeSetPtr nodes = xpathObj->nodesetval;
-  if (!nodes) {
-    xmlXPathFreeContext(xpathCtx);
-    xmlXPathFreeObject(xpathObj);
-    return nil;
-  }
-
-  NSMutableArray *resultNodes = [NSMutableArray array];
-  char *content;
-  for (NSInteger i = 0; i < nodes->nodeNr; i++) {
-    if (nodes->nodeTab[i]->children == NULL || nodes->nodeTab[i]->children->content == NULL) {
-      content = "";
-    } else {
-      content = (char*) nodes->nodeTab[i]->children->content;
-    }
-
-    NSString *str = [NSString stringWithCString: content encoding:NSUTF8StringEncoding];
-
-    [resultNodes addObject: str];
-  }
-
-  /* Cleanup */
-  xmlXPathFreeObject(xpathObj);
-  xmlXPathFreeContext(xpathCtx);
-
-  return resultNodes;
-}
-
-/**
- * Performs and xpath query and returns the content of the first node
- */
-- (NSString*) xpathText: (xmlDocPtr)doc : (char*) xpath {
-  NSArray  *arr = [self xpath: doc : xpath];
-  NSString *ret = nil;
-
-  if (arr != nil && [arr objectAtIndex: 0] != nil) {
-    ret = [arr objectAtIndex: 0];
-  }
-
-  return ret;
 }
 
 /**

@@ -4,6 +4,8 @@
 #import "Song.h"
 #import "HermesAppDelegate.h"
 
+static char *array_xpath = "/methodResponse/params/param/value/array/data/value";
+
 @implementation SearchResult
 
 @synthesize value, name;
@@ -69,8 +71,8 @@
 
 - (void) handleAuthenticate: (xmlDocPtr) doc : (PandoraRequest*) req {
   NSString *oldAuthToken = [authToken retain];
-  [self setAuthToken: [self xpathText: doc : "//member[name='authToken']/value"]];
-  [self setListenerID: [self xpathText: doc : "//member[name='listenerId']/value"]];
+  [self setAuthToken: xpathRelative(doc, "//member[name='authToken']/value", NULL)];
+  [self setListenerID: xpathRelative(doc, "//member[name='listenerId']/value", NULL)];
 
   if (req == nil) {
     [self notify:@"hermes.authenticated" with:nil];
@@ -84,20 +86,26 @@
 }
 
 - (void) handleStations: (xmlDocPtr) doc {
-  int i;
-  NSArray *names, *ids;
+  char *name_xpath = ".//member[name='stationName']/value";
+  char *id_xpath = ".//member[name='stationId']/value";
+  char *quickmix_xpath = ".//member[name='isQuickMix']/value/boolean";
 
-  names = [self xpath: doc : "//member[name='stationName']/value"];
-  ids   = [self xpath: doc : "//member[name='stationId']/value"];
+  xpathNodes(doc, array_xpath, ^(xmlNodePtr node) {
+    NSString *name = xpathRelative(doc, name_xpath, node);
+    NSString *stationId = xpathRelative(doc, id_xpath, node);
+    if (name == nil || stationId == nil) {
+      NSLog(@"Couldn't parse station, skipping. Name: %@, ID: %@",
+            name, stationId);
+      return;
+    }
 
-  for (i = 0; i < [names count]; i++) {
     Station *station = [[Station alloc] init];
 
-    [station setName:[names objectAtIndex: i]];
-    [station setStationId:[ids objectAtIndex: i]];
+    [station setName:name];
+    [station setStationId:stationId];
     [station setRadio:self];
 
-    if ([[station name] rangeOfString: @"QuickMix"].length != 0) {
+    if ([xpathRelative(doc, quickmix_xpath, node) isEqualToString:@"1"]) {
       [station setName:@"QuickMix"];
     }
 
@@ -107,7 +115,7 @@
       [station autorelease];
       [stations addObject:station];
     }
-  }
+  });
 
   [self notify:@"hermes.stations" with:nil];
 }
@@ -142,50 +150,31 @@
 }
 
 - (void) handleFragment: (xmlDocPtr) doc : (NSString*) station_id {
-  int i;
-  NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
+  NSMutableArray *songs = [NSMutableArray array];
 
-  NSArray *artists, *titles, *arts, *urls, *station_ids, *music_ids,
-    *user_seeds, *ratings, *song_types, *album_urls, *artist_urls, *title_urls,
-    *albums;
-
-  artists     = [self xpath: doc : "//member[name='artistSummary']/value"];
-  titles      = [self xpath: doc : "//member[name='songTitle']/value"];
-  albums      = [self xpath: doc : "//member[name='albumTitle']/value"];
-  arts        = [self xpath: doc : "//member[name='artRadio']/value"];
-  urls        = [self xpath: doc : "//member[name='audioURL']/value"];
-  station_ids = [self xpath: doc : "//member[name='stationId']/value"];
-  music_ids   = [self xpath: doc : "//member[name='musicId']/value"];
-  user_seeds  = [self xpath: doc : "//member[name='userSeed']/value"];
-  ratings     = [self xpath: doc : "//member[name='rating']/value/int"];
-  song_types  = [self xpath: doc : "//member[name='songType']/value/int"];
-  album_urls  = [self xpath: doc : "//member[name='albumDetailURL']/value"];
-  artist_urls = [self xpath: doc : "//member[name='artistDetailURL']/value"];
-  title_urls  = [self xpath: doc : "//member[name='songDetailURL']/value"];
-
-  NSMutableArray *songs = [NSMutableArray arrayWithCapacity:[artists count]];
-
-  for (i = 0; i < [artists count]; i++) {
+  xpathNodes(doc, array_xpath, ^(xmlNodePtr node) {
     Song *song = [[Song alloc] init];
     [song autorelease];
 
-    [song setArtist: [artists objectAtIndex: i]];
-    [song setTitle: [titles objectAtIndex: i]];
-    [song setAlbum: [albums objectAtIndex:i]];
-    [song setArt: [arts objectAtIndex: i]];
-    [song setUrl: [Song decryptURL: [urls objectAtIndex: i]]];
-    [song setStationId: [station_ids objectAtIndex: i]];
-    [song setMusicId: [music_ids objectAtIndex: i]];
-    [song setUserSeed: [user_seeds objectAtIndex: i]];
-    [song setRating: [ratings objectAtIndex: i]];
-    [song setSongType: [song_types objectAtIndex: i]];
-    [song setAlbumUrl: [album_urls objectAtIndex: i]];
-    [song setArtistUrl:  [artist_urls objectAtIndex: i]];
-    [song setTitleUrl: [title_urls objectAtIndex: i]];
+    [song setArtist: xpathRelative(doc, ".//member[name='artistSummary']/value", node)];
+    [song setTitle: xpathRelative(doc, ".//member[name='songTitle']/value", node)];
+    [song setAlbum: xpathRelative(doc, ".//member[name='albumTitle']/value", node)];
+    [song setArt: xpathRelative(doc, ".//member[name='artRadio']/value", node)];
+    NSString *url = xpathRelative(doc, ".//member[name='audioURL']/value", node);
+    [song setUrl: [Song decryptURL:url]];
+    [song setStationId: xpathRelative(doc, ".//member[name='stationId']/value", node)];
+    [song setMusicId: xpathRelative(doc, ".//member[name='musicId']/value", node)];
+    [song setUserSeed: xpathRelative(doc, ".//member[name='userSeed']/value", node)];
+    [song setRating: xpathRelative(doc, ".//member[name='rating']/value/int", node)];
+    [song setSongType: xpathRelative(doc, ".//member[name='songType']/value/int", node)];
+    [song setAlbumUrl: xpathRelative(doc, ".//member[name='albumDetailURL']/value", node)];
+    [song setArtistUrl:  xpathRelative(doc, ".//member[name='artistDetailURL']/value", node)];
+    [song setTitleUrl: xpathRelative(doc, ".//member[name='songDetailURL']/value", node)];
 
     [songs addObject: song];
-  }
+  });
 
+  NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:songs forKey:@"songs"];
   [self notify:name with:dict];
@@ -329,58 +318,39 @@
 
 - (void) handleSearch: (xmlDocPtr) doc {
   NSMutableDictionary *map = [NSMutableDictionary dictionaryWithCapacity:3];
-  int i;
 
-  NSMutableArray *foundSongs, *foundStations, *foundArtists;
-  foundSongs    = [NSMutableArray arrayWithCapacity:10];
-  foundStations = [NSMutableArray arrayWithCapacity:10];
-  foundArtists  = [NSMutableArray arrayWithCapacity:10];
+  NSMutableArray *search_songs, *search_stations, *search_artists;
+  search_songs    = [NSMutableArray array];
+  search_stations = [NSMutableArray array];
+  search_artists  = [NSMutableArray array];
 
-  [map setObject:foundSongs forKey:@"Songs"];
-  [map setObject:foundStations forKey:@"Stations"];
-  [map setObject:foundArtists forKey:@"Artists"];
+  [map setObject:search_songs forKey:@"Songs"];
+  [map setObject:search_stations forKey:@"Stations"];
+  [map setObject:search_artists forKey:@"Artists"];
 
-  NSArray *songs = [self xpath:doc :
-                    "//member[name='songs']//member[name='musicId' or name='artistSummary'"
-                    " or name='songTitle']/value"];
-  NSArray *stats = [self xpath:doc :
-                    "//member[name='stations']//member[name='musicId'"
-                    " or name='stationName']/value"];
-  NSArray *artists = [self xpath:doc :
-                      "//member[name='artists']//member[name='artistName'"
-                      " or name='musicId']/value"];
+  xpathNodes(doc, "//member[name='songs']/value/array/data/value", ^(xmlNodePtr node) {
+    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    NSString *artist = xpathRelative(doc, ".//member[name='artistSummary']/value", node);
+    NSString *song = xpathRelative(doc, ".//member[name='songTitle']/value", node);
 
-  SearchResult *r;
+    [r setName:[NSString stringWithFormat:@"%@ - %@", artist, song]];
+    [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
+    [search_songs addObject:r];
+  });
 
-  for (i = 0; i < [songs count]; i += 3) {
-    r = [[[SearchResult alloc] init] autorelease];
+  xpathNodes(doc, "//member[name='stations']/value/array/data/value", ^(xmlNodePtr node) {
+    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
+    [r setName:xpathRelative(doc, ".//member[name='stationName']/value", node)];
+    [search_stations addObject:r];
+  });
 
-    [r setName:
-     [NSString stringWithFormat:@"%@ - %@",
-      [songs objectAtIndex:i + 1], [songs objectAtIndex:i + 2]]];
-
-    [r setValue:[songs objectAtIndex:i]];
-
-    [foundSongs addObject:r];
-  }
-
-  for (i = 0; i < [stats count]; i += 2) {
-    r = [[[SearchResult alloc] init] autorelease];
-
-    [r setName:[stats objectAtIndex:i + 1]];
-    [r setValue:[stats objectAtIndex:i]];
-
-    [foundStations addObject:r];
-  }
-
-  for (i = 0; i < [artists count]; i += 2) {
-    r = [[[SearchResult alloc] init] autorelease];
-
-    [r setName:[artists objectAtIndex:i]];
-    [r setValue:[artists objectAtIndex:i + 1]];
-
-    [foundArtists addObject:r];
-  }
+  xpathNodes(doc, "//member[name='artists']/value/array/data/value", ^(xmlNodePtr node) {
+    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
+    [r setName:xpathRelative(doc, ".//member[name='artistName']/value", node)];
+    [search_artists addObject:r];
+  });
 
   [self notify:@"hermes.search-results" with:map];
 }

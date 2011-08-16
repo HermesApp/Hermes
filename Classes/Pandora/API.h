@@ -29,6 +29,9 @@
 - (void) replaceAuthToken:(NSString*) token with:(NSString*) replacement;
 @end
 
+BOOL xpathNodes(xmlDocPtr doc, char* xpath, void (^callback)(xmlNodePtr));
+NSString *xpathRelative(xmlDocPtr doc, char* xpath, xmlNodePtr node);
+
 @interface API : NSObject {
   NSString *listenerID;
 
@@ -38,8 +41,6 @@
 @property (retain) NSString* listenerID;
 
 - (int) time;
-- (NSArray*) xpath: (xmlDocPtr) doc : (char*) xpath;
-- (NSString*) xpathText: (xmlDocPtr)doc : (char*) xpath;
 - (BOOL) sendRequest: (PandoraRequest*) request;
 
 @end
