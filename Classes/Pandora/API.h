@@ -4,7 +4,7 @@
 
 #define PANDORA_API_HOST @"www.pandora.com"
 #define PANDORA_API_PATH @"/radio/xmlrpc/"
-#define PANDORA_API_VERSION @"v31"
+#define PANDORA_API_VERSION @"v32"
 
 @interface PandoraRequest : NSObject {
   @private
