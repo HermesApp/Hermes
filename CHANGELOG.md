@@ -1,3 +1,9 @@
+# Version 1.0.6 (9/21/11)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.5...v1.0.6)
+
+* [fixed] Updated to Pandora's v32 API (no changes yet)
+
 # Version 1.0.5 (8/16/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.4...v1.0.5)
