@@ -4,6 +4,7 @@
 
 * [fixed] Scrobbler correctly gets session key from user's keychain
 * [added] Growl notifications occur when songs play (can be turned off)
+* [added] Growl and media keys turned on by default
 
 # Version 1.0.6 (9/21/11)
 

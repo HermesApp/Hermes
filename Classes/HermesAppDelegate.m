@@ -96,7 +96,13 @@
     [auth show];
   }
 
+  NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
+  [app_defaults setObject:@"0" forKey:PLEASE_SCROBBLE];
+  [app_defaults setObject:@"1" forKey:PLEASE_GROWL];
+  [app_defaults setObject:@"1" forKey:PLEASE_BIND_MEDIA];
+
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults registerDefaults:app_defaults];
   if ([defaults boolForKey:PLEASE_SCROBBLE]) {
     [Scrobbler subscribe];
   }
