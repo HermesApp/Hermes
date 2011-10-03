@@ -124,13 +124,13 @@ Scrobbler *subscriber = nil;
     [self setEngine:[[FMEngine alloc] init]];
 
     /* Try to get the saved session token, otherwise get a new one */
-    NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
-    if (str == nil || [str isEqual:@""]) {
-      NSLogd(@"No saved sesssion token for last.fm, fetching another");
-      [self fetchAuthToken];
-    } else {
+    @try {
+      NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
       NSLogd(@"Found saved sessionn token found for last.fm");
       [self setSessionToken:str];
+    } @catch (KeychainException *e) {
+      NSLogd(@"No saved sesssion token for last.fm, fetching another");
+      [self fetchAuthToken];
     }
   }
 
