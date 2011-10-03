@@ -2,6 +2,7 @@
 #import "PlaybackController.h"
 #import "HermesAppDelegate.h"
 #import "Scrobbler.h"
+#import "Growler.h"
 
 @implementation PlaybackController
 
@@ -115,6 +116,7 @@
 
 - (void) imageLoaded: (NSNotification*) not {
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
+  NSImage *growlImage = image;
 
   if (image == nil) {
     // Try the second art if this was just the first art
@@ -130,9 +132,12 @@
     }
 
     image = [NSImage imageNamed:@"missing-album"];
+    growlImage = [NSApp icon];
   } else {
     [image autorelease];
   }
+
+  [Growler growl:[playing playing] withImage:growlImage];
 
   [[art animator] setImage:image];
   [artLoading setHidden:YES];

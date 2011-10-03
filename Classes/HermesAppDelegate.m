@@ -2,6 +2,7 @@
 #import "HermesAppDelegate.h"
 #import "Keychain.h"
 #import "Scrobbler.h"
+#import "Growler.h"
 #import "PreferencesController.h"
 
 @implementation HermesAppDelegate
@@ -99,7 +100,9 @@
   if ([defaults boolForKey:PLEASE_SCROBBLE]) {
     [Scrobbler subscribe];
   }
-
+  if ([defaults boolForKey:PLEASE_GROWL]) {
+    [Growler subscribe];
+  }
   if ([defaults boolForKey:PLEASE_BIND_MEDIA]) {
     [AppleMediaKeyController bindKeys];
   }

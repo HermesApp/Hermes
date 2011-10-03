@@ -1,10 +1,11 @@
 #import "PreferencesController.h"
 #import "Scrobbler.h"
+#import "Growler.h"
 #import "AppleMediaKeyController.h"
 
 @implementation PreferencesController
 
-@synthesize bindMedia, scrobble;
+@synthesize bindMedia, scrobble, growl;
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSInteger state;
@@ -14,6 +15,8 @@
   [scrobble setState:state];
   state = [defaults boolForKey:PLEASE_BIND_MEDIA] ? NSOnState : NSOffState;
   [bindMedia setState:state];
+  state = [defaults boolForKey:PLEASE_GROWL] ? NSOnState : NSOffState;
+  [growl setState:state];
 }
 
 - (IBAction) changeScrobbleTo: (id) sender {
@@ -37,6 +40,18 @@
   } else {
     [defaults setBool:NO forKey:PLEASE_BIND_MEDIA];
     [AppleMediaKeyController unbindKeys];
+  }
+}
+
+- (IBAction) changeGrowlTo: (id) sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  if ([growl state] == NSOnState) {
+    [defaults setBool:YES forKey:PLEASE_GROWL];
+    [Growler subscribe];
+  } else {
+    [defaults setBool:NO forKey:PLEASE_GROWL];
+    [Growler unsubscribe];
   }
 }
 
