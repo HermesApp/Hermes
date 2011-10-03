@@ -1,3 +1,10 @@
+# Version 1.0.7 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.7...master)
+
+* [fixed] Scrobbler correctly gets session key from user's keychain
+* [added] Growl notifications occur when songs play (can be turned off)
+
 # Version 1.0.6 (9/21/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.5...v1.0.6)
