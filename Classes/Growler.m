@@ -17,7 +17,7 @@ Growler *growler = nil;
   if (growler != nil) {
     return;
   }
-  
+
   growler = [[Growler alloc] init];
   [GrowlApplicationBridge setGrowlDelegate:growler];
 }
@@ -26,26 +26,34 @@ Growler *growler = nil;
   if (growler == nil) {
     return;
   }
-  
+
   [growler release];
   growler = nil;
   [GrowlApplicationBridge setGrowlDelegate:nil];
 }
 
-+ (void) growl:(Song *)song withImage:(NSImage *)image {
++ (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg {
   if (growler == nil) {
     return;
   }
-  
-  [growler growl:song withImage:image];
+
+  [growler growl:song withImage:image andMessage:msg];
 }
 
-- (void) growl:(Song *)song withImage:(NSImage *)image {
-  NSString *description = [song artist];
-  description = [description stringByAppendingString:@" - "];
-  description = [description stringByAppendingString:[song album]];
+- (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg {
+  NSString *title, *description;
 
-  [GrowlApplicationBridge notifyWithTitle:[song title]
+  if (msg == nil) {
+    title = [song title];
+    description = [song artist];
+    description = [description stringByAppendingString:@" - "];
+    description = [description stringByAppendingString:[song album]];
+  } else {
+    title = msg;
+    description = [song title];
+  }
+
+  [GrowlApplicationBridge notifyWithTitle:title
                               description:description
                          notificationName:@"hermes-song"
                                  iconData:[image TIFFRepresentation]
