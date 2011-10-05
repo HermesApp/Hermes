@@ -3,7 +3,6 @@
 //  Hermes
 //
 //  Created by Alex Crichton on 10/2/11.
-//  Copyright 2011 Carnegie Mellon University. All rights reserved.
 //
 
 #import <Growl/Growl.h>
