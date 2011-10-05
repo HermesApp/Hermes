@@ -72,4 +72,9 @@ Growler *growler = nil;
   return dict;
 }
 
+- (void) growlNotificationWasClicked:(id)clickContext {
+  [[[NSApp delegate] window] orderFront:nil];
+  [NSApp activateIgnoringOtherApps:YES];
+}
+
 @end
