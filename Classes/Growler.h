@@ -13,8 +13,8 @@
 
 + (void) subscribe;
 + (void) unsubscribe;
-+ (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg;
++ (void) growl:(Song*)song withImage:(NSImage*)image;
 
-- (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg;
+- (void) growl:(Song*)song withImage:(NSImage*)image;
 
 @end

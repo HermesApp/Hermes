@@ -137,7 +137,7 @@
     [image autorelease];
   }
 
-  [Growler growl:[playing playing] withImage:growlImage andMessage:nil];
+  [Growler growl:[playing playing] withImage:growlImage];
 
   [[art animator] setImage:image];
   [artLoading setHidden:YES];
@@ -271,14 +271,9 @@
 - (IBAction)playpause: (id) sender {
   if ([[playing stream] isPlaying]) {
     [playing pause];
-    [Growler growl:[playing playing]
-         withImage:[art image]
-        andMessage:@"Playback paused"];
   } else {
     [playing play];
-    [Growler growl:[playing playing]
-         withImage:[art image]
-        andMessage:@"Playback resumed"];
+    [Growler growl:[playing playing] withImage:[art image]];
   }
 }
 

@@ -32,34 +32,32 @@ Growler *growler = nil;
   [GrowlApplicationBridge setGrowlDelegate:nil];
 }
 
-+ (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg {
++ (void) growl:(Song*)song withImage:(NSImage*)image {
   if (growler == nil) {
     return;
   }
 
-  [growler growl:song withImage:image andMessage:msg];
+  [growler growl:song withImage:image];
 }
 
-- (void) growl:(Song*)song withImage:(NSImage*)image andMessage:(NSString*)msg {
-  NSString *title, *description;
+- (void) growl:(Song*)song withImage:(NSImage*)image {
+  NSString *title = [song title];
+  NSString *description = [song artist];
+  description = [description stringByAppendingString:@" - "];
+  description = [description stringByAppendingString:[song album]];
 
-  if (msg == nil) {
-    title = [song title];
-    description = [song artist];
-    description = [description stringByAppendingString:@" - "];
-    description = [description stringByAppendingString:[song album]];
-  } else {
-    title = msg;
-    description = [song title];
-  }
-
+  /* To deliver the event that a notification was clicked, the click context
+     must be serializable and all that whatnot. Right now, we don't need any
+     state to pass between these two methods, so just make sure that there's
+     something that's plist-encodable */
   [GrowlApplicationBridge notifyWithTitle:title
                               description:description
                          notificationName:@"hermes-song"
                                  iconData:[image TIFFRepresentation]
                                  priority:0
                                  isSticky:NO
-                             clickContext:nil];
+                             clickContext:[NSNumber numberWithBool:YES]
+                               identifier:[song musicId]];
 }
 
 /******************************************************************************
