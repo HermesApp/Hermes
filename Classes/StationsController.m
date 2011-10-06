@@ -92,7 +92,7 @@
   NSString *lastPlayed = [[NSUserDefaults standardUserDefaults]
                           stringForKey:LAST_STATION_KEY];
 
-  if (lastPlayed == nil) {
+  if (lastPlayed == nil || ![PlaybackController playOnStart]) {
     return NO;
   }
   Station *last = nil;

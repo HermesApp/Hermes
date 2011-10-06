@@ -72,6 +72,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  [window setRestorable:YES];
+  [window setRestorationClass:[self class]];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(handlePandoraError:)
@@ -157,6 +159,14 @@
     [self setCurrentView:errorView];
     [errorLabel setStringValue:err];
   }
+}
+
++ (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
+                              state:(NSCoder *)state
+                  completionHandler:(void (^)(NSWindow *, NSError *))completionHandler {
+  [PlaybackController setPlayOnStart:NO];
+  completionHandler(nil, nil);
+  return YES;
 }
 
 @end

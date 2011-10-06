@@ -4,9 +4,19 @@
 #import "Scrobbler.h"
 #import "Growler.h"
 
+BOOL playOnStart = YES;
+
 @implementation PlaybackController
 
 @synthesize playing;
+
++ (void) setPlayOnStart: (BOOL)play {
+  playOnStart = play;
+}
+
++ (BOOL) playOnStart {
+  return playOnStart;
+}
 
 - (id) init {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
