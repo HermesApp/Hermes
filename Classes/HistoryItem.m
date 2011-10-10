@@ -42,6 +42,11 @@
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
+- (IBAction)gotoAlbum:(id)sender {
+  NSURL *url = [NSURL URLWithString:[[self representedObject] albumUrl]];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
 - (void) imageLoaded: (NSNotification*) not {
   if ([not object] != loader) {
     return;
@@ -91,14 +96,14 @@
   art = nil;
   like = dislike = nil;
   for (NSView *view in [[self view] subviews]) {
-    if ([view isKindOfClass:[NSImageView class]]) {
-      art = (NSImageView*) view;
-    } else if ([view isKindOfClass:[NSButton class]]) {
+    if ([view isKindOfClass:[NSButton class]]) {
       NSButton *button = (NSButton*) view;
       if ([[button alternateTitle] isEqual:@"Like"]) {
         like = button;
       } else if ([[button alternateTitle] isEqual:@"Dislike"]) {
         dislike = button;
+      } else if ([[button alternateTitle] isEqual:@"Album"]) {
+        art = button;
       }
     }
   }

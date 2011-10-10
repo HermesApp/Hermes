@@ -11,12 +11,13 @@
   ImageLoader *loader;
   NSButton *like;
   NSButton *dislike;
-  NSImageView *art;
+  NSButton *art;
 }
 
 - (IBAction) like:(id)sender;
 - (IBAction) dislike:(id)sender;
 - (IBAction) gotoArtist:(id)sender;
+- (IBAction) gotoAlbum:(id)sender;
 - (IBAction) gotoTitle:(id)sender;
 
 @end
