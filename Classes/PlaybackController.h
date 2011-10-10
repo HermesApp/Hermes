@@ -16,7 +16,7 @@
   IBOutlet NSImageView *art;
   IBOutlet NSProgressIndicator *artLoading;
   IBOutlet NSTextField *albumLabel;
-  
+
   // Playback related items
   IBOutlet NSToolbarItem *like;
   IBOutlet NSToolbarItem *playpause;
@@ -27,15 +27,18 @@
   ImageLoader *loader;
   Station *playing;
   BOOL scrobbleSent;
+  NSString *lastImgSrc;
 }
 
-@property (assign) Station *playing;
+@property (retain) Station *playing;
 
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;
 
 - (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
+- (BOOL) saveState;
+
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;
 - (IBAction)like: (id) sender;

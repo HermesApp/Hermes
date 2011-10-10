@@ -74,6 +74,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   [window setRestorable:YES];
   [window setRestorationClass:[self class]];
+
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(handlePandoraError:)
@@ -126,12 +127,17 @@
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
   [stations hideDrawer];
+  [playback saveState];
 }
 
 - (void)applicationWillBecomeActive:(NSNotification *)aNotification {
   if ([pandora authToken] != nil) {
     [stations showDrawer];
   }
+}
+
+- (void) applicationWillTerminate: (NSNotification *)aNotification {
+  [playback saveState];
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {

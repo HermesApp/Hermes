@@ -92,7 +92,7 @@
   NSString *lastPlayed = [[NSUserDefaults standardUserDefaults]
                           stringForKey:LAST_STATION_KEY];
 
-  if (lastPlayed == nil || ![PlaybackController playOnStart]) {
+  if (lastPlayed == nil) {
     return NO;
   }
   Station *last = nil;
@@ -263,10 +263,6 @@
 
 /* Callback for when the add station button is hit */
 - (IBAction)addStation: (id)sender {
-//  if (![[self pandora] authenticated]) {
-//    return;
-//  }
-
   [[NSApp delegate] showNewStationSheet];
   [results reloadData];
 }

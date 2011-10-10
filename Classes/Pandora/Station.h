@@ -14,7 +14,6 @@
   Pandora *radio;
   AudioStreamer *stream;
   Song *playing;
-  BOOL restored;
 }
 
 @property (retain) NSString *name;
@@ -30,5 +29,8 @@
 - (void) retry;
 - (BOOL) isPaused;
 - (void) setRadio: (Pandora*) radio;
+- (BOOL) isEqual:(id)object;
+- (void) fetchMoreSongs;
+- (void) copyFrom: (Station*) other;
 
 @end

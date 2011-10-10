@@ -6,6 +6,8 @@
 
 - (id) init {
   [self setSongs:[NSMutableArray arrayWithCapacity:10]];
+  [self setPlaying:nil];
+  [self setStream:nil];
 
   /* Watch for error notifications */
   [[NSNotificationCenter defaultCenter]
@@ -24,7 +26,6 @@
     [self setPlaying:[aDecoder decodeObjectForKey:@"playing"]];
     lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
-    restored = YES;
   }
   return self;
 }
@@ -95,6 +96,9 @@
     shouldPlaySongOnFetch = NO;
     [self play];
   }
+
+  [[NSNotificationCenter defaultCenter]
+    postNotificationName:@"songs.loaded" object:self];
 }
 
 - (void) fetchMoreSongs {
@@ -161,9 +165,11 @@
 - (void) play {
   if (stream) {
     if ([stream isPlaying]) {
+      NSLogd(@"Ignoring play, stream already playing");
       return;
     } else if ([stream isPaused]) {
       [stream pause];
+      NSLogd(@"pausing stream");
       return;
     }
 
@@ -172,6 +178,7 @@
   }
 
   if ([songs count] == 0) {
+    NSLogd(@"no songs, fetching some more");
     shouldPlaySongOnFetch = YES;
     [self fetchMoreSongs];
     return;
@@ -198,7 +205,7 @@
 }
 
 - (BOOL) isPaused {
-  return [stream isPaused];
+  return stream == nil || [stream isPaused];
 }
 
 - (void) next {
@@ -216,6 +223,21 @@
   [playing release];
   stream = nil;
   playing = nil;
+}
+
+- (void) copyFrom: (Station*) other {
+  [songs removeAllObjects];
+  /* Add the previously playing song to the front of the queue if
+     there was one */
+  if ([other playing] != nil) {
+    [songs addObject:[other playing]];
+  }
+  [songs addObjectsFromArray:[other songs]];
+  lastKnownSeekTime = other->lastKnownSeekTime;
+  NSLogd(@"lastknown: %f", lastKnownSeekTime);
+  if (lastKnownSeekTime > 0) {
+    retrying = YES;
+  }
 }
 
 @end

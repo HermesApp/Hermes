@@ -75,6 +75,13 @@ BOOL playOnStart = YES;
   return self;
 }
 
+- (void) dealloc {
+  [self setPlaying:nil];
+  [loader release];
+  loader = nil;
+  return [super dealloc];
+}
+
 - (Pandora*) pandora {
   return [[NSApp delegate] pandora];
 }
@@ -89,10 +96,45 @@ BOOL playOnStart = YES;
   [songLoadingProgress stopAnimation:nil];
 }
 
+- (NSString*) stateFile {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+
+  NSString *folder = @"~/Library/Application Support/Hermes/";
+  folder = [folder stringByExpandingTildeInPath];
+  BOOL hasFolder = YES;
+
+  if ([fileManager fileExistsAtPath: folder] == NO) {
+    hasFolder = [fileManager createDirectoryAtPath:folder
+                       withIntermediateDirectories:YES
+                                        attributes:nil
+                                             error:NULL];
+  }
+
+  if (!hasFolder) {
+    return nil;
+  }
+
+  NSString *fileName = @"station.savestate";
+  return [folder stringByAppendingPathComponent: fileName];
+}
+
+- (BOOL) saveState {
+  NSString *path = [self stateFile];
+  if (path == nil) {
+    return NO;
+  }
+
+  return [NSKeyedArchiver archiveRootObject:[self playing] toFile:path];
+}
+
 - (void) afterStationsLoaded {
   [[NSNotificationCenter defaultCenter]
     removeObserver:self
     name:@"song.playing"
+    object:nil];
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name:@"songs.loaded"
     object:nil];
 
   double saved = [[NSUserDefaults standardUserDefaults] doubleForKey:@"hermes.volume"];
@@ -106,6 +148,11 @@ BOOL playOnStart = YES;
      addObserver:self
      selector:@selector(songPlayed:)
      name:@"song.playing"
+     object:station];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(songsLoaded:)
+     name:@"songs.loaded"
      object:station];
   }
 }
@@ -147,7 +194,9 @@ BOOL playOnStart = YES;
     [image autorelease];
   }
 
-  [Growler growl:[playing playing] withImage:growlImage];
+  if (![playing isPaused]) {
+    [Growler growl:[playing playing] withImage:growlImage];
+  }
 
   [[art animator] setImage:image];
   [artLoading setHidden:YES];
@@ -221,19 +270,28 @@ BOOL playOnStart = YES;
  */
 - (void)songPlayed: (NSNotification *)aNotification {
   Song *song = [playing playing];
+  if (song == nil) {
+    song = [[playing songs] objectAtIndex:0];
+  }
 
   if (song == nil) {
     NSLogd(@"No song to play!?");
+    NSLogd(@"%@",[NSThread callStackSymbols]);
     return;
   }
 
-  if ([song art] == nil || [[song art] isEqual: @""]) {
-    [art setImage: [NSImage imageNamed:@"missing-album"]];
-  } else {
-    [artLoading startAnimation:nil];
-    [artLoading setHidden:NO];
-    [art setImage:nil];
-    [loader loadImageURL:[song art]];
+  /* Prevent a flicker by not loading the same image twice */
+  if ([song art] != lastImgSrc) {
+    if ([song art] == nil || [[song art] isEqual: @""]) {
+      [art setImage: [NSImage imageNamed:@"missing-album"]];
+      [Growler growl:[playing playing] withImage:[art image]];
+    } else {
+      [artLoading startAnimation:nil];
+      [artLoading setHidden:NO];
+      [art setImage:nil];
+      lastImgSrc = [song art];
+      [loader loadImageURL:[song art]];
+    }
   }
 
   [[NSApp delegate] setCurrentView:playbackView];
@@ -254,9 +312,15 @@ BOOL playOnStart = YES;
   [self hideSpinner];
 }
 
+- (void) songsLoaded: (NSNotification*) aNotification {
+  if ([playing playing] == nil && [[playing songs] count] > 0) {
+    [self songPlayed:nil];
+  }
+}
+
 /* Plays a new station */
 - (void) playStation: (Station*) station {
-  if (playing == station) {
+  if ([playing stationId] == [station stationId]) {
     return;
   }
 
@@ -273,8 +337,24 @@ BOOL playOnStart = YES;
       forKey:LAST_STATION_KEY];
   }
 
-  playing = station;
-  [playing play];
+  [self setPlaying:station];
+  if (playOnStart) {
+    [playing play];
+  } else {
+    NSString *saved_state = [self stateFile];
+    if (saved_state != nil) {
+      Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
+      if ([station isEqual:s]) {
+        [station copyFrom:s];
+      }
+    }
+    if ([station playing] != nil) {
+      [self songPlayed:nil];
+    } else {
+      [station fetchMoreSongs];
+    }
+    playOnStart = true;
+  }
 }
 
 /* Toggle between playing and pausing */
@@ -298,7 +378,7 @@ BOOL playOnStart = YES;
 /* Like button was hit */
 - (IBAction)like: (id) sender {
   Song *playingSong = [playing playing];
-  if (/*![[self pandora] authenticated] || */playingSong == nil) {
+  if (playingSong == nil) {
     return;
   }
 
@@ -315,7 +395,7 @@ BOOL playOnStart = YES;
 /* Dislike button was hit */
 - (IBAction)dislike: (id) sender {
   Song *playingSong = [playing playing];
-  if (/*![[self pandora] authenticated] || */playingSong == nil) {
+  if (playingSong == nil) {
     return;
   }
 
@@ -334,8 +414,7 @@ BOOL playOnStart = YES;
 
 /* We are tired o fthe currently playing song, play another */
 - (IBAction)tired: (id) sender {
-  if (/*![[self pandora] authenticated] || */
-      playing == nil || [playing playing] == nil) {
+  if (playing == nil || [playing playing] == nil) {
     return;
   }
 
