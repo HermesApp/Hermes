@@ -12,9 +12,14 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FA02692F1367E0B9002652C2 /* Keys.m in Sources */ = {isa = PBXBuildFile; fileRef = FA02692E1367E0B9002652C2 /* Keys.m */; };
+		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
+		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
+		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
 		FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228EC8137045E90070141A /* AudioToolbox.framework */; };
 		FA228ECB137045F40070141A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228ECA137045F40070141A /* Security.framework */; };
+		FA229D6514429E48008AB9FE /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = FA229D6414429E48008AB9FE /* history.png */; };
+		FA229D6814429F69008AB9FE /* HistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA229D6714429F68008AB9FE /* HistoryController.m */; };
 		FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2442BA136B18DC00E126D3 /* PreferencesController.m */; };
 		FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435E136B3D6C00E126D3 /* CHANGELOG.md */; };
 		FA244361136B3D6C00E126D3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435F136B3D6C00E126D3 /* README.md */; };
@@ -25,8 +30,6 @@
 		FA2A3F9A132BF9F50089AECC /* Station.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F97132BF9F50089AECC /* Station.m */; };
 		FA2A3FBD132BFA6F0089AECC /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */; };
 		FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFE28132F9D30003554E2 /* missing-album.png */; };
-		FA3CFF1D132FB762003554E2 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1B132FB762003554E2 /* thumbdown.png */; };
-		FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFF1C132FB762003554E2 /* thumbup.png */; };
 		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
 		FA560C511331701E00215F71 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA560C501331701E00215F71 /* ImageLoader.m */; };
 		FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -99,10 +102,17 @@
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA02692E1367E0B9002652C2 /* Keys.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keys.m; sourceTree = "<group>"; };
+		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
+		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
+		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
+		FA04AE9B14438F1000819310 /* thumbup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbup.png; sourceTree = "<group>"; };
 		FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		FA228EC8137045E90070141A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		FA228ECA137045F40070141A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
+		FA229D6414429E48008AB9FE /* history.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = history.png; sourceTree = "<group>"; };
+		FA229D6614429F68008AB9FE /* HistoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryController.h; sourceTree = "<group>"; };
+		FA229D6714429F68008AB9FE /* HistoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryController.m; sourceTree = "<group>"; };
 		FA2442B9136B18DC00E126D3 /* PreferencesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesController.h; sourceTree = "<group>"; };
 		FA2442BA136B18DC00E126D3 /* PreferencesController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesController.m; sourceTree = "<group>"; };
 		FA24435E136B3D6C00E126D3 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
@@ -121,8 +131,6 @@
 		FA2A3FBB132BFA6F0089AECC /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FA2A3FBC132BFA6F0089AECC /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		FA3CFE28132F9D30003554E2 /* missing-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missing-album.png"; sourceTree = "<group>"; };
-		FA3CFF1B132FB762003554E2 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
-		FA3CFF1C132FB762003554E2 /* thumbup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbup.png; sourceTree = "<group>"; };
 		FA3CFF42132FC4CF003554E2 /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaybackController.h; sourceTree = "<group>"; };
 		FA3CFF43132FC4CF003554E2 /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaybackController.m; sourceTree = "<group>"; };
 		FA560C4F1331701E00215F71 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
@@ -208,6 +216,10 @@
 				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
 				FA6E801C1438E50C00D01FB5 /* Growler.h */,
 				FA6E801D1438E50C00D01FB5 /* Growler.m */,
+				FA229D6614429F68008AB9FE /* HistoryController.h */,
+				FA229D6714429F68008AB9FE /* HistoryController.m */,
+				FA04AE94144365D900819310 /* HistoryItem.h */,
+				FA04AE95144365D900819310 /* HistoryItem.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -334,12 +346,13 @@
 		FAEFFBFF132D620B007DC6FB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				FA04AE9A14438F1000819310 /* thumbdown.png */,
+				FA04AE9B14438F1000819310 /* thumbup.png */,
+				FA229D6414429E48008AB9FE /* history.png */,
 				FA85E6CD1333B257005C96B8 /* volume_down.icns */,
 				FA7FD1E313325F6600DF66EB /* volume_up.png */,
 				FA7BF0311331832E00E26ADA /* zzs.png */,
 				FA3CFE28132F9D30003554E2 /* missing-album.png */,
-				FA3CFF1B132FB762003554E2 /* thumbdown.png */,
-				FA3CFF1C132FB762003554E2 /* thumbup.png */,
 				FAFF50D0132EFDD800F02CE0 /* delete.png */,
 				FAEFFC51132D6EC5007DC6FB /* fast_forward.png */,
 				FAFF50CE132EFDCB00F02CE0 /* accept.png */,
@@ -433,8 +446,6 @@
 				FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */,
 				FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */,
 				FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */,
-				FA3CFF1D132FB762003554E2 /* thumbdown.png in Resources */,
-				FA3CFF1E132FB762003554E2 /* thumbup.png in Resources */,
 				FA7BF0321331832E00E26ADA /* zzs.png in Resources */,
 				FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */,
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
@@ -444,6 +455,9 @@
 				FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */,
 				FA244361136B3D6C00E126D3 /* README.md in Resources */,
 				FAA313F913C98D9F00314C73 /* build_sparkle.sh in Resources */,
+				FA229D6514429E48008AB9FE /* history.png in Resources */,
+				FA04AE9C14438F1000819310 /* thumbdown.png in Resources */,
+				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +490,8 @@
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
 				FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */,
 				FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */,
+				FA229D6814429F69008AB9FE /* HistoryController.m in Sources */,
+				FA04AE96144365D900819310 /* HistoryItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

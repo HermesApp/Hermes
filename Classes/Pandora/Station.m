@@ -209,7 +209,12 @@
 }
 
 - (void) next {
-  [self stop];
+  if (playing == nil) {
+    [songs removeObjectAtIndex:0];
+    retrying = NO;
+  } else {
+    [self stop];
+  }
   [self play];
 }
 

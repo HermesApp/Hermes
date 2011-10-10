@@ -1,6 +1,7 @@
 #import "AppleMediaKeyController.h"
 #import "PlaybackController.h"
 #import "HermesAppDelegate.h"
+#import "HistoryController.h"
 #import "Scrobbler.h"
 #import "Growler.h"
 
@@ -96,30 +97,8 @@ BOOL playOnStart = YES;
   [songLoadingProgress stopAnimation:nil];
 }
 
-- (NSString*) stateFile {
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-
-  NSString *folder = @"~/Library/Application Support/Hermes/";
-  folder = [folder stringByExpandingTildeInPath];
-  BOOL hasFolder = YES;
-
-  if ([fileManager fileExistsAtPath: folder] == NO) {
-    hasFolder = [fileManager createDirectoryAtPath:folder
-                       withIntermediateDirectories:YES
-                                        attributes:nil
-                                             error:NULL];
-  }
-
-  if (!hasFolder) {
-    return nil;
-  }
-
-  NSString *fileName = @"station.savestate";
-  return [folder stringByAppendingPathComponent: fileName];
-}
-
 - (BOOL) saveState {
-  NSString *path = [self stateFile];
+  NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
   if (path == nil) {
     return NO;
   }
@@ -172,6 +151,9 @@ BOOL playOnStart = YES;
 }
 
 - (void) imageLoaded: (NSNotification*) not {
+  if ([not object] != loader) {
+    return;
+  }
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
   NSImage *growlImage = image;
 
@@ -228,6 +210,7 @@ BOOL playOnStart = YES;
   } else if ([streamer isIdle]) {
     NSLogd(@"Stream idle, nexting...");
     /* The currently playing song finished playing */
+    [[[NSApp delegate] history] addSong:[playing playing]];
     [self next:nil];
   }
 }
@@ -292,6 +275,8 @@ BOOL playOnStart = YES;
       lastImgSrc = [song art];
       [loader loadImageURL:[song art]];
     }
+  } else {
+    NSLogd(@"Skipping loading image");
   }
 
   [[NSApp delegate] setCurrentView:playbackView];
@@ -303,7 +288,7 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  if ([song.rating isEqualTo: @"1"]) {
+  if ([[song rating] isEqualTo: @"1"]) {
     [like setEnabled:NO];
   } else {
     [like setEnabled:YES];
@@ -341,7 +326,7 @@ BOOL playOnStart = YES;
   if (playOnStart) {
     [playing play];
   } else {
-    NSString *saved_state = [self stateFile];
+    NSString *saved_state = [[NSApp delegate] stateDirectory:@"station.savestate"];
     if (saved_state != nil) {
       Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
       if ([station isEqual:s]) {
@@ -349,6 +334,8 @@ BOOL playOnStart = YES;
       }
     }
     if ([station playing] != nil) {
+      [self songPlayed:nil];
+    } else if ([[station songs] count] > 0) {
       [self songPlayed:nil];
     } else {
       [station fetchMoreSongs];

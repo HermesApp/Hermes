@@ -7,7 +7,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize stations, auth, playback, pandora, window;
+@synthesize stations, auth, playback, pandora, window, history;
 
 - (id) init {
   pandora = [[Pandora alloc] init];
@@ -128,6 +128,7 @@
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
   [stations hideDrawer];
   [playback saveState];
+  [history saveSongs];
 }
 
 - (void)applicationWillBecomeActive:(NSNotification *)aNotification {
@@ -138,6 +139,7 @@
 
 - (void) applicationWillTerminate: (NSNotification *)aNotification {
   [playback saveState];
+  [history saveSongs];
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
@@ -173,6 +175,27 @@
   [PlaybackController setPlayOnStart:NO];
   completionHandler(nil, nil);
   return YES;
+}
+
+- (NSString*) stateDirectory:(NSString *)file {
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+
+  NSString *folder = @"~/Library/Application Support/Hermes/";
+  folder = [folder stringByExpandingTildeInPath];
+  BOOL hasFolder = YES;
+
+  if ([fileManager fileExistsAtPath: folder] == NO) {
+    hasFolder = [fileManager createDirectoryAtPath:folder
+                       withIntermediateDirectories:YES
+                                        attributes:nil
+                                             error:NULL];
+  }
+
+  if (!hasFolder) {
+    return nil;
+  }
+
+  return [folder stringByAppendingPathComponent: file];
 }
 
 @end

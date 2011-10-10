@@ -272,7 +272,11 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
        [song userSeed], @"undefined", rating, [song songType]
    ];
 
-  [song setRating: rating];
+  if ([rating isEqual:@"1"]) {
+    [song setRating: rating];
+  } else {
+    [song setRating: @"-1"];
+  }
   return [self sendRequest:
           [PandoraRequest requestWithMethod:@"station.addFeedback"
                                        data:xml
