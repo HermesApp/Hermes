@@ -17,6 +17,30 @@
   return self;
 }
 
+- (id) initWithCoder:(NSCoder *)aDecoder {
+  if ((self = [self init])) {
+    [self setStationId:[aDecoder decodeObjectForKey:@"stationId"]];
+    [self setName:[aDecoder decodeObjectForKey:@"name"]];
+    [self setPlaying:[aDecoder decodeObjectForKey:@"playing"]];
+    lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
+    [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
+    restored = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)aCoder {
+  [aCoder encodeObject:stationId forKey:@"stationId"];
+  [aCoder encodeObject:name forKey:@"name"];
+  [aCoder encodeObject:playing forKey:@"playing"];
+  float seek = -1;
+  if (playing) {
+    seek = [stream progress];
+  }
+  [aCoder encodeFloat:seek forKey:@"lastKnownSeekTime"];
+  [aCoder encodeObject:songs forKey:@"songs"];
+}
+
 - (void) stopObserving {
   if (radio != nil) {
     [[NSNotificationCenter defaultCenter]

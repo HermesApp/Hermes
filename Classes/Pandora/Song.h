@@ -1,4 +1,4 @@
-@interface Song : NSObject {
+@interface Song : NSObject <NSCoding> {
   NSString *artist;
   NSString *title;
   NSString *album;

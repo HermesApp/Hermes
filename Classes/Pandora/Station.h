@@ -2,7 +2,7 @@
 #import "AudioStreamer.h"
 #import "Song.h"
 
-@interface Station : NSObject {
+@interface Station : NSObject<NSCoding> {
   BOOL shouldPlaySongOnFetch;
   BOOL retrying;
   double lastKnownSeekTime;
@@ -14,6 +14,7 @@
   Pandora *radio;
   AudioStreamer *stream;
   Song *playing;
+  BOOL restored;
 }
 
 @property (retain) NSString *name;
