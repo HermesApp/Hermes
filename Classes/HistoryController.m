@@ -34,6 +34,8 @@
   if (songs == nil) {
     [self setSongs:[self loadSavedSongs]];
   }
+  [collection setMaxNumberOfColumns:1];
+  [collection setMaxNumberOfRows:HISTORY_LIMIT];
 }
 
 - (IBAction) closeHistory:(id)sender {
