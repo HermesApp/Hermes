@@ -210,7 +210,6 @@ BOOL playOnStart = YES;
   } else if ([streamer isIdle]) {
     NSLogd(@"Stream idle, nexting...");
     /* The currently playing song finished playing */
-    [[[NSApp delegate] history] addSong:[playing playing]];
     [self next:nil];
   }
 }
@@ -294,6 +293,7 @@ BOOL playOnStart = YES;
     [like setEnabled:YES];
   }
 
+  [[[NSApp delegate] history] addSong:[playing playing]];
   [self hideSpinner];
 }
 
