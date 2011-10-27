@@ -46,7 +46,6 @@ NSString * const AS_NETWORK_CONNECTION_FAILED_STRING = @"Network connection fail
 NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Audio packets are larger than kAQDefaultBufSize.";
 
 @interface AudioStreamer ()
-@property (readwrite) AudioStreamerState state;
 
 - (void)handlePropertyChangeForFileStream:(AudioFileStreamID)inAudioFileStream
   fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
@@ -211,7 +210,6 @@ void ASReadStreamCallBack
 @implementation AudioStreamer
 
 @synthesize errorCode;
-@synthesize state;
 @synthesize bitRate;
 @synthesize httpHeaders;
 
@@ -440,7 +438,7 @@ void ASReadStreamCallBack
       state == AS_PAUSED ||
       state == AS_BUFFERING)
     {
-      self.state = AS_STOPPING;
+      self->state = AS_STOPPING;
       stopReason = AS_STOPPING_ERROR;
       AudioQueueStop(audioQueue, true);
     }
@@ -750,7 +748,7 @@ void ASReadStreamCallBack
       if (state != AS_STOPPING &&
         state != AS_STOPPED)
       {
-        NSLog(@"### Not starting audio thread. State code is: %ld", state);
+        NSLog(@"### Not starting audio thread. State code is: %uld", state);
       }
       self.state = AS_INITIALIZED;
       [pool release];
@@ -809,7 +807,7 @@ void ASReadStreamCallBack
     // handleBufferCompleteForQueue:buffer: should not change the state
     // (may not enter the synchronized section).
     //
-    if (buffersUsed == 0 && self.state == AS_PLAYING)
+    if (buffersUsed == 0 && self->state == AS_PLAYING)
     {
       err = AudioQueuePause(audioQueue);
       if (err)
@@ -1211,7 +1209,7 @@ cleanup:
     //
     if (bytesFilled)
     {
-      if (self.state == AS_WAITING_FOR_DATA)
+      if (self->state == AS_WAITING_FOR_DATA)
       {
         //
         // Force audio data smaller than one whole buffer to play.
@@ -1407,7 +1405,7 @@ cleanup:
       //
       if (state == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1)
       {
-        if (self.state == AS_BUFFERING)
+        if (self->state == AS_BUFFERING)
         {
           err = AudioQueueStart(audioQueue, NULL);
           if (err)
@@ -1415,7 +1413,7 @@ cleanup:
             [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
             return;
           }
-          self.state = AS_PLAYING;
+          self->state = AS_PLAYING;
         }
         else
         {

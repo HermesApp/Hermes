@@ -173,7 +173,8 @@
   if ([item isKindOfClass:[NSString class]]) {
     return item;
   }
-  return [item name];
+  Station *s = item;
+  return [s name];
 }
 
 /* ============================ Other callbacks */
