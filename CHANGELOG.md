@@ -5,6 +5,8 @@
 * [fixed] Scrobbler correctly gets session key from user's keychain
 * [added] Growl notifications occur when songs play (can be turned off)
 * [added] Growl and media keys turned on by default
+* [added] History view for seeing past songs and liking/disliking past songs
+* [added] On application restore, don't start playing music
 
 # Version 1.0.6 (9/21/11)
 
