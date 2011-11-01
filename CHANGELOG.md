@@ -1,4 +1,4 @@
-# Version 1.0.7 (10/31/11)
+# Version 1.0.8 (10/31/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.7...v1.0.8)
 
