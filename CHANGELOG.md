@@ -1,3 +1,10 @@
+# Version 1.0.10 (11/9/11)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.9...v1.0.10)
+
+* [fixed] Pandora prefers SSL connections
+* [fixed] Enable the logout menu item
+
 # Version 1.0.9 (11/9/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.8...v1.0.9)
