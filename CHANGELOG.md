@@ -1,3 +1,9 @@
+# Version 1.0.9 (11/9/11)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.8...v1.0.9)
+
+* [fixed] Pandora protocol version bump
+
 # Version 1.0.8 (10/31/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.7...v1.0.8)
