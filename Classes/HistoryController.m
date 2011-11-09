@@ -54,6 +54,9 @@
 }
 
 - (void) addSong:(Song *)song {
+  if (songs == nil) {
+    [self setSongs:[self loadSavedSongs]];
+  }
   [self insertObject:song inSongsAtIndex:0];
   while ([songs count] > HISTORY_LIMIT) {
     [self removeObjectFromSongsAtIndex:HISTORY_LIMIT];
