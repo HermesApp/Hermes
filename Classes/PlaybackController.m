@@ -311,7 +311,6 @@ BOOL playOnStart = YES;
 
   [playing stop];
   [[NSApp delegate] setCurrentView:playbackView];
-  [self showSpinner];
   [toolbar setVisible:YES];
 
   if (station == nil) {

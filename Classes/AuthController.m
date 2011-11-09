@@ -57,4 +57,18 @@
   [login setEnabled:YES];
 }
 
+/* Log out the current session */
+- (IBAction) logout: (id) sender {
+  /* Pause playback */
+  PlaybackController *playback = [[NSApp delegate] playback];
+  Station *playing = [playback playing];
+  if ([playing playing]) {
+    [playback playpause:nil];
+  }
+
+  /* Remove our credentials */
+  [[NSApp delegate] cacheAuth:@"" :@""];
+  [self show];
+}
+
 @end
