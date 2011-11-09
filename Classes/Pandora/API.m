@@ -147,7 +147,7 @@ done:
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = [time substringFromIndex: 3];
   NSString *url  = [NSString stringWithFormat:
-      @"http://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
+      @"https://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
       @"?rid=%@P&method=%@", rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
