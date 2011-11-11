@@ -4,8 +4,9 @@
 
 @synthesize data, loadedURL;
 
-- (void) notify {
-  [[NSNotificationCenter defaultCenter] postNotificationName:@"image-loaded" object:self];
+- (void) notifyImageLoaded {
+  [[NSNotificationCenter defaultCenter] postNotificationName:@"image-loaded"
+                                                      object:self];
 }
 
 - (void) loadImageURL: (NSString*) url {
@@ -32,16 +33,16 @@
 
   if ([response statusCode] < 200 || [response statusCode] >= 300) {
     [connection cancel];
-    [self notify];
+    [self notifyImageLoaded];
   }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-  [self notify];
+  [self notifyImageLoaded];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  [self notify];
+  [self notifyImageLoaded];
 }
 
 @end

@@ -52,13 +52,11 @@
     return;
   }
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  NSLogd(@"%@", art);
   [art setImage:image];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void) updateUI {
-  NSLogd(@"%@ %@", art, [self representedObject]);
   if (art == nil || [self representedObject] == nil) {
     return;
   }
@@ -66,6 +64,12 @@
   Song *s = [self representedObject];
   NSString *a = [s art];
   if (a && ![a isEqual:@""]) {
+    if (loader != nil) {
+      [[NSNotificationCenter defaultCenter]
+       removeObserver:self name:@"image-loaded" object:loader];
+      [loader release];
+      loader = nil;
+    }
     loader = [[ImageLoader alloc] init];
     [[NSNotificationCenter defaultCenter]
      addObserver:self
