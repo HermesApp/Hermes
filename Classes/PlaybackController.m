@@ -20,6 +20,9 @@ BOOL playOnStart = YES;
 }
 
 - (id) init {
+  if (!(self = [super init])) {
+    return self;
+  }
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
   progressUpdateTimer = [NSTimer

@@ -17,9 +17,11 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 @synthesize authToken, stations;
 
 - (id) init {
-  stations = [[NSMutableArray alloc] init];
-  retries  = 0;
-  return [super init];
+  if ((self = [super init])) {
+    stations = [[NSMutableArray alloc] init];
+    retries  = 0;
+  }
+  return self;
 }
 
 - (void) dealloc {

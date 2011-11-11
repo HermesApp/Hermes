@@ -52,6 +52,7 @@
     return;
   }
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
+  [image autorelease];
   [art setImage:image];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

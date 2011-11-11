@@ -10,7 +10,9 @@
 @synthesize stations, auth, playback, pandora, window, history;
 
 - (id) init {
-  pandora = [[Pandora alloc] init];
+  if ((self = [super init])) {
+    pandora = [[Pandora alloc] init];
+  }
   return self;
 }
 
