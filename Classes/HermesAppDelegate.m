@@ -9,6 +9,15 @@
 
 @synthesize stations, auth, playback, pandora, window, history;
 
+- (bool) isLion {
+  static SInt32 MacVersion = 0;
+
+  if (MacVersion == 0) {
+    Gestalt(gestaltSystemVersion, &MacVersion);
+  }
+  return MacVersion >= 0x1070;
+}
+
 - (id) init {
   if ((self = [super init])) {
     pandora = [[Pandora alloc] init];
@@ -74,8 +83,10 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  [window setRestorable:YES];
-  [window setRestorationClass:[self class]];
+  if ([self isLion]) {
+    [window setRestorable:YES];
+    [window setRestorationClass:[self class]];
+  }
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
