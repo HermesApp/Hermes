@@ -1,3 +1,5 @@
+#pragma once
+
 #define KEYCHAIN_SERVICE_NAME "Hermes"
 
 @interface KeychainException : NSException
