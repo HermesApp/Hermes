@@ -90,6 +90,10 @@ BOOL playOnStart = YES;
   return [[NSApp delegate] pandora];
 }
 
+- (void) hideToolbar {
+  [toolbar setVisible:NO];
+}
+
 - (void) showSpinner {
   [songLoadingProgress setHidden:NO];
   [songLoadingProgress startAnimation:nil];

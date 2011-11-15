@@ -62,6 +62,7 @@
   /* Pause playback */
   HermesAppDelegate *delegate = [NSApp delegate];
   PlaybackController *playback = [delegate playback];
+  [playback hideToolbar];
   Station *playing = [playback playing];
   if ([playing playing]) {
     [playback playpause:nil];
