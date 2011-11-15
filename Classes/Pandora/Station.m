@@ -53,12 +53,8 @@
 
 - (void) dealloc {
   [self stop];
-  [self stopObserving];
 
-  [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:ASStatusChangedNotification
-    object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 
   [songs removeAllObjects];
   [songs release];

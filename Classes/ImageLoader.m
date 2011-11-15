@@ -4,6 +4,14 @@
 
 @synthesize data, loadedURL;
 
+- (void) dealloc {
+  if (prev != nil) {
+    [prev cancel];
+    [prev release];
+  }
+  [super dealloc];
+}
+
 - (void) notifyImageLoaded {
   [[NSNotificationCenter defaultCenter] postNotificationName:@"image-loaded"
                                                       object:self];
