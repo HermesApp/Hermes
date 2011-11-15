@@ -17,7 +17,7 @@
 
   [self setLoadedURL:url];
 
-  [self setData:[NSMutableData dataWithCapacity:100]];
+  [self setData:[NSMutableData data]];
 
   NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
   prev = [[NSURLConnection alloc] initWithRequest:req delegate:self];

@@ -22,10 +22,11 @@
 }
 
 - (NSString*) urlEncoded {
-  return (NSString*) CFURLCreateStringByAddingPercentEscapes(NULL,
+  NSString *encoded = (NSString*) CFURLCreateStringByAddingPercentEscapes(NULL,
     (CFStringRef) self, NULL,
     (CFStringRef) @"!*'();:@&=+$,/?%#[]",
     kCFStringEncodingUTF8 );
+  return [encoded autorelease];
 }
 
 - (NSString *)md5sum {

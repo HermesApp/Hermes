@@ -275,7 +275,7 @@ BOOL playOnStart = YES;
       [artLoading setHidden:NO];
       [art setImage:nil];
       lastImgSrc = [song art];
-      [loader loadImageURL:[song art]];
+      [loader loadImageURL:lastImgSrc];
     }
   } else {
     NSLogd(@"Skipping loading image");
@@ -296,7 +296,7 @@ BOOL playOnStart = YES;
     [like setEnabled:YES];
   }
 
-  [[[NSApp delegate] history] addSong:[playing playing]];
+  [[[NSApp delegate] history] addSong:song];
   [self hideSpinner];
 }
 
