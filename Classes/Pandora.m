@@ -24,12 +24,6 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   return self;
 }
 
-- (void) dealloc {
-  [stations release];
-  [authToken release];
-  [super dealloc];
-}
-
 - (void) notify: (NSString*)msg with:(NSDictionary*)obj {
   [[NSNotificationCenter defaultCenter] postNotificationName:msg object:self
       userInfo:obj];
@@ -72,7 +66,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 }
 
 - (void) handleAuthenticate: (xmlDocPtr) doc : (PandoraRequest*) req {
-  NSString *oldAuthToken = [authToken retain];
+  NSString *oldAuthToken = authToken;
   [self setAuthToken: xpathRelative(doc, "//member[name='authToken']/value", NULL)];
   [self setListenerID: xpathRelative(doc, "//member[name='listenerId']/value", NULL)];
 
@@ -84,7 +78,6 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     [req replaceAuthToken:oldAuthToken with:authToken];
     [self sendRequest:req];
   }
-  [oldAuthToken release];
 }
 
 - (void) handleStations: (xmlDocPtr) doc {
@@ -111,10 +104,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
       [station setName:@"QuickMix"];
     }
 
-    if ([stations containsObject:station]) {
-      [station release];
-    } else {
-      [station autorelease];
+    if (![stations containsObject:station]) {
       [stations addObject:station];
     }
   });
@@ -156,7 +146,6 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 
   xpathNodes(doc, array_xpath, ^(xmlNodePtr node) {
     Song *song = [[Song alloc] init];
-    [song autorelease];
 
     [song setArtist: xpathRelative(doc, ".//member[name='artistSummary']/value", node)];
     [song setTitle: xpathRelative(doc, ".//member[name='songTitle']/value", node)];
@@ -335,7 +324,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   [map setObject:search_artists forKey:@"Artists"];
 
   xpathNodes(doc, "//member[name='songs']/value/array/data/value", ^(xmlNodePtr node) {
-    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    SearchResult *r = [[SearchResult alloc] init];
     NSString *artist = xpathRelative(doc, ".//member[name='artistSummary']/value", node);
     NSString *song = xpathRelative(doc, ".//member[name='songTitle']/value", node);
 
@@ -345,14 +334,14 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   });
 
   xpathNodes(doc, "//member[name='stations']/value/array/data/value", ^(xmlNodePtr node) {
-    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    SearchResult *r = [[SearchResult alloc] init];
     [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
     [r setName:xpathRelative(doc, ".//member[name='stationName']/value", node)];
     [search_stations addObject:r];
   });
 
   xpathNodes(doc, "//member[name='artists']/value/array/data/value", ^(xmlNodePtr node) {
-    SearchResult *r = [[[SearchResult alloc] init] autorelease];
+    SearchResult *r = [[SearchResult alloc] init];
     [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
     [r setName:xpathRelative(doc, ".//member[name='artistName']/value", node)];
     [search_artists addObject:r];

@@ -29,8 +29,8 @@
 @property (readonly) NSWindow *window;
 @property (readonly) StationsController *stations;
 @property (readonly) HistoryController *history;
-@property (assign) AuthController *auth;
-@property (assign) PlaybackController *playback;
+@property (retain) AuthController *auth;
+@property (retain) PlaybackController *playback;
 @property (retain) Pandora *pandora;
 
 - (void) closeNewStationSheet;

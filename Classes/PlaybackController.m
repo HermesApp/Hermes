@@ -79,13 +79,6 @@ BOOL playOnStart = YES;
   return self;
 }
 
-- (void) dealloc {
-  [self setPlaying:nil];
-  [loader release];
-  loader = nil;
-  return [super dealloc];
-}
-
 - (Pandora*) pandora {
   return [[NSApp delegate] pandora];
 }
@@ -179,8 +172,6 @@ BOOL playOnStart = YES;
 
     image = [NSImage imageNamed:@"missing-album"];
     growlImage = [NSApp icon];
-  } else {
-    [image autorelease];
   }
 
   if (![playing isPaused]) {

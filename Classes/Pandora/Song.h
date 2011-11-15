@@ -29,6 +29,5 @@
 @property (retain) NSString *titleUrl;
 
 + (NSString*) decryptURL: (NSString*) url;
-- (void) setArt: (NSString*) a;
 
 @end

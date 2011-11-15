@@ -5,11 +5,7 @@
 @synthesize data, loadedURL;
 
 - (void) dealloc {
-  if (prev != nil) {
-    [prev cancel];
-    [prev release];
-  }
-  [super dealloc];
+  [prev cancel];
 }
 
 - (void) notifyImageLoaded {
@@ -20,7 +16,6 @@
 - (void) loadImageURL: (NSString*) url {
   if (prev != nil) {
     [prev cancel];
-    [prev release];
   }
 
   [self setLoadedURL:url];

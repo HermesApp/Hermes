@@ -15,10 +15,10 @@
   id _identifier;
 }
 
-@property (nonatomic, assign) id target;
+@property (nonatomic, retain) id target;
 @property (nonatomic, assign) SEL selector;
-@property (nonatomic, assign) id userInfo;
-@property (nonatomic, assign) id identifier;
+@property (nonatomic, retain) id userInfo;
+@property (nonatomic, retain) id identifier;
 
 + (id)callbackWithTarget:(id)target action:(SEL)action userInfo:(id)userInfo;
 + (id)callbackWithTarget:(id)target action:(SEL)action userInfo:(id)userInfo object:(id)identifier;

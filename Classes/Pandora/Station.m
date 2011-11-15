@@ -55,12 +55,6 @@
   [self stop];
 
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-
-  [songs removeAllObjects];
-  [songs release];
-  [stationId release];
-  [name release];
-  [super dealloc];
 }
 
 - (BOOL) isEqual:(id)object {
@@ -110,7 +104,6 @@
 - (void) setAudioStream {
   NSURL *url = [NSURL URLWithString:[playing url]];
   AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
-  [s autorelease];
   [self setStream:s];
 }
 
@@ -220,8 +213,6 @@
   }
 
   [stream stop];
-  [stream release];
-  [playing release];
   stream = nil;
   playing = nil;
 }

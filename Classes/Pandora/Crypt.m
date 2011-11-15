@@ -79,10 +79,6 @@ NSString* PandoraDecrypt(NSString* string) {
   NSString *ret = [[NSString alloc] initWithData:data
     encoding:NSASCIIStringEncoding];
 
-  [data release];
-
-  [ret autorelease];
-
   return ret;
 }
 
@@ -139,7 +135,6 @@ NSString* PandoraEncrypt(NSString* string) {
 
   NSString *ret = [[NSString alloc] initWithData:nsdata
                                         encoding:NSUTF8StringEncoding];
-  [ret autorelease];
 
   return ret;
 }

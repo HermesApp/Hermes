@@ -41,19 +41,12 @@ AppleMediaKeyController *mediaKeyController;
 @synthesize eventPort = _eventPort;
 
 + (void) bindKeys {
-  if (mediaKeyController != nil) {
-    return;
+  if (mediaKeyController == nil) {
+    mediaKeyController = [[AppleMediaKeyController alloc] init];
   }
-
-  mediaKeyController = [[AppleMediaKeyController alloc] init];
 }
 
 + (void) unbindKeys {
-  if (mediaKeyController == nil) {
-    return;
-  }
-
-  [mediaKeyController release];
   mediaKeyController = nil;
 }
 
@@ -87,19 +80,19 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
   switch (keyCode) {
     case NX_KEYTYPE_PLAY:
       if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyPlayPauseNotification object:(AppleMediaKeyController *)refcon];
+        [center postNotificationName:MediaKeyPlayPauseNotification object:(__bridge AppleMediaKeyController *)refcon];
       if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
         return NULL;
       break;
     case NX_KEYTYPE_FAST:
       if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyNextNotification object:(AppleMediaKeyController *)refcon];
+        [center postNotificationName:MediaKeyNextNotification object:(__bridge AppleMediaKeyController *)refcon];
       if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
         return NULL;
       break;
     case NX_KEYTYPE_REWIND:
       if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyPreviousNotification object:(AppleMediaKeyController *)refcon];
+        [center postNotificationName:MediaKeyPreviousNotification object:(__bridge AppleMediaKeyController *)refcon];
       if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
         return NULL;
       break;
@@ -116,7 +109,7 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
                                   kCGEventTapOptionDefault,
                                   CGEventMaskBit(NX_SYSDEFINED),
                                   tapEventCallback,
-                                  self);
+                                  (__bridge void*) self);
 
     if(_eventPort == NULL) {
       NSLogd(@"Fatal Error: Event Tap could not be created");
@@ -145,7 +138,6 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
 - (void)dealloc {
   CFRelease(_eventPort);
   CFRelease(_runLoopSource);
-  [super dealloc];
 }
 
 @end

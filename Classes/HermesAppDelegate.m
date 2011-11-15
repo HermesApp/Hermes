@@ -25,11 +25,6 @@
   return self;
 }
 
-- (void) dealloc {
-  [pandora release];
-  [super dealloc];
-}
-
 - (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication
                     hasVisibleWindows:(BOOL)flag {
   if (!flag) {

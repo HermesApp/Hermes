@@ -212,12 +212,7 @@
 
 /* Called whenever search results are received */
 - (void) searchResultsLoaded: (NSNotification*) not {
-  if (lastResults) {
-    [lastResults release];
-  }
-
   lastResults = [not userInfo];
-  [lastResults retain];
 
   [searchSpinner setHidden:YES];
   [searchSpinner stopAnimation:nil];

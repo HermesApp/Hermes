@@ -25,24 +25,6 @@
   return self;
 }
 
-- (void) dealloc {
-  [artist release];
-  [title release];
-  [album release];
-  [art release];
-  [url release];
-  [stationId release];
-  [musicId release];
-  [userSeed release];
-  [rating release];
-  [songType release];
-  [albumUrl release];
-  [artistUrl release];
-  [titleUrl release];
-
-  [super dealloc];
-}
-
 /**
  * Decrypts the URL received from Pandora
  */

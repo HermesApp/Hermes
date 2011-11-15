@@ -15,11 +15,11 @@
 @synthesize identifier = _identifier;
 
 + (id)callbackWithTarget:(id)target action:(SEL)action userInfo:(id)userInfo {
-  return [[[FMCallback alloc] initWithTarget:target action:action userInfo:userInfo] autorelease];
+  return [[FMCallback alloc] initWithTarget:target action:action userInfo:userInfo];
 }
 
 + (id)callbackWithTarget:(id)target action:(SEL)action userInfo:(id)userInfo object:(id)identifier {
-  return [[[FMCallback alloc] initWithTarget:target action:action userInfo:userInfo object:identifier] autorelease];
+  return [[FMCallback alloc] initWithTarget:target action:action userInfo:userInfo object:identifier];
 }
 
 - (id)initWithTarget:(id)target action:(SEL)action userInfo:(id)userInfo {
@@ -51,10 +51,6 @@
   } else {
     [_target performSelector:_selector withObject:_identifier withObject:_userInfo];
   }
-}
-
-- (void)dealloc {
-  [super dealloc];
 }
 
 @end

@@ -20,7 +20,7 @@
   [req setInfo:info];
   [req resetResponse];
 
-  return [req autorelease];
+  return req;
 }
 
 - (void) resetResponse {
@@ -31,14 +31,6 @@
   NSString *new_data = [requestData stringByReplacingOccurrencesOfString:token
                                                               withString:replacement];
   [self setRequestData:new_data];
-}
-
-- (void) dealloc {
-  [requestMethod release];
-  [info release];
-  [requestData release];
-  [responseData release];
-  [super dealloc];
 }
 
 @end
@@ -126,12 +118,6 @@ done:
   return [super init];
 }
 
-- (void) dealloc {
-  [activeRequests release];
-  [listenerID release];
-  return [super dealloc];
-}
-
 /**
  * Gets the current UNIX time
  */
@@ -213,7 +199,7 @@ done:
   } else {
     /* Only invoke the callback if there's no faults */
     [self performSelector:[request callback]
-               withObject:(id)doc
+               withObject:(__bridge id)doc
                withObject:[request info]];
   }
 
@@ -222,7 +208,6 @@ done:
   if (doc != NULL) {
     xmlFreeDoc(doc);
   }
-  [connection release];
 }
 
 /* Collect the data received */
