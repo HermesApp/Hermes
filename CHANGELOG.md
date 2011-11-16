@@ -1,6 +1,6 @@
-# Version 1.0.11 (unreleased)
+# Version 1.0.11 (11/16/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.10...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.10...v1.0.11)
 
 * [added] Support OSX 10.6
 * [fixed] Fix an intermittent crash occuring upon resume.
