@@ -9,17 +9,17 @@
 typedef void(^PandoraCallback)(xmlDocPtr);
 
 @interface PandoraRequest : NSObject {
-  @public
-  PandoraCallback callback;
   @private
   NSString *requestData;
   NSString *requestMethod;
   NSMutableData *responseData;
+  PandoraCallback callback;
 }
 
 @property (retain) NSString *requestData;
 @property (retain) NSString *requestMethod;
 @property (retain) NSMutableData *responseData;
+@property (retain) PandoraCallback callback;
 @property (retain) NSObject *info;
 
 + (PandoraRequest*) requestWithMethod: (NSString*) requestMethod

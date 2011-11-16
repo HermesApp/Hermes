@@ -68,7 +68,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   FMEngineURLConnection *connection = [[FMEngineURLConnection alloc] initWithRequest:request];
   NSString *connectionId = [connection identifier];
-  connection->callback = callback;
+  connection->callback = [callback copy];
 
   if(connection) {
     [connections setObject:connection forKey:connectionId];

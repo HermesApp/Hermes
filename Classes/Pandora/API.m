@@ -6,13 +6,13 @@
 
 @implementation PandoraRequest
 
-@synthesize requestData, requestMethod, info, responseData;
+@synthesize requestData, requestMethod, info, responseData, callback;
 
 + (PandoraRequest*) requestWithMethod: (NSString*) method
                                  data: (NSString*) data
                              callback: (PandoraCallback) callback {
   PandoraRequest *req = [[PandoraRequest alloc] init];
-  req->callback = callback;
+  [req setCallback:[callback copy]];
   [req setRequestData:data];
   [req setRequestMethod:method];
   [req resetResponse];
@@ -195,7 +195,7 @@ done:
                                                       userInfo:info];
   } else {
     /* Only invoke the callback if there's no faults */
-    request->callback(doc);
+    [request callback](doc);
   }
 
   /* Always free these up */
