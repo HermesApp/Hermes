@@ -6,10 +6,12 @@
 #define PANDORA_API_PATH @"/radio/xmlrpc/"
 #define PANDORA_API_VERSION @"v33"
 
+typedef void(^PandoraCallback)(xmlDocPtr);
+
 @interface PandoraRequest : NSObject {
+  @public
+  PandoraCallback callback;
   @private
-  SEL callback;
-  NSObject *info;
   NSString *requestData;
   NSString *requestMethod;
   NSMutableData *responseData;
@@ -19,12 +21,10 @@
 @property (retain) NSString *requestMethod;
 @property (retain) NSMutableData *responseData;
 @property (retain) NSObject *info;
-@property (readwrite) SEL callback;
 
 + (PandoraRequest*) requestWithMethod: (NSString*) requestMethod
                                  data: (NSString*) data
-                             callback: (SEL) callback
-                                 info: (NSObject*) info;
+                             callback: (PandoraCallback) callback;
 - (void) resetResponse;
 - (void) replaceAuthToken:(NSString*) token with:(NSString*) replacement;
 @end

@@ -1,9 +1,8 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
-
-#import "Crypt.h"
-#import "Keys.h"
+#include "Crypt.h"
+#include "Keys.h"
 
 #define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
 
