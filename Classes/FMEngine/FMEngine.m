@@ -7,7 +7,6 @@
 //
 
 #import "FMEngine.h"
-#import "FMCallback.h"
 #import "FMEngineURLConnection.h"
 
 @implementation FMEngine
@@ -28,7 +27,11 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   return [unencryptedToken md5sum];
 }
 
-- (void)performMethod:(NSString *)method withTarget:(id)target withParameters:(NSDictionary *)params andAction:(SEL)callback useSignature:(BOOL)useSig httpMethod:(NSString *)httpMethod {
+- (void) performMethod:(NSString *)method
+          withCallback:(FMCallback)callback
+        withParameters:(NSDictionary *)params
+          useSignature:(BOOL)useSig
+            httpMethod:(NSString *)httpMethod {
   NSString *dataSig;
   NSMutableURLRequest *request;
   NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithDictionary:params];
@@ -49,7 +52,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   #endif
 
   params = [NSDictionary dictionaryWithDictionary:tempDict];
-  [tempDict release];
 
   if(![httpMethod isPOST]) {
     NSURL *dataURL = [self generateURLFromDictionary:params];
@@ -66,11 +68,10 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   FMEngineURLConnection *connection = [[FMEngineURLConnection alloc] initWithRequest:request];
   NSString *connectionId = [connection identifier];
-  connection.callback = [FMCallback callbackWithTarget:target action:callback userInfo:nil object:connectionId];
+  connection->callback = callback;
 
   if(connection) {
     [connections setObject:connection forKey:connectionId];
-    [connection release];
   }
 }
 
@@ -94,7 +95,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   [tempDict setObject:method forKey:@"method"];
   params = [NSDictionary dictionaryWithDictionary:tempDict];
-  [tempDict release];
 
   if(![httpMethod isPOST]) {
     NSURL *dataURL = [self generateURLFromDictionary:params];
@@ -117,7 +117,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 - (NSString *)generatePOSTBodyFromDictionary:(NSDictionary *)dict {
   NSMutableString *rawBody = [[NSMutableString alloc] init];
   NSMutableArray *aMutableArray = [[NSMutableArray alloc] initWithArray:[dict allKeys]];
-  [aMutableArray sortUsingFunction:sortAlpha context:self];
+  [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(NSString *key in aMutableArray) {
     NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
@@ -125,8 +125,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   }
 
   NSString *body = [NSString stringWithString:rawBody];
-  [rawBody release];
-  [aMutableArray release];
 
   return body;
 }
@@ -134,7 +132,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 - (NSURL *)generateURLFromDictionary:(NSDictionary *)dict {
   NSMutableArray *aMutableArray = [[NSMutableArray alloc] initWithArray:[dict allKeys]];
   NSMutableString *rawURL = [NSMutableString stringWithString:_LASTFM_BASEURL_];
-  [aMutableArray sortUsingFunction:sortAlpha context:self];
+  [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(int i = 0; i < [aMutableArray count]; i++) {
     NSString *key = [aMutableArray objectAtIndex:i];
@@ -149,7 +147,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   NSString *encodedURL = [rawURL stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
   NSURL *url = [NSURL URLWithString:encodedURL];
-  [aMutableArray release];
 
   return url;
 }
@@ -157,7 +154,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 - (NSString *)generateSignatureFromDictionary:(NSDictionary *)dict {
   NSMutableArray *aMutableArray = [[NSMutableArray alloc] initWithArray:[dict allKeys]];
   NSMutableString *rawSignature = [[NSMutableString alloc] init];
-  [aMutableArray sortUsingFunction:sortAlpha context:self];
+  [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(NSString *key in aMutableArray) {
     [rawSignature appendString:[NSString stringWithFormat:@"%@%@", key, [dict objectForKey:key]]];
@@ -166,17 +163,11 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   [rawSignature appendString:_LASTFM_SECRETK_];
 
   NSString *signature = [rawSignature md5sum];
-  [rawSignature release];
-  [aMutableArray release];
-
   return signature;
 }
 
 - (void)dealloc {
-
   [[connections allValues] makeObjectsPerformSelector:@selector(cancel)];
-    [connections release];
-  [super dealloc];
 }
 
 @end

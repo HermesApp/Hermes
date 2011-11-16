@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FMEngine.h"
 #import "NSString+FMEngine.h"
-#import "FMCallback.h"
 
 @interface FMEngineURLConnection : NSURLConnection {
+  @public
+  FMCallback callback;
+
+  @private
   NSString *_id;
   NSMutableData *_receivedData;
-  FMCallback *callback;
 }
-
-@property (nonatomic, retain) FMCallback *callback;
 
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate;
 - (id)initWithRequest:(NSURLRequest *)request;

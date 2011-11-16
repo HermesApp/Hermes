@@ -10,12 +10,10 @@
 
 @implementation FMEngineURLConnection
 
-@synthesize callback;
-
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate {
   if ((self = [super initWithRequest:request delegate:delegate])) {
     _receivedData = [[NSMutableData alloc] initWithCapacity:0];
-    _id = [[NSString stringWithNewUUID] retain];
+    _id = [NSString stringWithNewUUID];
   }
   return self;
 }
@@ -23,7 +21,7 @@
 - (id)initWithRequest:(NSURLRequest *)request {
   if ((self = [super initWithRequest:request delegate:self])) {
     _receivedData = [[NSMutableData alloc] initWithCapacity:0];
-    _id = [[NSString stringWithNewUUID] retain];
+    _id = [NSString stringWithNewUUID];
   }
   return self;
 }
@@ -38,19 +36,11 @@
 
 - (void)connection:(FMEngineURLConnection *)connection didFailWithError:(NSError *)error {
   // TODO: Error Handling
-  [callback setUserInfo:error];
-  [callback fire];
-
-    [connection release];
-    [_receivedData release];
+  callback(nil, error);
 }
 
 - (void)connectionDidFinishLoading:(FMEngineURLConnection *)connection {
-  [callback setUserInfo:_receivedData];
-  [callback fire];
-
-    [connection release];
-    [_receivedData release];
+  callback(_receivedData, nil);
 }
 
 - (void)appendData:(NSData *)moreData {
@@ -63,13 +53,6 @@
 
 - (NSString *)identifier {
   return _id;
-}
-
-- (void)dealloc {
-  [callback release];
-  [_id release];
-
-  [super dealloc];
 }
 
 @end
