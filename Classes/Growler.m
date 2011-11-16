@@ -13,20 +13,13 @@ Growler *growler = nil;
 @implementation Growler
 
 + (void) subscribe {
-  if (growler != nil) {
-    return;
+  if (growler == nil) {
+    growler = [[Growler alloc] init];
+    [GrowlApplicationBridge setGrowlDelegate:growler];
   }
-
-  growler = [[Growler alloc] init];
-  [GrowlApplicationBridge setGrowlDelegate:growler];
 }
 
 + (void) unsubscribe {
-  if (growler == nil) {
-    return;
-  }
-
-  [growler release];
   growler = nil;
   [GrowlApplicationBridge setGrowlDelegate:nil];
 }

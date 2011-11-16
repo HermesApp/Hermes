@@ -1,7 +1,7 @@
 #import "Keychain.h"
 #import "Scrobbler.h"
 #import "Station.h"
-#import <JSON/JSON.h>
+#import "SBJson.h"
 
 #define LASTFM_KEYCHAIN_ITEM @"hermes-lastfm-sk"
 
@@ -12,19 +12,12 @@ Scrobbler *subscriber = nil;
 @synthesize engine, authToken, sessionToken;
 
 + (void) subscribe {
-  if (subscriber != nil) {
-    return;
+  if (subscriber == nil) {
+    subscriber = [[Scrobbler alloc] init];
   }
-
-  subscriber = [[Scrobbler alloc] init];
 }
 
 + (void) unsubscribe {
-  if (subscriber == nil) {
-    return;
-  }
-
-  [subscriber release];
   subscriber = nil;
 }
 
@@ -34,6 +27,18 @@ Scrobbler *subscriber = nil;
   }
 
   [subscriber scrobble: song];
+}
+
+- (void) error: (NSString*) message {
+  NSString *header = @"last.fm error: ";
+  NSAlert *alert = [[NSAlert alloc] init];
+  message = [header stringByAppendingString:message];
+  [alert setMessageText:message];
+  [alert addButtonWithTitle:@"OK"];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window]
+                    modalDelegate:self
+                   didEndSelector:nil
+                      contextInfo:nil];
 }
 
 - (void) scrobble:(Song *)song {
@@ -58,24 +63,26 @@ Scrobbler *subscriber = nil;
   NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
   [dictionary setObject:time forKey:@"timestamp"];
 
+  FMCallback cb = ^(NSData *data, NSError *error) {
+    if (error != nil) {
+      [self error:[error localizedDescription]];
+      return;
+    }
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+
+    NSDictionary *object = [parser objectWithData:data];
+
+    if ([object objectForKey:@"error"] != nil) {
+      NSLogd(@"%@", object);
+      [self error:[object objectForKey:@"message"]];
+    }
+  };
+
   [engine performMethod:@"track.scrobble"
-             withTarget:self
+           withCallback:cb
          withParameters:dictionary
-              andAction:@selector(finishedScrobbling::)
            useSignature:YES
              httpMethod:@"POST"];
-}
-
-- (void) error: (NSString*) message {
-  NSString *header = @"last.fm error: ";
-  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
-  message = [header stringByAppendingString:message];
-  [alert setMessageText:message];
-  [alert addButtonWithTitle:@"OK"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:nil
-                      contextInfo:nil];
 }
 
 /**
@@ -85,7 +92,7 @@ Scrobbler *subscriber = nil;
  * and then we automatically retry to get the authorization token
  */
 - (void) needAuthorization {
-  NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+  NSAlert *alert = [[NSAlert alloc] init];
   [alert setMessageText:@"Hermes needs authorization to scrobble on last.fm"];
   [alert addButtonWithTitle:@"OK"];
   [alert addButtonWithTitle:@"Cancel"];
@@ -141,27 +148,6 @@ Scrobbler *subscriber = nil;
   if (timer != nil && [timer isValid]) {
     [timer invalidate];
   }
-  [engine release];
-  [authToken release];
-  [sessionToken release];
-
-  [super dealloc];
-}
-
-/**
- * Callback for when the scrobbling request completes
- */
-- (void) finishedScrobbling: (id) _ignored : (NSData*) data {
-  SBJsonParser *parser = [[SBJsonParser alloc] init];
-
-  NSDictionary *object = [parser objectWithData:data];
-
-  if ([object objectForKey:@"error"] != nil) {
-    NSLogd(@"%@", object);
-    [self error:[object objectForKey:@"message"]];
-  }
-
-  [parser release];
 }
 
 /**
@@ -171,31 +157,30 @@ Scrobbler *subscriber = nil;
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
 
+  FMCallback cb = ^(NSData *data, NSError *error) {
+    if (error != nil) {
+      [self error:[error localizedDescription]];
+      return;
+    }
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+
+    NSDictionary *object = [parser objectWithData:data];
+
+    [self setAuthToken:[object objectForKey:@"token"]];
+
+    if (authToken == nil || [@"" isEqual:authToken]) {
+      [self setAuthToken:nil];
+      [self error:@"Couldn't get an auth token from last.fm!"];
+    } else {
+      [self fetchSessionToken];
+    }
+  };
+
   [engine performMethod:@"auth.getToken"
-             withTarget:self
+           withCallback:cb
          withParameters:dict
-              andAction:@selector(gotAuthToken::)
            useSignature:YES
              httpMethod:@"GET"];
-}
-
-/**
- * Callback for when we finished getting an authorization token
- */
-- (void) gotAuthToken: (id) _ignored : (NSData*) data {
-  SBJsonParser *parser = [[SBJsonParser alloc] init];
-
-  NSDictionary *object = [parser objectWithData:data];
-
-  [self setAuthToken:[object objectForKey:@"token"]];
-  [parser release];
-
-  if (authToken == nil || [@"" isEqual:authToken]) {
-    [self setAuthToken:nil];
-    [self error:@"Couldn't get an auth token from last.fm!"];
-  } else {
-    [self fetchSessionToken];
-  }
 }
 
 /**
@@ -209,39 +194,38 @@ Scrobbler *subscriber = nil;
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
   [dict setObject:authToken forKey:@"token"];
 
+  FMCallback cb = ^(NSData *data, NSError *error) {
+    if (error != nil) {
+      [self error:[error localizedDescription]];
+      return;
+    }
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    NSDictionary *object = [parser objectWithData:data];
+
+    if ([object objectForKey:@"error"] != nil) {
+      NSNumber *code = [object objectForKey:@"error"];
+
+      if ([code intValue] == 14) {
+        [self needAuthorization];
+      } else {
+        [self error:[object objectForKey:@"message"]];
+      }
+      [self setSessionToken:nil];
+      return;
+    }
+
+    NSDictionary *session = [object objectForKey:@"session"];
+    [self setSessionToken:[session objectForKey:@"key"]];
+    if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
+      [self error:@"Couldn't save session token to keychain!"];
+    }
+  };
+
   [engine performMethod:@"auth.getSession"
-             withTarget:self
+           withCallback:cb
          withParameters:dict
-              andAction:@selector(gotSessionToken::)
            useSignature:YES
              httpMethod:@"GET"];
-}
-
-/**
- * Callback for when the getSession request completes
- */
-- (void) gotSessionToken: (id) _ignored : (NSData*) data {
-  SBJsonParser *parser = [[SBJsonParser alloc] init];
-  NSDictionary *object = [parser objectWithData:data];
-  [parser release];
-
-  if ([object objectForKey:@"error"] != nil) {
-    NSNumber *code = [object objectForKey:@"error"];
-
-    if ([code intValue] == 14) {
-      [self needAuthorization];
-    } else {
-      [self error:[object objectForKey:@"message"]];
-    }
-    [self setSessionToken:nil];
-    return;
-  }
-
-  NSDictionary *session = [object objectForKey:@"session"];
-  [self setSessionToken:[session objectForKey:@"key"]];
-  if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
-    [self error:@"Couldn't save session token to keychain!"];
-  }
 }
 
 @end

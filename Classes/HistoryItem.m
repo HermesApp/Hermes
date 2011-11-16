@@ -16,9 +16,7 @@
 }
 
 - (void) dealloc {
-  [loader release];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  return [super dealloc];
 }
 
 - (IBAction) like:(id)sender {
@@ -53,7 +51,6 @@
     return;
   }
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  [image autorelease];
   [art setImage:image];
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -69,7 +66,6 @@
     if (loader != nil) {
       [[NSNotificationCenter defaultCenter]
        removeObserver:self name:@"image-loaded" object:loader];
-      [loader release];
       loader = nil;
     }
     loader = [[ImageLoader alloc] init];
@@ -96,7 +92,6 @@
     return;
   }
 
-  [loader release];
   loader = nil;
 
   art = nil;
