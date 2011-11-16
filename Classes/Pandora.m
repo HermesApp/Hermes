@@ -45,6 +45,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Authenticates with Pandora. Stores information from the response
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
+  NSLogd(@"Authenticating...");
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -88,6 +89,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
                                    reason:@"Not authenticated yet"
                                  userInfo:nil];
   }
+  NSLogd(@"Fetching stations...");
 
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
@@ -148,6 +150,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
                                    reason:@"Not authenticated yet"
                                  userInfo:nil];
   }
+  NSLogd(@"Getting fragment for %@...", station_id);
 
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
@@ -214,6 +217,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
       "<methodName>misc.sync</methodName>"
       "<params></params>"
     "</methodCall>";
+  NSLogd(@"Synchronizing...");
 
   PandoraCallback cb = ^(xmlDocPtr doc) {
     [self notify:@"hermes.sync" with:nil];
@@ -237,6 +241,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
                                    reason:@"Not authenticated yet"
                                  userInfo:nil];
   }
+  NSLogd(@"Rating song '%@' as %@...", [song title], rating);
 
   NSString *xml = [NSString stringWithFormat:
      @"<?xml version=\"1.0\"?>"
@@ -283,6 +288,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
                                    reason:@"Not authenticated yet"
                                  userInfo:nil];
   }
+  NSLogd(@"Getting tired of %@...", [song title]);
 
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
@@ -315,6 +321,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
                                    reason:@"Not authenticated yet"
                                  userInfo:nil];
   }
+  NSLogd(@"Searching for %@...", search);
 
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
