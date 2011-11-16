@@ -31,58 +31,53 @@
  */
 
 #import <Foundation/Foundation.h>
+
+#import "SBJsonTokeniser.h"
 #import "SBJsonStreamParser.h"
 
-typedef enum {
-	SBJsonStreamParserAdapterNone,
-	SBJsonStreamParserAdapterArray,
-	SBJsonStreamParserAdapterObject,
-} SBJsonStreamParserAdapterType;
+@interface SBJsonStreamParserState : NSObject
++ (id)sharedInstance;
 
-/**
- @brief Delegate for getting objects & arrays from the stream parser adapter
- 
- You will most likely find it much more convenient to implement this
- than the raw SBJsonStreamParserDelegate protocol.
- 
- @see The TwitterStream example project.
- */
-@protocol SBJsonStreamParserAdapterDelegate
+- (BOOL)parser:(SBJsonStreamParser*)parser shouldAcceptToken:(sbjson_token_t)token;
+- (SBJsonStreamParserStatus)parserShouldReturn:(SBJsonStreamParser*)parser;
+- (void)parser:(SBJsonStreamParser*)parser shouldTransitionTo:(sbjson_token_t)tok;
+- (BOOL)needKey;
+- (BOOL)isError;
 
-/// Called when a JSON array is found
-- (void)parser:(SBJsonStreamParser*)parser foundArray:(NSArray*)array;
-
-/// Called when a JSON object is found
-- (void)parser:(SBJsonStreamParser*)parser foundObject:(NSDictionary*)dict;
+- (NSString*)name;
 
 @end
 
+@interface SBJsonStreamParserStateStart : SBJsonStreamParserState
+@end
 
-@interface SBJsonStreamParserAdapter : NSObject <SBJsonStreamParserDelegate> {
-	id<SBJsonStreamParserAdapterDelegate> delegate;
-	NSUInteger skip, depth;
-	__weak NSMutableArray *array;
-	__weak NSMutableDictionary *dict;
-	NSMutableArray *keyStack;
-	NSMutableArray *stack;
-	
-	SBJsonStreamParserAdapterType currentType;
-}
+@interface SBJsonStreamParserStateComplete : SBJsonStreamParserState
+@end
 
-/**
- @brief How many levels to skip
- 
- This is useful for parsing HUGE JSON documents, particularly if it consists of an
- outer array and multiple objects.
- 
- If you set this to N it will skip the outer N levels and call the -parser:foundArray:
- or -parser:foundObject: methods for each of the inner objects, as appropriate.
- 
- @see The StreamParserIntegrationTest.m file for examples
-*/
-@property NSUInteger skip;
+@interface SBJsonStreamParserStateError : SBJsonStreamParserState
+@end
 
-/// Set this to the object you want to receive messages
-@property (assign) id<SBJsonStreamParserAdapterDelegate> delegate;
 
+@interface SBJsonStreamParserStateObjectStart : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateObjectGotKey : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateObjectSeparator : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateObjectGotValue : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateObjectNeedKey : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateArrayStart : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateArrayGotValue : SBJsonStreamParserState
+@end
+
+@interface SBJsonStreamParserStateArrayNeedValue : SBJsonStreamParserState
 @end
