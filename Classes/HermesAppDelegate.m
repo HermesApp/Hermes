@@ -140,15 +140,8 @@
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
-  [stations hideDrawer];
   [playback saveState];
   [history saveSongs];
-}
-
-- (void)applicationWillBecomeActive:(NSNotification *)aNotification {
-  if ([pandora authToken] != nil) {
-    [stations showDrawer];
-  }
 }
 
 - (void) applicationWillTerminate: (NSNotification *)aNotification {

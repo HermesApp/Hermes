@@ -60,10 +60,21 @@
 
 - (void) showDrawer {
   [stations open];
+  [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
 }
 
 - (void) hideDrawer {
   [stations close];
+  [showStations setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
+}
+
+- (IBAction) toggleDrawer: (id) sender {
+  if ([stations state] == NSDrawerOpenState) {
+    [showStations setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
+  } else {
+    [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
+  }
+  [stations toggle: sender];
 }
 
 - (void) reset {
