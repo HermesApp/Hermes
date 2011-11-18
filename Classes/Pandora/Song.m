@@ -37,20 +37,29 @@
   return [pref stringByAppendingString: suff];
 }
 
+- (NSDictionary*) toDictionary {
+  NSMutableDictionary *info = [NSMutableDictionary dictionary];
+  [info setValue: artist forKey:@"artist"];
+  [info setValue: title forKey:@"title"];
+  [info setValue: album forKey:@"album"];
+  [info setValue: art forKey:@"art"];
+  [info setValue: url forKey:@"url"];
+  [info setValue: stationId forKey:@"stationId"];
+  [info setValue: musicId forKey:@"musicId"];
+  [info setValue: userSeed forKey:@"userSeed"];
+  [info setValue: rating forKey:@"rating"];
+  [info setValue: songType forKey:@"songType"];
+  [info setValue: albumUrl forKey:@"albumUrl"];
+  [info setValue: artistUrl forKey:@"artistUrl"];
+  [info setValue: titleUrl forKey:@"titleUrl"];
+  return info;
+}
+
 - (void) encodeWithCoder: (NSCoder *)coder {
-  [coder encodeObject: artist forKey:@"artist"];
-  [coder encodeObject: title forKey:@"title"];
-  [coder encodeObject: album forKey:@"album"];
-  [coder encodeObject: art forKey:@"art"];
-  [coder encodeObject: url forKey:@"url"];
-  [coder encodeObject: stationId forKey:@"stationId"];
-  [coder encodeObject: musicId forKey:@"musicId"];
-  [coder encodeObject: userSeed forKey:@"userSeed"];
-  [coder encodeObject: rating forKey:@"rating"];
-  [coder encodeObject: songType forKey:@"songType"];
-  [coder encodeObject: albumUrl forKey:@"albumUrl"];
-  [coder encodeObject: artistUrl forKey:@"artistUrl"];
-  [coder encodeObject: titleUrl forKey:@"titleUrl"];
+  NSDictionary *info = [self toDictionary];
+  for(id key in info) {
+    [coder encodeObject:[info objectForKey:key] forKey:key];
+  }
 }
 
 @end

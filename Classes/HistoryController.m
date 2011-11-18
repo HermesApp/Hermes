@@ -58,6 +58,12 @@
     [self setSongs:[self loadSavedSongs]];
   }
   [self insertObject:song inSongsAtIndex:0];
+
+  [[NSDistributedNotificationCenter defaultCenter]
+    postNotificationName:@"hermes.song"
+                  object:@"hermes"
+                userInfo:[song toDictionary]];
+
   while ([songs count] > HISTORY_LIMIT) {
     [self removeObjectFromSongsAtIndex:HISTORY_LIMIT];
   }

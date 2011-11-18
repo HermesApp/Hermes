@@ -29,5 +29,6 @@
 @property (retain) NSString *titleUrl;
 
 + (NSString*) decryptURL: (NSString*) url;
+- (NSDictionary*) toDictionary;
 
 @end
