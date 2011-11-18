@@ -6,7 +6,7 @@
 @interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
   IBOutlet NSView *view;
-  
+
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
@@ -24,6 +24,7 @@
 - (void) showDrawer;
 - (void) hideDrawer;
 - (void) show;
+- (void) reset;
 
 // Buttons at bottom of drawer
 - (IBAction)deleteSelected: (id)sender;

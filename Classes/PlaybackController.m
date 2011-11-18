@@ -83,8 +83,24 @@ BOOL playOnStart = YES;
   return [[NSApp delegate] pandora];
 }
 
-- (void) hideToolbar {
+- (void) reset {
   [toolbar setVisible:NO];
+  if (playing) {
+    [playing stop];
+  }
+  [self setPlaying:nil];
+  lastImgSrc = nil;
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hermes.volume"];
+  NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
+  [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+  [[NSNotificationCenter defaultCenter]
+   removeObserver:self
+   name:@"song.playing"
+   object:nil];
+  [[NSNotificationCenter defaultCenter]
+   removeObserver:self
+   name:@"songs.loaded"
+   object:nil];
 }
 
 - (void) showSpinner {
@@ -108,13 +124,13 @@ BOOL playOnStart = YES;
 
 - (void) afterStationsLoaded {
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:@"song.playing"
-    object:nil];
+   removeObserver:self
+   name:@"song.playing"
+   object:nil];
   [[NSNotificationCenter defaultCenter]
-    removeObserver:self
-    name:@"songs.loaded"
-    object:nil];
+   removeObserver:self
+   name:@"songs.loaded"
+   object:nil];
 
   double saved = [[NSUserDefaults standardUserDefaults] doubleForKey:@"hermes.volume"];
   if (saved == 0) {

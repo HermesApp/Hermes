@@ -1,3 +1,9 @@
+# Version 1.0.12 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.12...master)
+
+* [fixed] Logging out and then back in works much better now
+
 # Version 1.0.11 (11/16/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.10...v1.0.11)

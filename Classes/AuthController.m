@@ -59,21 +59,9 @@
 
 /* Log out the current session */
 - (IBAction) logout: (id) sender {
-  /* Pause playback */
+  [password setStringValue:@""];
   HermesAppDelegate *delegate = [NSApp delegate];
-  PlaybackController *playback = [delegate playback];
-  [playback hideToolbar];
-  Station *playing = [playback playing];
-  if ([playing playing]) {
-    [playback playpause:nil];
-  }
-
-  StationsController *stations = [delegate stations];
-  [stations hideDrawer];
-
-  /* Remove our credentials */
-  [[NSApp delegate] cacheAuth:@"" :@""];
-  [self show];
+  [[delegate pandora] logout];
 }
 
 @end

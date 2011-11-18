@@ -66,6 +66,13 @@
   [stations close];
 }
 
+- (void) reset {
+  [self hideDrawer];
+  [stationsRefreshing setHidden:YES];
+  [stationsRefreshing stopAnimation:nil];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
+}
+
 /* Selects a station in the stations menu */
 - (void) selectStation: (Station*) station {
   Station *cur;
@@ -122,7 +129,9 @@
     objectValueForTableColumn:(NSTableColumn *)aTableColumn
     row:(NSInteger)rowIndex {
 
-  Station *s = [[[self pandora] stations] objectAtIndex: rowIndex];
+  NSArray *st = [[self pandora] stations];
+  if (rowIndex >= [st count]) { return nil; }
+  Station *s = [st objectAtIndex: rowIndex];
   if ([[aTableColumn identifier] isEqual:@"image"]) {
     if ([s isEqual:[self playingStation]]) {
       return [NSImage imageNamed:@"volume_up"];
@@ -208,6 +217,7 @@
   if ([self playingStation] == nil && ![self playSavedStation]) {
     [[NSApp delegate] setCurrentView:view];
   }
+  [self showDrawer];
 }
 
 /* Called whenever search results are received */
@@ -232,8 +242,6 @@
 /* Called after the user has authenticated */
 - (void) show {
   [[NSApp delegate] showLoader];
-  [self showDrawer];
-
   [self refreshList:nil];
 }
 

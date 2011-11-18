@@ -35,7 +35,7 @@
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;
 
-- (void) hideToolbar;
+- (void) reset;
 - (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;

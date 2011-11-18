@@ -89,6 +89,12 @@
     name:@"hermes.pandora-error"
     object:[[NSApp delegate] pandora]];
 
+  [[NSNotificationCenter defaultCenter]
+   addObserver:self
+   selector:@selector(handlePandoraLoggedOut:)
+   name:@"hermes.logged-out"
+   object:[[NSApp delegate] pandora]];
+
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
@@ -175,6 +181,15 @@
     [self setCurrentView:errorView];
     [errorLabel setStringValue:err];
   }
+}
+
+- (void) handlePandoraLoggedOut: (NSNotification*) notification {
+  [stations reset];
+  [playback reset];
+
+  /* Remove our credentials */
+  [self cacheAuth:@"" :@""];
+  [auth show];
 }
 
 + (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
