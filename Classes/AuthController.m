@@ -36,6 +36,7 @@
 
   HermesAppDelegate *delegate = [NSApp delegate];
   [[delegate stations] show];
+  [PlaybackController setPlayOnStart:YES];
 }
 
 /* Login button in sheet hit, should authenticate */
