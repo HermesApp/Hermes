@@ -100,17 +100,15 @@
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
 
-  @try {
-    NSString *savedUsername = [self getCachedUsername];
-    NSString *savedPassword = [self getCachedPassword];
-
+  NSString *savedUsername = [self getCachedUsername];
+  NSString *savedPassword = [self getCachedPassword];
+  if (savedPassword == nil || savedUsername == nil) {
+    [auth show];
+  } else {
     [self showLoader];
     [pandora authenticate:savedUsername
                          :savedPassword
                          :nil];
-    /* Callback in AuthController will handle everything else */
-  } @catch (KeychainException *e) {
-    [auth show];
   }
 
   NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
@@ -162,13 +160,15 @@
   } else if ([err isEqualToString:@"PLAYLIST_END"]) {
     [playback noSongs:notification];
   } else if ([err isEqualToString:@"AUTH_INVALID_TOKEN"]) {
-    @try {
-      [pandora authenticate:[self getCachedUsername]
-                           :[self getCachedPassword]
-                           :[[notification userInfo] objectForKey:@"request"]];
-    } @catch (KeychainException *e) {
+    NSString *user = [self getCachedUsername];
+    NSString *pass = [self getCachedPassword];
+    if (user == nil || pass == nil) {
       [[playback playing] pause];
       [auth authenticationFailed:notification];
+    } else {
+      [pandora authenticate:user
+                           :pass
+                           :[[notification userInfo] objectForKey:@"request"]];
     }
   } else {
     [self setCurrentView:errorView];
