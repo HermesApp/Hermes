@@ -17,7 +17,6 @@
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
 		FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FA0E555914784A3000C36794 /* Hermes.sdef */; };
 		FA0E556114784AF500C36794 /* AppleScript.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0E556014784AF500C36794 /* AppleScript.m */; };
-		FA0E558414786D0000C36794 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0E558314786CFF00C36794 /* AppKit.framework */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
 		FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228EC8137045E90070141A /* AudioToolbox.framework */; };
 		FA228ECB137045F40070141A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228ECA137045F40070141A /* Security.framework */; };
@@ -117,7 +116,6 @@
 		FA0E555914784A3000C36794 /* Hermes.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hermes.sdef; sourceTree = "<group>"; };
 		FA0E555F14784AF500C36794 /* AppleScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppleScript.h; path = Commands/AppleScript.h; sourceTree = "<group>"; };
 		FA0E556014784AF500C36794 /* AppleScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppleScript.m; path = Commands/AppleScript.m; sourceTree = "<group>"; };
-		FA0E558314786CFF00C36794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		FA228EC8137045E90070141A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -210,7 +208,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA0E558414786D0000C36794 /* AppKit.framework in Frameworks */,
 				FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */,
 				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
 				FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */,
@@ -269,7 +266,6 @@
 		29B97314FDCFA39411CA2CEA /* Pithos */ = {
 			isa = PBXGroup;
 			children = (
-				FA0E558314786CFF00C36794 /* AppKit.framework */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
