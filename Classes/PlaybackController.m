@@ -357,13 +357,31 @@ BOOL playOnStart = YES;
   }
 }
 
-/* Toggle between playing and pausing */
-- (IBAction)playpause: (id) sender {
+- (BOOL) play {
   if ([[playing stream] isPlaying]) {
-    [playing pause];
+    return NO;
   } else {
     [playing play];
     [Growler growl:[playing playing] withImage:[art image]];
+    return YES;
+  }
+}
+
+- (BOOL) pause {
+  if ([[playing stream] isPlaying]) {
+    [playing pause];
+    return YES;
+  } else {
+    return NO;
+  }
+}
+
+/* Toggle between playing and pausing */
+- (IBAction)playpause: (id) sender {
+  if ([[playing stream] isPlaying]) {
+    [self pause];
+  } else {
+    [self play];
   }
 }
 
