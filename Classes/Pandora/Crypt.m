@@ -5,41 +5,24 @@
 #include "Keys.h"
 
 #define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
+#define HEX_LEN (sizeof(uint32_t) * 2)
 
 NSString* PandoraDecrypt(NSString* string) {
-  int len, i, j;
+  int i, j;
   uint32_t l, r, t, a, b, c, d, f;
-  const char *hex;
-  unsigned char *cstr;
-  char buf[3];
+  char buf[HEX_LEN + 1];
+  buf[HEX_LEN] = '\0';
 
-  hex  = [string cStringUsingEncoding: NSUTF8StringEncoding];
-  len  = strlen(hex) / 2;
-  cstr = malloc(len);
-  if (cstr == NULL) {
-    return nil;
-  }
-
-  /* Convert the hex string to a list of bytes */
-  buf[2] = '\0';
-  for (i = 0; i < len; i++) {
-    buf[0] = hex[2 * i];
-    buf[1] = hex[2 * i + 1];
-    cstr[i] = strtol(buf, NULL, 16);
-  }
+  const char *hex = [string cStringUsingEncoding: NSASCIIStringEncoding];
 
   NSMutableData *data = [[NSMutableData alloc] init];
+  int len = [string length];
 
-  for (i = 0; i < len / 2; i += 8) {
-    l = (FETCH(cstr, i, len) << 24) |
-        (FETCH(cstr, i + 1, len) << 16) |
-        (FETCH(cstr, i + 2, len) << 8) |
-         FETCH(cstr, i + 3, len);
-
-    r = (FETCH(cstr, i + 4, len) << 24) |
-        (FETCH(cstr, i + 5, len) << 16) |
-        (FETCH(cstr, i + 6, len) << 8) |
-         FETCH(cstr, i + 7, len);
+  for (i = 0; i < len / 2; i += 2 * HEX_LEN) {
+    strncpy(buf, hex + i, HEX_LEN);
+    l = strtol(buf, NULL, 16);
+    strncpy(buf, hex + i + HEX_LEN, HEX_LEN);
+    r = strtol(buf, NULL, 16);
 
     for (j = InputKey_n + 1; j > 1; j--) {
       l ^= InputKey_p[j];
@@ -72,8 +55,6 @@ NSString* PandoraDecrypt(NSString* string) {
     [data appendBytes: &l length: sizeof(l)];
     [data appendBytes: &r length: sizeof(r)];
   }
-
-  free(cstr);
 
   NSString *ret = [[NSString alloc] initWithData:data
     encoding:NSASCIIStringEncoding];
