@@ -132,11 +132,11 @@ BOOL playOnStart = YES;
    name:@"songs.loaded"
    object:nil];
 
-  double saved = [[NSUserDefaults standardUserDefaults] doubleForKey:@"hermes.volume"];
+  int saved = [[NSUserDefaults standardUserDefaults] integerForKey:@"hermes.volume"];
   if (saved == 0) {
-    saved = 1.0;
+    saved = 100;
   }
-  [volume setDoubleValue:saved];
+  [self setIntVolume:saved];
 
   for (Station *station in [[self pandora] stations]) {
     [[NSNotificationCenter defaultCenter]
@@ -214,7 +214,7 @@ BOOL playOnStart = YES;
     NSLogd(@"error registered in stream");
   } else if ([streamer isPlaying]) {
     NSLogd(@"Stream playing now...");
-    [[playing stream] setVolume:[volume doubleValue]];
+    [[playing stream] setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
   } else if ([streamer isPaused]) {
@@ -485,12 +485,24 @@ BOOL playOnStart = YES;
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
+- (void) setIntVolume: (int) vol {
+  if (vol < 0) { vol = 0; }
+  if (vol > 100) { vol = 100; }
+  [volume setIntValue:vol];
+  [[playing stream] setVolume: vol/100.0];
+  [[NSUserDefaults standardUserDefaults]
+        setInteger:vol
+            forKey:@"hermes.volume"];
+}
+
+- (int) getIntVolume {
+  return [volume intValue];
+}
+
 - (IBAction) volumeChanged: (id) sender {
+  NSLogd(@"Volume changed to: %d", [volume intValue]);
   if (playing && [playing stream]) {
-    [[playing stream] setVolume: [volume doubleValue]];
-    [[NSUserDefaults standardUserDefaults]
-      setDouble:[volume doubleValue]
-      forKey:@"hermes.volume"];
+    [self setIntVolume:[volume intValue]];
   }
 }
 

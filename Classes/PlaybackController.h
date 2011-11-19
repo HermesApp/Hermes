@@ -40,6 +40,11 @@
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;
 
+- (BOOL) play;
+- (BOOL) pause;
+- (void) setIntVolume: (int) volume;
+- (int) getIntVolume;
+
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;
 - (IBAction)like: (id) sender;

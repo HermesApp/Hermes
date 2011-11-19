@@ -1,3 +1,10 @@
+//
+//  Scrobbler.h
+//  Hermes
+//
+//  Created by Alex Crichton on 11/19/11.
+//
+
 #import "FMEngine.h"
 #import "Song.h"
 

@@ -15,14 +15,15 @@
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
+		FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FA0E555914784A3000C36794 /* Hermes.sdef */; };
+		FA0E556114784AF500C36794 /* AppleScript.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0E556014784AF500C36794 /* AppleScript.m */; };
+		FA0E558414786D0000C36794 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA0E558314786CFF00C36794 /* AppKit.framework */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
 		FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228EC8137045E90070141A /* AudioToolbox.framework */; };
 		FA228ECB137045F40070141A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228ECA137045F40070141A /* Security.framework */; };
 		FA229D6514429E48008AB9FE /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = FA229D6414429E48008AB9FE /* history.png */; };
 		FA229D6814429F69008AB9FE /* HistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA229D6714429F68008AB9FE /* HistoryController.m */; };
 		FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2442BA136B18DC00E126D3 /* PreferencesController.m */; };
-		FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435E136B3D6C00E126D3 /* CHANGELOG.md */; };
-		FA244361136B3D6C00E126D3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = FA24435F136B3D6C00E126D3 /* README.md */; };
 		FA2A3F7F132BF97E0089AECC /* StationsController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F76132BF97E0089AECC /* StationsController.m */; };
 		FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F78132BF97E0089AECC /* Pandora.m */; };
 		FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F92132BF9F50089AECC /* Crypt.m */; };
@@ -57,7 +58,6 @@
 		FA98A5E214730FED008D9F02 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98A5D414730FED008D9F02 /* SBJsonTokeniser.m */; };
 		FA98A5E314730FED008D9F02 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98A5D614730FED008D9F02 /* SBJsonUTF8Stream.m */; };
 		FA98A5E414730FED008D9F02 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98A5D814730FED008D9F02 /* SBJsonWriter.m */; };
-		FAA313F913C98D9F00314C73 /* build_sparkle.sh in Resources */ = {isa = PBXBuildFile; fileRef = FAA313F813C98D9F00314C73 /* build_sparkle.sh */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
@@ -114,6 +114,10 @@
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
 		FA04AE9B14438F1000819310 /* thumbup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbup.png; sourceTree = "<group>"; };
+		FA0E555914784A3000C36794 /* Hermes.sdef */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Hermes.sdef; sourceTree = "<group>"; };
+		FA0E555F14784AF500C36794 /* AppleScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppleScript.h; path = Commands/AppleScript.h; sourceTree = "<group>"; };
+		FA0E556014784AF500C36794 /* AppleScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppleScript.m; path = Commands/AppleScript.m; sourceTree = "<group>"; };
+		FA0E558314786CFF00C36794 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		FA1063BC132C6A8A00D6DE42 /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		FA1063BD132C6A8A00D6DE42 /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
 		FA228EC8137045E90070141A /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
@@ -206,6 +210,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA0E558414786D0000C36794 /* AppKit.framework in Frameworks */,
 				FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */,
 				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
 				FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */,
@@ -220,36 +225,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FA2A3FBA132BFA6F0089AECC /* AudioStreamer */,
-				FA94E6E31368E5830063860C /* FMEngine */,
+				FA0E5569147855DD00C36794 /* Models */,
+				FA0E5568147855AB00C36794 /* Controllers */,
+				FA0E55671478559200C36794 /* Integration */,
+				FA0E55661478557900C36794 /* External */,
 				FA2A3F90132BF9F50089AECC /* Pandora */,
-				FA98A5BF14730FD8008D9F02 /* SBJson */,
-				FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */,
-				FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */,
-				FAEFFAAF132CB173007DC6FB /* AuthController.h */,
-				FAEFFAB0132CB173007DC6FB /* AuthController.m */,
-				FA6E801C1438E50C00D01FB5 /* Growler.h */,
-				FA6E801D1438E50C00D01FB5 /* Growler.m */,
 				256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */,
-				FA229D6614429F68008AB9FE /* HistoryController.h */,
-				FA229D6714429F68008AB9FE /* HistoryController.m */,
-				FA04AE94144365D900819310 /* HistoryItem.h */,
-				FA04AE95144365D900819310 /* HistoryItem.m */,
-				FA560C4F1331701E00215F71 /* ImageLoader.h */,
-				FA560C501331701E00215F71 /* ImageLoader.m */,
-				FA1063BC132C6A8A00D6DE42 /* Keychain.h */,
-				FA1063BD132C6A8A00D6DE42 /* Keychain.m */,
-				FA2A3F77132BF97E0089AECC /* Pandora.h */,
-				FA2A3F78132BF97E0089AECC /* Pandora.m */,
-				FA3CFF42132FC4CF003554E2 /* PlaybackController.h */,
-				FA3CFF43132FC4CF003554E2 /* PlaybackController.m */,
-				FA2442B9136B18DC00E126D3 /* PreferencesController.h */,
-				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
-				FA94E6F61368E62C0063860C /* Scrobbler.h */,
-				FA94E6F71368E62C0063860C /* Scrobbler.m */,
-				FA2A3F75132BF97E0089AECC /* StationsController.h */,
-				FA2A3F76132BF97E0089AECC /* StationsController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -269,8 +251,8 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 			);
 			name = "Other Frameworks";
@@ -287,6 +269,7 @@
 		29B97314FDCFA39411CA2CEA /* Pithos */ = {
 			isa = PBXGroup;
 			children = (
+				FA0E558314786CFF00C36794 /* AppKit.framework */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -318,6 +301,7 @@
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
 				FAAB28CE1336FB0300FC04C4 /* pandora.icns */,
 				FA24435F136B3D6C00E126D3 /* README.md */,
+				FA0E555914784A3000C36794 /* Hermes.sdef */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -329,6 +313,63 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA0E55661478557900C36794 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */,
+				FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */,
+				FA98A5BF14730FD8008D9F02 /* SBJson */,
+				FA94E6E31368E5830063860C /* FMEngine */,
+				FA2A3FBA132BFA6F0089AECC /* AudioStreamer */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		FA0E55671478559200C36794 /* Integration */ = {
+			isa = PBXGroup;
+			children = (
+				FA0E555F14784AF500C36794 /* AppleScript.h */,
+				FA0E556014784AF500C36794 /* AppleScript.m */,
+				FA94E6F61368E62C0063860C /* Scrobbler.h */,
+				FA94E6F71368E62C0063860C /* Scrobbler.m */,
+				FA1063BC132C6A8A00D6DE42 /* Keychain.h */,
+				FA1063BD132C6A8A00D6DE42 /* Keychain.m */,
+				FA6E801C1438E50C00D01FB5 /* Growler.h */,
+				FA6E801D1438E50C00D01FB5 /* Growler.m */,
+			);
+			name = Integration;
+			sourceTree = "<group>";
+		};
+		FA0E5568147855AB00C36794 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				FAEFFAAF132CB173007DC6FB /* AuthController.h */,
+				FAEFFAB0132CB173007DC6FB /* AuthController.m */,
+				FA229D6614429F68008AB9FE /* HistoryController.h */,
+				FA229D6714429F68008AB9FE /* HistoryController.m */,
+				FA3CFF42132FC4CF003554E2 /* PlaybackController.h */,
+				FA3CFF43132FC4CF003554E2 /* PlaybackController.m */,
+				FA2442B9136B18DC00E126D3 /* PreferencesController.h */,
+				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
+				FA2A3F75132BF97E0089AECC /* StationsController.h */,
+				FA2A3F76132BF97E0089AECC /* StationsController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		FA0E5569147855DD00C36794 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FA04AE94144365D900819310 /* HistoryItem.h */,
+				FA04AE95144365D900819310 /* HistoryItem.m */,
+				FA560C4F1331701E00215F71 /* ImageLoader.h */,
+				FA560C501331701E00215F71 /* ImageLoader.m */,
+				FA2A3F77132BF97E0089AECC /* Pandora.h */,
+				FA2A3F78132BF97E0089AECC /* Pandora.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		FA2A3F90132BF9F50089AECC /* Pandora */ = {
@@ -511,12 +552,10 @@
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
 				FA949679133AF3AD007B6F36 /* Credits.html in Resources */,
 				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
-				FA244360136B3D6C00E126D3 /* CHANGELOG.md in Resources */,
-				FA244361136B3D6C00E126D3 /* README.md in Resources */,
-				FAA313F913C98D9F00314C73 /* build_sparkle.sh in Resources */,
 				FA229D6514429E48008AB9FE /* history.png in Resources */,
 				FA04AE9C14438F1000819310 /* thumbdown.png in Resources */,
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
+				FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,6 +601,7 @@
 				FA98A5E214730FED008D9F02 /* SBJsonTokeniser.m in Sources */,
 				FA98A5E314730FED008D9F02 /* SBJsonUTF8Stream.m in Sources */,
 				FA98A5E414730FED008D9F02 /* SBJsonWriter.m in Sources */,
+				FA0E556114784AF500C36794 /* AppleScript.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,6 +639,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -624,6 +665,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CODE_SIGN_IDENTITY = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -682,6 +724,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				SDKROOT = macosx;
 			};
