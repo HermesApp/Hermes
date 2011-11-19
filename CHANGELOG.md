@@ -7,6 +7,9 @@
   object sending the notification is `hermes`
 * [added] The stations drawer is now manually collapsible and preserves state
   when the window loses focus
+* [added] Applescript support. See the
+  [README](https://github.com/alexcrichton/hermes/blob/master/README.md) for
+  more information
 * [fixed] Don't use `@throw`, it doesn't play nicely with ARC. Fixes a crash
   on startup if first time running.
 
