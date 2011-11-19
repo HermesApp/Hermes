@@ -5,6 +5,10 @@
 * [added] Broadcast new songs with NSDistributedNotificationCenter so programs
   can listen in if they'd like. The notification name is `hermes.song` and the
   object sending the notification is `hermes`
+* [added] The stations drawer is now manually collapsible and preserves state
+  when the window loses focus
+* [fixed] Don't use `@throw`, it doesn't play nicely with ARC. Fixes a crash
+  on startup if first time running.
 
 # Version 1.0.12 (11/18/11)
 
