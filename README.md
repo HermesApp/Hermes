@@ -14,7 +14,20 @@ ways you can develop against Hermes if you really want to.
    [Song.m](https://github.com/alexcrichton/hermes/blob/master/Classes/Pandora/Song.m#L40)
    for the keys available to you.
 
-2. AppleScript - not working yet, hopefully coming soon...
+2. AppleScript - here's an example script:
+
+        tell application "Hermes"
+          play          -- resumes playback, does nothing if playing
+          pause         -- pauses playback, does nothing if not playing
+          playpause     -- toggles playback between pause/play
+          next song     -- goes to the next song
+          thumbs up     -- likes the current song
+          thumbs down   -- dislikes the current song, going to another one
+          raise volume  -- raises the volume partially
+          lower volume  -- lowers the volume partially
+          full volume   -- raises volume to max
+          mute          -- mutes the volume
+        end tell
 
 ### Want something new/fixed?
 

@@ -4,77 +4,9 @@
   <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 
 	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
-<!--		<enumeration name="player states" code="esta" description="Legal player states">
-			<enumerator name="stopped" code="stop" description="Player is stopped"/>
-			<enumerator name="playing" code="play" description="Player is playing"/>
-			<enumerator name="paused" code="paus" description="Player is paused"/>
-		</enumeration>-->
 		<class name="application" code="capp" description="The Pandora Player">
 			<cocoa class="NSApplication"/>
-<!--			<element type="track" access="r"/>
-			<element type="station" access="r"/>
-			<property name="current track" code="pctr" description="the current track" type="track" access="r">
-				<cocoa key="currentTrack"/>
-			</property>
-			<property name="player state" code="psta" description="Current player state" type="player states">
-				<cocoa key="playerState"/>
-			</property>
-			<property name="current station" code="pstn" description="Current station" type="station">
-				<cocoa key="currentStation"/>
-			</property>
-			<property name="next station" code="pnst" description="Next station in Station List" type="station" access="r">
-				<cocoa key="nextStation"/>
-			</property>
-			<property name="previous station" code="ppst" description="Previous station in Station List" type="station" access="r">
-				<cocoa key="previousStation"/>
-			</property>
-			<property name="quickmix station" code="pqms" description="QuickMix station" type="station" access="r">
-				<cocoa key="quickMixStation"/>
-			</property>-->
-			<!--<responds-to command="pause">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="play">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="playpause">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="next track">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="thumbs up">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="thumbs down">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="raise volume">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="lower volume">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="full volume">
-				<cocoa method=" "/>
-			</responds-to>
-			<responds-to command="mute">
-				<cocoa method=" "/>
-			</responds-to>-->
-
 		</class>
-<!--		<class name="track" code="ctra" description="Track that Pandora has played">
-			<cocoa class="Track"/>
-			<property name="name" code="pnam" description="Name of track" type="text" access="r"/>
-			<property name="artist" code="part" description="Artist of track" type="text" access="r"/>
-			<property name="album" code="palb" description="the album name of the track" type="text" access="r"/>
-			<property name="identifier" code="pid " description="musicId for Track" type="text" access="r"/>
-		</class>
-		<class name="station" code="csta" description="A Pandora Station">
-			<cocoa class="Station"/>
-			<property name="name" code="pnam" description="Name of station" type="text" access="r"/>
-			<property name="identifier" code="pid " description="stationId for Station" type="text" access="r"/>
-		</class>-->
 		<command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">
 			<cocoa class="PlayPauseCommand"/>
 		</command>
@@ -84,7 +16,7 @@
 		<command name="play" code="HeRMplaL" description="resume playing the last song">
 			<cocoa class="PlayCommand"/>
 		</command>
-    <command name="next track" code="HeRMskip" description="advance to the next track">
+    <command name="next song" code="HeRMskip" description="advance to the next track">
 			<cocoa class="SkipCommand"/>
 		</command>
 		<command name="thumbs up" code="HeRMthup" description="set rating to &quot;like&quot;">
