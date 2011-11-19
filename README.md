@@ -3,21 +3,24 @@ Hermes
 
 A [Pandora](http://www.pandora.com) client for OS X.
 
-Why play music in really slow flash when you can play it with really fast non-flash?
+### Develop against Hermes
 
-## Development
+Thanks to the suggestions by [blalor](https://github.com/blalor), there's a few
+ways you can develop against Hermes if you really want to.
 
-This is an Xcode project, so point Xcode to the Hermes.xcodeproj here and build away.
-This project is also meant for Xcode 4.
+1. `NSDistributedNotificationCenter` - Every time a new song plays, a
+   notification is posted with the name `hermes.song` under the object `hermes`
+   with `userInfo` as a dictionary representing the song being played. See
+   [Song.m](https://github.com/alexcrichton/hermes/blob/master/Classes/Pandora/Song.m#L40)
+   for the keys available to you.
 
-## Build a Release ZIP
+2. AppleScript - not working yet, hopefully coming soon...
 
-Set your current target to the "Distribution" with the "Release" active
-configuration, and then build the target. This will create a release zip
-file in `build/Release`
+### Want something new/fixed?
 
-There will also be a snippet of XML in `build/Release/versions.xml` to be
-inserted into the [feed](http://alexcrichton.com/hermes/versions.xml) of
-releases. The [website project](https://github.com/alexcrichton/hermes/tree/gh-pages)
-has a [script](https://github.com/alexcrichton/hermes/blob/gh-pages/_config/release.rb)
-for automatically inserting this into the XML file before a release.
+1. [Open a ticket](https://github.com/alexcrichton/hermes/issues)! I'll get
+   around to it soon, especially if it sounds appealing to me. I take all
+   suggestions/feedback!
+
+2. Take a stab at it yourself if you're brave. The project is meant to be built
+   with Xcode 4. Just send me a pull request if you've got something fixed.
