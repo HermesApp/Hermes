@@ -1,6 +1,6 @@
-# Version 1.0.13 (unreleased)
+# Version 1.0.13 (11/20/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.12...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.12...v1.0.13)
 
 * [added] Broadcast new songs with NSDistributedNotificationCenter so programs
   can listen in if they'd like. The notification name is `hermes.song` and the
