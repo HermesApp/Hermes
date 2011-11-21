@@ -21,12 +21,20 @@ ways you can develop against Hermes if you really want to.
           pause         -- pauses playback, does nothing if not playing
           playpause     -- toggles playback between pause/play
           next song     -- goes to the next song
+
           thumbs up     -- likes the current song
           thumbs down   -- dislikes the current song, going to another one
+          tired of song -- sets the current song as being "tired of"
+
           raise volume  -- raises the volume partially
           lower volume  -- lowers the volume partially
           full volume   -- raises volume to max
           mute          -- mutes the volume
+          unmute        -- unmutes the volume to the last state from mute
+
+          -- integer 0 to 100 for the volume
+          get current volume
+          set current volume to 92
         end tell
 
 ### Want something new/fixed?
