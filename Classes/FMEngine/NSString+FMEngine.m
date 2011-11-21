@@ -16,13 +16,13 @@
 + (NSString *)stringWithNewUUID {
     CFUUIDRef uuidObj = CFUUIDCreate(nil);
 
-    NSString *newUUID = (__bridge NSString*)CFUUIDCreateString(nil, uuidObj);
+    NSString *newUUID = (__bridge_transfer NSString*)CFUUIDCreateString(nil, uuidObj);
     CFRelease(uuidObj);
     return newUUID;
 }
 
 - (NSString*) urlEncoded {
-  NSString *encoded = (__bridge NSString*) CFURLCreateStringByAddingPercentEscapes(NULL,
+  NSString *encoded = (__bridge_transfer NSString*) CFURLCreateStringByAddingPercentEscapes(NULL,
     (__bridge CFStringRef) self, NULL,
     (CFStringRef) @"!*'();:@&=+$,/?%#[]",
     kCFStringEncodingUTF8 );
