@@ -20,4 +20,5 @@
 @interface TiredCommand : NSScriptCommand {} @end
 
 @interface NSApplication (HermesScripting)
+- (NSNumber*) volume;
 @end

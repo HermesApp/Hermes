@@ -3,6 +3,7 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.13...master)
 
 * [added] `tired of song` command in AppleScript
+* [added] `current volume` read/write attribute in AppleScript
 
 # Version 1.0.13 (11/20/11)
 

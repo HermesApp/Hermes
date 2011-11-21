@@ -94,4 +94,15 @@
 @end
 
 @implementation NSApplication (HermesScripting)
+
+- (NSNumber*) volume {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  return [NSNumber numberWithInt:[playback getIntVolume]];
+}
+
+- (void) setVolume: (NSNumber*) vol {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  [playback setIntVolume:[vol intValue]];
+}
+
 @end
