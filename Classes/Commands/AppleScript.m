@@ -8,6 +8,8 @@
 #import "AppleScript.h"
 #import "HermesAppDelegate.h"
 
+int savedVolume = 0;
+
 @implementation PlayCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
@@ -80,7 +82,16 @@
 @implementation MuteCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
+  savedVolume = [playback getIntVolume];
 	[playback setIntVolume:0];
+  NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
+  return self;
+}
+@end
+@implementation UnmuteCommand
+- (id) performDefaultImplementation {
+  PlaybackController *playback = [[NSApp delegate] playback];
+	[playback setIntVolume:savedVolume];
   NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
   return self;
 }

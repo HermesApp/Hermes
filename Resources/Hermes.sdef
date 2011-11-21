@@ -40,8 +40,11 @@
 		<command name="full volume" code="HeRMvolf" description="set volume to full">
 			<cocoa class="FullVolumeCommand"/>
 		</command>
-		<command name="mute" code="HeRMmute" description="mute volume">
+		<command name="mute" code="HeRMmute" description="Mutes volume, saving the current level if 'unmute' is later used">
 			<cocoa class="MuteCommand"/>
+		</command>
+		<command name="unmute" code="HeRMumut" description="Unmutes the volume to the previously saved state from 'mute'">
+			<cocoa class="UnmuteCommand"/>
 		</command>
 	</suite>
 </dictionary>
