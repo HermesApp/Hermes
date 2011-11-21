@@ -17,6 +17,7 @@
 @interface LowerVolumeCommand : NSScriptCommand {} @end
 @interface FullVolumeCommand : NSScriptCommand {} @end
 @interface MuteCommand : NSScriptCommand {} @end
+@interface TiredCommand : NSScriptCommand {} @end
 
 @interface NSApplication (HermesScripting)
 @end

@@ -85,6 +85,13 @@
   return self;
 }
 @end
+@implementation TiredCommand
+- (id) performDefaultImplementation {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  [playback tired:self];
+  return self;
+}
+@end
 
 @implementation NSApplication (HermesScripting)
 @end

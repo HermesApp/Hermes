@@ -1,3 +1,9 @@
+# Version 1.0.14 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.13...master)
+
+* [added] `tired of song` command in AppleScript
+
 # Version 1.0.13 (11/20/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.12...v1.0.13)
