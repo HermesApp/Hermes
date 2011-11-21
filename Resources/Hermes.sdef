@@ -4,12 +4,15 @@
   <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 
 	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
+    <!-- Properties available -->
 		<class name="application" code="capp" description="The Pandora Player">
 			<cocoa class="NSApplication"/>
 			<property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
 				<cocoa key="volume"/>
 			</property>
 		</class>
+
+    <!-- Playback commands -->
 		<command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">
 			<cocoa class="PlayPauseCommand"/>
 		</command>
@@ -22,6 +25,8 @@
     <command name="next song" code="HeRMskip" description="advance to the next track">
 			<cocoa class="SkipCommand"/>
 		</command>
+
+    <!-- Pandora feedback commands -->
 		<command name="thumbs up" code="HeRMthup" description="set rating to &quot;like&quot;">
 			<cocoa class="ThumbsUpCommand"/>
 		</command>
@@ -31,6 +36,8 @@
 		<command name="tired of song" code="HeRMthup" description="tells Pandora that you're tired of the current song">
 			<cocoa class="TiredCommand"/>
 		</command>
+    
+    <!-- Volume commands -->
 		<command name="raise volume" code="HeRMvolu" description="raise volume">
 			<cocoa class="RaiseVolumeCommand"/>
 		</command>
