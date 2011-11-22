@@ -3,65 +3,65 @@
 <dictionary title="Hermes Terminology" xmlns:xi="http://www.w3.org/2003/XInclude">
   <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 
-	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
-		<enumeration name="player states" code="esta" description="Legal player states">
-			<enumerator name="stopped" code="stop" description="Player is stopped"/>
-			<enumerator name="playing" code="play" description="Player is playing"/>
-			<enumerator name="paused" code="paus" description="Player is paused"/>
-		</enumeration>
+  <suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
+    <enumeration name="player states" code="esta" description="Legal player states">
+      <enumerator name="stopped" code="stop" description="Player is stopped"/>
+      <enumerator name="playing" code="play" description="Player is playing"/>
+      <enumerator name="paused" code="paus" description="Player is paused"/>
+    </enumeration>
 
     <!-- Properties available -->
-		<class name="application" code="capp" description="The Pandora Player">
-			<cocoa class="NSApplication"/>
-			<property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
-				<cocoa key="volume"/>
-			</property>
+    <class name="application" code="capp" description="The Pandora Player">
+      <cocoa class="NSApplication"/>
+      <property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
+        <cocoa key="volume"/>
+      </property>
 
       <property name="playback state" code="psta" description="Current playback state" type="player states">
-				<cocoa key="playbackState"/>
-			</property>
+        <cocoa key="playbackState"/>
+      </property>
     </class>
 
     <!-- Playback commands -->
-		<command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">
-			<cocoa class="PlayPauseCommand"/>
-		</command>
-		<command name="pause" code="HeRMpauU" description="pause the currently playing song">
-			<cocoa class="PauseCommand"/>
-		</command>
-		<command name="play" code="HeRMplaL" description="resume playing the last song">
-			<cocoa class="PlayCommand"/>
-		</command>
+    <command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">
+      <cocoa class="PlayPauseCommand"/>
+    </command>
+    <command name="pause" code="HeRMpauU" description="pause the currently playing song">
+      <cocoa class="PauseCommand"/>
+    </command>
+    <command name="play" code="HeRMplaL" description="resume playing the last song">
+      <cocoa class="PlayCommand"/>
+    </command>
     <command name="next song" code="HeRMskip" description="advance to the next track">
-			<cocoa class="SkipCommand"/>
-		</command>
+      <cocoa class="SkipCommand"/>
+    </command>
 
     <!-- Pandora feedback commands -->
-		<command name="thumbs up" code="HeRMthup" description="set rating to &quot;like&quot;">
-			<cocoa class="ThumbsUpCommand"/>
-		</command>
-		<command name="thumbs down" code="HeRMthdn" description="set rating to &quot;dislike&quot;">
-			<cocoa class="ThumbsDownCommand"/>
-		</command>
-		<command name="tired of song" code="HeRMthup" description="tells Pandora that you're tired of the current song">
-			<cocoa class="TiredCommand"/>
-		</command>
-    
+    <command name="thumbs up" code="HeRMthup" description="set rating to &quot;like&quot;">
+      <cocoa class="ThumbsUpCommand"/>
+    </command>
+    <command name="thumbs down" code="HeRMthdn" description="set rating to &quot;dislike&quot;">
+      <cocoa class="ThumbsDownCommand"/>
+    </command>
+    <command name="tired of song" code="HeRMthup" description="tells Pandora that you're tired of the current song">
+      <cocoa class="TiredCommand"/>
+    </command>
+
     <!-- Volume commands -->
-		<command name="raise volume" code="HeRMvolu" description="raise volume">
-			<cocoa class="RaiseVolumeCommand"/>
-		</command>
-		<command name="lower volume" code="HeRMvold" description="lower volume">
-			<cocoa class="LowerVolumeCommand"/>
-		</command>
-		<command name="full volume" code="HeRMvolf" description="set volume to full">
-			<cocoa class="FullVolumeCommand"/>
-		</command>
-		<command name="mute" code="HeRMmute" description="Mutes volume, saving the current level if 'unmute' is later used">
-			<cocoa class="MuteCommand"/>
-		</command>
-		<command name="unmute" code="HeRMumut" description="Unmutes the volume to the previously saved state from 'mute'">
-			<cocoa class="UnmuteCommand"/>
-		</command>
-	</suite>
+    <command name="raise volume" code="HeRMvolu" description="raise volume">
+      <cocoa class="RaiseVolumeCommand"/>
+    </command>
+    <command name="lower volume" code="HeRMvold" description="lower volume">
+      <cocoa class="LowerVolumeCommand"/>
+    </command>
+    <command name="full volume" code="HeRMvolf" description="set volume to full">
+      <cocoa class="FullVolumeCommand"/>
+    </command>
+    <command name="mute" code="HeRMmute" description="Mutes volume, saving the current level if 'unmute' is later used">
+      <cocoa class="MuteCommand"/>
+    </command>
+    <command name="unmute" code="HeRMumut" description="Unmutes the volume to the previously saved state from 'mute'">
+      <cocoa class="UnmuteCommand"/>
+    </command>
+  </suite>
 </dictionary>
