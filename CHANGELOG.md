@@ -5,6 +5,7 @@
 * [added] `tired of song` command in AppleScript
 * [added] `current volume` read/write attribute in AppleScript
 * [added] `unmute` command in AppleScript
+* [added] `playback state` read/write attribute in AppleScript
 * [fixed] A few memory leaks have been resolved
 
 # Version 1.0.13 (11/20/11)

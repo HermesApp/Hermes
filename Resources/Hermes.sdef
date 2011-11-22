@@ -4,13 +4,23 @@
   <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 
 	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
+		<enumeration name="player states" code="esta" description="Legal player states">
+			<enumerator name="stopped" code="stop" description="Player is stopped"/>
+			<enumerator name="playing" code="play" description="Player is playing"/>
+			<enumerator name="paused" code="paus" description="Player is paused"/>
+		</enumeration>
+
     <!-- Properties available -->
 		<class name="application" code="capp" description="The Pandora Player">
 			<cocoa class="NSApplication"/>
 			<property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
 				<cocoa key="volume"/>
 			</property>
-		</class>
+
+      <property name="playback state" code="psta" description="Current playback state" type="player states">
+				<cocoa key="playbackState"/>
+			</property>
+    </class>
 
     <!-- Playback commands -->
 		<command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">

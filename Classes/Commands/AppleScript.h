@@ -7,6 +7,13 @@
 
 #import <Cocoa/Cocoa.h>
 
+// These match iTunes (4-char codes)
+typedef enum {
+  PlaybackStateStopped = 'stop',
+  PlaybackStatePlaying = 'play',
+  PlaybackStatePaused  = 'paus'
+} PlaybackStates;
+
 @interface PlayCommand : NSScriptCommand {} @end
 @interface PauseCommand : NSScriptCommand {} @end
 @interface PlayPauseCommand : NSScriptCommand {} @end
@@ -23,4 +30,6 @@
 @interface NSApplication (HermesScripting)
 - (NSNumber*) volume;
 - (void) setVolume: (NSNumber*) volume;
+- (int) playbackState;
+- (void) setPlaybackState: (int) state;
 @end

@@ -21,6 +21,8 @@ ways you can develop against Hermes if you really want to.
           pause         -- pauses playback, does nothing if not playing
           playpause     -- toggles playback between pause/play
           next song     -- goes to the next song
+          get playback state
+          set playback state to playing
 
           thumbs up     -- likes the current song
           thumbs down   -- dislikes the current song, going to another one

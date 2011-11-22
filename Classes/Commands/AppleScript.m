@@ -116,4 +116,32 @@ int savedVolume = 0;
   [playback setIntVolume:[vol intValue]];
 }
 
+- (int) playbackState {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  Station *playing = [playback playing];
+  if (playing == nil) {
+    return PlaybackStateStopped;
+  } else if ([[playing stream] isPaused]) {
+    return PlaybackStatePaused;
+  }
+  return PlaybackStatePlaying;
+}
+
+- (void) setPlaybackState: (int) state {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  switch (state) {
+    case PlaybackStateStopped:
+    case PlaybackStatePaused:
+      [playback pause];
+      break;
+
+    case PlaybackStatePlaying:
+      [playback play];
+      break;
+
+    default:
+      NSLog(@"Invalid playback state: %d", state);
+  }
+}
+
 @end
