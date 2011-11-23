@@ -279,12 +279,12 @@ BOOL playOnStart = YES;
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
-      [art setImage: [NSImage imageNamed:@"missing-album"]];
+      [[art animator] setImage: [NSImage imageNamed:@"missing-album"]];
       [Growler growl:[playing playing] withImage:[art image]];
     } else {
       [artLoading startAnimation:nil];
       [artLoading setHidden:NO];
-      [art setImage:nil];
+      [[art animator] setImage:nil];
       lastImgSrc = [song art];
       [loader loadImageURL:lastImgSrc];
     }
@@ -387,7 +387,7 @@ BOOL playOnStart = YES;
 
 /* Stop this song and go to the next */
 - (IBAction)next: (id) sender {
-  [art setImage:nil];
+  [[art animator] setImage:nil];
   [self showSpinner];
 
   [playing next];
