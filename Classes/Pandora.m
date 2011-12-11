@@ -45,15 +45,27 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Authenticates with Pandora. Stores information from the response
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
+  if (syncOffset == 0) {
+    PandoraSyncCallback psc = ^{
+      [self authenticate:user : pass : req];
+    };
+    return [self sync: psc];
+  }
   NSLogd(@"Authenticating...");
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
       "<methodName>listener.authenticateListener</methodName>"
       "<params>"
-        "<param><value><int>%d</int></value></param>"
+        "<param><value><int>%lu</int></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"
+        /* get bigger pictures */
+        "<param><value><string>html5tuner</string></value></param>"
+        "<param><value><string/></value></param>"
+        "<param><value><string/></value></param>"
+        "<param><value><string>HTML5</string></value></param>"
+        "<param><value><boolean>1</boolean></value></param>"
       "</params>"
     "</methodCall>",
       [self time], user, pass
@@ -96,7 +108,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
      "<methodCall>"
        "<methodName>station.getStations</methodName>"
        "<params>"
-         "<param><value><int>%d</int></value></param>"
+         "<param><value><int>%lu</int></value></param>"
          "<param><value><string>%@</string></value></param>"
        "</params>"
      "</methodCall>",
@@ -157,7 +169,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
      "<methodCall>"
        "<methodName>playlist.getFragment</methodName>"
        "<params>"
-         "<param><value><int>%d</int></value></param>"
+         "<param><value><int>%lu</int></value></param>"
          "<param><value><string>%@</string></value></param>"
          "<param><value><string>%@</string></value></param>"
          "<param><value><string>0</string></value></param>"
@@ -210,7 +222,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 /**
  * Sync with Pandora
  */
-- (BOOL) sync {
+- (BOOL) sync: (PandoraSyncCallback) callback {
   NSString *xml =
     @"<?xml version=\"1.0\"?>"
     "<methodCall>"
@@ -220,16 +232,18 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   NSLogd(@"Synchronizing...");
 
   PandoraCallback cb = ^(xmlDocPtr doc) {
-    [self notify:@"hermes.sync" with:nil];
+    NSString *value = xpathRelative(doc, "//params/param/value", NULL);
+    NSData *data = PandoraDecrypt(value);
+    const char *string = [data bytes];
+    syncOffset = [self time] - strtoul(string + 4, NULL, 0);
+
+    callback();
   };
 
   return [self sendRequest:
           [PandoraRequest requestWithMethod:@"sync"
                                        data:xml
                                    callback:cb]];
-}
-
-- (void) handleRating: (xmlDocPtr) doc {
 }
 
 /**
@@ -248,7 +262,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
      "<methodCall>"
        "<methodName>station.addFeedback</methodName>"
        "<params>"
-         "<param><value><int>%d</int></value></param>"
+         "<param><value><int>%lu</int></value></param>"
          "<param><value><string>%@</string></value></param>"
          "<param><value><string>%@</string></value></param>"
          "<param><value><string>%@</string></value></param>"
@@ -295,7 +309,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     "<methodCall>"
       "<methodName>listener.addTiredSong</methodName>"
       "<params>"
-      "<param><value><int>%d</int></value></param>"
+      "<param><value><int>%lu</int></value></param>"
       "<param><value><string>%@</string></value></param>"
       "<param><value><string>%@</string></value></param>"
       "<param><value><string>%@</string></value></param>"
@@ -328,7 +342,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     "<methodCall>"
       "<methodName>music.search</methodName>"
       "<params>"
-      "<param><value><int>%d</int></value></param>"
+      "<param><value><int>%lu</int></value></param>"
       "<param><value><string>%@</string></value></param>"
       "<param><value><string>mi%@</string></value></param>"
       "</params>"
@@ -396,7 +410,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     "<methodCall>"
       "<methodName>station.createStation</methodName>"
       "<params>"
-        "<param><value><int>%d</int></value></param>"
+        "<param><value><int>%lu</int></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>mi%@</string></value></param>"
         "<param><value><string></string></value></param>"
@@ -430,7 +444,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     "<methodCall>"
       "<methodName>station.removeStation</methodName>"
       "<params>"
-        "<param><value><int>%d</int></value></param>"
+        "<param><value><int>%lu</int></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"
       "</params>"
@@ -477,7 +491,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     "<methodCall>"
       "<methodName>station.setStationName</methodName>"
       "<params>"
-        "<param><value><int>%d</int></value></param>"
+        "<param><value><int>%lu</int></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"

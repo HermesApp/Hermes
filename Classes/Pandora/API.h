@@ -36,11 +36,12 @@ NSString *xpathRelative(xmlDocPtr doc, char* xpath, xmlNodePtr node);
   NSString *listenerID;
 
   NSMutableDictionary *activeRequests;
+  int64_t syncOffset;
 }
 
 @property (retain) NSString* listenerID;
 
-- (int) time;
+- (int64_t) time;
 - (BOOL) sendRequest: (PandoraRequest*) request;
 
 @end

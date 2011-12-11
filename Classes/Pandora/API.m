@@ -118,8 +118,8 @@ done:
 /**
  * Gets the current UNIX time
  */
-- (int) time {
-  return [[NSDate date] timeIntervalSince1970];
+- (int64_t) time {
+  return [[NSDate date] timeIntervalSince1970] - syncOffset;
 }
 
 /**
@@ -128,7 +128,7 @@ done:
 - (BOOL) sendRequest: (PandoraRequest*) request {
   NSString *method = [request requestMethod];
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
-  NSString *rid  = [time substringFromIndex: 3];
+  NSString *rid  = time;
   NSString *url  = [NSString stringWithFormat:
       @"https://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
       @"?rid=%@P&method=%@", rid, method];

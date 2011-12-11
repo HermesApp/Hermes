@@ -1,6 +1,8 @@
 #import "Song.h"
 #import "API.h"
 
+typedef void(^PandoraSyncCallback)(void);
+
 /* Wrapper for search results */
 @interface SearchResult : NSObject {
   NSString *name;
@@ -25,7 +27,7 @@
 - (BOOL) authenticate: (NSString*)user :(NSString*)pass :(PandoraRequest*)req;
 - (BOOL) fetchStations;
 - (BOOL) getFragment: (NSString*)station_id;
-- (BOOL) sync;
+- (BOOL) sync: (PandoraSyncCallback) cb;
 - (BOOL) rateSong: (Song*)song : (NSString*)rating;
 - (BOOL) tiredOfSong: (Song*)song;
 - (BOOL) search: (NSString*) search;

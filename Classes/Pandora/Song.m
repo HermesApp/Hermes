@@ -32,9 +32,10 @@
   int index = [url length] - 48;
 
   NSString *pref = [url substringToIndex: index];
-  NSString *suff = PandoraDecrypt([url substringFromIndex: index]);
+  NSData *data = PandoraDecrypt([url substringFromIndex: index]);
+  NSString *suff = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 
-  return [pref stringByAppendingString: suff];
+  return [pref stringByAppendingString:suff];
 }
 
 - (NSDictionary*) toDictionary {

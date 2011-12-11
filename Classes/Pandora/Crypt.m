@@ -7,18 +7,17 @@
 #define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
 #define HEX_LEN (sizeof(uint32_t) * 2)
 
-NSString* PandoraDecrypt(NSString* string) {
+NSData* PandoraDecrypt(NSString* string) {
   int i, j;
   uint32_t l, r, t, a, b, c, d, f;
   char buf[HEX_LEN + 1];
   buf[HEX_LEN] = '\0';
-
   const char *hex = [string cStringUsingEncoding: NSASCIIStringEncoding];
 
   NSMutableData *data = [[NSMutableData alloc] init];
   int len = [string length];
 
-  for (i = 0; i < len / 2; i += 2 * HEX_LEN) {
+  for (i = 0; i < len; i += 2 * HEX_LEN) {
     strncpy(buf, hex + i, HEX_LEN);
     l = strtol(buf, NULL, 16);
     strncpy(buf, hex + i + HEX_LEN, HEX_LEN);
@@ -56,10 +55,7 @@ NSString* PandoraDecrypt(NSString* string) {
     [data appendBytes: &r length: sizeof(r)];
   }
 
-  NSString *ret = [[NSString alloc] initWithData:data
-    encoding:NSASCIIStringEncoding];
-
-  return ret;
+  return data;
 }
 
 NSString* PandoraEncrypt(NSString* string) {
