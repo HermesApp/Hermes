@@ -29,11 +29,15 @@
  * Decrypts the URL received from Pandora
  */
 + (NSString*) decryptURL: (NSString*) url {
+  /* Last 16 bytes of the URL are encrypted */
+  char buf[17];
   int index = [url length] - 48;
 
   NSString *pref = [url substringToIndex: index];
   NSData *data = PandoraDecrypt([url substringFromIndex: index]);
-  NSString *suff = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+  strncpy(buf, [data bytes], sizeof(buf) - 1);
+  buf[sizeof(buf) - 1] = 0;
+  NSString *suff = [NSString stringWithCString:buf encoding:NSASCIIStringEncoding];
 
   return [pref stringByAppendingString:suff];
 }
