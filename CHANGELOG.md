@@ -1,6 +1,6 @@
-# Version 1.0.14 (unreleased)
+# Version 1.0.14 (12/15/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.13...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.13...v1.0.14)
 
 * [added] `tired of song` command in AppleScript
 * [added] `current volume` read/write attribute in AppleScript
