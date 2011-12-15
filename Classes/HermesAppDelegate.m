@@ -82,6 +82,7 @@
     [window setRestorable:YES];
     [window setRestorationClass:[self class]];
   }
+  [NSApp activateIgnoringOtherApps:YES];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
