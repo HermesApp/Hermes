@@ -57,7 +57,6 @@
 		FA98A5E314730FED008D9F02 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98A5D614730FED008D9F02 /* SBJsonUTF8Stream.m */; };
 		FA98A5E414730FED008D9F02 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA98A5D814730FED008D9F02 /* SBJsonWriter.m */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
-		FACF017F149A713700D1FB73 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FACF017E149A713700D1FB73 /* Cocoa.framework */; };
 		FACF0185149A713700D1FB73 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FACF0184149A713700D1FB73 /* AudioStreamer.m */; };
 		FACF018B149A718300D1FB73 /* libAudioStreamer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACF017D149A713700D1FB73 /* libAudioStreamer.a */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
@@ -197,7 +196,6 @@
 		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_sparkle.sh; sourceTree = "<group>"; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
 		FACF017D149A713700D1FB73 /* libAudioStreamer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioStreamer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FACF017E149A713700D1FB73 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		FAD42F8713678F7500E935CA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -232,7 +230,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FACF017F149A713700D1FB73 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +325,6 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
-				FACF017E149A713700D1FB73 /* Cocoa.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			path = Frameworks;
