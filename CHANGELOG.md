@@ -1,3 +1,9 @@
+# Version 1.0.15 (12/17/11)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.14...v1.0.15)
+
+* [fixed] Volume control works again
+
 # Version 1.0.14 (12/15/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.13...v1.0.14)
@@ -8,12 +14,6 @@
 * [added] `playback state` read/write attribute in AppleScript
 * [fixed] A few memory leaks have been resolved
 * [fixed] Use Pandora's `sync` API for real
-
-# Version 1.0.14 (12/17/11)
-
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.14...v1.0.15)
-
-* [fixed] Volume control works again
 
 # Version 1.0.13 (11/20/11)
 
