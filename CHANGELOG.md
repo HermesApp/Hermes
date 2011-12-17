@@ -9,6 +9,12 @@
 * [fixed] A few memory leaks have been resolved
 * [fixed] Use Pandora's `sync` API for real
 
+# Version 1.0.14 (12/17/11)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.14...v1.0.15)
+
+* [fixed] Volume control works again
+
 # Version 1.0.13 (11/20/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.12...v1.0.13)

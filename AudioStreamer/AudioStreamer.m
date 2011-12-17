@@ -493,7 +493,9 @@ void ASReadStreamCallBack
 }
 
 - (BOOL) setVolume: (double) volume {
-  return FALSE;
+  OSStatus rc = AudioQueueSetParameter(audioQueue,
+                                       kAudioQueueParam_Volume, volume);
+  return rc == 0;
 }
 
 //
