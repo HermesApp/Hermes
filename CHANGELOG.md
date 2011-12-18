@@ -1,3 +1,9 @@
+# Version 1.0.16 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.15...master)
+
+* [added] Dock icon menu now has options for play/pause/like/dislike
+
 # Version 1.0.15 (12/17/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.14...v1.0.15)
