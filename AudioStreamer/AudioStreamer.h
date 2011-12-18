@@ -181,7 +181,6 @@ extern NSString * const ASUpdateMetadataNotification;
 }
 
 @property AudioStreamerErrorCode errorCode;
-@property (readonly) AudioStreamerState state;
 @property (readonly) AudioStreamerStopReason stopReason;
 @property (readonly) double progress;
 @property (readonly) double bufferFillPercentage;
