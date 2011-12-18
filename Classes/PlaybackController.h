@@ -22,6 +22,7 @@
   IBOutlet NSToolbarItem *playpause;
   IBOutlet NSSlider *volume;
   IBOutlet NSToolbar *toolbar;
+  IBOutlet NSMenuItem *dockPlayPause;
 
   NSTimer *progressUpdateTimer;
   ImageLoader *loader;
