@@ -25,6 +25,22 @@
       <property name="current station" code="pstn" description="Current station" type="station">
         <cocoa key="currentStation"/>
       </property>
+
+      <property name="current song" code="psng" description="Current song" type="song">
+        <cocoa key="currentSong"/>
+      </property>
+    </class>
+    
+    <class name="song" code="ctra" description="A Pandora Song">
+      <cocoa class="Song"/>
+      <property name="title" code="ptit" description="Title of the song" type="text" access="r"/>
+      <property name="artist" code="part" description="Artist of the song" type="text" access="r"/>
+      <property name="album" code="palb" description="Album of the song" type="text" access="r"/>
+      <property name="art" code="paRT" description="URL for the album cover" type="text" access="r"/>
+      <property name="rating" code="prat" description="rating for the song" type="text" access="r"/>
+      <property name="albumUrl" code="alur" description="URL for the album" type="text" access="r"/>
+      <property name="artistUrl" code="arur" description="URL for the artist" type="text" access="r"/>
+      <property name="titleUrl" code="tiur" description="URL for the title" type="text" access="r"/>
     </class>
 
     <class name="station" code="csta" description="A Pandora Station">

@@ -162,4 +162,9 @@ int savedVolume = 0;
   return [[delegate pandora] stations];
 }
 
+- (Song*) currentSong {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  return [[playback playing] playing];
+}
+
 @end

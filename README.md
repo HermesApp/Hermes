@@ -42,6 +42,12 @@ ways you can develop against Hermes if you really want to.
           set stationName to the current station's name
           set stationId to station 2's stationId
           set the current station to station 4
+
+          -- Getting information from the current song
+          set title to the current song's title
+          set artist to the current song's artist
+          set album to the current song's album
+          ... etc
         end tell
 
 ### Want something new/fixed?

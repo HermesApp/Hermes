@@ -1,4 +1,5 @@
 #import "Song.h"
+#import "Station.h"
 #import "Crypt.h"
 
 @implementation Song
@@ -66,6 +67,15 @@
   for(id key in info) {
     [coder encodeObject:[info objectForKey:key] forKey:key];
   }
+}
+
+- (NSScriptObjectSpecifier *) objectSpecifier {
+  NSScriptClassDescription *containerClassDesc =
+  [NSScriptClassDescription classDescriptionForClass:[Station class]];
+  
+  return [[NSNameSpecifier alloc]
+          initWithContainerClassDescription:containerClassDesc
+          containerSpecifier:nil key:@"songs" name:[self title]];
 }
 
 @end

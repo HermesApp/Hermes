@@ -4,6 +4,7 @@
 
 * [added] Dock icon menu now has options for play/pause/like/dislike
 * [added] AppleScript for getting/setting the station playing
+* [added] AppleScript for getting the current song and attributes about it
 
 # Version 1.0.15 (12/17/11)
 

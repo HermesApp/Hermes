@@ -36,4 +36,5 @@ typedef enum {
 - (void) setCurrentStation: (Station*) station;
 - (void) setPlaybackState: (int) state;
 - (NSArray*) stations;
+- (Song*) currentSong;
 @end
