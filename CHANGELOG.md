@@ -1,6 +1,6 @@
-# Version 1.0.16 (unreleased)
+# Version 1.0.16 (1/6/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.15...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.15...v1.0.16)
 
 * [added] Dock icon menu now has options for play/pause/like/dislike
 * [added] AppleScript for getting/setting the station playing
