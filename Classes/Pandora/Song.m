@@ -38,6 +38,7 @@
   strncpy(buf, [data bytes], sizeof(buf) - 1);
   buf[sizeof(buf) - 1] = 0;
   NSString *suff = [NSString stringWithCString:buf encoding:NSASCIIStringEncoding];
+  NSLogd(@"%@", pref);
 
   return [pref stringByAppendingString:suff];
 }

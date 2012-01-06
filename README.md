@@ -37,6 +37,11 @@ ways you can develop against Hermes if you really want to.
           -- integer 0 to 100 for the volume
           get current volume
           set current volume to 92
+
+          -- Working with the current station
+          set stationName to the current station's name
+          set stationId to station 2's stationId
+          set the current station to station 4
         end tell
 
 ### Want something new/fixed?

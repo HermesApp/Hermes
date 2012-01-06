@@ -39,4 +39,6 @@
 - (IBAction)cancelCreateStation: (id)sender;
 - (IBAction)createStation: (id)sender;
 
+- (int) stationIndex: (Station*) station;
+
 @end

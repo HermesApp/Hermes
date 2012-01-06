@@ -13,21 +13,21 @@ int savedVolume = 0;
 @implementation PlayCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	return [NSNumber numberWithBool:[playback play]];
+  return [NSNumber numberWithBool:[playback play]];
 }
 @end
 
 @implementation PauseCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	return [NSNumber numberWithBool:[playback pause]];
+  return [NSNumber numberWithBool:[playback pause]];
 }
 @end
 
 @implementation PlayPauseCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback playpause:self];
+  [playback playpause:self];
   return self;
 }
 @end
@@ -35,21 +35,21 @@ int savedVolume = 0;
 @implementation SkipCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback next:self];
+  [playback next:self];
   return self;
 }
 @end
 @implementation ThumbsUpCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback like:self];
+  [playback like:self];
   return self;
 }
 @end
 @implementation ThumbsDownCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback dislike:self];
+  [playback dislike:self];
   return self;
 }
 @end
@@ -74,7 +74,7 @@ int savedVolume = 0;
 @implementation FullVolumeCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback setIntVolume:100];
+  [playback setIntVolume:100];
   NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
   return self;
 }
@@ -83,7 +83,7 @@ int savedVolume = 0;
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
   savedVolume = [playback getIntVolume];
-	[playback setIntVolume:0];
+  [playback setIntVolume:0];
   NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
   return self;
 }
@@ -91,7 +91,7 @@ int savedVolume = 0;
 @implementation UnmuteCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-	[playback setIntVolume:savedVolume];
+  [playback setIntVolume:savedVolume];
   NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
   return self;
 }
@@ -142,6 +142,24 @@ int savedVolume = 0;
     default:
       NSLog(@"Invalid playback state: %d", state);
   }
+}
+
+- (Station*) currentStation {
+  PlaybackController *playback = [[NSApp delegate] playback];
+  return [playback playing];
+}
+
+- (void) setCurrentStation:(Station *)station {
+  HermesAppDelegate *delegate = [NSApp delegate];
+  PlaybackController *playback = [delegate playback];
+  [playback playStation:station];
+  StationsController *stations = [delegate stations];
+  [stations refreshList:self];
+}
+
+- (NSArray*) stations {
+  HermesAppDelegate *delegate = [NSApp delegate];
+  return [[delegate pandora] stations];
 }
 
 @end

@@ -227,6 +227,8 @@ BOOL playOnStart = YES;
     NSLogd(@"Stream idle, nexting...");
     /* The currently playing song finished playing */
     [self next:nil];
+  } else {
+    NSLogd(@"unknown state...");
   }
 }
 

@@ -953,7 +953,6 @@
 					<int key="NSvFlags">256</int>
 					<string key="NSFrameSize">{240, 306}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 					<object class="NSDictionary" key="NSViewAnimations">
@@ -2532,15 +2531,16 @@
 				<bool key="NSViewCanDrawConcurrently">YES</bool>
 			</object>
 			<object class="NSCustomView" id="667579902">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="NSButton" id="1055600725">
 						<reference key="NSNextResponder" ref="667579902"/>
-						<int key="NSvFlags">268</int>
+						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{117, 179}, {88, 19}}</string>
 						<reference key="NSSuperview" ref="667579902"/>
+						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:1534</string>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="413077063">
@@ -2563,6 +2563,7 @@
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{86, 205}, {150, 96}}</string>
 						<reference key="NSSuperview" ref="667579902"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1055600725"/>
 						<int key="NSViewLayerContentsRedrawPolicy">2</int>
 						<bool key="NSEnabled">YES</bool>
@@ -2582,12 +2583,14 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{322, 378}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="856702945"/>
 				<string key="NSReuseIdentifierKey">_NS:499</string>
 				<string key="NSClassName">NSView</string>
 			</object>
 			<object class="NSCustomView" id="723088655">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">268</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2661,6 +2664,7 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{362, 431}</string>
+				<reference key="NSSuperview"/>
 				<reference key="NSNextKeyView" ref="52147311"/>
 				<string key="NSReuseIdentifierKey">_NS:499</string>
 				<string key="NSClassName">NSView</string>

@@ -1,4 +1,6 @@
 #import "Station.h"
+#import "StationsController.h"
+#import "HermesAppDelegate.h"
 
 @implementation Station
 
@@ -230,6 +232,19 @@
   if (lastKnownSeekTime > 0) {
     retrying = YES;
   }
+}
+
+- (NSScriptObjectSpecifier *) objectSpecifier {
+  HermesAppDelegate *delegate = [NSApp delegate];
+  StationsController *stationsc = [delegate stations];
+  int index = [stationsc stationIndex:self];
+
+  NSScriptClassDescription *containerClassDesc =
+      [NSScriptClassDescription classDescriptionForClass:[NSApp class]];
+
+  return [[NSIndexSpecifier alloc]
+           initWithContainerClassDescription:containerClassDesc
+           containerSpecifier:nil key:@"stations" index:index];
 }
 
 @end

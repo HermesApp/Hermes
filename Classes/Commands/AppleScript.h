@@ -6,6 +6,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "Station.h"
 
 // These match iTunes (4-char codes)
 typedef enum {
@@ -31,5 +32,8 @@ typedef enum {
 - (NSNumber*) volume;
 - (void) setVolume: (NSNumber*) volume;
 - (int) playbackState;
+- (Station*) currentStation;
+- (void) setCurrentStation: (Station*) station;
 - (void) setPlaybackState: (int) state;
+- (NSArray*) stations;
 @end

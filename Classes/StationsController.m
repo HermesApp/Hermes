@@ -84,23 +84,27 @@
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
 }
 
-/* Selects a station in the stations menu */
-- (void) selectStation: (Station*) station {
+- (int) stationIndex:(Station *)station {
+  int i;
   Station *cur;
-  int i, index = -1;
-
-  for (i = 0; i < [[[self pandora] stations] count]; i++) {
-    cur = [[[self pandora] stations] objectAtIndex:i];
+  NSArray *arr = [[self pandora] stations];
+  for (i = 0; i < [arr count]; i++) {
+    cur = [arr objectAtIndex:i];
 
     if ([[station stationId] isEqual: [cur stationId]]) {
-      index = i;
-      break;
+      return i;
     }
   }
+  return -1;
+}
+
+/* Selects a station in the stations menu */
+- (void) selectStation: (Station*) station {
+  int index = [self stationIndex:station];
 
   if (index >= 0) {
     [stationsTable
-     selectRowIndexes:[NSIndexSet indexSetWithIndex:i]
+     selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
      byExtendingSelection:NO];
   }
 }

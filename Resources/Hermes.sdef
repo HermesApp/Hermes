@@ -13,6 +13,7 @@
     <!-- Properties available -->
     <class name="application" code="capp" description="The Pandora Player">
       <cocoa class="NSApplication"/>
+      <element type="station" access="r"/>
       <property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
         <cocoa key="volume"/>
       </property>
@@ -20,6 +21,16 @@
       <property name="playback state" code="psta" description="Current playback state" type="player states">
         <cocoa key="playbackState"/>
       </property>
+
+      <property name="current station" code="pstn" description="Current station" type="station">
+        <cocoa key="currentStation"/>
+      </property>
+    </class>
+
+    <class name="station" code="csta" description="A Pandora Station">
+      <cocoa class="Station"/>
+      <property name="name" code="pnam" description="Name of station" type="text" access="r"/>
+      <property name="stationId" code="pid " description="stationId for Station" type="text" access="r"/>
     </class>
 
     <!-- Playback commands -->
