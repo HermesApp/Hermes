@@ -127,8 +127,9 @@ done:
  */
 - (BOOL) sendRequest: (PandoraRequest*) request {
   NSString *method = [request requestMethod];
-  NSString *time = [NSString stringWithFormat:@"%d", [self time]];
-  NSString *rid  = time;
+  /* time with no offset */
+  int time = [[NSDate date] timeIntervalSince1970];
+  NSString *rid = [NSString stringWithFormat:@"%d", time % 10000000];
   NSString *url  = [NSString stringWithFormat:
       @"http%s://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
                     @"?rid=%@P&method=%@", [request secure] ? "s" : "", rid, method];
