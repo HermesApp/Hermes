@@ -1,3 +1,10 @@
+# Version 1.0.17 (1/10/12)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.16...v1.0.17)
+
+* [fixed] Don't use 'https' on most API requests to Pandora
+* [fixed] Use smaller request IDs to appease Pandora
+
 # Version 1.0.16 (1/6/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.15...v1.0.16)
