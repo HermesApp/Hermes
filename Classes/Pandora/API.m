@@ -181,12 +181,14 @@ done:
 
   if (doc == NULL || fault != nil) {
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    if (doc == NULL) {
-      fault = @"Connection error";
-    } else {
-      NSArray *parts = [fault componentsSeparatedByString:@"|"];
-      if ([parts count] >= 3) {
-        fault = [parts objectAtIndex:2];
+    if (fault == nil) {
+      if (doc == NULL) {
+        fault = @"Connection error";
+      } else {
+        NSArray *parts = [fault componentsSeparatedByString:@"|"];
+        if ([parts count] >= 3) {
+          fault = [parts objectAtIndex:2];
+        }
       }
     }
     NSLogd(@"Fault: %@", fault);
