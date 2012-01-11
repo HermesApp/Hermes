@@ -233,9 +233,11 @@ done:
 /* Parses the XML received from the connection, then cleans up */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
   PandoraRequest *request = [self dataForConnection:connection];
+#ifdef DEBUG
   NSString *str = [[NSString alloc] initWithData:[request responseData]
                                         encoding:NSASCIIStringEncoding];
-  NSLogd(@"%@", str);
+  NSLog(@"%@", str);
+#endif
 
   xmlDocPtr doc = xmlReadMemory([[request responseData] bytes],
                                 [[request responseData] length],
