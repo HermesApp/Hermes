@@ -6,7 +6,7 @@
 
 @implementation PandoraRequest
 
-@synthesize requestData, requestMethod, info, responseData, callback;
+@synthesize requestData, requestMethod, info, responseData, callback, secure;
 
 + (PandoraRequest*) requestWithMethod: (NSString*) method
                                  data: (NSString*) data
@@ -130,8 +130,8 @@ done:
   NSString *time = [NSString stringWithFormat:@"%d", [self time]];
   NSString *rid  = time;
   NSString *url  = [NSString stringWithFormat:
-      @"https://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
-      @"?rid=%@P&method=%@", rid, method];
+      @"http%s://" PANDORA_API_HOST PANDORA_API_PATH PANDORA_API_VERSION
+                    @"?rid=%@P&method=%@", [request secure] ? "s" : "", rid, method];
 
   if (![method isEqual: @"sync"] && ![method isEqual: @"authenticateListener"]) {
     NSString *lid = [NSString stringWithFormat:@"&lid=%@", listenerID];

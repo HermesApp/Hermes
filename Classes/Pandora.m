@@ -86,10 +86,11 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     }
   };
 
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"authenticateListener"
-                                       data:xml
-                                   callback:cb]];
+  PandoraRequest *request = [PandoraRequest requestWithMethod:@"authenticateListener"
+                                                         data:xml
+                                                     callback:cb];
+  [request setSecure:TRUE];
+  return [self sendRequest:request];
 }
 
 /**

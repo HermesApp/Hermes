@@ -14,6 +14,7 @@ typedef void(^PandoraCallback)(xmlDocPtr);
   NSString *requestMethod;
   NSMutableData *responseData;
   PandoraCallback callback;
+  BOOL secure;
 }
 
 @property (retain) NSString *requestData;
@@ -21,10 +22,12 @@ typedef void(^PandoraCallback)(xmlDocPtr);
 @property (retain) NSMutableData *responseData;
 @property (retain) PandoraCallback callback;
 @property (retain) NSObject *info;
+@property (readwrite) BOOL secure;
 
 + (PandoraRequest*) requestWithMethod: (NSString*) requestMethod
                                  data: (NSString*) data
                              callback: (PandoraCallback) callback;
+
 - (void) resetResponse;
 - (void) replaceAuthToken:(NSString*) token with:(NSString*) replacement;
 @end
