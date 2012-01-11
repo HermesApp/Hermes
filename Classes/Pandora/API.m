@@ -138,6 +138,7 @@ done:
     NSString *lid = [NSString stringWithFormat:@"&lid=%@", listenerID];
     url = [url stringByAppendingString:lid];
   }
+  NSLogd(@"%@", url);
 
   /* Prepare the request */
   NSURL *nsurl = [NSURL URLWithString:url];
@@ -147,8 +148,9 @@ done:
   [nsrequest addValue: @"application/xml" forHTTPHeaderField: @"Content-Type"];
 
   /* Create the body */
-  NSString *encrypted_data = PandoraEncrypt([request requestData]);
-  [nsrequest setHTTPBody:[encrypted_data dataUsingEncoding:NSUTF8StringEncoding]];
+  NSString *data = PandoraEncrypt([request requestData]);
+  [nsrequest setHTTPBody:[data dataUsingEncoding:NSUTF8StringEncoding]];
+  NSLogd(@"%@", data);
 
   /* Fetch the response asynchronously */
   NSURLConnection *conn = [[NSURLConnection alloc]
@@ -229,6 +231,9 @@ done:
 /* Parses the XML received from the connection, then cleans up */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
   PandoraRequest *request = [self dataForConnection:connection];
+  NSString *str = [[NSString alloc] initWithData:[request responseData]
+                                        encoding:NSASCIIStringEncoding];
+  NSLogd(@"%@", str);
 
   xmlDocPtr doc = xmlReadMemory([[request responseData] bytes],
                                 [[request responseData] length],
