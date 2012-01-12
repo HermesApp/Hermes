@@ -1,3 +1,10 @@
+# Version 1.0.18 (1/12/12)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.17...v1.0.18)
+
+* [fixed] Parsing error messages works again to correctly refetch a token with
+          Pandora
+
 # Version 1.0.17 (1/10/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.16...v1.0.17)
