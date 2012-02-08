@@ -283,6 +283,8 @@
 /* Callback for when the add station button is hit */
 - (IBAction)addStation: (id)sender {
   [[NSApp delegate] showNewStationSheet];
+  [search setStringValue:@""];
+  lastResults = [NSDictionary dictionary];
   [results reloadData];
 }
 
