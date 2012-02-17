@@ -20,7 +20,7 @@ typedef void(^PandoraCallback)(xmlDocPtr);
 @property (retain) NSString *requestData;
 @property (retain) NSString *requestMethod;
 @property (retain) NSMutableData *responseData;
-@property (retain) PandoraCallback callback;
+@property (copy) PandoraCallback callback;
 @property (retain) NSObject *info;
 @property (readwrite) BOOL secure;
 

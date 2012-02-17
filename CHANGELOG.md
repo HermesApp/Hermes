@@ -1,3 +1,12 @@
+# Version 1.0.19 (2/17/12)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.18...v1.0.19)
+
+* [fixed] AppleScript "tired of song" now actually performs the right action,
+          thanks to @tresni
+* [fixed] Creating stations clears the search field from the previous search
+* [fixed] Updated Growl to 1.3, thanks to @terinjokes
+
 # Version 1.0.18 (1/12/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.17...v1.0.18)
