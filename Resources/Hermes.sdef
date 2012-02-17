@@ -70,7 +70,7 @@
     <command name="thumbs down" code="HeRMthdn" description="set rating to &quot;dislike&quot;">
       <cocoa class="ThumbsDownCommand"/>
     </command>
-    <command name="tired of song" code="HeRMthup" description="tells Pandora that you're tired of the current song">
+    <command name="tired of song" code="HeRMtire" description="tells Pandora that you're tired of the current song">
       <cocoa class="TiredCommand"/>
     </command>
 
