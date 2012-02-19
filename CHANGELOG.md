@@ -1,3 +1,9 @@
+# Version 1.0.20 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.19...master)
+
+* [added] Keyboard shortcut to play selected station, thanks to @Sheyne
+
 # Version 1.0.19 (2/17/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.18...v1.0.19)
