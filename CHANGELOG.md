@@ -2,7 +2,8 @@
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.19...master)
 
-* [added] Keyboard shortcut to play selected station, thanks to @Sheyne
+* [added] Keyboard shortcut to play selected station, bring Hermes to the front
+          as selected application, and to show history thanks to @Sheyne
 
 # Version 1.0.19 (2/17/12)
 
