@@ -69,6 +69,12 @@ BOOL playOnStart = YES;
     selector:@selector(playpause:)
     name:MediaKeyPlayPauseNotification
     object:nil];
+    
+  [center
+    addObserver:NSApp  
+    selector:@selector(activateIgnoringOtherApps:)
+    name:MediaKeyPreviousNotification
+    object:nil];
 
   [center
     addObserver:self
