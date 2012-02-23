@@ -1,9 +1,10 @@
-# Version 1.0.20 (unreleased)
+# Version 1.0.20 (2/23/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.19...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.19...v1.0.20)
 
 * [added] Keyboard shortcut to play selected station, bring Hermes to the front
           as selected application, and to show history thanks to @Sheyne
+* [fixed] Pandora wants all requests over https now
 
 # Version 1.0.19 (2/17/12)
 
