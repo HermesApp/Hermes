@@ -16,6 +16,7 @@
   [req setRequestData:data];
   [req setRequestMethod:method];
   [req resetResponse];
+  [req setSecure:TRUE];
 
   return req;
 }
@@ -218,6 +219,7 @@ done:
 - (void)connection:(NSURLConnection *)connection
     didReceiveResponse:(NSHTTPURLResponse *)response {
   if ([response statusCode] < 200 || [response statusCode] >= 300) {
+    NSLogd(@"%ld", [response statusCode]);
     [connection cancel];
     [self cleanupConnection:connection : NULL : @"Didn't receive 2xx response"];
   }
