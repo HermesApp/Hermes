@@ -58,3 +58,7 @@ ways you can develop against Hermes if you really want to.
 
 2. Take a stab at it yourself if you're brave. The project is meant to be built
    with Xcode 4. Just send me a pull request if you've got something fixed.
+
+## License
+
+Code is available under the MIT License
