@@ -1,3 +1,10 @@
+/**
+ * @file HermesAppDelegate.m
+ * @brief Implementation of the AppDelegate for Hermes
+ *
+ * Contains startup routines, and other interfaces with the OS
+ */
+
 #import "AppleMediaKeyController.h"
 #import "HermesAppDelegate.h"
 #import "Keychain.h"
@@ -115,6 +122,8 @@
   NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
   [app_defaults setObject:@"0" forKey:PLEASE_SCROBBLE];
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL];
+  [app_defaults setObject:@"1" forKey:PLEASE_GROWL_PLAY];
+  [app_defaults setObject:@"1" forKey:PLEASE_GROWL_NEW];
   [app_defaults setObject:@"1" forKey:PLEASE_BIND_MEDIA];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

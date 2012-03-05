@@ -1,9 +1,19 @@
+/**
+ * @file PlaybackController.m
+ * @brief Implementation of the playback interface for playing/pausing
+ *        songs
+ *
+ * Handles all information regarding playing a station, setting ratings for
+ * songs, and listening for notifications. Deals with all user input related
+ * to these actions as well
+ */
+
 #import "AppleMediaKeyController.h"
-#import "PlaybackController.h"
+#import "Growler.h"
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
+#import "PlaybackController.h"
 #import "Scrobbler.h"
-#import "Growler.h"
 
 BOOL playOnStart = YES;
 
@@ -69,9 +79,9 @@ BOOL playOnStart = YES;
     selector:@selector(playpause:)
     name:MediaKeyPlayPauseNotification
     object:nil];
-    
+
   [center
-    addObserver:NSApp  
+    addObserver:NSApp
     selector:@selector(activateIgnoringOtherApps:)
     name:MediaKeyPreviousNotification
     object:nil];
@@ -197,7 +207,7 @@ BOOL playOnStart = YES;
   }
 
   if (![playing isPaused]) {
-    [Growler growl:[playing playing] withImage:growlImage];
+    [Growler growl:[playing playing] withImage:growlImage isNew:YES];
   }
 
   [art setImage:image];
@@ -290,7 +300,7 @@ BOOL playOnStart = YES;
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
       [art setImage: [NSImage imageNamed:@"missing-album"]];
-      [Growler growl:[playing playing] withImage:[art image]];
+      [Growler growl:[playing playing] withImage:[art image] isNew:YES];
     } else {
       [artLoading startAnimation:nil];
       [artLoading setHidden:NO];
@@ -372,7 +382,7 @@ BOOL playOnStart = YES;
     return NO;
   } else {
     [playing play];
-    [Growler growl:[playing playing] withImage:[art image]];
+    [Growler growl:[playing playing] withImage:[art image] isNew:NO];
     return YES;
   }
 }

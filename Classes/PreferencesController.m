@@ -5,7 +5,7 @@
 
 @implementation PreferencesController
 
-@synthesize bindMedia, scrobble, growl;
+@synthesize bindMedia, scrobble, growl, growlNewSongs, growlPlayPause;
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSInteger state;
@@ -17,6 +17,10 @@
   [bindMedia setState:state];
   state = [defaults boolForKey:PLEASE_GROWL] ? NSOnState : NSOffState;
   [growl setState:state];
+  state = [defaults boolForKey:PLEASE_GROWL_NEW] ? NSOnState : NSOffState;
+  [growlNewSongs setState:state];
+  state = [defaults boolForKey:PLEASE_GROWL_PLAY] ? NSOnState : NSOffState;
+  [growlPlayPause setState:state];
 }
 
 - (IBAction) changeScrobbleTo: (id) sender {
@@ -53,6 +57,20 @@
     [defaults setBool:NO forKey:PLEASE_GROWL];
     [Growler unsubscribe];
   }
+}
+
+- (IBAction) changeGrowlPlayPauseTo:(id)sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  [defaults setBool:([growlPlayPause state] == NSOnState)
+             forKey:PLEASE_GROWL_PLAY];
+}
+
+- (IBAction) changeGrowlNewSongTo:(id)sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  [defaults setBool:([growlNewSongs state] == NSOnState)
+             forKey:PLEASE_GROWL_NEW];
 }
 
 @end
