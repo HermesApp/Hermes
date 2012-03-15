@@ -44,7 +44,7 @@ Growler *growler = nil;
 
   NSString *title = [song title];
   NSString *description = [song artist];
-  description = [description stringByAppendingString:@" - "];
+  description = [description stringByAppendingString:@"\n"];
   description = [description stringByAppendingString:[song album]];
 
   /* To deliver the event that a notification was clicked, the click context
@@ -58,7 +58,7 @@ Growler *growler = nil;
                                  priority:0
                                  isSticky:NO
                              clickContext:[NSNumber numberWithBool:YES]
-                               identifier:[song musicId]];
+                               identifier:@"Hermes"];
 }
 
 /******************************************************************************

@@ -139,6 +139,17 @@
   }
 }
 
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
+    NSMenu *menu = [[NSMenu alloc] init];
+    Song *song = [playback getCurrentSong];
+    if (song != nil) {
+        [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
+        [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]  action:nil keyEquivalent:@""];
+        [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]  action:nil keyEquivalent:@""];
+    }
+    return menu;
+}
+
 - (NSString*) getCachedUsername {
   return [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
 }

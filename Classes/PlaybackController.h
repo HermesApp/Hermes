@@ -45,6 +45,7 @@
 - (BOOL) pause;
 - (void) setIntVolume: (int) volume;
 - (int) getIntVolume;
+- (Song *) getCurrentSong;
 
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;
