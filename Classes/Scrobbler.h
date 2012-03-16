@@ -15,9 +15,14 @@
   NSTimer *timer;
 }
 
+typedef enum status {
+    NewSong,
+    NowPlaying,
+    FinalStatus
+} Status;
 + (void) subscribe;
 + (void) unsubscribe;
-+ (void) scrobble: (Song*) song;
++ (void) scrobble: (Song*) song status: (Status) status;
 
 @property (retain) FMEngine *engine;
 @property (retain) NSString *authToken;
@@ -25,6 +30,6 @@
 
 - (void) fetchAuthToken;
 - (void) fetchSessionToken;
-- (void) scrobble: (Song*) song;
+- (void) scrobble: (Song*) song status: (Status) status;
 
 @end

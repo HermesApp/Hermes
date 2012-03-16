@@ -273,9 +273,13 @@ BOOL playOnStart = YES;
 
   /* See http://www.last.fm/api/scrobbling#when-is-a-scrobble-a-scrobble for
      figuring out when a track should be scrobbled */
-  if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) && !scrobbleSent) {
-    scrobbleSent = YES;
-    [Scrobbler scrobble:[playing playing]];
+  if (scrobbleSent == NewSong) {
+      scrobbleSent = NowPlaying;
+      [Scrobbler scrobble:[playing playing] status:scrobbleSent];
+  }
+  else if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) && scrobbleSent == NowPlaying) {
+    scrobbleSent = FinalStatus;
+    [Scrobbler scrobble:[playing playing] status:FinalStatus];
   }
 
 }
@@ -319,7 +323,7 @@ BOOL playOnStart = YES;
   [albumLabel setStringValue:[song album]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
-  scrobbleSent = NO;
+  scrobbleSent = 0;
 
   if ([[song rating] isEqualTo: @"1"]) {
     [like setEnabled:NO];
