@@ -28,12 +28,12 @@ Scrobbler *subscriber = nil;
   subscriber = nil;
 }
 
-+ (void) scrobble:(Song *)song status:(Status)status {
++ (void) scrobble:(Song *)song state:(ScrobbleState)status {
   if (subscriber == nil) {
     return;
   }
 
-    [subscriber scrobble:song status:status];
+    [subscriber scrobble:song state:status];
 }
 
 - (void) error: (NSString*) message {
@@ -48,7 +48,7 @@ Scrobbler *subscriber = nil;
                       contextInfo:nil];
 }
 
-- (void) scrobble:(Song *)song status:(Status)status {
+- (void) scrobble:(Song *)song state:(ScrobbleState)status {
   /* If we don't have a sesion token yet, just ignore this for now */
   if (sessionToken == nil || [@"" isEqual:sessionToken]) {
     return;
