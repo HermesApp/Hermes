@@ -13,6 +13,7 @@
 #import "PreferencesController.h"
 
 @implementation HermesAppDelegate
+@synthesize menu;
 
 @synthesize stations, auth, playback, pandora, window, history;
 
@@ -140,14 +141,31 @@
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
-    NSMenu *menu = [[NSMenu alloc] init];
+    [self removeNowPlaying];
     Song *song = [playback getCurrentSong];
     if (song != nil) {
-        [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
-        [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]  action:nil keyEquivalent:@""];
-        [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]  action:nil keyEquivalent:@""];
+        NSMenuItem *menuItem = [NSMenuItem separatorItem];
+        [menu insertItem:menuItem atIndex:0];
+        menuItem = [[NSMenuItem alloc] initWithTitle:@"Now Playing" action:nil keyEquivalent:@""];
+        [menu insertItem:menuItem atIndex:0];
+        
+        menuItem = [[NSMenuItem alloc] initWithTitle:[song title] action:nil keyEquivalent:@""];
+        [menuItem setIndentationLevel:1];
+        [menu insertItem:menuItem atIndex:1];
+        
+        menuItem = [[NSMenuItem alloc] initWithTitle:[song artist] action:nil keyEquivalent:@""];
+        [menuItem setIndentationLevel:1];
+        [menu insertItem:menuItem atIndex:2];
     }
     return menu;
+}
+
+- (void) removeNowPlaying {
+    if ([menu numberOfItems] == 8) {
+        for (int i = 0; i < 4; i++) {
+            [menu removeItemAtIndex:0];
+        }
+    }
 }
 
 - (NSString*) getCachedUsername {
