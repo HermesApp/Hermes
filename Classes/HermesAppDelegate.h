@@ -24,6 +24,8 @@
   IBOutlet PlaybackController *playback;
 
   IBOutlet HistoryController *history;
+
+  NSMenu *menu;
 }
 
 @property (readonly) NSWindow *window;
@@ -33,6 +35,7 @@
 @property (retain) PlaybackController *playback;
 @property (retain) Pandora *pandora;
 
+- (void) removeNowPlaying;
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
 - (void) cacheAuth: (NSString*) username : (NSString*) password;
@@ -43,4 +46,5 @@
 - (NSString*) getCachedUsername;
 - (NSString*) getCachedPassword;
 
+@property (strong) IBOutlet NSMenu *menu;
 @end

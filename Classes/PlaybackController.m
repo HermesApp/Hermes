@@ -523,6 +523,10 @@ BOOL playOnStart = YES;
   return [volume intValue];
 }
 
+- (Song *) getCurrentSong {
+    return [playing playing];
+}
+
 - (IBAction) volumeChanged: (id) sender {
   NSLogd(@"Volume changed to: %d", [volume intValue]);
   if (playing && [playing stream]) {

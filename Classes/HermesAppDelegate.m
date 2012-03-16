@@ -13,6 +13,7 @@
 #import "PreferencesController.h"
 
 @implementation HermesAppDelegate
+@synthesize menu;
 
 @synthesize stations, auth, playback, pandora, window, history;
 
@@ -137,6 +138,34 @@
   if ([defaults boolForKey:PLEASE_BIND_MEDIA]) {
     [AppleMediaKeyController bindKeys];
   }
+}
+
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
+    [self removeNowPlaying];
+    Song *song = [playback getCurrentSong];
+    if (song != nil) {
+        NSMenuItem *menuItem = [NSMenuItem separatorItem];
+        [menu insertItem:menuItem atIndex:0];
+        menuItem = [[NSMenuItem alloc] initWithTitle:@"Now Playing" action:nil keyEquivalent:@""];
+        [menu insertItem:menuItem atIndex:0];
+        
+        menuItem = [[NSMenuItem alloc] initWithTitle:[song title] action:nil keyEquivalent:@""];
+        [menuItem setIndentationLevel:1];
+        [menu insertItem:menuItem atIndex:1];
+        
+        menuItem = [[NSMenuItem alloc] initWithTitle:[song artist] action:nil keyEquivalent:@""];
+        [menuItem setIndentationLevel:1];
+        [menu insertItem:menuItem atIndex:2];
+    }
+    return menu;
+}
+
+- (void) removeNowPlaying {
+    if ([menu numberOfItems] == 8) {
+        for (int i = 0; i < 4; i++) {
+            [menu removeItemAtIndex:0];
+        }
+    }
 }
 
 - (NSString*) getCachedUsername {
