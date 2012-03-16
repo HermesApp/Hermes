@@ -1,6 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "Station.h"
 #import "ImageLoader.h"
+#import "Scrobbler.h"
 
 @interface PlaybackController : NSObject {
   IBOutlet NSProgressIndicator *songLoadingProgress;
@@ -27,7 +28,7 @@
   NSTimer *progressUpdateTimer;
   ImageLoader *loader;
   Station *playing;
-  BOOL scrobbleSent;
+  ScrobbleState scrobbleState;
   NSString *lastImgSrc;
 }
 

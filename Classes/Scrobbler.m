@@ -28,12 +28,12 @@ Scrobbler *subscriber = nil;
   subscriber = nil;
 }
 
-+ (void) scrobble:(Song *)song {
++ (void) scrobble:(Song *)song state:(ScrobbleState)status {
   if (subscriber == nil) {
     return;
   }
 
-  [subscriber scrobble: song];
+    [subscriber scrobble:song state:status];
 }
 
 - (void) error: (NSString*) message {
@@ -48,7 +48,7 @@ Scrobbler *subscriber = nil;
                       contextInfo:nil];
 }
 
-- (void) scrobble:(Song *)song {
+- (void) scrobble:(Song *)song state:(ScrobbleState)status {
   /* If we don't have a sesion token yet, just ignore this for now */
   if (sessionToken == nil || [@"" isEqual:sessionToken]) {
     return;
@@ -66,6 +66,7 @@ Scrobbler *subscriber = nil;
   [dictionary setObject:[song artist] forKey:@"artist"];
   [dictionary setObject:[song album] forKey:@"album"];
   [dictionary setObject:[song musicId] forKey:@"mbid"];
+  [dictionary setObject:@"0" forKey:@"chosenByUser"];
 
   NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
   [dictionary setObject:time forKey:@"timestamp"];
@@ -85,7 +86,7 @@ Scrobbler *subscriber = nil;
     }
   };
 
-  [engine performMethod:@"track.scrobble"
+  [engine performMethod:(status == FinalStatus ? @"track.scrobble" : @"track.updateNowPlaying")
            withCallback:cb
          withParameters:dictionary
            useSignature:YES
