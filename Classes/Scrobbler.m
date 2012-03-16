@@ -33,7 +33,7 @@ Scrobbler *subscriber = nil;
     return;
   }
 
-    [subscriber scrobble:song state:status];
+  [subscriber scrobble:song state:status];
 }
 
 - (void) error: (NSString*) message {

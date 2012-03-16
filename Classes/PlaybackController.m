@@ -276,8 +276,8 @@ BOOL playOnStart = YES;
   if (scrobbleState == NewSong) {
       scrobbleState = NowPlaying;
       [Scrobbler scrobble:[playing playing] state:NowPlaying];
-  }
-  else if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) && scrobbleState == NowPlaying) {
+  } else if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) &&
+             scrobbleState == NowPlaying) {
     scrobbleState = FinalStatus;
     [Scrobbler scrobble:[playing playing] state:FinalStatus];
   }

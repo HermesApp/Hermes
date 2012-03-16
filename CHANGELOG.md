@@ -4,6 +4,10 @@
 
 * [added] Fine-grained control for which growl notifications are received,
           configurable through Hermes' preferences, or also through Growl's
+* [added] Tell last.fm when a track starts playing via the
+          `track.updateNowPlaying` API method, thanks to @tresni
+* [fixed] Fixed scrobbling in some situations where the saved session key was
+          wrong, thanks to @tresni
 
 # Version 1.0.20 (2/23/12)
 
