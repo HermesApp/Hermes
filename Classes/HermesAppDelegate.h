@@ -4,6 +4,8 @@
 #import "HistoryController.h"
 #import "Pandora.h"
 
+#define USERNAME_KEY @"pandora.username"
+
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
 
   Pandora *pandora;

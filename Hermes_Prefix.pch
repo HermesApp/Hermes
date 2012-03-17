@@ -1,13 +1,5 @@
-//
-// Prefix header for all source files of the 'Pithos' target in the 'Pithos' project
-//
+#import <Cocoa/Cocoa.h>
 
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif
-
-#define LAST_STATION_KEY      @"hermes.last-station"
-#define USERNAME_KEY          @"pandora.username"
 
 #ifdef DEBUG
 # define NSLogd(...) NSLog(__VA_ARGS__)

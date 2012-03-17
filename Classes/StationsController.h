@@ -3,6 +3,8 @@
 #import "Pandora.h"
 #import "Station.h"
 
+#define LAST_STATION_KEY @"hermes.last-station"
+
 @interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
   IBOutlet NSView *view;
