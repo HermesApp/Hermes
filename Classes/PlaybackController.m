@@ -273,15 +273,10 @@ BOOL playOnStart = YES;
 
   /* See http://www.last.fm/api/scrobbling#when-is-a-scrobble-a-scrobble for
      figuring out when a track should be scrobbled */
-  if (scrobbleState == NewSong) {
-      scrobbleState = NowPlaying;
-      [Scrobbler scrobble:[playing playing] state:NowPlaying];
-  } else if (dur > 30 && (prog * 2 > dur || prog > 4 * 60) &&
-             scrobbleState == NowPlaying) {
-    scrobbleState = FinalStatus;
+  if (!scrobbleSent && dur > 30 && (prog * 2 > dur || prog > 4 * 60)) {
+    scrobbleSent = YES;
     [Scrobbler scrobble:[playing playing] state:FinalStatus];
   }
-
 }
 
 /*
@@ -323,7 +318,7 @@ BOOL playOnStart = YES;
   [albumLabel setStringValue:[song album]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
-  scrobbleState = NewSong;
+  scrobbleSent = NO;
 
   if ([[song rating] isEqualTo: @"1"]) {
     [like setEnabled:NO];
@@ -431,7 +426,7 @@ BOOL playOnStart = YES;
   } else {
     NSLogd(@"Couldn't rate song?!");
   }
-
+  [Scrobbler setPreference:playingSong loved:YES];
 }
 
 /* Dislike button was hit */
@@ -451,10 +446,10 @@ BOOL playOnStart = YES;
   } else {
     NSLog(@"Couldn't rate song?!");
   }
-
+  [Scrobbler setPreference:playingSong loved:NO];
 }
 
-/* We are tired o fthe currently playing song, play another */
+/* We are tired of the currently playing song, play another */
 - (IBAction)tired: (id) sender {
   if (playing == nil || [playing playing] == nil) {
     return;

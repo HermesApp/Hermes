@@ -43,6 +43,12 @@ static FMCallback errorChecker;
         [subscriber error:[object objectForKey:@"message"]];
       }
     };
+
+    [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(songPlayed:)
+             name:@"song.playing"
+           object:nil];
   }
 }
 
@@ -53,6 +59,7 @@ static FMCallback errorChecker;
 + (void) unsubscribe {
   subscriber = nil;
   errorChecker = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 /**
@@ -63,6 +70,21 @@ static FMCallback errorChecker;
 + (void) scrobble:(Song *)song state:(ScrobbleState)status {
   if (subscriber != nil) {
     [subscriber scrobble:song state:status];
+  }
+}
+
+/**
+ * @brief Helper used to listen to notifications about new songs
+ */
++ (void) songPlayed:(NSNotification*) notification {
+  Station *station = [notification object];
+  Song *playing = [station playing];
+  if (playing != nil) {
+    if ([[playing rating] isEqualToString:@"1"]) {
+      /* If a song is liked, then be sure we tell last.fm as such */
+      [subscriber setPreference:playing loved:YES];
+    }
+    [subscriber scrobble:playing state:NewSong];
   }
 }
 

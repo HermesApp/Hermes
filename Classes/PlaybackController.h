@@ -28,7 +28,7 @@
   NSTimer *progressUpdateTimer;
   ImageLoader *loader;
   Station *playing;
-  ScrobbleState scrobbleState;
+  BOOL scrobbleSent;
   NSString *lastImgSrc;
 }
 
