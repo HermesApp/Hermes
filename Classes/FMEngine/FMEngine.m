@@ -134,7 +134,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   NSMutableString *rawURL = [NSMutableString stringWithString:_LASTFM_BASEURL_];
   [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
-  for(int i = 0; i < [aMutableArray count]; i++) {
+  for(unsigned int i = 0; i < [aMutableArray count]; i++) {
     NSString *key = [aMutableArray objectAtIndex:i];
     NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
 

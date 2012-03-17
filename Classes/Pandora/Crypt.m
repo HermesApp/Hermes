@@ -60,7 +60,7 @@ NSData* PandoraDecrypt(NSString* string) {
 
 NSString* PandoraEncrypt(NSString* string) {
   const char *cstr = [string UTF8String];
-  int len, i;
+  unsigned int len, i;
   uint32_t l, r, t, j, a, b, c, d, f;
 
   len = [string length];

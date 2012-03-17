@@ -85,7 +85,7 @@
 }
 
 - (int) stationIndex:(Station *)station {
-  int i;
+  unsigned i;
   Station *cur;
   NSArray *arr = [[self pandora] stations];
   for (i = 0; i < [arr count]; i++) {
@@ -145,7 +145,7 @@
     row:(NSInteger)rowIndex {
 
   NSArray *st = [[self pandora] stations];
-  if (rowIndex >= [st count]) { return nil; }
+  if ((NSUInteger) rowIndex >= [st count]) { return nil; }
   Station *s = [st objectAtIndex: rowIndex];
   if ([[aTableColumn identifier] isEqual:@"image"]) {
     if ([s isEqual:[self playingStation]]) {

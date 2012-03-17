@@ -426,7 +426,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   ];
 
   PandoraCallback cb = ^(xmlDocPtr doc) {
-    int i;
+    unsigned int i;
 
     for (i = 0; i < [stations count]; i++) {
       if ([[[stations objectAtIndex:i] stationId] isEqual:stationId]) {

@@ -1,14 +1,19 @@
+/**
+ * @file Keys.m
+ * @brief Keys are actually defined in this file, exported elsewhere
+ */
+
 #include "Keys.h"
 
 //  Thanks to pianobar for getting these keys
 
-int InputKey_n = 16;
-int InputKey_p[] = {
+unsigned int InputKey_n = 16;
+unsigned int InputKey_p[] = {
   0xD825B592, 0xA73D0737, 0x3F7C28AE, 0xF91F7116, 0xEF6B001E, 0xD38524FD,
   0x547F01EC, 0xE9C9DF7C, 0x25DE8E97, 0x9F45FF21, 0x87479245, 0x74A5FE7A,
   0x9D4A1EDB, 0x7EEFCA76, 0x58B117C2, 0x0E7F33BE, 0x1C840B7A, 0x15EEE858
 };
-int InputKey_s[4][256] = {{
+unsigned int InputKey_s[4][256] = {{
   0x4A0BABBD, 0x46B75CE1, 0xDA4E60D7, 0x62DD8F22, 0x668D7291, 0x70330C71,
   0x8ECE2964, 0xD4D1D24F, 0x2247D3FF, 0x33BD2D83, 0x2A7DF912, 0xB9E711C8,
   0x0E6544DB, 0x3A45B663, 0x8A9AB3DB, 0xD1A18732, 0x12700956, 0x25D9E559,
@@ -186,13 +191,13 @@ int InputKey_s[4][256] = {{
   0x61E6931A, 0xF582D866, 0x2C3410D9, 0x21D70463
 }};
 
-int OutputKey_n = 16;
-int OutputKey_p[] = {
+unsigned int OutputKey_n = 16;
+unsigned int OutputKey_p[] = {
   0xD8A1A847, 0xBCDA04F4, 0x54684D7B, 0xCDFD2D53, 0xADAD96BA, 0x83F7C7D2,
   0x97A48912, 0xA9D594AD, 0x6B4F3733, 0x0657C13E, 0xFCAE0687, 0x700858E4,
   0x34601911, 0x2A9DC589, 0xE3D08D11, 0x29B2D6AB, 0xC9657084, 0xFB5B9AF0
 };
-int OutputKey_s[4][256] = {{
+unsigned int OutputKey_s[4][256] = {{
   0x4EE44D9D, 0xCCEEAB0F, 0xD86488F6, 0x25FDD9B7, 0xB0DE3A97, 0x66EADF2F,
   0xC0D3DCA4, 0xEE72A5FA, 0x54074DEC, 0xCBAD83AD, 0x4B1771A3, 0xD92AE545,
   0xB5FCE937, 0x26AD96D9, 0x5D615D68, 0xF2994B82, 0xE668D342, 0x61051D4C,
