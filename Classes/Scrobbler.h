@@ -1,12 +1,18 @@
-//
-//  Scrobbler.h
-//  Hermes
-//
-//  Created by Alex Crichton on 11/19/11.
-//
+/**
+ * @file Scrobbler.h
+ *
+ * @brief Interface for talking to last.fm's api and updating what's currently
+ *        being listened to and such.
+ */
 
 #import "FMEngine.h"
 #import "Song.h"
+
+typedef enum scrobblestate {
+  NewSong,
+  NowPlaying,
+  FinalStatus
+} ScrobbleState;
 
 @interface Scrobbler : NSObject {
   FMEngine *engine;
@@ -15,11 +21,6 @@
   NSTimer *timer;
 }
 
-typedef enum scrobblestate {
-    NewSong,
-    NowPlaying,
-    FinalStatus
-} ScrobbleState;
 + (void) subscribe;
 + (void) unsubscribe;
 + (void) scrobble: (Song*) song state: (ScrobbleState) status;

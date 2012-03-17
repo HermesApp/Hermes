@@ -1,9 +1,11 @@
-//
-//  Scrobbler.m
-//  Hermes
-//
-//  Created by Alex Crichton on 11/19/11.
-//
+/**
+ * @file Scrobbler.m
+ * @brief Implementation of talking with last.fm
+ *
+ * Handles the serialization of requests to last.fm and handles all errors
+ * associated with them. The errors are displayed to the user via popups,
+ * which could probably use some poslishing...
+ */
 
 #import "Keychain.h"
 #import "Scrobbler.h"
@@ -12,7 +14,8 @@
 
 #define LASTFM_KEYCHAIN_ITEM @"hermes-lastfm-sk"
 
-Scrobbler *subscriber = nil;
+/* Singleton instance of the Scrobbler class used globally */
+static Scrobbler *subscriber = nil;
 
 @implementation Scrobbler
 
@@ -50,23 +53,19 @@ Scrobbler *subscriber = nil;
 
 - (void) scrobble:(Song *)song state:(ScrobbleState)status {
   /* If we don't have a sesion token yet, just ignore this for now */
-  if (sessionToken == nil || [@"" isEqual:sessionToken]) {
-    return;
-  }
-
-  if (song == nil) {
+  if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
     return;
   }
 
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-  [dictionary setObject:sessionToken forKey:@"sk"];
-  [dictionary setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
-  [dictionary setObject:[song title] forKey:@"track"];
-  [dictionary setObject:[song artist] forKey:@"artist"];
-  [dictionary setObject:[song album] forKey:@"album"];
-  [dictionary setObject:[song musicId] forKey:@"mbid"];
-  [dictionary setObject:@"0" forKey:@"chosenByUser"];
+  [dictionary setObject:sessionToken      forKey:@"sk"];
+  [dictionary setObject:_LASTFM_API_KEY_  forKey:@"api_key"];
+  [dictionary setObject:[song title]      forKey:@"track"];
+  [dictionary setObject:[song artist]     forKey:@"artist"];
+  [dictionary setObject:[song album]      forKey:@"album"];
+  [dictionary setObject:[song musicId]    forKey:@"mbid"];
+  [dictionary setObject:@"0"              forKey:@"chosenByUser"];
 
   NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
   [dictionary setObject:time forKey:@"timestamp"];
@@ -77,7 +76,6 @@ Scrobbler *subscriber = nil;
       return;
     }
     SBJsonParser *parser = [[SBJsonParser alloc] init];
-
     NSDictionary *object = [parser objectWithData:data];
 
     if ([object objectForKey:@"error"] != nil) {
@@ -86,7 +84,13 @@ Scrobbler *subscriber = nil;
     }
   };
 
-  [engine performMethod:(status == FinalStatus ? @"track.scrobble" : @"track.updateNowPlaying")
+  /* Relevant API documentation at
+   *  - http://www.last.fm/api/show/track.scrobble
+   *  - http://www.last.fm/api/show/track.updateNowPlaying
+   */
+  NSString *method = status == FinalStatus ? @"track.scrobble"
+                                           : @"track.updateNowPlaying";
+  [engine performMethod:method
            withCallback:cb
          withParameters:dictionary
            useSignature:YES
@@ -113,7 +117,9 @@ Scrobbler *subscriber = nil;
 /**
  * Callback for when the user closes the 'need authorization' dialog
  */
-- (void) openAuthorization:(NSAlert *)alert returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+- (void) openAuthorization:(NSAlert *)alert
+                returnCode:(NSInteger)returnCode
+               contextInfo:(void *)contextInfo {
   if (returnCode != NSAlertFirstButtonReturn) {
     return;
   }
@@ -165,6 +171,7 @@ Scrobbler *subscriber = nil;
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
 
+  /* More info at http://www.last.fm/api/show/auth.getToken */
   FMCallback cb = ^(NSData *data, NSError *error) {
     if (error != nil) {
       [self error:[error localizedDescription]];
@@ -202,6 +209,7 @@ Scrobbler *subscriber = nil;
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
   [dict setObject:authToken forKey:@"token"];
 
+  /* More info at http://www.last.fm/api/show/auth.getSession */
   FMCallback cb = ^(NSData *data, NSError *error) {
     if (error != nil) {
       [self error:[error localizedDescription]];

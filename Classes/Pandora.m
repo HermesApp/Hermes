@@ -97,11 +97,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Fetches a list of stations for the logged in user
  */
 - (BOOL) fetchStations {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
   NSLogd(@"Fetching stations...");
 
   NSString *xml = [NSString stringWithFormat:
@@ -158,11 +154,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Gets a fragment of songs from Pandora for the specified station
  */
 - (BOOL) getFragment: (NSString*) station_id {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
   NSLogd(@"Getting fragment for %@...", station_id);
 
   NSString *xml = [NSString stringWithFormat:
@@ -251,11 +243,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Rate a song, "0" = dislike, "1" = like
  */
 - (BOOL) rateSong: (Song*) song : (NSString*) rating {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
   NSLogd(@"Rating song '%@' as %@...", [song title], rating);
 
   NSString *xml = [NSString stringWithFormat:
@@ -298,11 +286,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Tell Pandora that we're tired of a specific song
  */
 - (BOOL) tiredOfSong: (Song*) song {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
   NSLogd(@"Getting tired of %@...", [song title]);
 
   NSString *xml = [NSString stringWithFormat:
@@ -331,11 +315,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 }
 
 - (BOOL) search: (NSString*) search {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
   NSLogd(@"Searching for %@...", search);
 
   NSString *xml = [NSString stringWithFormat:
@@ -400,11 +380,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Create a new station, just for kicks
  */
 - (BOOL) createStation: (NSString*)musicId {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
 
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
@@ -434,11 +410,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Remove a station from the list, only removing if
  */
 - (BOOL) removeStation: (NSString*)stationId {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
 
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
@@ -481,11 +453,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  * Rename a station to have a different name
  */
 - (BOOL) renameStation: (NSString*)stationId to:(NSString*)name {
-  if (![self authenticated]) {
-    @throw [NSException exceptionWithName:@"pandora.need-authentication"
-                                   reason:@"Not authenticated yet"
-                                 userInfo:nil];
-  }
+  assert([self authenticated]);
 
   NSString *xml = [NSString stringWithFormat:
     @"<?xml version=\"1.0\"?>"
