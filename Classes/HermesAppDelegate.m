@@ -121,6 +121,7 @@
 
   NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
   [app_defaults setObject:@"0" forKey:PLEASE_SCROBBLE];
+  [app_defaults setObject:@"0" forKey:ONLY_SCROBBLE_LIKED];
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL];
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL_PLAY];
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL_NEW];

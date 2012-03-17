@@ -5,7 +5,8 @@
 
 @implementation PreferencesController
 
-@synthesize bindMedia, scrobble, growl, growlNewSongs, growlPlayPause;
+@synthesize bindMedia, scrobble, scrobbleOnlyLiked, growl, growlNewSongs,
+            growlPlayPause;
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSInteger state;
@@ -13,6 +14,8 @@
 
   state = [defaults boolForKey:PLEASE_SCROBBLE] ? NSOnState : NSOffState;
   [scrobble setState:state];
+  state = [defaults boolForKey:ONLY_SCROBBLE_LIKED] ? NSOnState : NSOffState;
+  [scrobbleOnlyLiked setState:state];
   state = [defaults boolForKey:PLEASE_BIND_MEDIA] ? NSOnState : NSOffState;
   [bindMedia setState:state];
   state = [defaults boolForKey:PLEASE_GROWL] ? NSOnState : NSOffState;
@@ -33,6 +36,13 @@
     [defaults setBool:NO forKey:PLEASE_SCROBBLE];
     [Scrobbler unsubscribe];
   }
+}
+
+- (IBAction) changeScrobbleOnlyLikedTo: (id) sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+  [defaults setBool:([scrobbleOnlyLiked state] == NSOnState)
+             forKey:ONLY_SCROBBLE_LIKED];
 }
 
 - (IBAction) changeBindMediaTo: (id) sender {

@@ -8,6 +8,7 @@
  */
 
 #import "Keychain.h"
+#import "PreferencesController.h"
 #import "Scrobbler.h"
 #import "Station.h"
 #import "SBJson.h"
@@ -156,6 +157,11 @@ static FMCallback errorChecker;
 - (void) scrobble:(Song *)song state:(ScrobbleState)status {
   /* If we don't have a sesion token yet, just ignore this for now */
   if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
+    return;
+  }
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if ([defaults boolForKey:ONLY_SCROBBLE_LIKED] &&
+      ![[song rating] isEqualToString:@"1"]) {
     return;
   }
 

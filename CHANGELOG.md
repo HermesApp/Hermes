@@ -8,6 +8,8 @@
           `track.updateNowPlaying` API method, thanks to @tresni
 * [added] Tell last.fm about liked/disliked tracks via the `track.love` and
           `track.unlove` methods, thanks to @ginader for the idea
+* [added] Add a preference for only scrobbling liked tracks, thanks to
+          @ginader for the idea.
 * [fixed] Fixed scrobbling in some situations where the saved session key was
           wrong, thanks to @tresni
 
