@@ -2,7 +2,7 @@
 
 
 #ifdef DEBUG
-# define NSLogd(...) NSLog(__VA_ARGS__)
+# define NSLogd(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args);
 #else
 # define NSLogd(...)
 #endif
