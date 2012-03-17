@@ -23,6 +23,7 @@ typedef enum scrobblestate {
 
 + (void) subscribe;
 + (void) unsubscribe;
++ (void) setPreference: (Song*)song loved:(BOOL)loved;
 + (void) scrobble: (Song*) song state: (ScrobbleState) status;
 
 @property (retain) FMEngine *engine;
@@ -31,6 +32,7 @@ typedef enum scrobblestate {
 
 - (void) fetchAuthToken;
 - (void) fetchSessionToken;
+- (void) setPreference: (Song*)song loved:(BOOL)loved;
 - (void) scrobble: (Song*) song state: (ScrobbleState) status;
 
 @end
