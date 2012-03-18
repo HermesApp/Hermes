@@ -115,6 +115,9 @@
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
+  [waitingTimeout invalidate];
+  waitingTimeout = nil;
+
   if ([stream errorCode] != 0) {
     /* Try a few times to re-initialize the stream just in case it was a fluke
      * which caused the stream to fail */
@@ -161,6 +164,14 @@
     } else if ([stream isPaused]) {
       [stream pause];
       NSLogd(@"pausing stream");
+      return;
+    } else if ([stream isWaiting]) {
+      waitingTimeout = [NSTimer scheduledTimerWithTimeInterval:0.1
+                                                        target:self
+                                                      selector:@selector(retry)
+                                                      userInfo:nil
+                                                       repeats:NO];
+      NSLogd(@"waiting for more data, will retry again soon...");
       return;
     }
 
