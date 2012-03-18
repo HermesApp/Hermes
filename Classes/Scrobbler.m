@@ -24,6 +24,21 @@ static FMCallback errorChecker;
 @synthesize engine, authToken, sessionToken;
 
 /**
+ * @brief Internal helper method to display an error message
+ */
+- (void) error: (NSString*) message {
+  NSString *header = @"last.fm error: ";
+  NSAlert *alert = [[NSAlert alloc] init];
+  message = [header stringByAppendingString:message];
+  [alert setMessageText:message];
+  [alert addButtonWithTitle:@"OK"];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window]
+                    modalDelegate:self
+                   didEndSelector:nil
+                      contextInfo:nil];
+}
+
+/**
  * @brief Creates a global instance of a Scrobbler, if necessary
  *
  * Also begins fetching of session keys for the last.fm API
@@ -125,21 +140,6 @@ static FMCallback errorChecker;
   if (timer != nil && [timer isValid]) {
     [timer invalidate];
   }
-}
-
-/**
- * @brief Internal helper method to display an error message
- */
-- (void) error: (NSString*) message {
-  NSString *header = @"last.fm error: ";
-  NSAlert *alert = [[NSAlert alloc] init];
-  message = [header stringByAppendingString:message];
-  [alert setMessageText:message];
-  [alert addButtonWithTitle:@"OK"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:nil
-                      contextInfo:nil];
 }
 
 /**
