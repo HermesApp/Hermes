@@ -233,10 +233,8 @@ BOOL playOnStart = YES;
     [[playing stream] setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
-    [dockPlayPause setTitle:@"Pause"];
   } else if ([streamer isPaused]) {
     NSLogd(@"Stream paused now...");
-    [dockPlayPause setTitle:@"Play"];
     [playpause setImage:[NSImage imageNamed:@"play"]];
     [playbackProgress stopAnimation:nil];
   } else if ([streamer isIdle]) {
