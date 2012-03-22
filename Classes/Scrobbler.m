@@ -4,7 +4,7 @@
  *
  * Handles the serialization of requests to last.fm and handles all errors
  * associated with them. The errors are displayed to the user via popups,
- * which could probably use some poslishing...
+ * which could probably use some polishing...
  */
 
 #import "Keychain.h"
