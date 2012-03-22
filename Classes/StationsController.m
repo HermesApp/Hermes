@@ -1,6 +1,7 @@
 #import "StationsController.h"
 #import "Pandora.h"
 #import "HermesAppDelegate.h"
+#import "PreferencesController.h"
 
 @implementation StationsController
 
@@ -61,20 +62,23 @@
 - (void) showDrawer {
   [stations open];
   [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setValue:@"0" forKey:PLEASE_CLOSE_DRAWER];
 }
 
 - (void) hideDrawer {
   [stations close];
   [showStations setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setValue:@"1" forKey:PLEASE_CLOSE_DRAWER];
 }
 
 - (IBAction) toggleDrawer: (id) sender {
   if ([stations state] == NSDrawerOpenState) {
-    [showStations setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
+    [self hideDrawer];
   } else {
-    [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
+    [self showDrawer];
   }
-  [stations toggle: sender];
 }
 
 - (void) reset {
@@ -232,7 +236,10 @@
   if ([self playingStation] == nil && ![self playSavedStation]) {
     [[NSApp delegate] setCurrentView:view];
   }
-  [self showDrawer];
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if (![defaults boolForKey:PLEASE_CLOSE_DRAWER]) {
+    [self showDrawer];
+  }
 }
 
 /* Called whenever search results are received */

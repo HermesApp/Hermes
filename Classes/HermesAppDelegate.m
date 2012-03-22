@@ -126,6 +126,7 @@
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL_PLAY];
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL_NEW];
   [app_defaults setObject:@"1" forKey:PLEASE_BIND_MEDIA];
+  [app_defaults setObject:@"0" forKey:PLEASE_CLOSE_DRAWER];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults registerDefaults:app_defaults];
