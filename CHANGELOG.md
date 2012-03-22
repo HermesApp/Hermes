@@ -10,8 +10,12 @@
           `track.unlove` methods, thanks to @ginader for the idea
 * [added] Add a preference for only scrobbling liked tracks, thanks to
           @ginader for the idea.
+* [added] Dock menu now displays the playing song, if there is one, thanks to
+          @viveksjain
 * [fixed] Fixed scrobbling in some situations where the saved session key was
           wrong, thanks to @tresni
+* [fixed] Growl notifications now globally coalesce, instead of on a song-level,
+          thanks to @viveksjain
 
 # Version 1.0.20 (2/23/12)
 
