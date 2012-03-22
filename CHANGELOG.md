@@ -1,6 +1,6 @@
-# Version 1.0.21 (unreleased)
+# Version 1.0.21 (3/22/11)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.20...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.20...v1.0.21)
 
 * [added] Fine-grained control for which growl notifications are received,
           configurable through Hermes' preferences, or also through Growl's
