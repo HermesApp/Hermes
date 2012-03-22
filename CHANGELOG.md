@@ -12,6 +12,7 @@
           @ginader for the idea.
 * [added] Dock menu now displays the playing song, if there is one, thanks to
           @viveksjain
+* [added] Preserve stations drawer state across launches, thanks to @viveksjain
 * [fixed] Fixed scrobbling in some situations where the saved session key was
           wrong, thanks to @tresni
 * [fixed] Growl notifications now globally coalesce, instead of on a song-level,
