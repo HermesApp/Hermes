@@ -96,10 +96,6 @@ static FMCallback errorChecker;
   Station *station = [notification object];
   Song *playing = [station playing];
   if (playing != nil) {
-    if ([[playing rating] isEqualToString:@"1"]) {
-      /* If a song is liked, then be sure we tell last.fm as such */
-      [subscriber setPreference:playing loved:YES];
-    }
     [subscriber scrobble:playing state:NewSong];
   }
 }
@@ -200,6 +196,11 @@ static FMCallback errorChecker;
 - (void) setPreference: (Song*)song loved:(BOOL)loved {
   /* If we don't have a sesion token yet, just ignore this for now */
   if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
+    return;
+  }
+  
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  if (![defaults boolForKey:PLEASE_SCROBBLE_LIKES]) {
     return;
   }
 
