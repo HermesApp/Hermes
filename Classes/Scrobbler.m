@@ -95,7 +95,7 @@ static FMCallback errorChecker;
 + (void) songPlayed:(NSNotification*) notification {
   Station *station = [notification object];
   Song *playing = [station playing];
-  if (playing != nil) {
+  if (playing != nil && subscriber != nil) {
     [subscriber scrobble:playing state:NewSong];
   }
 }

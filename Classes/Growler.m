@@ -11,7 +11,7 @@
 #import "Growler.h"
 #import "PreferencesController.h"
 
-Growler *growler = nil;
+static Growler *growler = nil;
 
 @implementation Growler
 

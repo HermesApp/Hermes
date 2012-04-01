@@ -30,12 +30,15 @@
 
 - (IBAction) changeScrobbleTo: (id) sender {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  BOOL selected = ([scrobble state] == NSOnState);
 
-  if ([scrobble state] == NSOnState) {
-    [defaults setBool:YES forKey:PLEASE_SCROBBLE];
+  [defaults setBool:selected forKey:PLEASE_SCROBBLE];
+  [scrobbleLikes setEnabled:selected];
+  [scrobbleOnlyLiked setEnabled:selected];
+
+  if (selected) {
     [Scrobbler subscribe];
   } else {
-    [defaults setBool:NO forKey:PLEASE_SCROBBLE];
     [Scrobbler unsubscribe];
   }
 }
@@ -68,12 +71,15 @@
 
 - (IBAction) changeGrowlTo: (id) sender {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  BOOL selected = ([growl state] == NSOnState);
 
-  if ([growl state] == NSOnState) {
-    [defaults setBool:YES forKey:PLEASE_GROWL];
+  [defaults setBool:selected forKey:PLEASE_GROWL];
+  [growlNewSongs setEnabled:selected];
+  [growlPlayPause setEnabled:selected];
+
+  if (selected) {
     [Growler subscribe];
   } else {
-    [defaults setBool:NO forKey:PLEASE_GROWL];
     [Growler unsubscribe];
   }
 }
