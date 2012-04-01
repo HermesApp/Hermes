@@ -273,7 +273,9 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   }
 
   PandoraCallback cb = ^(xmlDocPtr doc) {
-    [self notify:@"hermes.song-rated" with:nil];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:song forKey:@"song"];
+    [self notify:@"hermes.song-rated" with:dict];
   };
 
   return [self sendRequest:
@@ -305,7 +307,9 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   ];
 
   PandoraCallback cb = ^(xmlDocPtr doc) {
-    [self notify:@"hermes.song-tired" with:nil];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:song forKey:@"song"];
+    [self notify:@"hermes.song-tired" with:dict];
   };
 
   return [self sendRequest:

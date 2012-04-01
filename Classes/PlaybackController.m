@@ -169,10 +169,26 @@ BOOL playOnStart = YES;
 }
 
 - (void) songRated: (NSNotification*) not {
+  Song *song = [[not userInfo] objectForKey:@"song"];
+  if (song) {
+    [Scrobbler setPreference:song loved:[[song rating] isEqual:@"1"]];
+  }
   [self hideSpinner];
 }
 
 - (void) songTired: (NSNotification*) not {
+  /* I'm actually not sure if I should send this as a dislike..
+   * Could just mean "I've heard this 1000 times already!!!"
+   * I still think it's a good idea to send the song info for
+   * future utilization.
+   *
+  Song* song = [[not userInfo] objectForKey:@"song"];
+
+ 
+  if (song) {
+    [Scrobbler setPreference:song loved:NO];
+  }
+   */
   [self hideSpinner];
 }
 
@@ -424,7 +440,6 @@ BOOL playOnStart = YES;
   } else {
     NSLogd(@"Couldn't rate song?!");
   }
-  [Scrobbler setPreference:playingSong loved:YES];
 }
 
 /* Dislike button was hit */
@@ -444,7 +459,6 @@ BOOL playOnStart = YES;
   } else {
     NSLog(@"Couldn't rate song?!");
   }
-  [Scrobbler setPreference:playingSong loved:NO];
 }
 
 /* We are tired of the currently playing song, play another */
