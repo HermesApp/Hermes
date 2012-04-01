@@ -1,3 +1,11 @@
+# Version 1.0.22 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.21...master)
+
+* [added] Preference option to not send liked tracks as 'loved' to last.fm,
+          thanks to @tresni
+
+
 # Version 1.0.21 (3/22/11)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.20...v1.0.21)
