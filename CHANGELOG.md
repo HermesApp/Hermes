@@ -4,6 +4,8 @@
 
 * [added] Preference option to not send liked tracks as 'loved' to last.fm,
           thanks to @tresni
+* [fixed] `track.unlove` now properly sent to last.fm
+* [fixed] Fixed a memory leak with the dock menu opening/closing
 
 
 # Version 1.0.21 (3/22/11)
