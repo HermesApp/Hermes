@@ -24,8 +24,15 @@
   IBOutlet StationsController *stations;
   IBOutlet AuthController *auth;
   IBOutlet PlaybackController *playback;
-
   IBOutlet HistoryController *history;
+
+  /* Dock menu items */
+  IBOutlet NSMenu *dock;
+  IBOutlet NSMenuItem *dockSong;
+  IBOutlet NSMenuItem *dockArtist;
+  IBOutlet NSMenuItem *dockLike;
+  IBOutlet NSMenuItem *dockDislike;
+  IBOutlet NSMenuItem *dockPlayPause;
 }
 
 @property (readonly) NSWindow *window;
@@ -34,6 +41,7 @@
 @property (retain) AuthController *auth;
 @property (retain) PlaybackController *playback;
 @property (retain) Pandora *pandora;
+@property (readonly) NSMenuItem *dockPlayPause;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;

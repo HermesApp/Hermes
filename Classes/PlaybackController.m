@@ -184,7 +184,6 @@ BOOL playOnStart = YES;
    *
   Song* song = [[not userInfo] objectForKey:@"song"];
 
- 
   if (song) {
     [Scrobbler setPreference:song loved:NO];
   }
@@ -239,6 +238,7 @@ BOOL playOnStart = YES;
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   AudioStreamer *streamer = [playing stream];
+  HermesAppDelegate *delegate = [NSApp delegate];
 
   if ([streamer errorCode] != 0) {
     /* Errors are handle elsewhere, we just need to make sure we take no
@@ -249,9 +249,11 @@ BOOL playOnStart = YES;
     [[playing stream] setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
+    [[delegate dockPlayPause] setTitle:@"Pause"];
   } else if ([streamer isPaused]) {
     NSLogd(@"Stream paused now...");
     [playpause setImage:[NSImage imageNamed:@"play"]];
+    [[delegate dockPlayPause] setTitle:@"Play"];
     [playbackProgress stopAnimation:nil];
   } else if ([streamer isIdle]) {
     NSLogd(@"Stream idle, nexting...");
