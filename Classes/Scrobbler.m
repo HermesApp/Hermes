@@ -212,7 +212,7 @@ static FMCallback errorChecker;
   [dictionary setObject:[song artist]     forKey:@"artist"];
 
   /* Relevant API documentation at http://www.last.fm/api/show/track.love */
-  [engine performMethod:(loved ? @"track.love" : @"track.unloved")
+  [engine performMethod:(loved ? @"track.love" : @"track.unlove")
            withCallback:errorChecker
          withParameters:dictionary
            useSignature:YES
