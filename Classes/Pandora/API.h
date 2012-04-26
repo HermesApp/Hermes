@@ -4,7 +4,7 @@
 
 #define PANDORA_API_HOST @"www.pandora.com"
 #define PANDORA_API_PATH @"/radio/xmlrpc/"
-#define PANDORA_API_VERSION @"v33"
+#define PANDORA_API_VERSION @"v34"
 
 typedef void(^PandoraCallback)(xmlDocPtr);
 
