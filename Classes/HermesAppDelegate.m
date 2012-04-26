@@ -142,7 +142,7 @@
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
-  NSMenu *menu = [[NSMenu alloc] init];
+  menu = [[NSMenu alloc] init];
   NSMenuItem *menuItem;
   Song *song = [[playback playing] playing];
   if (song != nil) {

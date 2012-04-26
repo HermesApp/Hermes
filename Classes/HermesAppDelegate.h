@@ -26,6 +26,8 @@
   IBOutlet PlaybackController *playback;
 
   IBOutlet HistoryController *history;
+    
+  NSMenu *menu;
 }
 
 @property (readonly) NSWindow *window;
