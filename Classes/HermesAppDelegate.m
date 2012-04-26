@@ -14,7 +14,7 @@
 
 @implementation HermesAppDelegate
 
-@synthesize stations, auth, playback, pandora, window, history, dockPlayPause;
+@synthesize stations, auth, playback, pandora, window, history;
 
 - (bool) isLion {
   static SInt32 MacVersion = 0;
@@ -103,12 +103,6 @@
    name:@"hermes.logged-out"
    object:[[NSApp delegate] pandora]];
 
-  [[NSNotificationCenter defaultCenter]
-   addObserver:self
-   selector:@selector(songPlayed:)
-   name:@"song.playing"
-   object:nil];
-
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
@@ -147,23 +141,34 @@
   }
 }
 
-- (void) songPlayed: (NSNotification*) notification {
-  Station *station = [notification object];
-  Song *playing = [station playing];
-  if (playing == nil) return;
-
-  [dockArtist setTitle: [NSString stringWithFormat:@"  %@", [playing artist]]];
-  [dockSong setTitle: [NSString stringWithFormat:@"  %@", [playing title]]];
-  if ([[playing rating] isEqualToString:@"1"]) {
-    [dockLike setEnabled:NO];
-  } else {
-    [dockLike setEnabled:YES];
-  }
-  [dockPlayPause setTitle: @"Pause"];
-}
-
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
-  return dock;
+  NSMenu *menu = [[NSMenu alloc] init];
+  NSMenuItem *menuItem;
+  Song *song = [[playback playing] playing];
+  if (song != nil) {
+    [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]  action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]  action:nil keyEquivalent:@""];
+    [menu addItem:[NSMenuItem separatorItem]];
+  }
+  if ([[playback playing] isPaused] || song == nil) {
+    menuItem = [menu addItemWithTitle:@"Play" action:@selector(playpause:) keyEquivalent:@"p"];
+    [menuItem setTarget:playback];
+  } else {
+    menuItem = [menu addItemWithTitle:@"Pause" action:@selector(playpause:) keyEquivalent:@"p"];
+    [menuItem setTarget:playback];
+  }
+  menuItem = [menu addItemWithTitle:@"Next" action:@selector(next:) keyEquivalent:@"n"];
+  [menuItem setTarget:playback];
+  if ([[song rating] isEqual:@"1"]) {
+    [menu addItemWithTitle:@"Liked" action:nil keyEquivalent:@""];
+  } else {
+    menuItem = [menu addItemWithTitle:@"Like" action:@selector(like:) keyEquivalent:@"l"];
+    [menuItem setTarget:playback];
+  }
+  menuItem = [menu addItemWithTitle:@"Dislike" action:@selector(dislike:) keyEquivalent:@"d"];
+  [menuItem setTarget:playback];
+  return menu;
 }
 
 - (NSString*) getCachedUsername {
