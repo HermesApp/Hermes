@@ -46,10 +46,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
   if (syncOffset == 0) {
-    PandoraSyncCallback psc = ^{
-      [self authenticate:user : pass : req];
-    };
-    return [self sync: psc];
+    syncOffset = -30240000;
   }
   NSLogd(@"Authenticating...");
   NSString *xml = [NSString stringWithFormat:
@@ -58,6 +55,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
       "<methodName>listener.authenticateListener</methodName>"
       "<params>"
         "<param><value><int>%lu</int></value></param>"
+        "<param><value><string></string></value></param>"
         "<param><value><string>%@</string></value></param>"
         "<param><value><string>%@</string></value></param>"
         /* get bigger pictures */
