@@ -1059,6 +1059,7 @@
 				FA37A0C115146ACE007F2605 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build sparkle metadata" */ = {
 			isa = XCConfigurationList;
