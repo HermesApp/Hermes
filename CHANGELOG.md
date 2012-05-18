@@ -1,3 +1,11 @@
+# Version 1.1.0 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.22...master)
+
+* [added] Move to using Pandora's JSON API instead of the XMLRPC one in hopes of
+          being more stable and requiring fewer updates
+* [added] After creating a station, immediately being playback of the station
+
 # Version 1.0.22 (4/27/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.21...v1.0.22)
