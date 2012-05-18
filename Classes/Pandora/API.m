@@ -44,7 +44,14 @@
 }
 
 /**
- * Sends a request to the server and parses the response as XML
+ * @brief Send a request to Pandora
+ *
+ * All requests are performed asynchronously, so the callback listed in the
+ * specified request will be invoked when the request completes.
+ *
+ * @param request the request to send. All information must be filled out
+ *        beforehand which is related to this request
+ * @return YES if the request went through, or NO otherwise.
  */
 - (BOOL) sendRequest: (PandoraRequest*) request {
   NSString *url  = [NSString stringWithFormat:
@@ -76,19 +83,30 @@
   return YES;
 }
 
-/* Helper method for getting the PandoraRequest for a connection */
+/**
+ * @brief Helper for getting the request associated with a connection
+ *
+ * @param connection the connection to get a request for
+ * @return the associated PandoraRequest object
+ */
 - (PandoraRequest*) dataForConnection: (NSURLConnection*)connection {
   return [activeRequests objectForKey:
       [NSNumber numberWithInteger:[connection hash]]];
 }
 
-/* Cleans up the specified connection with the parsed XML. This method will
-   check the document for errors (if the document exists. The error event
-   will be published through the default NSNotificationCenter, or the
-   callback for the connection will be invoked */
-- (void)cleanupConnection:(NSURLConnection *)connection : (NSDictionary*)res : (NSString*) fault {
+/**
+ * @brief Cleans up all resources associated with a connection
+ *
+ * @param connection the connection to clean up
+ * @param res the response from Pandora (parsed JSON), or nil if there wasn't
+ *        one
+ * @param fault the fault message if there is one already available, or nil
+ */
+- (void)cleanupConnection:(NSURLConnection *)connection : (NSDictionary*)res
+                         :(NSString*) fault {
   PandoraRequest *request = [self dataForConnection:connection];
 
+  /* Look for a fault message in the JSON if there is one */
   if (res != nil && fault == nil) {
     NSString *stat = [res objectForKey: @"stat"];
     if ([stat isEqualToString: @"fail"]) {
@@ -122,7 +140,8 @@
   [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
 }
 
-/* Collect the data received */
+/* Implementation of the NSURLDelegate protocols */
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
   PandoraRequest *request = [self dataForConnection:connection];
   [[request response] appendData:data];
@@ -137,7 +156,8 @@
   }
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+- (void)connection:(NSURLConnection *)connection
+  didFailWithError:(NSError *)error {
   [self cleanupConnection:connection : NULL : [error localizedDescription]];
 }
 
