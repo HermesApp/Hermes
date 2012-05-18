@@ -240,7 +240,8 @@
     [[NSApp delegate] setCurrentView:view];
   }
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:PLEASE_CLOSE_DRAWER]) {
+  if (![defaults boolForKey:PLEASE_CLOSE_DRAWER] ||
+      [defaults objectForKey:LAST_STATION_KEY] == nil) {
     [self showDrawer];
   }
 }

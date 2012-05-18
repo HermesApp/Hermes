@@ -6,6 +6,7 @@
           being more stable and requiring fewer updates
 * [added] After creating a station, immediately being playback of the station
 * [fixed] Always make sure that toolbar items are enabled when a new song plays
+* [fixed] Ensure the station drawer opens when there's no saved station
 
 # Version 1.0.22 (4/27/12)
 
