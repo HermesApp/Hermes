@@ -332,6 +332,9 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
+  for (NSButton *b in [toolbar items]) {
+    [b setEnabled:YES];
+  }
   if ([[song nrating] intValue] == 1) {
     [like setEnabled:NO];
   } else {
