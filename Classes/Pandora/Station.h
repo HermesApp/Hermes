@@ -10,6 +10,7 @@
   NSInteger tries;
   NSString *name;
   NSString *stationId;
+  NSString *token;
   NSMutableArray *songs;
   Pandora *radio;
   AudioStreamer *stream;
@@ -18,6 +19,7 @@
 }
 
 @property (retain) NSString *name;
+@property (retain) NSString *token;
 @property (retain) NSString *stationId;
 @property (retain) NSMutableArray *songs;
 @property (retain) AudioStreamer *stream;

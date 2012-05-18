@@ -1,116 +1,84 @@
-#include <math.h>
-#include <string.h>
-#include <stdlib.h>
-#include "Crypt.h"
-#include "Keys.h"
+/**
+ * @file Pandora/Crypt.m
+ * @brief Implementation of the encryption/decryption of requests to/from
+ *        Pandora
+ *
+ * Currently the encryption algorithm used is Blowfish in ECB mode.
+ */
 
-#define FETCH(s,i,len) ((i) >= (len) ? 0 : (s)[i])
-#define HEX_LEN (sizeof(uint32_t) * 2)
+#include "blowfish.h"
 
-NSData* PandoraDecrypt(NSString* string) {
-  int i, j;
-  uint32_t l, r, t, a, b, c, d, f;
-  char buf[HEX_LEN + 1];
-  buf[HEX_LEN] = '\0';
-  const char *hex = [string cStringUsingEncoding: NSASCIIStringEncoding];
+#import "Crypt.h"
+#import "Pandora.h"
 
-  NSMutableData *data = [[NSMutableData alloc] init];
-  int len = [string length];
+/* Conversion from hex to int and int to hex */
+static char i2h[16] = "0123456789abcdef";
+static char h2i[256] = {
+  ['0'] = 0, ['1'] = 1, ['2'] = 2, ['3'] = 3, ['4'] = 4, ['5'] = 5, ['6'] = 6,
+  ['7'] = 7, ['8'] = 8, ['9'] = 9, ['a'] = 10, ['b'] = 11, ['c'] = 12,
+  ['d'] = 13, ['e'] = 14, ['f'] = 15
+};
 
-  for (i = 0; i < len; i += 2 * HEX_LEN) {
-    strncpy(buf, hex + i, HEX_LEN);
-    l = strtol(buf, NULL, 16);
-    strncpy(buf, hex + i + HEX_LEN, HEX_LEN);
-    r = strtol(buf, NULL, 16);
-
-    for (j = InputKey_n + 1; j > 1; j--) {
-      l ^= InputKey_p[j];
-
-      a = (l >> 24) & 0xff;
-      b = (l >> 16) & 0xff;
-      c = (l >>  8) & 0xff;
-      d = (l >>  0) & 0xff;
-
-      f = InputKey_s[0][a] + InputKey_s[1][b];
-      f ^= InputKey_s[2][c];
-      f += InputKey_s[3][d];
-      r ^= f;
-
-      /* Swap l & r */
-      t = l;
-      l = r;
-      r = t;
-    }
-
-    t = l;
-    l = r;
-    r = t;
-
-    r ^= InputKey_p[1];
-    l ^= InputKey_p[0];
-
-    l = htonl(l);
-    r = htonl(r);
-    [data appendBytes: &l length: sizeof(l)];
-    [data appendBytes: &r length: sizeof(r)];
-  }
-
-  return data;
+static void appendByte(unsigned char byte, void *_data) {
+  NSMutableData *data = (__bridge NSMutableData*) _data;
+  [data appendBytes:&byte length:1];
 }
 
-NSString* PandoraEncrypt(NSString* string) {
-  const char *cstr = [string UTF8String];
-  unsigned int len, i;
-  uint32_t l, r, t, j, a, b, c, d, f;
+static void appendHex(unsigned char byte, void *_data) {
+  NSMutableData *data = (__bridge NSMutableData*) _data;
+  char bytes[2];
+  bytes[1] = i2h[byte % 16];
+  bytes[0] = i2h[byte / 16];
+  [data appendBytes:bytes length:2];
+}
 
-  len = [string length];
-  /* Build the hex encryption in a C string with the correct length allocated */
-  NSMutableData *nsdata = [NSMutableData dataWithLength:ceil(len / 8.0) * 16];
-  char *data = [nsdata mutableBytes];
+/**
+ * @brief Decrypt some data received from Pandora
+ *
+ * @param string the string which should be decrypted. The string should also be
+ *               hex encoded
+ * @return the decrypted data
+ */
+NSData* PandoraDecrypt(NSString* string) {
+  struct blf_ecb_ctx ctx;
+  NSMutableData *mut = [[NSMutableData alloc] init];
 
-  for (i = 0; i < len; i += 8) {
-    l = (FETCH(cstr, i, len) << 24) |
-        (FETCH(cstr, i + 1, len) << 16) |
-        (FETCH(cstr, i + 2, len) << 8) |
-         FETCH(cstr, i + 3, len);
+  Blowfish_ecb_start(&ctx, FALSE, (unsigned char*) PARTNER_DECRYPT,
+                     sizeof(PARTNER_DECRYPT) - 1, appendByte,
+                     (__bridge void*) mut);
 
-    r = (FETCH(cstr, i + 4, len) << 24) |
-        (FETCH(cstr, i + 5, len) << 16) |
-        (FETCH(cstr, i + 6, len) << 8) |
-         FETCH(cstr, i + 7, len);
-
-    for (j = 0; j < OutputKey_n; j++) {
-      l ^= OutputKey_p[j];
-
-      a = (l >> 24) & 0xff;
-      b = (l >> 16) & 0xff;
-      c = (l >>  8) & 0xff;
-      d = (l >>  0) & 0xff;
-
-      f = OutputKey_s[0][a] + OutputKey_s[1][b];
-      f ^= OutputKey_s[2][c];
-      f += OutputKey_s[3][d];
-      r ^= f;
-
-      /* Swap l & r */
-      t = l;
-      l = r;
-      r = t;
-    }
-
-    t = l;
-    l = r;
-    r = t;
-
-    r ^= OutputKey_p[OutputKey_n];
-    l ^= OutputKey_p[OutputKey_n + 1];
-
-    sprintf(data, "%08x%08x", l, r);
-    data += 16;
+  const char *bytes = [string cStringUsingEncoding:NSASCIIStringEncoding];
+  int len = [string lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+  int i;
+  for (i = 0; i < len; i += 2) {
+    Blowfish_ecb_feed(&ctx, h2i[(int) bytes[i]] * 16 + h2i[(int) bytes[i + 1]]);
   }
+  Blowfish_ecb_stop(&ctx);
 
-  NSString *ret = [[NSString alloc] initWithData:nsdata
-                                        encoding:NSUTF8StringEncoding];
+  return mut;
+}
 
-  return ret;
+/**
+ * @brief Encrypt some data for Pandora
+ *
+ * @param data the data to encrypt
+ * @return the encrypted data, hex encoded
+ */
+NSData* PandoraEncrypt(NSData* data) {
+  struct blf_ecb_ctx ctx;
+  NSMutableData *mut = [[NSMutableData alloc] init];
+
+  Blowfish_ecb_start(&ctx, TRUE, (unsigned char*) PARTNER_ENCRYPT,
+                     sizeof(PARTNER_ENCRYPT) - 1, appendHex,
+                     (__bridge void*) mut);
+
+  const char *bytes = [data bytes];
+  int len = [data length];
+  int i;
+  for (i = 0; i < len; i++) {
+    Blowfish_ecb_feed(&ctx, bytes[i]);
+  }
+  Blowfish_ecb_stop(&ctx);
+
+  return mut;
 }

@@ -171,7 +171,7 @@ BOOL playOnStart = YES;
 - (void) songRated: (NSNotification*) not {
   Song *song = [[not userInfo] objectForKey:@"song"];
   if (song) {
-    [Scrobbler setPreference:song loved:[[song rating] isEqual:@"1"]];
+    [Scrobbler setPreference:song loved:[[song nrating] intValue] == 1];
   }
   [self hideSpinner];
 }
@@ -184,7 +184,6 @@ BOOL playOnStart = YES;
    *
   Song* song = [[not userInfo] objectForKey:@"song"];
 
- 
   if (song) {
     [Scrobbler setPreference:song loved:NO];
   }
@@ -334,7 +333,7 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  if ([[song rating] isEqualTo: @"1"]) {
+  if ([[song nrating] intValue] == 1) {
     [like setEnabled:NO];
   } else {
     [like setEnabled:YES];
@@ -435,7 +434,7 @@ BOOL playOnStart = YES;
 
   [self showSpinner];
 
-  if ([[self pandora] rateSong: playingSong : @"1"]) {
+  if ([[self pandora] rateSong:playingSong as:YES]) {
     [like setEnabled:NO];
   } else {
     NSLogd(@"Couldn't rate song?!");
@@ -451,7 +450,7 @@ BOOL playOnStart = YES;
 
   [self showSpinner];
 
-  if ([[self pandora] rateSong: playingSong : @"0"]) {
+  if ([[self pandora] rateSong:playingSong as:NO]) {
     /* Remaining songs in the queue are probably related to this one. If we
      * dislike this one, remove all related songs to grab another 4 */
     [[[self playing] songs] removeAllObjects];

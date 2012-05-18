@@ -1,4 +1,7 @@
-#pragma once
+#ifndef CRYPT_H
+#define CRYPT_H
 
-NSString* PandoraEncrypt(NSString* string);
+NSData* PandoraEncrypt(NSData* string);
 NSData* PandoraDecrypt(NSString* string);
+
+#endif /* CRYPT_H */

@@ -1,8 +1,9 @@
+#ifdef __OBJC__
 #import <Cocoa/Cocoa.h>
-
 
 #ifdef DEBUG
 # define NSLogd(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args);
 #else
 # define NSLogd(...)
+#endif
 #endif

@@ -160,7 +160,7 @@
   }
   menuItem = [menu addItemWithTitle:@"Next" action:@selector(next:) keyEquivalent:@"n"];
   [menuItem setTarget:playback];
-  if ([[song rating] isEqual:@"1"]) {
+  if ([[song nrating] intValue] == 1) {
     [menu addItemWithTitle:@"Liked" action:nil keyEquivalent:@""];
   } else {
     menuItem = [menu addItemWithTitle:@"Like" action:@selector(like:) keyEquivalent:@"l"];

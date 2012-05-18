@@ -4,8 +4,8 @@
 
 @implementation Song
 
-@synthesize artist, title, album, url, stationId, musicId, userSeed, rating,
-  songType, albumUrl, artistUrl, titleUrl, art;
+@synthesize artist, title, album, highUrl, stationId, nrating,
+  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl, stationToken;
 
 - (id) initWithCoder: (NSCoder *)coder {
   if ((self = [super init])) {
@@ -13,15 +13,16 @@
     [self setTitle:[coder decodeObjectForKey:@"title"]];
     [self setAlbum:[coder decodeObjectForKey:@"album"]];
     [self setArt:[coder decodeObjectForKey:@"art"]];
-    [self setUrl:[coder decodeObjectForKey:@"url"]];
+    [self setHighUrl:[coder decodeObjectForKey:@"highUrl"]];
+    [self setMedUrl:[coder decodeObjectForKey:@"medUrl"]];
+    [self setLowUrl:[coder decodeObjectForKey:@"lowUrl"]];
     [self setStationId:[coder decodeObjectForKey:@"stationId"]];
-    [self setMusicId:[coder decodeObjectForKey:@"musicId"]];
-    [self setUserSeed:[coder decodeObjectForKey:@"userSeed"]];
-    [self setRating:[coder decodeObjectForKey:@"rating"]];
-    [self setSongType:[coder decodeObjectForKey:@"songType"]];
+    [self setNrating:[coder decodeObjectForKey:@"nrating"]];
     [self setAlbumUrl:[coder decodeObjectForKey:@"albumUrl"]];
     [self setArtistUrl:[coder decodeObjectForKey:@"artistUrl"]];
     [self setTitleUrl:[coder decodeObjectForKey:@"titleUrl"]];
+    [self setToken:[coder decodeObjectForKey:@"token"]];
+    [self setStationToken:[coder decodeObjectForKey:@"stationToken"]];
   }
   return self;
 }
@@ -50,15 +51,16 @@
   [info setValue: title forKey:@"title"];
   [info setValue: album forKey:@"album"];
   [info setValue: art forKey:@"art"];
-  [info setValue: url forKey:@"url"];
+  [info setValue: lowUrl forKey:@"lowUrl"];
+  [info setValue: medUrl forKey:@"medUrl"];
+  [info setValue: highUrl forKey:@"highUrl"];
   [info setValue: stationId forKey:@"stationId"];
-  [info setValue: musicId forKey:@"musicId"];
-  [info setValue: userSeed forKey:@"userSeed"];
-  [info setValue: rating forKey:@"rating"];
-  [info setValue: songType forKey:@"songType"];
+  [info setValue: nrating forKey:@"nrating"];
   [info setValue: albumUrl forKey:@"albumUrl"];
   [info setValue: artistUrl forKey:@"artistUrl"];
   [info setValue: titleUrl forKey:@"titleUrl"];
+  [info setValue: token forKey:@"token"];
+  [info setValue: stationToken forKey:@"stationToken"];
   return info;
 }
 
@@ -72,7 +74,7 @@
 - (NSScriptObjectSpecifier *) objectSpecifier {
   NSScriptClassDescription *containerClassDesc =
   [NSScriptClassDescription classDescriptionForClass:[Station class]];
-  
+
   return [[NSNameSpecifier alloc]
           initWithContainerClassDescription:containerClassDesc
           containerSpecifier:nil key:@"songs" name:[self title]];

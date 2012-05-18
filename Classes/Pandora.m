@@ -4,8 +4,6 @@
 #import "Song.h"
 #import "HermesAppDelegate.h"
 
-static char *array_xpath = "/methodResponse/params/param/value/array/data/value";
-
 @implementation SearchResult
 
 @synthesize value, name;
@@ -14,7 +12,7 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
 
 @implementation Pandora
 
-@synthesize authToken, stations;
+@synthesize stations;
 
 - (id) init {
   if ((self = [super init])) {
@@ -33,407 +31,391 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
   [self notify: @"hermes.logged-out" with:nil];
 
   [stations removeAllObjects];
-  [self setAuthToken:nil];
-  [self setListenerID:nil];
+  user_auth_token = nil;
 }
 
 - (BOOL) authenticated {
-  return authToken != nil && listenerID != nil;
+  return user_auth_token != nil;
+}
+
+- (NSNumber*) syncTimeNum {
+  return [NSNumber numberWithLongLong: sync_time + ([self time] - start_time)];
 }
 
 /**
- * Authenticates with Pandora. Stores information from the response
+ * @brief Creates a dictionary which contains the default keys necessary for
+ *        most requests
+ *
+ * Currently fills in the "userAuthToken" and "syncTime" fields
+ */
+- (NSMutableDictionary*) defaultDictionary {
+  NSMutableDictionary *d = [NSMutableDictionary dictionary];
+  [d setObject:user_auth_token forKey:@"userAuthToken"];
+  [d setObject:[self syncTimeNum] forKey:@"syncTime"];
+  return d;
+}
+
+/**
+ * @brief Create the default request, with appropriate fields set based on the
+ *        current state of authentication
+ *
+ * @param method the method name for the request to be for
+ * @return the PandoraRequest object to further add callbacks to
+ */
+- (PandoraRequest*) defaultRequest: (NSString*) method {
+  PandoraRequest *req = [[PandoraRequest alloc] init];
+  [req setUserId:user_id];
+  [req setAuthToken:user_auth_token];
+  [req setMethod:method];
+  [req setPartnerId:partner_id];
+  return req;
+}
+
+/**
+ * @brief Authenticates with Pandora
+ *
+ * When completed, fires the "hermes.authenticated" event so long as the
+ * provided request to retry is nil.
+ *
+ * @param user the username to log in with
+ * @param pass the password to log in with
+ * @param req an optional request which will be retried once the authentication
+ *        has completed
  */
 - (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
-  if (syncOffset == 0) {
-    /* This is a terrible hack which needs to be fixed once pandora's protocol
-       has been figured out */
-    syncOffset = -30240000;
+  if (partner_id == nil) {
+    return [self partnerLogin: ^() {
+      [self authenticate: user : pass : req];
+    }];
   }
-  NSLogd(@"Authenticating...");
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>listener.authenticateListener</methodName>"
-      "<params>"
-        "<param><value><int>%lu</int></value></param>"
-        "<param><value><string></string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        /* get bigger pictures */
-        "<param><value><string>html5tuner</string></value></param>"
-        "<param><value><string/></value></param>"
-        "<param><value><string/></value></param>"
-        "<param><value><string>HTML5</string></value></param>"
-        "<param><value><boolean>1</boolean></value></param>"
-      "</params>"
-    "</methodCall>",
-      [self time], user, pass
-    ];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
-    NSString *oldAuthToken = authToken;
-    [self setAuthToken: xpathRelative(doc, "//member[name='authToken']/value", NULL)];
-    [self setListenerID: xpathRelative(doc, "//member[name='listenerId']/value", NULL)];
+  NSMutableDictionary *d = [NSMutableDictionary dictionary];
+  [d setObject: @"user"            forKey: @"loginType"];
+  [d setObject: user               forKey: @"username"];
+  [d setObject: pass               forKey: @"password"];
+  [d setObject: partner_auth_token forKey: @"partnerAuthToken"];
+  [d setObject: [self syncTimeNum] forKey: @"syncTime"];
+
+  PandoraRequest *r = [[PandoraRequest alloc] init];
+  [r setRequest: d];
+  [r setMethod: @"auth.userLogin"];
+  [r setPartnerId: partner_id];
+  [r setAuthToken: partner_auth_token];
+  [r setCallback: ^(NSDictionary* dict) {
+    NSDictionary *result = [dict objectForKey:@"result"];
+    user_auth_token = [result objectForKey:@"userAuthToken"];
+    user_id = [result objectForKey:@"userId"];
 
     if (req == nil) {
       [self notify:@"hermes.authenticated" with:nil];
     } else {
       NSLogd(@"Retrying request...");
-      [req resetResponse];
-      [req replaceAuthToken:oldAuthToken with:authToken];
+      [req setResponse:[[NSMutableData alloc] init]];
+      [[req request] setObject: user_auth_token forKey:@"userAuthToken"];
       [self sendRequest:req];
     }
-  };
-
-  PandoraRequest *request = [PandoraRequest requestWithMethod:@"authenticateListener"
-                                                         data:xml
-                                                     callback:cb];
-  [request setSecure:TRUE];
-  return [self sendRequest:request];
+  }];
+  return [self sendRequest:r];
 }
 
 /**
- * Fetches a list of stations for the logged in user
+ * @brief Fetches a list of stations for the logged in user
+ *
+ * Fires the "hermes.stations" event with no extra information. All of the
+ * stations found are stored internally in this Pandora object.
  */
 - (BOOL) fetchStations {
   assert([self authenticated]);
   NSLogd(@"Fetching stations...");
 
-  NSString *xml = [NSString stringWithFormat:
-     @"<?xml version=\"1.0\"?>"
-     "<methodCall>"
-       "<methodName>station.getStations</methodName>"
-       "<params>"
-         "<param><value><int>%lu</int></value></param>"
-         "<param><value><string>%@</string></value></param>"
-       "</params>"
-     "</methodCall>",
-     [self time], authToken
-   ];
+  NSMutableDictionary *d = [self defaultDictionary];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
-    char *name_xpath = ".//member[name='stationName']/value";
-    char *id_xpath = ".//member[name='stationId']/value";
-    char *quickmix_xpath = ".//member[name='isQuickMix']/value/boolean";
-
-    xpathNodes(doc, array_xpath, ^(xmlNodePtr node) {
-      NSString *name = xpathRelative(doc, name_xpath, node);
-      NSString *stationId = xpathRelative(doc, id_xpath, node);
-      if (name == nil || stationId == nil) {
-        NSLog(@"Couldn't parse station, skipping. Name: %@, ID: %@",
-              name, stationId);
-        return;
-      }
-
+  PandoraRequest *r = [self defaultRequest:@"user.getStationList"];
+  [r setRequest:d];
+  [r setTls:FALSE];
+  [r setCallback: ^(NSDictionary* dict) {
+    NSDictionary *result = [dict objectForKey:@"result"];
+    for (NSDictionary *s in [result objectForKey:@"stations"]) {
       Station *station = [[Station alloc] init];
 
-      [station setName:name];
-      [station setStationId:stationId];
+      [station setName:[s objectForKey:@"stationName"]];
+      [station setStationId:[s objectForKey:@"stationId"]];
+      [station setToken:[s objectForKey:@"stationToken"]];
       [station setRadio:self];
 
-      if ([xpathRelative(doc, quickmix_xpath, node) isEqualToString:@"1"]) {
+      if ([[s objectForKey:@"isQuickMix"] boolValue]) {
         [station setName:@"QuickMix"];
       }
 
       if (![stations containsObject:station]) {
         [stations addObject:station];
       }
-    });
+    };
 
     [self notify:@"hermes.stations" with:nil];
-  };
+  }];
 
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"getStations"
-                                       data:xml
-                                   callback:cb]];
+  return [self sendRequest:r];
 }
 
 /**
- * Gets a fragment of songs from Pandora for the specified station
+ * @brief Get a small list of songs for a station
+ *
+ * Fires the "hermes.fragment-fetched.XX" where XX is replaced by the station
+ * token. The userInfo for the notification has one key, "songs", which contains
+ * an array of Song objects describing the next songs for the station
+ *
+ * @param station the station to fetch more songs for
  */
-- (BOOL) getFragment: (NSString*) station_id {
+- (BOOL) getFragment: (Station*) station {
   assert([self authenticated]);
-  NSLogd(@"Getting fragment for %@...", station_id);
+  NSLogd(@"Getting fragment for %@...", [station name]);
 
-  NSString *xml = [NSString stringWithFormat:
-     @"<?xml version=\"1.0\"?>"
-     "<methodCall>"
-       "<methodName>playlist.getFragment</methodName>"
-       "<params>"
-         "<param><value><int>%lu</int></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-         "<param><value><string></string></value></param>"
-         "<param><value><string></string></value></param>"
-         "<param><value><string>mp3</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-         "<param><value><string>0</string></value></param>"
-       "</params>"
-     "</methodCall>",
-     [self time], authToken, station_id
-   ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:[station token] forKey:@"stationToken"];
+  [d setObject:@"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_192_MP3"
+        forKey:@"additionalAudioUrl"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  PandoraRequest *r = [self defaultRequest:@"station.getPlaylist"];
+  [r setRequest:d];
+  [r setCallback: ^(NSDictionary* dict) {
+    NSDictionary *result = [dict objectForKey:@"result"];
     NSMutableArray *songs = [NSMutableArray array];
 
-    xpathNodes(doc, array_xpath, ^(xmlNodePtr node) {
+    for (NSDictionary *s in [result objectForKey:@"items"]) {
       Song *song = [[Song alloc] init];
 
-      [song setArtist: xpathRelative(doc, ".//member[name='artistSummary']/value", node)];
-      [song setTitle: xpathRelative(doc, ".//member[name='songTitle']/value", node)];
-      [song setAlbum: xpathRelative(doc, ".//member[name='albumTitle']/value", node)];
-      [song setArt: xpathRelative(doc, ".//member[name='artRadio']/value", node)];
-      NSString *url = xpathRelative(doc, ".//member[name='audioURL']/value", node);
-      [song setUrl: [Song decryptURL:url]];
-      [song setStationId: xpathRelative(doc, ".//member[name='stationId']/value", node)];
-      [song setMusicId: xpathRelative(doc, ".//member[name='musicId']/value", node)];
-      [song setUserSeed: xpathRelative(doc, ".//member[name='userSeed']/value", node)];
-      [song setRating: xpathRelative(doc, ".//member[name='rating']/value/int", node)];
-      [song setSongType: xpathRelative(doc, ".//member[name='songType']/value/int", node)];
-      [song setAlbumUrl: xpathRelative(doc, ".//member[name='albumDetailURL']/value", node)];
-      [song setArtistUrl:  xpathRelative(doc, ".//member[name='artistDetailURL']/value", node)];
-      [song setTitleUrl: xpathRelative(doc, ".//member[name='songDetailURL']/value", node)];
+      [song setArtist: [s objectForKey:@"artistName"]];
+      [song setTitle: [s objectForKey:@"songName"]];
+      [song setAlbum: [s objectForKey:@"albumName"]];
+      [song setArt: [s objectForKey:@"albumArtUrl"]];
+      [song setStationId: [s objectForKey:@"stationId"]];
+      [song setToken: [s objectForKey:@"trackToken"]];
+      [song setNrating: [s objectForKey:@"songRating"]];
+      [song setAlbumUrl: [s objectForKey:@"albumDetailUrl"]];
+      [song setArtistUrl: [s objectForKey:@"artistDetailUrl"]];
+      [song setTitleUrl: [s objectForKey:@"songDetailUrl"]];
+      [song setStationToken:[station token]];
+
+      NSArray *urls = [s objectForKey:@"additionalAudioUrl"];
+      [song setLowUrl:[urls objectAtIndex:0]];
+      [song setMedUrl:[urls objectAtIndex:1]];
+      [song setHighUrl:[urls objectAtIndex:2]];
 
       [songs addObject: song];
-    });
+    };
 
-    NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", station_id];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:songs forKey:@"songs"];
-    [self notify:name with:dict];
-  };
+    NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
+                        [station token]];
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    [d setObject:songs forKey:@"songs"];
+    [self notify:name with:d];
+  }];
 
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"getFragment"
-                                       data:xml
-                                   callback:cb]];
+  return [self sendRequest:r];
 }
 
 /**
- * Sync with Pandora
+ * @brief Log in the "partner" with Pandora
+ *
+ * Retrieves the sync time and the partner auth token.
+ *
+ * @param callback a callback to be invoked once the synchronization and login
+ *        is done
  */
-- (BOOL) sync: (PandoraSyncCallback) callback {
-  NSString *xml =
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>misc.sync</methodName>"
-      "<params></params>"
-    "</methodCall>";
-  NSLogd(@"Synchronizing...");
+- (BOOL) partnerLogin: (SyncCallback) callback {
+  start_time = [self time];
+  NSMutableDictionary *d = [NSMutableDictionary dictionary];
+  [d setObject:PARTNER_USERNAME forKey:@"username"];
+  [d setObject:PARTNER_PASSWORD forKey:@"password"];
+  [d setObject:PARTNER_DEVICEID forKey:@"deviceModel"];
+  [d setObject:PANDORA_API_VERSION forKey:@"version"];
+  [d setObject:[NSNumber numberWithBool:TRUE] forKey:@"includeUrls"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
-    NSString *value = xpathRelative(doc, "//params/param/value", NULL);
-    NSData *data = PandoraDecrypt(value);
-    const char *string = [data bytes];
-    syncOffset = [self time] - strtoul(string + 4, NULL, 0);
-
+  PandoraRequest *req = [[PandoraRequest alloc] init];
+  [req setRequest: d];
+  [req setMethod: @"auth.partnerLogin"];
+  [req setEncrypted:FALSE];
+  [req setCallback:^(NSDictionary* dict) {
+    NSDictionary *result = [dict objectForKey:@"result"];
+    partner_auth_token = [result objectForKey:@"partnerAuthToken"];
+    partner_id = [result objectForKey:@"partnerId"];
+    NSData *sync = PandoraDecrypt([result objectForKey:@"syncTime"]);
+    const char *bytes = [sync bytes];
+    sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
-  };
-
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"sync"
-                                       data:xml
-                                   callback:cb]];
+  }];
+  return [self sendRequest:req];
 }
 
 /**
- * Rate a song, "0" = dislike, "1" = like
+ * @param Rate a Song
+ *
+ * Fires the "hermes.song-rated" event when done. The userInfo for the event is
+ * a dictionary with one key, "song", the same one as provided to this method
+ *
+ * @param song the song to add a rating for
+ * @param liked the rating to give the song, TRUE for liked or FALSE for
+ *        disliked
  */
-- (BOOL) rateSong: (Song*) song : (NSString*) rating {
+- (BOOL) rateSong:(Song*) song as:(BOOL) liked {
   assert([self authenticated]);
-  NSLogd(@"Rating song '%@' as %@...", [song title], rating);
+  NSLogd(@"Rating song '%@' as %d...", [song title], liked);
 
-  NSString *xml = [NSString stringWithFormat:
-     @"<?xml version=\"1.0\"?>"
-     "<methodCall>"
-       "<methodName>station.addFeedback</methodName>"
-       "<params>"
-         "<param><value><int>%lu</int></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value><string>%@</string></value></param>"
-         "<param><value>%@</value></param>"
-         "<param><value><boolean>%@</boolean></value></param>"
-         "<param><value><boolean>0</boolean></value></param>"
-         "<param><value><int>%@</int></value></param>"
-       "</params>"
-     "</methodCall>",
-     [self time], authToken, [song stationId], [song musicId],
-       [song userSeed], @"undefined", rating, [song songType]
-   ];
-
-  if ([rating isEqual:@"1"]) {
-    [song setRating: rating];
+  if (liked == TRUE) {
+    [song setNrating:[NSNumber numberWithInt:1]];
   } else {
-    [song setRating: @"-1"];
+    [song setNrating:[NSNumber numberWithInt:-1]];
   }
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:[song token] forKey:@"trackToken"];
+  [d setObject:[NSNumber numberWithBool:liked] forKey:@"isPositive"];
+  [d setObject:[song stationToken] forKey:@"stationToken"];
+
+  PandoraRequest *req = [self defaultRequest:@"station.addFeedback"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:song forKey:@"song"];
     [self notify:@"hermes.song-rated" with:dict];
-  };
-
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"station.addFeedback"
-                                       data:xml
-                                   callback:cb]];
+  }];
+  return [self sendRequest:req];
 }
 
 /**
- * Tell Pandora that we're tired of a specific song
+ * @brief Inform Pandora that the specified song shouldn't be played for awhile
+ *
+ * Fires the "hermes.song-tired" event with a dictionary with the key "song"
+ * when the event is done. The song of the event is the same one as provided
+ * here.
+ *
+ * @param song the song to tell Pandora not to play for awhile
  */
 - (BOOL) tiredOfSong: (Song*) song {
   assert([self authenticated]);
   NSLogd(@"Getting tired of %@...", [song title]);
 
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>listener.addTiredSong</methodName>"
-      "<params>"
-      "<param><value><int>%lu</int></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, [song musicId], [song userSeed], [song stationId]
-  ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:[song token] forKey:@"trackToken"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  PandoraRequest *req = [self defaultRequest:@"user.sleepSong"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     [dict setObject:song forKey:@"song"];
     [self notify:@"hermes.song-tired" with:dict];
-  };
+  }];
 
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"addTiredSong"
-                                       data:xml
-                                   callback:cb]];
+  return [self sendRequest:req];
 }
 
+/**
+ * @brief Searches for Songs
+ *
+ * Fires the "hermes.search-results" event when done with a dictionary of the
+ * following keys:
+ *
+ *    - Songs: a list of SearchResult objects, one for each song found
+ *    - Artists: a list of SearchResult objects, one for each artist found
+ *
+ * @param search the query string to send to Pandora
+ */
 - (BOOL) search: (NSString*) search {
   assert([self authenticated]);
   NSLogd(@"Searching for %@...", search);
 
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>music.search</methodName>"
-      "<params>"
-      "<param><value><int>%lu</int></value></param>"
-      "<param><value><string>%@</string></value></param>"
-      "<param><value><string>mi%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, search
-  ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:search forKey:@"searchText"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
-    NSMutableDictionary *map = [NSMutableDictionary dictionaryWithCapacity:3];
+  PandoraRequest *req = [self defaultRequest:@"music.search"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    NSDictionary *result = [d objectForKey:@"result"];
+    NSLogd(@"%@", result);
+    NSMutableDictionary *map = [NSMutableDictionary dictionary];
 
-    NSMutableArray *search_songs, *search_stations, *search_artists;
+    NSMutableArray *search_songs, *search_artists;
     search_songs    = [NSMutableArray array];
-    search_stations = [NSMutableArray array];
     search_artists  = [NSMutableArray array];
 
     [map setObject:search_songs forKey:@"Songs"];
-    [map setObject:search_stations forKey:@"Stations"];
     [map setObject:search_artists forKey:@"Artists"];
 
-    xpathNodes(doc, "//member[name='songs']/value/array/data/value", ^(xmlNodePtr node) {
+    for (NSDictionary *s in [result objectForKey:@"songs"]) {
       SearchResult *r = [[SearchResult alloc] init];
-      NSString *artist = xpathRelative(doc, ".//member[name='artistSummary']/value", node);
-      NSString *song = xpathRelative(doc, ".//member[name='songTitle']/value", node);
-
-      [r setName:[NSString stringWithFormat:@"%@ - %@", artist, song]];
-      [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
+      NSString *name = [NSString stringWithFormat:@"%@ - %@",
+                          [s objectForKey:@"songName"],
+                          [s objectForKey:@"artistName"]];
+      [r setName:name];
+      [r setValue:[s objectForKey:@"musicToken"]];
       [search_songs addObject:r];
-    });
+    }
 
-    xpathNodes(doc, "//member[name='stations']/value/array/data/value", ^(xmlNodePtr node) {
+    for (NSDictionary *a in [result objectForKey:@"artists"]) {
       SearchResult *r = [[SearchResult alloc] init];
-      [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
-      [r setName:xpathRelative(doc, ".//member[name='stationName']/value", node)];
-      [search_stations addObject:r];
-    });
-
-    xpathNodes(doc, "//member[name='artists']/value/array/data/value", ^(xmlNodePtr node) {
-      SearchResult *r = [[SearchResult alloc] init];
-      [r setValue:xpathRelative(doc, ".//member[name='musicId']/value", node)];
-      [r setName:xpathRelative(doc, ".//member[name='artistName']/value", node)];
+      [r setValue:[a objectForKey:@"musicToken"]];
+      [r setName:[a objectForKey:@"artistName"]];
       [search_artists addObject:r];
-    });
+    }
 
     [self notify:@"hermes.search-results" with:map];
-  };
+  }];
 
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"search"
-                                       data:xml
-                                   callback:cb]];
+  return [self sendRequest:req];
 }
 
 /**
- * Create a new station, just for kicks
+ * @brief Create a new station
+ *
+ * A new station can only be created after a search has been made to retrieve
+ * some sort of identifier for either an artist or a song. The artist/station
+ * provided is the initial seed for the station.
+ *
+ * Fires the "hermes.station-created" event when done with no extra information
+ *
+ * @param musicId the identifier of the song/artist to create the station for
  */
 - (BOOL) createStation: (NSString*)musicId {
   assert([self authenticated]);
 
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>station.createStation</methodName>"
-      "<params>"
-        "<param><value><int>%lu</int></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>mi%@</string></value></param>"
-        "<param><value><string></string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, musicId
-  ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:musicId forKey:@"musicToken"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  PandoraRequest *req = [self defaultRequest:@"station.createStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.station-created" with:nil];
-  };
-
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"createStation"
-                                       data:xml
-                                   callback:cb]];
+  }];
+  return [self sendRequest:req];
 }
 
 /**
- * Remove a station from the list, only removing if
+ * @brief Remove a station from a users's account
+ *
+ * Fires the "hermes.station-removed" event when done, with no extra information
+ *
+ * @param stationToken the token of the station to remove
  */
-- (BOOL) removeStation: (NSString*)stationId {
+- (BOOL) removeStation: (NSString*)stationToken {
   assert([self authenticated]);
 
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>station.removeStation</methodName>"
-      "<params>"
-        "<param><value><int>%lu</int></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, stationId
-  ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:stationToken forKey:@"stationToken"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  PandoraRequest *req = [self defaultRequest:@"station.deleteStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
     unsigned int i;
 
+    /* Remove the station internally */
     for (i = 0; i < [stations count]; i++) {
-      if ([[[stations objectAtIndex:i] stationId] isEqual:stationId]) {
+      if ([[[stations objectAtIndex:i] token] isEqual:stationToken]) {
         break;
       }
     }
@@ -445,42 +427,33 @@ static char *array_xpath = "/methodResponse/params/param/value/array/data/value"
     }
 
     [self notify:@"hermes.station-removed" with:nil];
-  };
-
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"removeStation"
-                                       data:xml
-                                   callback:cb]];
+  }];
+  return [self sendRequest:req];
 }
 
 /**
- * Rename a station to have a different name
+ * @brief Rename a station to have a different name
+ *
+ * Fires the "hermes.station-renamed" event with no extra information when done.
+ *
+ * @param stationToken the token of the station retrieved previously which is
+ *                     to be renamed
+ * @param to the new name of the station
  */
-- (BOOL) renameStation: (NSString*)stationId to:(NSString*)name {
+- (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name {
   assert([self authenticated]);
 
-  NSString *xml = [NSString stringWithFormat:
-    @"<?xml version=\"1.0\"?>"
-    "<methodCall>"
-      "<methodName>station.setStationName</methodName>"
-      "<params>"
-        "<param><value><int>%lu</int></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-        "<param><value><string>%@</string></value></param>"
-      "</params>"
-    "</methodCall>",
-    [self time], authToken, stationId, name
-  ];
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:stationToken forKey:@"stationToken"];
+  [d setObject:name forKey:@"stationName"];
 
-  PandoraCallback cb = ^(xmlDocPtr doc) {
+  PandoraRequest *req = [self defaultRequest:@"station.renameStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.station-renamed" with:nil];
-  };
-
-  return [self sendRequest:
-          [PandoraRequest requestWithMethod:@"setStationName"
-                                       data:xml
-                                   callback:cb]];
+  }];
+  return [self sendRequest:req];
 }
 
 @end

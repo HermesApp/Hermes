@@ -167,7 +167,7 @@
 
   Station *s = [[[self pandora] stations] objectAtIndex:rowIndex];
 
-  if ([[self pandora] renameStation:[s stationId] to:anObject]) {
+  if ([[self pandora] renameStation:[s token] to:anObject]) {
     [stationsRefreshing setHidden:NO];
     [stationsRefreshing startAnimation:nil];
     [s setName:anObject];
@@ -345,7 +345,7 @@
 
   [stationsRefreshing setHidden:NO];
   [stationsRefreshing startAnimation:nil];
-  [[self pandora] removeStation:[selected stationId]];
+  [[self pandora] removeStation:[selected token]];
 }
 
 /* Callback for the delete button on the stations drawer */

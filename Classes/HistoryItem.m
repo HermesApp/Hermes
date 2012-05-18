@@ -20,13 +20,15 @@
 }
 
 - (IBAction) like:(id)sender {
-  [[self pandora] rateSong:[self representedObject] : @"1"];
+  Song* s = [self representedObject];
+  [[self pandora] rateSong:s as:YES];
   [like setEnabled:NO];
   [dislike setEnabled:YES];
 }
 
 - (IBAction) dislike:(id)sender {
-  [[self pandora] rateSong:[self representedObject] : @"0"];
+  Song* s = [self representedObject];
+  [[self pandora] rateSong:s as:NO];
   [like setEnabled:YES];
   [dislike setEnabled:NO];
 }
@@ -79,9 +81,9 @@
 
   [like setEnabled:YES];
   [dislike setEnabled:YES];
-  if ([[s rating] isEqual:@"1"]) {
+  if ([[s nrating] intValue] == 1) {
     [like setEnabled:NO];
-  } else if ([[s rating] isEqual:@"-1"]) {
+  } else if ([[s nrating] intValue] == -1) {
     [dislike setEnabled:NO];
   }
 }

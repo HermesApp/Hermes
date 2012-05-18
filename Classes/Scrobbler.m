@@ -157,7 +157,7 @@ static FMCallback errorChecker;
   }
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if ([defaults boolForKey:ONLY_SCROBBLE_LIKED] &&
-      ![[song rating] isEqualToString:@"1"]) {
+      [[song nrating] intValue] != 1) {
     return;
   }
 
@@ -168,7 +168,6 @@ static FMCallback errorChecker;
   [dictionary setObject:[song title]      forKey:@"track"];
   [dictionary setObject:[song artist]     forKey:@"artist"];
   [dictionary setObject:[song album]      forKey:@"album"];
-  [dictionary setObject:[song musicId]    forKey:@"mbid"];
   [dictionary setObject:@"0"              forKey:@"chosenByUser"];
 
   NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
@@ -198,7 +197,7 @@ static FMCallback errorChecker;
   if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
     return;
   }
-  
+
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   if (![defaults boolForKey:PLEASE_SCROBBLE_LIKES]) {
     return;

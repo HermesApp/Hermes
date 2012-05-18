@@ -1,50 +1,55 @@
-#include <libxml/parser.h>
+#ifndef _API_H
+#define _API_H
 
-#pragma once
+#import "SBJson.h"
 
-#define PANDORA_API_HOST @"www.pandora.com"
-#define PANDORA_API_PATH @"/radio/xmlrpc/"
-#define PANDORA_API_VERSION @"v34"
+#define PANDORA_API_HOST @"tuner.pandora.com"
+#define PANDORA_API_PATH @"/services/json/"
+#define PANDORA_API_VERSION @"5"
 
-typedef void(^PandoraCallback)(xmlDocPtr);
+typedef void(^PandoraCallback)(NSDictionary*);
 
 @interface PandoraRequest : NSObject {
-  @private
-  NSString *requestData;
-  NSString *requestMethod;
-  NSMutableData *responseData;
+  /* Internal metadata */
   PandoraCallback callback;
-  BOOL secure;
+  BOOL tls;
+  BOOL encrypted;
+
+  /* URL parameters */
+  NSString *method;
+  NSString *authToken;
+  NSString *partnerId;
+  NSString *userId;
+
+  /* JSON data */
+  NSMutableDictionary *request;
+  NSMutableData *response;
 }
 
-@property (retain) NSString *requestData;
-@property (retain) NSString *requestMethod;
-@property (retain) NSMutableData *responseData;
+@property (retain, readwrite) NSString *method;
+@property (retain, readwrite) NSString *authToken;
+@property (retain, readwrite) NSString *partnerId;
+@property (retain, readwrite) NSString *userId;
+@property (retain, readwrite) NSMutableDictionary *request;
+@property (retain, readwrite) NSMutableData *response;
 @property (copy) PandoraCallback callback;
-@property (retain) NSObject *info;
-@property (readwrite) BOOL secure;
+@property (readwrite) BOOL tls;
+@property (readwrite) BOOL encrypted;
 
-+ (PandoraRequest*) requestWithMethod: (NSString*) requestMethod
-                                 data: (NSString*) data
-                             callback: (PandoraCallback) callback;
-
-- (void) resetResponse;
-- (void) replaceAuthToken:(NSString*) token with:(NSString*) replacement;
 @end
 
-BOOL xpathNodes(xmlDocPtr doc, char* xpath, void (^callback)(xmlNodePtr));
-NSString *xpathRelative(xmlDocPtr doc, char* xpath, xmlNodePtr node);
-
 @interface API : NSObject {
-  NSString *listenerID;
-
   NSMutableDictionary *activeRequests;
   int64_t syncOffset;
-}
 
-@property (retain) NSString* listenerID;
+  /* JSON parsing */
+  SBJsonParser *json_parser;
+  SBJsonWriter *json_writer;
+}
 
 - (int64_t) time;
 - (BOOL) sendRequest: (PandoraRequest*) request;
 
 @end
+
+#endif /* _API_H */

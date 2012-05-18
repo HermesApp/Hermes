@@ -4,7 +4,7 @@
 
 @implementation Station
 
-@synthesize stationId, name, songs, stream, playing;
+@synthesize stationId, name, songs, stream, playing, token;
 
 - (id) init {
   [self setSongs:[NSMutableArray arrayWithCapacity:10]];
@@ -68,7 +68,7 @@
   radio = pandora;
 
   NSString *n = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
-      stationId];
+      token];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
@@ -94,7 +94,7 @@
 }
 
 - (void) fetchMoreSongs {
-  [radio getFragment: stationId];
+  [radio getFragment: self];
 }
 
 - (void) fetchSongsIfNecessary {
@@ -104,7 +104,8 @@
 }
 
 - (void) setAudioStream {
-  NSURL *url = [NSURL URLWithString:[playing url]];
+  NSURL *url = [NSURL URLWithString:[playing highUrl]];
+  NSLogd(@"Playing: %@", url);
   AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
   [self setStream:s];
 }
