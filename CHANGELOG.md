@@ -1,6 +1,6 @@
-# Version 1.1.0 (unreleased)
+# Version 1.1.0 (5/18/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.22...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.22...v1.1.0)
 
 * [added] Move to using Pandora's JSON API instead of the XMLRPC one in hopes of
           being more stable and requiring fewer updates
