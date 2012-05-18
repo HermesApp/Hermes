@@ -6,7 +6,8 @@
 @implementation PreferencesController
 
 @synthesize bindMedia, scrobble, scrobbleLikes, scrobbleOnlyLiked, growl,
-            growlNewSongs, growlPlayPause;
+            growlNewSongs, growlPlayPause, playback, general, toolbar,
+            window, highQuality, mediumQuality, lowQuality;
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSInteger state;
@@ -26,6 +27,38 @@
   [growlNewSongs setState:state];
   state = [defaults boolForKey:PLEASE_GROWL_PLAY] ? NSOnState : NSOffState;
   [growlPlayPause setState:state];
+
+  NSString *quality = [defaults objectForKey:DESIRED_QUALITY];
+  [highQuality setState:NSOffState];
+  [mediumQuality setState:NSOffState];
+  [lowQuality setState:NSOffState];
+  if ([quality isEqualToString:QUALITY_HIGH]) {
+    [highQuality setState:NSOnState];
+  } else if ([quality isEqualToString:QUALITY_LOW]) {
+    [lowQuality setState:NSOnState];
+  } else {
+    [mediumQuality setState:NSOnState];
+  }
+  [self setPreferenceView:general];
+}
+
+- (void) setPreferenceView: (NSView*) view {
+  NSView *container = [window contentView];
+  if ([[container subviews] count] > 0) {
+    NSView *prev_view = [[container subviews] objectAtIndex:0];
+    if (prev_view == view) {
+      return;
+    }
+    [container replaceSubview:prev_view with:view];
+  } else {
+    [container addSubview:view];
+  }
+
+  NSRect frame = [view frame];
+  NSRect superFrame = [container frame];
+  frame.size.width = NSWidth(superFrame);
+  frame.size.height = NSHeight(superFrame);
+  [view setFrame:frame];
 }
 
 - (IBAction) changeScrobbleTo: (id) sender {
@@ -45,7 +78,7 @@
 
 - (IBAction) changeScrobbleLikesTo: (id) sender {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  
+
   [defaults setBool:([scrobbleLikes state] == NSOnState)
              forKey:PLEASE_SCROBBLE_LIKES];
 }
@@ -96,6 +129,29 @@
 
   [defaults setBool:([growlNewSongs state] == NSOnState)
              forKey:PLEASE_GROWL_NEW];
+}
+
+- (IBAction) changeQualityToLow:(id)sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:QUALITY_LOW forKey:DESIRED_QUALITY];
+}
+
+- (IBAction) changeQualityToMedium:(id)sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:QUALITY_MED forKey:DESIRED_QUALITY];
+}
+
+- (IBAction) changeQualityToHigh:(id)sender {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:QUALITY_HIGH forKey:DESIRED_QUALITY];
+}
+
+- (IBAction) showGeneral: (id) sender {
+  [self setPreferenceView:general];
+}
+
+- (IBAction) showPlayback: (id) sender {
+  [self setPreferenceView:playback];
 }
 
 @end

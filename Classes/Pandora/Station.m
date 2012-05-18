@@ -1,5 +1,6 @@
 #import "Station.h"
 #import "StationsController.h"
+#import "PreferencesController.h"
 #import "HermesAppDelegate.h"
 
 @implementation Station
@@ -104,8 +105,19 @@
 }
 
 - (void) setAudioStream {
-  NSURL *url = [NSURL URLWithString:[playing highUrl]];
-  NSLogd(@"Playing: %@", url);
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSString *quality = [defaults objectForKey:DESIRED_QUALITY];
+  NSURL *url;
+  if ([quality isEqualToString:QUALITY_HIGH]) {
+    NSLogd(@"high quality url");
+    url = [NSURL URLWithString:[playing highUrl]];
+  } else if ([quality isEqualToString:QUALITY_LOW]) {
+    NSLogd(@"low quality url");
+    url = [NSURL URLWithString:[playing lowUrl]];
+  } else {
+    NSLogd(@"medium quality url");
+    url = [NSURL URLWithString:[playing medUrl]];
+  }
   AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
   [self setStream:s];
 }
