@@ -72,6 +72,26 @@
 }
 
 /**
+ * @brief Parse the dictionary provided to create a station
+ *
+ * @param s the dictionary describing the station
+ * @return the station object
+ */
+- (Station*) parseStation: (NSDictionary*) s {
+  Station *station = [[Station alloc] init];
+
+  [station setName:[s objectForKey:@"stationName"]];
+  [station setStationId:[s objectForKey:@"stationId"]];
+  [station setToken:[s objectForKey:@"stationToken"]];
+  [station setRadio:self];
+
+  if ([[s objectForKey:@"isQuickMix"] boolValue]) {
+    [station setName:@"QuickMix"];
+  }
+  return station;
+}
+
+/**
  * @brief Authenticates with Pandora
  *
  * When completed, fires the "hermes.authenticated" event so long as the
@@ -136,17 +156,7 @@
   [r setCallback: ^(NSDictionary* dict) {
     NSDictionary *result = [dict objectForKey:@"result"];
     for (NSDictionary *s in [result objectForKey:@"stations"]) {
-      Station *station = [[Station alloc] init];
-
-      [station setName:[s objectForKey:@"stationName"]];
-      [station setStationId:[s objectForKey:@"stationId"]];
-      [station setToken:[s objectForKey:@"stationToken"]];
-      [station setRadio:self];
-
-      if ([[s objectForKey:@"isQuickMix"] boolValue]) {
-        [station setName:@"QuickMix"];
-      }
-
+      Station *station = [self parseStation:s];
       if (![stations containsObject:station]) {
         [stations addObject:station];
       }
@@ -375,7 +385,8 @@
  * some sort of identifier for either an artist or a song. The artist/station
  * provided is the initial seed for the station.
  *
- * Fires the "hermes.station-created" event when done with no extra information
+ * Fires the "hermes.station-created" event when done with some userInfo that
+ * has one key, "station" which is the station that was created.
  *
  * @param musicId the identifier of the song/artist to create the station for
  */
@@ -389,7 +400,12 @@
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.station-created" with:nil];
+    NSDictionary *result = [d objectForKey:@"result"];
+    Station *s = [self parseStation:result];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    [dict setObject:s forKey:@"station"];
+    [stations addObject:s];
+    [self notify:@"hermes.station-created" with:dict];
   }];
   return [self sendRequest:req];
 }

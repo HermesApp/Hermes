@@ -208,11 +208,14 @@
 /* ============================ Other callbacks */
 
 - (void) stationCreated: (NSNotification*) not {
+  Station *s = [[not userInfo] objectForKey:@"station"];
   [[NSApp delegate] closeNewStationSheet];
 
   [searchSpinner setHidden:YES];
   [searchSpinner stopAnimation:nil];
-  [self refreshList:nil];
+  [stationsTable reloadData];
+  [self selectStation:s];
+  [[[NSApp delegate] playback] playStation:s];
 }
 
 - (void) stationRemoved: (NSNotification*) not {

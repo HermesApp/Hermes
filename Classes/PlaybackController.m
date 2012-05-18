@@ -140,32 +140,31 @@ BOOL playOnStart = YES;
 
 - (void) afterStationsLoaded {
   [[NSNotificationCenter defaultCenter]
-   removeObserver:self
-   name:@"song.playing"
-   object:nil];
+     removeObserver:self
+     name:@"song.playing"
+     object:nil];
   [[NSNotificationCenter defaultCenter]
-   removeObserver:self
-   name:@"songs.loaded"
-   object:nil];
+     removeObserver:self
+     name:@"songs.loaded"
+     object:nil];
 
-  int saved = [[NSUserDefaults standardUserDefaults] integerForKey:@"hermes.volume"];
+  int saved = [[NSUserDefaults standardUserDefaults]
+                  integerForKey:@"hermes.volume"];
   if (saved == 0) {
     saved = 100;
   }
   [self setIntVolume:saved];
 
-  for (Station *station in [[self pandora] stations]) {
-    [[NSNotificationCenter defaultCenter]
+  [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(songPlayed:)
      name:@"song.playing"
-     object:station];
-    [[NSNotificationCenter defaultCenter]
+     object:nil];
+  [[NSNotificationCenter defaultCenter]
      addObserver:self
      selector:@selector(songsLoaded:)
      name:@"songs.loaded"
-     object:station];
-  }
+     object:nil];
 }
 
 - (void) songRated: (NSNotification*) not {

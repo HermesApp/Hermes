@@ -158,6 +158,7 @@
 }
 
 - (void) play {
+  NSLogd(@"Playing %@", name);
   if (stream) {
     if ([stream isPlaying]) {
       NSLogd(@"Ignoring play, stream already playing");
