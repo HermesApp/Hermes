@@ -1,10 +1,12 @@
-#import "StationsController.h"
-#import "AuthController.h"
-#import "PlaybackController.h"
-#import "HistoryController.h"
 #import "Pandora.h"
 
 #define USERNAME_KEY @"pandora.username"
+
+@class StationsController;
+@class AuthController;
+@class PlaybackController;
+@class HistoryController;
+@class StationController;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
 
@@ -24,9 +26,9 @@
   IBOutlet StationsController *stations;
   IBOutlet AuthController *auth;
   IBOutlet PlaybackController *playback;
-
   IBOutlet HistoryController *history;
-    
+  IBOutlet StationController *station;
+
   NSMenu *menu;
 }
 
@@ -35,6 +37,7 @@
 @property (readonly) HistoryController *history;
 @property (retain) AuthController *auth;
 @property (retain) PlaybackController *playback;
+@property (retain) StationController *station;
 @property (retain) Pandora *pandora;
 
 - (void) closeNewStationSheet;

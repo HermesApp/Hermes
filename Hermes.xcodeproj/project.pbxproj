@@ -73,6 +73,7 @@
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
 		FACF0185149A713700D1FB73 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FACF0184149A713700D1FB73 /* AudioStreamer.m */; };
 		FACF018B149A718300D1FB73 /* libAudioStreamer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACF017D149A713700D1FB73 /* libAudioStreamer.a */; };
+		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FAD42FA3136790DE00E935CA /* dsa_pub.pem */; };
@@ -220,6 +221,8 @@
 		FACF017D149A713700D1FB73 /* libAudioStreamer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioStreamer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
+		FACFACD415673690008A2140 /* StationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationController.h; sourceTree = "<group>"; };
+		FACFACD515673690008A2140 /* StationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationController.m; sourceTree = "<group>"; };
 		FAD42F8713678F7500E935CA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		FAD42FA3136790DE00E935CA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleMediaKeyController.h; sourceTree = "<group>"; };
@@ -402,6 +405,8 @@
 				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
 				FA2A3F75132BF97E0089AECC /* StationsController.h */,
 				FA2A3F76132BF97E0089AECC /* StationsController.m */,
+				FACFACD415673690008A2140 /* StationController.h */,
+				FACFACD515673690008A2140 /* StationController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -702,6 +707,7 @@
 				FA04AE96144365D900819310 /* HistoryItem.m in Sources */,
 				FA0E556114784AF500C36794 /* AppleScript.m in Sources */,
 				FA454685156604D100EE98C7 /* blowfish.c in Sources */,
+				FACFACD615673690008A2140 /* StationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

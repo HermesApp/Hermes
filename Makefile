@@ -1,5 +1,7 @@
-XCB = xcodebuild
+XCB           = xcodebuild
 CONFIGURATION = Debug
+HERMES        = ./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
+DEBUGGER      = gdb
 
 all: hermes
 
@@ -7,4 +9,7 @@ hermes:
 				$(XCB) -configuration $(CONFIGURATION)
 
 run: hermes
-				./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
+				$(HERMES)
+
+dbg: hermes
+				$(DEBUGGER) $(HERMES)

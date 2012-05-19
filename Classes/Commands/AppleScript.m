@@ -7,6 +7,8 @@
 
 #import "AppleScript.h"
 #import "HermesAppDelegate.h"
+#import "PlaybackController.h"
+#import "StationsController.h"
 
 int savedVolume = 0;
 

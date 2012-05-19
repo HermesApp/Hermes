@@ -2,6 +2,8 @@
 #import "Pandora.h"
 #import "HermesAppDelegate.h"
 #import "PreferencesController.h"
+#import "PlaybackController.h"
+#import "StationController.h"
 
 @implementation StationsController
 
@@ -29,7 +31,6 @@
     selector:@selector(stationRemoved:)
     name:@"hermes.station-removed"
     object:[[NSApp delegate] pandora]];
-
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRenamed:)
@@ -162,18 +163,6 @@
   return [s name];
 }
 
-- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)anObject
-    forTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex {
-
-  Station *s = [[[self pandora] stations] objectAtIndex:rowIndex];
-
-  if ([[self pandora] renameStation:[s token] to:anObject]) {
-    [stationsRefreshing setHidden:NO];
-    [stationsRefreshing startAnimation:nil];
-    [s setName:anObject];
-  }
-}
-
 /* ============================ NSOutlineViewDataSource protocol */
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
   if (item == nil) {
@@ -225,8 +214,7 @@
 }
 
 - (void) stationRenamed: (NSNotification*) not {
-  [stationsRefreshing setHidden:YES];
-  [stationsRefreshing stopAnimation:nil];
+  [stationsTable reloadData];
 }
 
 /* Called whenever stations finish loading from pandora */
@@ -374,6 +362,12 @@
       modalDelegate:self
       didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
       contextInfo:NULL];
+}
+
+- (IBAction)editSelected:(id)sender {
+  Station *s = [self selectedStation];
+  if ([[s name] isEqualToString: @"QuickMix"]) return;
+  [[[NSApp delegate] station] editStation: [self selectedStation]];
 }
 
 @end

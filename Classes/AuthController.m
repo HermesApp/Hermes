@@ -1,5 +1,7 @@
 #import "AuthController.h"
 #import "HermesAppDelegate.h"
+#import "PlaybackController.h"
+#import "StationsController.h"
 
 @implementation AuthController
 

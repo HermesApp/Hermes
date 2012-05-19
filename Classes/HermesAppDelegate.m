@@ -10,11 +10,15 @@
 #import "Keychain.h"
 #import "Scrobbler.h"
 #import "Growler.h"
+#import "AuthController.h"
 #import "PreferencesController.h"
+#import "StationsController.h"
+#import "PlaybackController.h"
+#import "HistoryController.h"
 
 @implementation HermesAppDelegate
 
-@synthesize stations, auth, playback, pandora, window, history;
+@synthesize stations, auth, playback, pandora, window, history, station;
 
 - (bool) isLion {
   static SInt32 MacVersion = 0;
@@ -216,6 +220,7 @@
   } else {
     [self setCurrentView:errorView];
     [errorLabel setStringValue:err];
+    [window orderFront:nil];
   }
 }
 

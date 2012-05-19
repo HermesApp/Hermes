@@ -472,4 +472,151 @@
   return [self sendRequest:req];
 }
 
+/**
+ * @brief Fetch extra information about a station
+ *
+ * Returned information includes data about likes, dislikes, seeds, etc.
+ * The "hermes.station-info" event is broadcasted with a user info that has the
+ * requested information in the userInfo:
+ *
+ *    - name, NSString
+ *    - created, NSDate
+ *    - genres, NSArray of NSString
+ *    - art, NSString (url), not present if there's no art
+ *    - url, NSString link to the pandora station
+ *    - seeds
+ *      - artists, NSArray of
+ *        - FIGURE THIS OUT
+ *        - artistName
+ *        - seedId
+ *      - songs, NSArray of
+ *        - songName
+ *        - artistName
+ *        - seedId
+ *    - likes/dislikes (two keys, same contents)
+ *      - feedbackId
+ *      - songName
+ *      - artistName
+ *
+ * @param station the station to fetch information for
+ */
+- (BOOL) stationInfo:(Station *)station {
+  assert([self authenticated]);
+
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:[station token]forKey:@"stationToken"];
+  [d setObject:[NSNumber numberWithBool:TRUE]
+        forKey:@"includeExtendedAttributes"];
+
+  PandoraRequest *req = [self defaultRequest:@"station.getStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    NSDictionary *result = [d objectForKey:@"result"];
+
+    /* General metadata */
+    [info setObject:[result objectForKey:@"stationName"] forKey:@"name"];
+    uint64_t created = [[[result objectForKey:@"dateCreated"]
+                          objectForKey:@"time"] longLongValue];
+    [info setObject:[NSDate dateWithTimeIntervalSince1970:created]
+             forKey:@"created"];
+    NSString *art = [result objectForKey:@"artUrl"];
+    if (art != nil) { [info setObject:art forKey:@"art"]; }
+    [info setObject:[result objectForKey:@"genre"] forKey:@"genres"];
+    [info setObject:[result objectForKey:@"stationDetailUrl"] forKey:@"url"];
+
+    /* Seeds */
+    NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
+    NSDictionary *music = [result objectForKey:@"music"];
+    [seeds setObject:[music objectForKey:@"songs"] forKey:@"songs"];
+    [seeds setObject:[music objectForKey:@"artists"] forKey:@"artists"];
+    [info setObject:seeds forKey:@"seeds"];
+
+    /* Feedback */
+    NSDictionary *feedback = [result objectForKey:@"feedback"];
+    [info setObject:[feedback objectForKey:@"thumbsUp"] forKey:@"likes"];
+    [info setObject:[feedback objectForKey:@"thumbsDown"] forKey:@"dislikes"];
+
+    [self notify:@"hermes.station-info" with:info];
+  }];
+  return [self sendRequest:req];
+}
+
+/**
+ * @brief Delete the feedback for a station
+ *
+ * The event fired is the "hermes.feedback-deleted" event with no extra
+ * information provided.
+ *
+ * @param feedbackId the name of the feedback to delete
+ */
+- (BOOL) deleteFeedback: (NSString*)feedbackId {
+  assert([self authenticated]);
+
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:feedbackId forKey:@"feedbackId"];
+
+  PandoraRequest *req = [self defaultRequest:@"station.deleteFeedback"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:@"hermes.feedback-deleted" with:nil];
+  }];
+  return [self sendRequest:req];
+}
+
+/**
+ * @brief Add a seed to a station
+ *
+ * The seed must have been previously found via searching Pandora. This fires
+ * the "hermes.seed-added" event with the following dictionary keys:
+ *
+ *    - seedId (NSString, identifier for the seed)
+ *    - artistName (NSString, always present)
+ *    - songName (NSString, present if the seed was a song)
+ *
+ * @param token the token of the seed to add
+ * @param station the station to add the seed to
+ */
+- (BOOL) addSeed: (NSString*)token to:(Station*)station {
+  assert([self authenticated]);
+
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:token forKey:@"musicToken"];
+  [d setObject:[station token] forKey:@"stationToken"];
+
+  PandoraRequest *req = [self defaultRequest:@"station.addMusic"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:@"hermes.seed-added" with:[d objectForKey:@"result"]];
+  }];
+  return [self sendRequest:req];
+}
+
+/**
+ * @brief Remove a seed from a station
+ *
+ * The seed string is found by retrieving the detailed information for a
+ * station. The "hermes.seed-removed" event is fired when done with no extra
+ * information.
+ *
+ * @param seedId the identifier of the seed to be removed
+ */
+- (BOOL) removeSeed: (NSString*)seedId {
+  assert([self authenticated]);
+
+  NSMutableDictionary *d = [self defaultDictionary];
+  [d setObject:seedId forKey:@"seedId"];
+
+  PandoraRequest *req = [self defaultRequest:@"station.deleteMusic"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:@"hermes.seed-removed" with:nil];
+  }];
+  return [self sendRequest:req];
+}
+
 @end

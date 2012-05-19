@@ -14,6 +14,7 @@
 #import "HistoryController.h"
 #import "PlaybackController.h"
 #import "Scrobbler.h"
+#import "StationsController.h"
 
 BOOL playOnStart = YES;
 

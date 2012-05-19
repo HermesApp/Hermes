@@ -47,6 +47,10 @@ typedef void(^SyncCallback)(void);
 - (BOOL) createStation: (NSString*) musicId;
 - (BOOL) removeStation: (NSString*) stationToken;
 - (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name;
+- (BOOL) stationInfo: (Station*) station;
+- (BOOL) deleteFeedback: (NSString*)feedbackId;
+- (BOOL) addSeed: (NSString*)token to:(Station*)station;
+- (BOOL) removeSeed: (NSString*)seedId;
 - (void) logout;
 
 @end

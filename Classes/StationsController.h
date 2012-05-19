@@ -33,6 +33,7 @@
 // Buttons at bottom of drawer
 - (IBAction)deleteSelected: (id)sender;
 - (IBAction)playSelected: (id)sender;
+- (IBAction)editSelected: (id)sender;
 - (IBAction)refreshList: (id)sender;
 - (IBAction)addStation: (id)sender;
 
