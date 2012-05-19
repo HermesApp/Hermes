@@ -1,3 +1,9 @@
+# Version 1.1.1 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.0...master)
+
+* [added] New UI for editing a station
+
 # Version 1.1.0 (5/18/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.0.22...v1.1.0)
