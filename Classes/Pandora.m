@@ -193,6 +193,8 @@
     NSMutableArray *songs = [NSMutableArray array];
 
     for (NSDictionary *s in [result objectForKey:@"items"]) {
+      if ([s objectForKey:@"adToken"] != nil) continue; // Skip if this is an adToken
+
       Song *song = [[Song alloc] init];
 
       [song setArtist: [s objectForKey:@"artistName"]];
