@@ -118,6 +118,7 @@
     NSLogd(@"medium quality url");
     url = [NSURL URLWithString:[playing medUrl]];
   }
+  assert(url != nil);
   AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
   [self setStream:s];
 }
