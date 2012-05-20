@@ -1,6 +1,6 @@
-# Version 1.1.1 (unreleased)
+# Version 1.1.1 (5/20/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.0...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.0...v1.1.1)
 
 * [added] New UI for editing a station
 * [fixed] Fix an issue where non Pandora One users couldn't play more than four
