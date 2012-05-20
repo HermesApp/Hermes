@@ -366,8 +366,8 @@
 
 - (IBAction)editSelected:(id)sender {
   Station *s = [self selectedStation];
-  if ([[s name] isEqualToString: @"QuickMix"]) return;
-  [[[NSApp delegate] station] editStation: [self selectedStation]];
+  if (s == nil || [[s name] isEqualToString: @"QuickMix"]) return;
+  [[[NSApp delegate] station] editStation: s];
 }
 
 @end
