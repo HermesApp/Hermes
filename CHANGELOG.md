@@ -3,6 +3,8 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.0...master)
 
 * [added] New UI for editing a station
+* [fixed] Fix an issue where non Pandora One users couldn't play more than four
+          songs without a crash happening
 
 # Version 1.1.0 (5/18/12)
 
