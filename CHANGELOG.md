@@ -4,7 +4,7 @@
 
 * [added] New UI for editing a station
 * [fixed] Fix an issue where non Pandora One users couldn't play more than four
-          songs without a crash happening
+          songs without a crash happening, thanks to @viveksjain
 
 # Version 1.1.0 (5/18/12)
 
