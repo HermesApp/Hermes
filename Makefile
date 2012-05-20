@@ -13,3 +13,6 @@ run: hermes
 
 dbg: hermes
 				$(DEBUGGER) $(HERMES)
+
+archive:
+				$(XCB) -scheme Hermes archive
