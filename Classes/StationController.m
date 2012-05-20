@@ -83,6 +83,7 @@
   [seedsResults reloadData];
   [self showSpinner];
   [window setIsVisible:TRUE];
+  [window makeKeyAndOrderFront:nil];
 }
 
 /**
