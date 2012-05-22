@@ -1,3 +1,9 @@
+# Version 1.1.2 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...master)
+
+* [added] Remember stations drawer width across application restarts
+
 # Version 1.1.1 (5/20/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.0...v1.1.1)
