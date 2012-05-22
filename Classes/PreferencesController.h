@@ -12,6 +12,7 @@
 #define PLEASE_GROWL_NEW      @"hermes.please-growl-new"
 #define PLEASE_GROWL_PLAY     @"hermes.please-growl-play"
 #define PLEASE_CLOSE_DRAWER   @"hermes.please-close-drawer"
+#define DRAWER_WIDTH          @"hermes.drawer-width"
 #define DESIRED_QUALITY       @"hermes.audio-quality"
 
 #define QUALITY_HIGH @"high"

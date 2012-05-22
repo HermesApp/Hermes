@@ -61,10 +61,14 @@
 }
 
 - (void) showDrawer {
-  [stations open];
   [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults setValue:@"0" forKey:PLEASE_CLOSE_DRAWER];
+  NSSize s;
+  s.height = 100;
+  s.width = [defaults integerForKey:DRAWER_WIDTH];
+  [stations open];
+  [stations setContentSize:s];
 }
 
 - (void) hideDrawer {
@@ -137,6 +141,14 @@
     return YES;
   }
   return NO;
+}
+
+/* ============================ NSDrawerDelegate protocol */
+
+- (NSSize) drawerWillResizeContents:(NSDrawer*) drawer toSize:(NSSize) size {
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setInteger:size.width forKey:DRAWER_WIDTH];
+  return size;
 }
 
 /* ============================ NSTableViewDataSource protocol */
