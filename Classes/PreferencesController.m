@@ -36,6 +36,7 @@
     [mediumQuality setState:NSOnState];
   }
   [self setPreferenceView:general];
+  [toolbar setSelectedItemIdentifier:@"general"];
 }
 
 - (void) setPreferenceView: (NSView*) view {
