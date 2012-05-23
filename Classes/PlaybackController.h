@@ -37,6 +37,7 @@
 + (BOOL) playOnStart;
 
 - (void) reset;
+- (void) enableAllToolbarItems;
 - (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;

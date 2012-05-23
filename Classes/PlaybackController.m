@@ -120,6 +120,12 @@ BOOL playOnStart = YES;
    object:nil];
 }
 
+- (void) enableAllToolbarItems {
+  for (NSButton *b in [toolbar items]) {
+    [b setEnabled:YES];
+  }
+}
+
 - (void) showSpinner {
   [songLoadingProgress setHidden:NO];
   [songLoadingProgress startAnimation:nil];
@@ -333,9 +339,7 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  for (NSButton *b in [toolbar items]) {
-    [b setEnabled:YES];
-  }
+  [self enableAllToolbarItems];
   if ([[song nrating] intValue] == 1) {
     [like setEnabled:NO];
   } else {

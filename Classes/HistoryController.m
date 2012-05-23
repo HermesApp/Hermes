@@ -6,8 +6,9 @@
 //
 
 #import "HermesAppDelegate.h"
-#import "Pandora/Song.h"
 #import "HistoryController.h"
+#import "Pandora/Song.h"
+#import "PlaybackController.h"
 
 #define HISTORY_LIMIT 20
 
@@ -43,6 +44,7 @@
 - (IBAction) closeHistory:(id)sender {
   [NSApp endSheet:history];
   [history orderOut:self];
+  [[[NSApp delegate] playback] enableAllToolbarItems];
 }
 
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index {
