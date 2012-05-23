@@ -14,6 +14,7 @@
 #define PLEASE_CLOSE_DRAWER   @"hermes.please-close-drawer"
 #define DRAWER_WIDTH          @"hermes.drawer-width"
 #define DESIRED_QUALITY       @"hermes.audio-quality"
+#define LAST_PREF_PANE        @"hermes.last-pref-pane"
 
 #define QUALITY_HIGH @"high"
 #define QUALITY_LOW  @"low"
