@@ -35,11 +35,17 @@
   } else {
     [mediumQuality setState:NSOnState];
   }
-  [self setPreferenceView:general];
-  [toolbar setSelectedItemIdentifier:@"general"];
+
+  if ([[defaults objectForKey:LAST_PREF_PANE] isEqual:@"playback"]) {
+    [self setPreferenceView:playback as:@"playback"];
+    [toolbar setSelectedItemIdentifier:@"playback"];
+  } else {
+    [self setPreferenceView:general as:@"general"];
+    [toolbar setSelectedItemIdentifier:@"general"];
+  }
 }
 
-- (void) setPreferenceView: (NSView*) view {
+- (void) setPreferenceView:(NSView*) view as:(NSString*)name {
   NSView *container = [window contentView];
   if ([[container subviews] count] > 0) {
     NSView *prev_view = [[container subviews] objectAtIndex:0];
@@ -56,6 +62,9 @@
   frame.size.width = NSWidth(superFrame);
   frame.size.height = NSHeight(superFrame);
   [view setFrame:frame];
+
+  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  [defaults setObject:name forKey:LAST_PREF_PANE];
 }
 
 - (IBAction) changeScrobbleTo: (id) sender {
@@ -144,11 +153,11 @@
 }
 
 - (IBAction) showGeneral: (id) sender {
-  [self setPreferenceView:general];
+  [self setPreferenceView:general as:@"general"];
 }
 
 - (IBAction) showPlayback: (id) sender {
-  [self setPreferenceView:playback];
+  [self setPreferenceView:playback as:@"playback"];
 }
 
 @end
