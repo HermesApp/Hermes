@@ -3,6 +3,7 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...master)
 
 * [added] Remember stations drawer width across application restarts
+* [fixed] General UI tweaks for better quality and a better application
 
 # Version 1.1.1 (5/20/12)
 
