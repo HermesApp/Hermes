@@ -21,39 +21,24 @@
 
 @interface PreferencesController : NSObject <NSWindowDelegate> {
   /* General */
-  NSButton *scrobble;
-  NSButton *scrobbleLikes;
-  NSButton *scrobbleOnlyLiked;
-  NSButton *bindMedia;
-  NSButton *growl;
-  NSButton *growlPlayPause;
-  NSButton *growlNewSongs;
+  IBOutlet NSButton *scrobble;
+  IBOutlet NSButton *scrobbleLikes;
+  IBOutlet NSButton *scrobbleOnlyLiked;
+  IBOutlet NSButton *bindMedia;
+  IBOutlet NSButton *growl;
+  IBOutlet NSButton *growlPlayPause;
+  IBOutlet NSButton *growlNewSongs;
 
   /* Playback */
-  NSButtonCell *highQuality;
-  NSButtonCell *mediumQuality;
-  NSButtonCell *lowQuality;
+  IBOutlet NSButtonCell *highQuality;
+  IBOutlet NSButtonCell *mediumQuality;
+  IBOutlet NSButtonCell *lowQuality;
 
-  NSToolbar *toolbar;
-  NSView *general;
-  NSView *playback;
-  NSWindow *window;
+  IBOutlet NSToolbar *toolbar;
+  IBOutlet NSView *general;
+  IBOutlet NSView *playback;
+  IBOutlet NSWindow *window;
 }
-
-@property (nonatomic, retain) IBOutlet NSButton *scrobble;
-@property (nonatomic, retain) IBOutlet NSButton *scrobbleLikes;
-@property (nonatomic, retain) IBOutlet NSButton *scrobbleOnlyLiked;
-@property (nonatomic, retain) IBOutlet NSButton *bindMedia;
-@property (nonatomic, retain) IBOutlet NSButton *growl;
-@property (nonatomic, retain) IBOutlet NSButton *growlPlayPause;
-@property (nonatomic, retain) IBOutlet NSButton *growlNewSongs;
-@property (nonatomic, retain) IBOutlet NSToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet NSView *general;
-@property (nonatomic, retain) IBOutlet NSView *playback;
-@property (nonatomic, retain) IBOutlet NSWindow *window;
-@property (nonatomic, retain) IBOutlet NSButtonCell *highQuality;
-@property (nonatomic, retain) IBOutlet NSButtonCell *mediumQuality;
-@property (nonatomic, retain) IBOutlet NSButtonCell *lowQuality;
 
 /* General */
 - (IBAction) changeScrobbleTo: (id) sender;

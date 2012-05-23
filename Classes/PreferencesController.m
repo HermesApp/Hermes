@@ -5,10 +5,6 @@
 
 @implementation PreferencesController
 
-@synthesize bindMedia, scrobble, scrobbleLikes, scrobbleOnlyLiked, growl,
-            growlNewSongs, growlPlayPause, playback, general, toolbar,
-            window, highQuality, mediumQuality, lowQuality;
-
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSInteger state;
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
