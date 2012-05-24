@@ -207,7 +207,7 @@
   NSIndexSet *set = [seedsCurrent selectedRowIndexes];
   if ([set count] == 0) return;
   Pandora *pandora = [[NSApp delegate] pandora];
-  NSMutableArray *todel = [NSMutableArray array];
+  __block int deleted = 0;
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     id item = [seedsCurrent itemAtRow:idx];
@@ -216,8 +216,27 @@
     }
     NSDictionary *d = item;
     [pandora removeSeed:[d objectForKey:@"seedId"]];
-    [todel addObject:d];
-    [self showSpinner];
+    deleted++;
+  }];
+
+  if (deleted == 0) {
+    return;
+  }
+  [self showSpinner];
+  [seedsCurrent setEnabled:FALSE];
+  [deleteFeedback setEnabled:FALSE];
+}
+
+- (void) seedDeleted:(NSNotification*) not {
+  [self hideSpinner];
+  NSIndexSet *set = [seedsCurrent selectedRowIndexes];
+  NSMutableArray *todel = [NSMutableArray array];
+
+  [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
+    id item = [seedsCurrent itemAtRow:idx];
+    if ([item isKindOfClass:[NSDictionary class]]) {
+      [todel addObject:item];
+    }
   }];
 
   for (NSDictionary *d in todel) {
@@ -229,10 +248,31 @@
 
   [seedsCurrent deselectAll:nil];
   [seedsCurrent reloadData];
+
+  [seedsCurrent setEnabled:TRUE];
+  [deleteFeedback setEnabled:TRUE];
 }
 
-- (void) seedDeleted:(NSNotification*) not {
+- (void) seedFailedDeletion:(NSNotification*) not {
+  NSAlert *alert =
+    [NSAlert
+      alertWithMessageText:@"Cannot delete all seeds from a station"
+      defaultButton:@"OK"
+      alternateButton:nil
+      otherButton:nil
+      informativeTextWithFormat:@"There must always be at least one seed"];
+  [alert setAlertStyle:NSWarningAlertStyle];
+  [alert setIcon:[NSImage imageNamed:@"error_icon"]];
+
+  [alert beginSheetModalForWindow:window
+      modalDelegate:nil
+      didEndSelector:nil
+      contextInfo:NULL];
+
   [self hideSpinner];
+  [seedsCurrent setEnabled:TRUE];
+  [seedsCurrent becomeFirstResponder];
+  [deleteFeedback setEnabled:TRUE];
 }
 
 /* ============================ Deleting feedback */

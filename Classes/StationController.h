@@ -45,6 +45,7 @@
 - (IBAction) searchSeeds:(id)sender;
 - (IBAction) addSeed:(id)sender;
 - (IBAction) deleteSeed:(id)sender;
+- (void) seedFailedDeletion:(NSNotification*) not;
 
 - (IBAction) deleteFeedback:(id)sender;
 
