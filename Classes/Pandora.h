@@ -9,6 +9,12 @@
 #define PARTNER_DECRYPT  "20zE1E47BE57$51"
 #define PARTNER_ENCRYPT  "721^26xE22776"
 
+#define INVALID_AUTH_TOKEN    1001
+#define INVALID_PARTNER_LOGIN 1002
+#define INVALID_USERNAME      1011
+#define INVALID_PASSWORD      1012
+#define NO_SEEDS_LEFT         1032
+
 typedef void(^SyncCallback)(void);
 
 /* Wrapper for search results */
@@ -52,5 +58,8 @@ typedef void(^SyncCallback)(void);
 - (BOOL) addSeed: (NSString*)token to:(Station*)station;
 - (BOOL) removeSeed: (NSString*)seedId;
 - (void) logout;
+- (void) logoutNoNotify;
+
++ (NSString*) errorString: (int) code;
 
 @end
