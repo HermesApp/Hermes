@@ -6,15 +6,16 @@
  */
 
 #import "AppleMediaKeyController.h"
-#import "HermesAppDelegate.h"
-#import "Keychain.h"
-#import "Scrobbler.h"
-#import "Growler.h"
 #import "AuthController.h"
-#import "PreferencesController.h"
-#import "StationsController.h"
-#import "PlaybackController.h"
+#import "Growler.h"
+#import "HermesAppDelegate.h"
 #import "HistoryController.h"
+#import "Keychain.h"
+#import "PlaybackController.h"
+#import "PreferencesController.h"
+#import "Scrobbler.h"
+#import "StationController.h"
+#import "StationsController.h"
 
 @implementation HermesAppDelegate
 
@@ -200,29 +201,54 @@
 }
 
 - (void) handlePandoraError: (NSNotification*) notification {
-  NSString *err = [[notification userInfo] objectForKey:@"error"];
+  NSString *err  = [[notification userInfo] objectForKey:@"error"];
+  NSNumber *nscode = [[notification userInfo] objectForKey:@"code"];
 
-  if ([err isEqualToString:@"AUTH_INVALID_USERNAME_PASSWORD"]) {
-    [[playback playing] pause];
-    [auth authenticationFailed:notification];
-  } else if ([err isEqualToString:@"PLAYLIST_END"]) {
-    [playback noSongs:notification];
-  } else if ([err isEqualToString:@"AUTH_INVALID_TOKEN"]) {
-    NSString *user = [self getCachedUsername];
-    NSString *pass = [self getCachedPassword];
-    if (user == nil || pass == nil) {
-      [[playback playing] pause];
-      [auth authenticationFailed:notification];
-    } else {
-      [pandora authenticate:user
-                           :pass
-                           :[[notification userInfo] objectForKey:@"request"]];
+  if (nscode != nil) {
+    int code = [nscode intValue];
+
+    switch (code) {
+      case INVALID_AUTH_TOKEN: {
+        NSString *user = [self getCachedUsername];
+        NSString *pass = [self getCachedPassword];
+        if (user == nil || pass == nil) {
+          [[playback playing] pause];
+          [auth authenticationFailed:notification];
+        } else {
+          [pandora logoutNoNotify];
+          [pandora authenticate:user
+                               :pass
+                               :[[notification userInfo] objectForKey:@"request"]];
+        }
+        return;
+      }
+
+      /* Oddly enough, the same error code is given our for invalid login
+         information as is for invalid partner login information... */
+      case INVALID_PARTNER_LOGIN:
+      case INVALID_USERNAME:
+      case INVALID_PASSWORD:
+        [[playback playing] pause];
+        [auth authenticationFailed:notification];
+        return;
+
+      case NO_SEEDS_LEFT:
+        [station seedFailedDeletion:notification];
+        return;
+
+      default: {
+        NSString *other = [Pandora errorString:code];
+        if (other != nil && other != NULL) {
+          err = other;
+        }
+        break;
+      }
     }
-  } else {
-    [self setCurrentView:errorView];
-    [errorLabel setStringValue:err];
-    [window orderFront:nil];
   }
+
+  [self setCurrentView:errorView];
+  [errorLabel setStringValue:err];
+  [window orderFront:nil];
 }
 
 - (void) handlePandoraLoggedOut: (NSNotification*) notification {

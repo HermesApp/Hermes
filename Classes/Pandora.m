@@ -10,9 +10,69 @@
 
 @end
 
+static NSString *lowerrs[] = {
+  [0] = @"Internal Pandora error",
+  [1] = @"Pandora is in Maintenance Mode",
+  [2] = @"URL is missing method parameter",
+  [3] = @"URL is missing auth token",
+  [4] = @"URL is missing partner ID",
+  [5] = @"URL is missing user ID",
+  [6] = @"A secure protocol is required for this request",
+  [7] = @"A certificate is required for the request",
+  [8] = @"Paramter type mismatch",
+  [9] = @"Parameter is missing",
+  [10] = @"Parameter value is invalid",
+  [11] = @"API version is not supported",
+  [12] = @"Pandora is not available in this country",
+  [13] = @"Bad sync time",
+  [14] = @"Unknown method name",
+  [15] = @"Wrong protocol used"
+};
+
+static NSString *hierrs[] = {
+  [0] = @"Read only mode",
+  [1] = @"Invalid authentication token",
+  [2] = @"Invalid partner login",
+  [3] = @"Listener not authorized",
+  [4] = @"User not authorized",
+  [5] = @"Station limit reached",
+  [6] = @"Station does not exist",
+  [7] = @"Complimentary period already in use",
+  [8] = @"Call not allowed",
+  [9] = @"Device not found",
+  [10] = @"Partner not authorized",
+  [11] = @"Invalid username",
+  [12] = @"Invalid password",
+  [13] = @"Username already exists",
+  [14] = @"Device already associated to account",
+  [15] = @"Upgrade, device model is invalid",
+  [18] = @"Explicit PIN incorrect",
+  [20] = @"Explicit PIN malformed",
+  [23] = @"Device model invalid",
+  [24] = @"ZIP code invalid",
+  [25] = @"Birth year invalid",
+  [26] = @"Birth year too young",
+  [27] = @"Invalid country code",
+  [28] = @"Invalid gender",
+  [32] = @"Cannot remove all seeds",
+  [34] = @"Device disabled",
+  [35] = @"Daily trial limit reached",
+  [36] = @"Invalid sponsor",
+  [37] = @"User already used trial"
+};
+
 @implementation Pandora
 
 @synthesize stations;
+
++ (NSString*) errorString: (int) code {
+  if (code < 16) {
+    return lowerrs[code];
+  } else if (code >= 1000 && code <= 1037) {
+    return hierrs[code - 1000];
+  }
+  return nil;
+}
 
 - (id) init {
   if ((self = [super init])) {
@@ -28,10 +88,17 @@
 }
 
 - (void) logout {
+  [self logoutNoNotify];
   [self notify: @"hermes.logged-out" with:nil];
+}
 
+- (void) logoutNoNotify {
   [stations removeAllObjects];
   user_auth_token = nil;
+  partner_auth_token = nil;
+  partner_id = nil;
+  user_id = nil;
+  sync_time = start_time = 0;
 }
 
 - (BOOL) authenticated {
