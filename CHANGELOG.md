@@ -3,7 +3,11 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...master)
 
 * [added] Remember stations drawer width across application restarts
+* [added] Keyboard shortcut to edit a station (⇧+⌘+d)
 * [fixed] General UI tweaks for better quality and a better application
+* [fixed] When deletion of a seed fails, have a better notification
+* [fixed] Error handling (reauthentication and during authentication) working
+          again
 
 # Version 1.1.1 (5/20/12)
 
