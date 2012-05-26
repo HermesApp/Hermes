@@ -1,6 +1,6 @@
-# Version 1.1.2 (unreleased)
+# Version 1.1.2 (5/26/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...v1.1.2)
 
 * [added] Remember stations drawer width across application restarts
 * [added] Keyboard shortcut to edit a station (⇧+⌘+d)
