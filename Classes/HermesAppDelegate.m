@@ -203,6 +203,7 @@
 - (void) handlePandoraError: (NSNotification*) notification {
   NSString *err  = [[notification userInfo] objectForKey:@"error"];
   NSNumber *nscode = [[notification userInfo] objectForKey:@"code"];
+  NSLogd(@"error received %@", [notification userInfo]);
 
   if (nscode != nil) {
     int code = [nscode intValue];
