@@ -128,6 +128,9 @@
 
     [info setValue:request forKey:@"request"];
     [info setValue:fault   forKey:@"error"];
+    if (res != nil) {
+      [info setValue:[res objectForKey:@"code"] forKey:@"code"];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
                                                         object:self
                                                       userInfo:info];

@@ -197,9 +197,13 @@ static NSString *hierrs[] = {
       [self notify:@"hermes.authenticated" with:nil];
     } else {
       NSLogd(@"Retrying request...");
-      [req setResponse:[[NSMutableData alloc] init]];
-      [[req request] setObject: user_auth_token forKey:@"userAuthToken"];
-      [self sendRequest:req];
+      PandoraRequest *newreq = [self defaultRequest:[req method]];
+      [newreq setRequest:[req request]];
+      [[newreq request] setObject:user_auth_token forKey:@"userAuthToken"];
+      [newreq setCallback:[req callback]];
+      [newreq setTls:[req tls]];
+      [newreq setEncrypted:[req encrypted]];
+      [self sendRequest:newreq];
     }
   }];
   return [self sendRequest:r];
