@@ -105,6 +105,7 @@ BOOL playOnStart = YES;
   if (playing) {
     [playing stop];
   }
+  [loader cancel];
   [self setPlaying:nil];
   lastImgSrc = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hermes.volume"];
@@ -365,6 +366,7 @@ BOOL playOnStart = YES;
   }
 
   [playing stop];
+  [loader cancel];
   [[NSApp delegate] setCurrentView:playbackView];
   [toolbar setVisible:YES];
 
