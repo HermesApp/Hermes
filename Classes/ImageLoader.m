@@ -5,7 +5,7 @@
 @synthesize data, loadedURL;
 
 - (void) dealloc {
-  [prev cancel];
+  [self cancel];
 }
 
 - (void) notifyImageLoaded {
@@ -14,16 +14,19 @@
 }
 
 - (void) loadImageURL: (NSString*) url {
-  if (prev != nil) {
-    [prev cancel];
-  }
-
+  [self cancel];
   [self setLoadedURL:url];
-
   [self setData:[NSMutableData data]];
 
   NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
   prev = [[NSURLConnection alloc] initWithRequest:req delegate:self];
+}
+
+- (void) cancel {
+  if (prev != nil) {
+    [prev cancel];
+    prev = nil;
+  }
 }
 
 - (void)connection:(NSURLConnection *)connection

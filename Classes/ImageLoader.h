@@ -8,5 +8,6 @@
 @property (retain) NSString *loadedURL;
 
 - (void) loadImageURL: (NSString*) url;
+- (void) cancel;
 
 @end
