@@ -89,11 +89,11 @@ static NSString *hierrs[] = {
 
 - (void) logout {
   [self logoutNoNotify];
+  [stations removeAllObjects];
   [self notify: @"hermes.logged-out" with:nil];
 }
 
 - (void) logoutNoNotify {
-  [stations removeAllObjects];
   user_auth_token = nil;
   partner_auth_token = nil;
   partner_id = nil;
