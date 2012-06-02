@@ -204,7 +204,7 @@ BOOL playOnStart = YES;
 }
 
 - (void) imageLoaded: (NSNotification*) not {
-  if ([not object] != loader) {
+  if ([not object] != loader || playing == nil || [playing playing] == nil) {
     return;
   }
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
