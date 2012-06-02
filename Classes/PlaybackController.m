@@ -204,9 +204,11 @@ BOOL playOnStart = YES;
 }
 
 - (void) imageLoaded: (NSNotification*) not {
-  if ([not object] != loader || playing == nil || [playing playing] == nil) {
+  assert([not object] == loader);
+  if (playing == nil || [playing playing] == nil) {
     return;
   }
+
   NSImage *image = [[NSImage alloc] initWithData: [loader data]];
   NSImage *growlImage = image;
 
