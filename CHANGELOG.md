@@ -1,3 +1,12 @@
+# Version 1.1.3 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.2...master)
+
+* [added] When an error happens because the network is having trouble, there is
+          now a button to retry the last request 
+* [fixed] Stations no longer randomly remove themselves when a new
+          authentication token is fetched
+
 # Version 1.1.2 (5/26/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.1...v1.1.2)
