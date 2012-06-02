@@ -150,7 +150,7 @@
 }
 
 - (void) retry {
-  if (tries > 6) {
+  if (tries > 2) {
     NSLogd(@"Retried too many times, just nexting...");
     /* If we retried a bunch and it didn't work, the most likely cause is that
        the listed URL for the song has since expired. This probably also means
