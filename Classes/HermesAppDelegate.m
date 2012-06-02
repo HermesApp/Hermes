@@ -204,9 +204,15 @@
   NSString *err  = [[notification userInfo] objectForKey:@"error"];
   NSNumber *nscode = [[notification userInfo] objectForKey:@"code"];
   NSLogd(@"error received %@", [notification userInfo]);
+  /* If this is a generic error (like a network error) it's possible to retry.
+     Otherewise if it's a Pandora error (with a code listed) there's likely
+     nothing we can do about it */
+  [errorButton setHidden:FALSE];
+  lastRequest = nil;
 
   if (nscode != nil) {
     int code = [nscode intValue];
+    [errorButton setHidden:TRUE];
 
     switch (code) {
       case INVALID_AUTH_TOKEN: {
@@ -247,9 +253,16 @@
     }
   }
 
+  lastRequest = [[notification userInfo] objectForKey:@"request"];
   [self setCurrentView:errorView];
   [errorLabel setStringValue:err];
   [window orderFront:nil];
+}
+
+- (void) retry:(id)sender {
+  if (lastRequest == nil) return;
+  [pandora sendRequest:lastRequest];
+  lastRequest = nil;
 }
 
 - (void) handlePandoraLoggedOut: (NSNotification*) notification {

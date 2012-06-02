@@ -7,6 +7,7 @@
 @class PlaybackController;
 @class HistoryController;
 @class StationController;
+@class PandoraRequest;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
 
@@ -19,6 +20,8 @@
   /* Pandora error view */
   IBOutlet NSView *errorView;
   IBOutlet NSTextField *errorLabel;
+  IBOutlet NSButton *errorButton;
+  PandoraRequest *lastRequest;
 
   IBOutlet NSWindow *window;
   IBOutlet NSWindow *newStationSheet;
@@ -49,5 +52,7 @@
 
 - (NSString*) getCachedUsername;
 - (NSString*) getCachedPassword;
+
+- (IBAction) retry:(id)sender;
 
 @end
