@@ -121,12 +121,6 @@ BOOL playOnStart = YES;
    object:nil];
 }
 
-- (void) enableAllToolbarItems {
-  for (NSButton *b in [toolbar items]) {
-    [b setEnabled:YES];
-  }
-}
-
 - (void) showSpinner {
   [songLoadingProgress setHidden:NO];
   [songLoadingProgress startAnimation:nil];
@@ -241,7 +235,9 @@ BOOL playOnStart = YES;
 
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */
 - (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
-  return [theItem isEnabled];
+  if (theItem != like) return YES;
+  if (playing == nil || [playing playing] == nil) return YES;
+  return [[[playing playing] nrating] intValue] == 0;
 }
 
 /* Called whenever the playing stream changes state */
@@ -342,7 +338,6 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  [self enableAllToolbarItems];
   if ([[song nrating] intValue] == 1) {
     [like setEnabled:NO];
   } else {
