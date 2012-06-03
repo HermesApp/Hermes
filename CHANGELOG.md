@@ -1,3 +1,10 @@
+# Version 1.1.4 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.3...master)
+
+* [added] Preferences for tweaking how software update works
+* [fixed] Toolbar items no longer randomly disable themselves
+
 # Version 1.1.3 (6/2/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.2...v1.1.3)
