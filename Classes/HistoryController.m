@@ -44,7 +44,6 @@
 - (IBAction) closeHistory:(id)sender {
   [NSApp endSheet:history];
   [history orderOut:self];
-  [[[NSApp delegate] playback] enableAllToolbarItems];
 }
 
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index {
