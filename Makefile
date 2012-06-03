@@ -6,13 +6,13 @@ DEBUGGER      = gdb
 all: hermes
 
 hermes:
-				$(XCB) -configuration $(CONFIGURATION)
+	$(XCB) -configuration $(CONFIGURATION)
 
 run: hermes
-				$(HERMES)
+	$(HERMES)
 
 dbg: hermes
-				$(DEBUGGER) $(HERMES)
+	$(DEBUGGER) $(HERMES)
 
 archive:
-				$(XCB) -scheme Hermes archive
+	$(XCB) -scheme Hermes archive
