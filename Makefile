@@ -15,4 +15,4 @@ dbg: hermes
 	$(DEBUGGER) $(HERMES)
 
 archive:
-	$(XCB) -scheme Hermes archive
+	$(XCB) -configuration Release -target 'Build sparkle metadata'
