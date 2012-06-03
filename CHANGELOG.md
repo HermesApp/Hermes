@@ -1,6 +1,6 @@
-# Version 1.1.3 (unreleased)
+# Version 1.1.3 (6/2/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.2...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.2...v1.1.3)
 
 * [added] When an error happens because the network is having trouble, there is
           now a button to retry the last request 
