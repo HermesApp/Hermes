@@ -1,16 +1,17 @@
-# Version 1.1.4 (unreleased)
+# Version 1.1.4 (6/5/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.3...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.3...v1.1.4)
 
 * [added] Preferences for tweaking how software update works
 * [fixed] Toolbar items no longer randomly disable themselves
+* [fixed] Fix a bug fetching songs from pandora with bad formats specified
 
 # Version 1.1.3 (6/2/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.2...v1.1.3)
 
 * [added] When an error happens because the network is having trouble, there is
-          now a button to retry the last request 
+          now a button to retry the last request
 * [fixed] Stations no longer randomly remove themselves when a new
           authentication token is fetched
 
