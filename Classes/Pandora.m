@@ -254,7 +254,7 @@ static NSString *hierrs[] = {
 
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:[station token] forKey:@"stationToken"];
-  [d setObject:@"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_192_MP3"
+  [d setObject:@"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_128_MP3"
         forKey:@"additionalAudioUrl"];
 
   PandoraRequest *r = [self defaultRequest:@"station.getPlaylist"];
@@ -280,10 +280,28 @@ static NSString *hierrs[] = {
       [song setTitleUrl: [s objectForKey:@"songDetailUrl"]];
       [song setStationToken:[station token]];
 
-      NSArray *urls = [s objectForKey:@"additionalAudioUrl"];
-      [song setLowUrl:[urls objectAtIndex:0]];
-      [song setMedUrl:[urls objectAtIndex:1]];
-      [song setHighUrl:[urls objectAtIndex:2]];
+      id _urls = [s objectForKey:@"additionalAudioUrl"];
+      if ([_urls isKindOfClass:[NSArray class]]) {
+        NSArray *urls = _urls;
+        [song setLowUrl:[urls objectAtIndex:0]];
+        if ([urls count] > 1) {
+          [song setMedUrl:[urls objectAtIndex:1]];
+        } else {
+          [song setMedUrl:[song lowUrl]];
+          NSLog(@"bad medium format specified in request");
+        }
+        if ([urls count] > 2) {
+          [song setHighUrl:[urls objectAtIndex:2]];
+        } else {
+          [song setHighUrl:[song medUrl]];
+          NSLog(@"bad high format specified in request");
+        }
+      } else {
+        NSLog(@"all bad formats in request?");
+        [song setLowUrl:_urls];
+        [song setMedUrl:_urls];
+        [song setHighUrl:_urls];
+      }
 
       [songs addObject: song];
     };
