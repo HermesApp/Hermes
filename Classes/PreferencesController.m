@@ -6,11 +6,14 @@
 @implementation PreferencesController
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+  NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
 
-  if ([[defaults objectForKey:LAST_PREF_PANE] isEqual:@"playback"]) {
+  if ([last isEqual:@"playback"]) {
     [self setPreferenceView:playback as:@"playback"];
     [toolbar setSelectedItemIdentifier:@"playback"];
+  } else if ([last isEqual:@"network"]) {
+    [self setPreferenceView:network as:@"network"];
+    [toolbar setSelectedItemIdentifier:@"network"];
   } else {
     [self setPreferenceView:general as:@"general"];
     [toolbar setSelectedItemIdentifier:@"general"];
@@ -45,6 +48,10 @@
 
 - (IBAction) showPlayback: (id) sender {
   [self setPreferenceView:playback as:@"playback"];
+}
+
+- (IBAction) showNetwork: (id) sender {
+  [self setPreferenceView:network as:@"network"];
 }
 
 @end
