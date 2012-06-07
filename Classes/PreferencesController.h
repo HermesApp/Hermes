@@ -16,6 +16,11 @@
 #define DRAWER_WIDTH          @"drawerWidth"
 #define DESIRED_QUALITY       @"audioQuality"
 #define LAST_PREF_PANE        @"lastPrefPane"
+#define ENABLED_PROXY         @"enabledProxy"
+#define PROXY_HTTP_HOST       @"httpProxyHost"
+#define PROXY_HTTP_PORT       @"httpProxyPort"
+#define PROXY_SOCKS_HOST      @"socksProxyHost"
+#define PROXY_SOCKS_PORT      @"socksProxyPort"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
@@ -28,19 +33,28 @@
     forKeyPath:PREF_PATH(y) context:nil]
 #define PREF_KEY_VALUE(x) [[PREF_CONTROLLER values] valueForKey:(x)]
 #define PREF_KEY_BOOL(x) [(PREF_KEY_VALUE(x)) boolValue]
+#define PREF_KEY_SET_BOOL(x, y)                                                \
+    [[NSUserDefaults standardUserDefaults] setBool:y forKey:x]
 
 #define QUALITY_HIGH 0
 #define QUALITY_MED  1
 #define QUALITY_LOW  2
 
+#define PROXY_SYSTEM 0
+#define PROXY_HTTP   1
+#define PROXY_SOCKS  2
+
 @interface PreferencesController : NSObject <NSWindowDelegate> {
   IBOutlet NSToolbar *toolbar;
   IBOutlet NSView *general;
   IBOutlet NSView *playback;
+  IBOutlet NSView *network;
   IBOutlet NSWindow *window;
 }
 
+/* Selecting views */
 - (IBAction) showGeneral: (id) sender;
 - (IBAction) showPlayback: (id) sender;
+- (IBAction) showNetwork: (id) sender;
 
 @end

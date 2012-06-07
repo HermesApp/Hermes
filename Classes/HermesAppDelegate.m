@@ -167,6 +167,8 @@
   [app_defaults setObject:@"1" forKey:PLEASE_GROWL_NEW];
   [app_defaults setObject:@"1" forKey:PLEASE_BIND_MEDIA];
   [app_defaults setObject:@"0" forKey:PLEASE_CLOSE_DRAWER];
+  [app_defaults setObject:[NSNumber numberWithInt:PROXY_SYSTEM]
+                   forKey:ENABLED_PROXY];
   [app_defaults setObject:[NSNumber numberWithInt:QUALITY_MED]
                    forKey:DESIRED_QUALITY];
   [app_defaults setObject:[NSNumber numberWithInt:130] forKey:DRAWER_WIDTH];
