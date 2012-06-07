@@ -10,35 +10,30 @@
 
 #import "Growler.h"
 #import "PreferencesController.h"
-
-static Growler *growler = nil;
+#import "Song.h"
 
 @implementation Growler
 
-+ (void) subscribe {
-  if (growler == nil) {
-    growler = [[Growler alloc] init];
-    [GrowlApplicationBridge setGrowlDelegate:growler];
-  }
+- (id) init {
+  PREF_OBSERVE_VALUE(self, PLEASE_GROWL);
+  return self;
 }
 
-+ (void) unsubscribe {
-  growler = nil;
-  [GrowlApplicationBridge setGrowlDelegate:nil];
+- (void) dealloc {
+  PREF_UNOBSERVE_VALUES(self, PLEASE_GROWL);
 }
 
-+ (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL)n {
-  if (growler == nil) {
-    return;
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+      change:(NSDictionary *)change context:(void *)context {
+  if (PREF_KEY_BOOL(PLEASE_GROWL)) {
+    [GrowlApplicationBridge setGrowlDelegate:self];
   }
-
-  [growler growl:song withImage:image isNew:n];
 }
 
 - (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL)n {
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if ((n && ![defaults boolForKey:PLEASE_GROWL_NEW]) ||
-      (!n && ![defaults boolForKey:PLEASE_GROWL_PLAY])) {
+  if (!PREF_KEY_BOOL(PLEASE_GROWL) ||
+      (n && !PREF_KEY_BOOL(PLEASE_GROWL_NEW)) ||
+      (!n && !PREF_KEY_BOOL(PLEASE_GROWL_PLAY))) {
     return;
   }
 
