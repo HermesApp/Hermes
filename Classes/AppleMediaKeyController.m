@@ -26,12 +26,13 @@
 //
 
 #import "AppleMediaKeyController.h"
+#import "PreferencesController.h"
 
 NSString * const MediaKeyPlayPauseNotification = @"MediaKeyPlayPauseNotification";
 NSString * const MediaKeyNextNotification = @"MediaKeyNextNotification";
 NSString * const MediaKeyPreviousNotification = @"MediaKeyPreviousNotification";
 
-AppleMediaKeyController *mediaKeyController;
+static AppleMediaKeyController *mediaKeyController = nil;
 
 #define NX_KEYSTATE_UP      0x0A
 #define NX_KEYSTATE_DOWN    0x0B
@@ -40,20 +41,10 @@ AppleMediaKeyController *mediaKeyController;
 
 @synthesize eventPort = _eventPort;
 
-+ (void) bindKeys {
-  if (mediaKeyController == nil) {
-    mediaKeyController = [[AppleMediaKeyController alloc] init];
-  }
-}
-
-+ (void) unbindKeys {
-  mediaKeyController = nil;
-}
-
 CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
   /* If we're not currently binding keys, don't do anything and let someone
      else take care of this event */
-  if (mediaKeyController == nil) {
+  if (mediaKeyController == nil || !mediaKeyController->listening) {
     return event;
   }
   if(type == kCGEventTapDisabledByTimeout)
@@ -100,44 +91,58 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
   return event;
 }
 
-- (id)init {
-  if((self = [super init])) {
-    CFRunLoopRef runLoop;
+- (id) init {
+  listening = FALSE;
+  PREF_OBSERVE_VALUE(self, PLEASE_BIND_MEDIA);
+  /* This should be a singleton class */
+  assert(mediaKeyController == nil);
+  mediaKeyController = self;
+  return [super init];
+}
 
-    _eventPort = CGEventTapCreate(kCGSessionEventTap,
-                                  kCGHeadInsertEventTap,
-                                  kCGEventTapOptionDefault,
-                                  CGEventMaskBit(NX_SYSDEFINED),
-                                  tapEventCallback,
-                                  (__bridge void*) self);
+- (void) listen {
+  CFRunLoopRef runLoop;
+  assert(!listening);
+  listening = TRUE;
 
-    if(_eventPort == NULL) {
-      NSLogd(@"Fatal Error: Event Tap could not be created");
-      return self;
-    }
+  _eventPort = CGEventTapCreate(kCGSessionEventTap,
+                                kCGHeadInsertEventTap,
+                                kCGEventTapOptionDefault,
+                                CGEventMaskBit(NX_SYSDEFINED),
+                                tapEventCallback,
+                                (__bridge void*) self);
+  assert(_eventPort != NULL);
 
-    _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorSystemDefault, _eventPort, 0);
+  _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorSystemDefault, _eventPort, 0);
+  assert(_runLoopSource != NULL);
+  runLoop = CFRunLoopGetCurrent();
+  assert(runLoop != NULL);
+  CFRunLoopAddSource(runLoop, _runLoopSource, kCFRunLoopCommonModes);
+  NSLogd(@"Bound the media keys");
+}
 
-    if(_runLoopSource == NULL) {
-      NSLogd(@"Fatal Error: Run Loop Source could not be created");
-      return self;
-    }
+- (void) unlisten {
+  assert(listening);
+  listening = FALSE;
+  CFRelease(_eventPort);
+  CFRelease(_runLoopSource);
+  NSLogd(@"Unbound the media keys");
+}
 
-    runLoop = CFRunLoopGetCurrent();
-
-    if(runLoop == NULL) {
-      NSLogd(@"Fatal Error: Couldn't get current threads Run Loop");
-      return self;
-    }
-
-    CFRunLoopAddSource(runLoop, _runLoopSource, kCFRunLoopCommonModes);
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+      change:(NSDictionary *)change context:(void *)context {
+  if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
+    if (!listening) [self listen];
+  } else if (listening) {
+    [self unlisten];
   }
-  return self;
 }
 
 - (void)dealloc {
-  CFRelease(_eventPort);
-  CFRelease(_runLoopSource);
+  PREF_UNOBSERVE_VALUES(self, PLEASE_BIND_MEDIA);
+  if (listening) {
+    [self unlisten];
+  }
 }
 
 @end

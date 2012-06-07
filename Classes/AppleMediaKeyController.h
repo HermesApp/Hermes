@@ -33,10 +33,9 @@ extern NSString * const MediaKeyPreviousNotification;
 @interface AppleMediaKeyController : NSObject {
   CFMachPortRef _eventPort;
   CFRunLoopSourceRef _runLoopSource;
-}
 
-+ (void) bindKeys;
-+ (void) unbindKeys;
+  BOOL listening;
+}
 
 @property(nonatomic, assign, readonly) CFMachPortRef eventPort;
 
