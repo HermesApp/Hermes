@@ -172,7 +172,7 @@ BOOL playOnStart = YES;
 - (void) songRated: (NSNotification*) not {
   Song *song = [[not userInfo] objectForKey:@"song"];
   if (song) {
-    [Scrobbler setPreference:song loved:[[song nrating] intValue] == 1];
+    [SCROBBLER setPreference:song loved:[[song nrating] intValue] == 1];
   }
   [self hideSpinner];
 }
@@ -293,7 +293,7 @@ BOOL playOnStart = YES;
      figuring out when a track should be scrobbled */
   if (!scrobbleSent && dur > 30 && (prog * 2 > dur || prog > 4 * 60)) {
     scrobbleSent = YES;
-    [Scrobbler scrobble:[playing playing] state:FinalStatus];
+    [SCROBBLER scrobble:[playing playing] state:FinalStatus];
   }
 }
 
