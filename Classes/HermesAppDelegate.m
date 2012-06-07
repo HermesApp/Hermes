@@ -90,6 +90,40 @@
   [view setFrame:frame];
 }
 
+- (void) migrateDefaults:(NSUserDefaults*) defaults {
+  NSMutableDictionary *map = [NSMutableDictionary dictionary];
+  [map setObject:PLEASE_BIND_MEDIA forKey:@"hermes.please-bind-media"];
+  [map setObject:PLEASE_SCROBBLE forKey:@"hermes.please-scrobble"];
+  [map setObject:PLEASE_SCROBBLE_LIKES forKey:@"hermes.please-scrobble-likes"];
+  [map setObject:ONLY_SCROBBLE_LIKED forKey:@"hermes.only-scrobble-likes"];
+  [map setObject:PLEASE_GROWL forKey:@"hermes.please-growl"];
+  [map setObject:PLEASE_GROWL_NEW forKey:@"hermes.please-growl-new"];
+  [map setObject:PLEASE_GROWL_PLAY forKey:@"hermes.please-growl-play"];
+  [map setObject:PLEASE_CLOSE_DRAWER forKey:@"hermes.please-close-drawer"];
+  [map setObject:DRAWER_WIDTH forKey:@"hermes.drawer-width"];
+  [map setObject:DESIRED_QUALITY forKey:@"hermes.audio-quality"];
+  [map setObject:LAST_PREF_PANE forKey:@"hermes.last-pref-pane"];
+
+  NSDictionary *d = [defaults dictionaryRepresentation];
+
+  for (NSString *key in d) {
+    NSString *newKey = [map objectForKey:key];
+    if (newKey == nil) continue;
+    [defaults setObject:[defaults objectForKey:key]
+                 forKey:[map objectForKey:key]];
+    [defaults removeObjectForKey:key];
+  }
+
+  NSString *s = [defaults objectForKey:DESIRED_QUALITY];
+  if ([s isEqualToString:@"high"]) {
+    [defaults setInteger:QUALITY_HIGH forKey:DESIRED_QUALITY];
+  } else if ([s isEqualToString:@"med"]) {
+    [defaults setInteger:QUALITY_MED forKey:DESIRED_QUALITY];
+  } else if ([s isEqualToString:@"low"]) {
+    [defaults setInteger:QUALITY_LOW forKey:DESIRED_QUALITY];
+  }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   if ([self isLion]) {
     [window setRestorable:YES];
@@ -139,6 +173,7 @@
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults registerDefaults:app_defaults];
+  [self migrateDefaults:defaults];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
