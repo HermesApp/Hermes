@@ -106,17 +106,25 @@
 
 - (void) setAudioStream {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  NSString *quality = [defaults objectForKey:DESIRED_QUALITY];
   NSURL *url;
-  if ([quality isEqualToString:QUALITY_HIGH]) {
-    NSLogd(@"high quality url");
-    url = [NSURL URLWithString:[playing highUrl]];
-  } else if ([quality isEqualToString:QUALITY_LOW]) {
-    NSLogd(@"low quality url");
-    url = [NSURL URLWithString:[playing lowUrl]];
-  } else {
-    NSLogd(@"medium quality url");
-    url = [NSURL URLWithString:[playing medUrl]];
+
+  NSLogd(@"%ld", [defaults integerForKey:DESIRED_QUALITY]);
+
+  switch ([defaults integerForKey:DESIRED_QUALITY]) {
+    case QUALITY_HIGH:
+      NSLogd(@"quality high");
+      url = [NSURL URLWithString:[playing highUrl]];
+      break;
+    case QUALITY_LOW:
+      NSLogd(@"quality low");
+      url = [NSURL URLWithString:[playing lowUrl]];
+      break;
+
+    case QUALITY_MED:
+    default:
+      NSLogd(@"quality med");
+      url = [NSURL URLWithString:[playing medUrl]];
+      break;
   }
   assert(url != nil);
   AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
