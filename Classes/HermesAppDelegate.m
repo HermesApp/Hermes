@@ -19,7 +19,8 @@
 
 @implementation HermesAppDelegate
 
-@synthesize stations, auth, playback, pandora, window, history, station;
+@synthesize stations, auth, playback, pandora, window, history, station,
+            growler, scrobbler;
 
 - (bool) isLion {
   static SInt32 MacVersion = 0;
@@ -139,12 +140,6 @@
   [defaults registerDefaults:app_defaults];
   if ([defaults boolForKey:PLEASE_SCROBBLE]) {
     [Scrobbler subscribe];
-  }
-  if ([defaults boolForKey:PLEASE_GROWL]) {
-    [Growler subscribe];
-  }
-  if ([defaults boolForKey:PLEASE_BIND_MEDIA]) {
-    [AppleMediaKeyController bindKeys];
   }
 }
 

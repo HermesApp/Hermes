@@ -8,6 +8,8 @@
 @class HistoryController;
 @class StationController;
 @class PandoraRequest;
+@class Growler;
+@class Scrobbler;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
 
@@ -26,11 +28,14 @@
   IBOutlet NSWindow *window;
   IBOutlet NSWindow *newStationSheet;
 
+  /* Objects */
   IBOutlet StationsController *stations;
   IBOutlet AuthController *auth;
   IBOutlet PlaybackController *playback;
   IBOutlet HistoryController *history;
   IBOutlet StationController *station;
+  IBOutlet Growler *growler;
+  IBOutlet Scrobbler *scrobbler;
 
   NSMenu *menu;
 }
@@ -42,6 +47,8 @@
 @property (retain) PlaybackController *playback;
 @property (retain) StationController *station;
 @property (retain) Pandora *pandora;
+@property (retain) Growler *growler;
+@property (retain) Scrobbler *scrobbler;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;

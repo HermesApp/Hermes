@@ -3,14 +3,13 @@
 //  Hermes
 //
 
-#import "Song.h"
 #import <Growl/GrowlApplicationBridge.h>
 
-@interface Growler : NSObject<GrowlApplicationBridgeDelegate>
+@class Song;
 
-+ (void) subscribe;
-+ (void) unsubscribe;
-+ (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL) n;
+#define GROWLER [[NSApp delegate] growler]
+
+@interface Growler : NSObject<GrowlApplicationBridgeDelegate>
 
 - (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL) n;
 
