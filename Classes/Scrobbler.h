@@ -14,21 +14,15 @@ typedef enum scrobblestate {
   FinalStatus
 } ScrobbleState;
 
+#define SCROBBLER [[NSApp delegate] scrobbler]
+
 @interface Scrobbler : NSObject {
   FMEngine *engine;
   NSString *authToken;
   NSString *sessionToken;
   NSTimer *timer;
+  FMCallback errorChecker;
 }
-
-+ (void) subscribe;
-+ (void) unsubscribe;
-+ (void) setPreference: (Song*)song loved:(BOOL)loved;
-+ (void) scrobble: (Song*) song state: (ScrobbleState) status;
-
-@property (retain) FMEngine *engine;
-@property (retain) NSString *authToken;
-@property (retain) NSString *sessionToken;
 
 - (void) fetchAuthToken;
 - (void) fetchSessionToken;

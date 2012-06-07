@@ -138,9 +138,6 @@
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults registerDefaults:app_defaults];
-  if ([defaults boolForKey:PLEASE_SCROBBLE]) {
-    [Scrobbler subscribe];
-  }
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {

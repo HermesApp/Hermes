@@ -15,13 +15,75 @@
 
 #define LASTFM_KEYCHAIN_ITEM @"hermes-lastfm-sk"
 
-/* Singleton instance of the Scrobbler class used globally */
-static Scrobbler *subscriber = nil;
-static FMCallback errorChecker;
-
 @implementation Scrobbler
 
-@synthesize engine, authToken, sessionToken;
+/**
+ * @brief Creates a global instance of a Scrobbler, if necessary
+ *
+ * Also begins fetching of session keys for the last.fm API
+ */
+- (id) init {
+  engine = [[FMEngine alloc] init];
+
+  /* Odd hack so we can use 'self' in the block */
+  __block Scrobbler *bself = self;
+  errorChecker = ^(NSData *data, NSError *error) {
+    if (error != nil) {
+      [bself error:[error localizedDescription]];
+      return;
+    }
+    SBJsonParser *parser = [[SBJsonParser alloc] init];
+    NSDictionary *object = [parser objectWithData:data];
+
+    if ([object objectForKey:@"error"] != nil) {
+      NSLogd(@"%@", object);
+      [bself error:[object objectForKey:@"message"]];
+    }
+  };
+
+  PREF_OBSERVE_VALUE(self, PLEASE_SCROBBLE);
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(songPlayed:)
+           name:@"song.playing"
+         object:nil];
+  return self;
+}
+
+- (void) dealloc {
+  if (timer != nil && [timer isValid]) {
+    [timer invalidate];
+  }
+  PREF_UNOBSERVE_VALUES(self, PLEASE_SCROBBLE);
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+      change:(NSDictionary *)change context:(void *)context {
+  NSLogd(@"here");
+  if (PREF_KEY_BOOL(PLEASE_SCROBBLE)) {
+    /* Try to get the saved session token, otherwise get a new one */
+    NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
+    if (str == nil || [@"" isEqual:str]) {
+      NSLogd(@"No saved sesssion token for last.fm, fetching another");
+      [self fetchAuthToken];
+    } else {
+      NSLogd(@"Found saved sessionn token found for last.fm");
+      sessionToken = str;
+    }
+  }
+}
+
+/**
+ * @brief Callback for when a new songs plays (initializes scrobbling)
+ */
+- (void) songPlayed:(NSNotification*) not {
+  Station *station = [not object];
+  Song *playing = [station playing];
+  if (playing != nil) {
+    [self scrobble:playing state:NewSong];
+  }
+}
 
 /**
  * @brief Internal helper method to display an error message
@@ -36,106 +98,6 @@ static FMCallback errorChecker;
                     modalDelegate:self
                    didEndSelector:nil
                       contextInfo:nil];
-}
-
-/**
- * @brief Creates a global instance of a Scrobbler, if necessary
- *
- * Also begins fetching of session keys for the last.fm API
- */
-+ (void) subscribe {
-  if (subscriber == nil) {
-    subscriber = [[Scrobbler alloc] init];
-    errorChecker = ^(NSData *data, NSError *error) {
-      if (error != nil) {
-        [subscriber error:[error localizedDescription]];
-        return;
-      }
-      SBJsonParser *parser = [[SBJsonParser alloc] init];
-      NSDictionary *object = [parser objectWithData:data];
-
-      if ([object objectForKey:@"error"] != nil) {
-        NSLogd(@"%@", object);
-        [subscriber error:[object objectForKey:@"message"]];
-      }
-    };
-
-    [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(songPlayed:)
-             name:@"song.playing"
-           object:nil];
-  }
-}
-
-/**
- * @brief Deallocates the Scrobble singleton, cancelling all further
- *        API calls.
- */
-+ (void) unsubscribe {
-  subscriber = nil;
-  errorChecker = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-/**
- * @brief Helper method to send the method to the singleton.
- *
- * No action is performed if the singleton is nil
- */
-+ (void) scrobble:(Song *)song state:(ScrobbleState)status {
-  if (subscriber != nil) {
-    [subscriber scrobble:song state:status];
-  }
-}
-
-/**
- * @brief Helper used to listen to notifications about new songs
- */
-+ (void) songPlayed:(NSNotification*) notification {
-  Station *station = [notification object];
-  Song *playing = [station playing];
-  if (playing != nil && subscriber != nil) {
-    [subscriber scrobble:playing state:NewSong];
-  }
-}
-
-/**
- * @brief Helper method to send the method to the singleton.
- *
- * No action is performed if the singleton is nil
- */
-+ (void) setPreference: (Song*)song loved:(BOOL)loved {
-  if (subscriber != nil) {
-    [subscriber setPreference:song loved:loved];
-  }
-}
-
-/**
- * @brief Initializes the Scrobbler instance, fetching the saved session token
- */
-- (id) init {
-  if ((self = [super init])) {
-    [self setEngine:[[FMEngine alloc] init]];
-
-    /* Try to get the saved session token, otherwise get a new one */
-    NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
-    if (str == nil || [@"" isEqual:str]) {
-      NSLogd(@"No saved sesssion token for last.fm, fetching another");
-      [self fetchAuthToken];
-    } else {
-      NSLogd(@"Found saved sessionn token found for last.fm");
-      [self setSessionToken:str];
-    }
-  }
-
-  return self;
-}
-
-- (void) dealloc {
-  if (timer != nil && [timer isValid]) {
-    [timer invalidate];
-  }
 }
 
 /**
@@ -283,10 +245,10 @@ static FMCallback errorChecker;
 
     NSDictionary *object = [parser objectWithData:data];
 
-    [self setAuthToken:[object objectForKey:@"token"]];
+    authToken = [object objectForKey:@"token"];
 
     if (authToken == nil || [@"" isEqual:authToken]) {
-      [self setAuthToken:nil];
+      authToken = nil;
       [self error:@"Couldn't get an auth token from last.fm!"];
     } else {
       [self fetchSessionToken];
@@ -330,12 +292,12 @@ static FMCallback errorChecker;
       } else {
         [self error:[object objectForKey:@"message"]];
       }
-      [self setSessionToken:nil];
+      sessionToken = nil;
       return;
     }
 
     NSDictionary *session = [object objectForKey:@"session"];
-    [self setSessionToken:[session objectForKey:@"key"]];
+    sessionToken = [session objectForKey:@"key"];
     if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
       [self error:@"Couldn't save session token to keychain!"];
     }
