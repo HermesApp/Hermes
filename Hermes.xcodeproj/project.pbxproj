@@ -59,7 +59,6 @@
 		FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
 		FAEFFC4E132D6D2A007DC6FB /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4C132D6D2A007DC6FB /* play.png */; };
 		FAEFFC52132D6EC5007DC6FB /* fast_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC51132D6EC5007DC6FB /* fast_forward.png */; };
-		FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50CE132EFDCB00F02CE0 /* accept.png */; };
 		FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = FAFF50D0132EFDD800F02CE0 /* delete.png */; };
 /* End PBXBuildFile section */
 
@@ -526,7 +525,6 @@
 				FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */,
 				FAEFFC4E132D6D2A007DC6FB /* play.png in Resources */,
 				FAEFFC52132D6EC5007DC6FB /* fast_forward.png in Resources */,
-				FAFF50CF132EFDCB00F02CE0 /* accept.png in Resources */,
 				FAFF50D1132EFDD800F02CE0 /* delete.png in Resources */,
 				FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */,
 				FA7BF0321331832E00E26ADA /* zzs.png in Resources */,
