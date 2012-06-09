@@ -209,6 +209,15 @@ static NSString *hierrs[] = {
   return [self sendRequest:r];
 }
 
+- (BOOL) sendAuthenticatedRequest: (PandoraRequest*) req {
+  if ([self authenticated]) {
+    return [self sendRequest:req];
+  }
+  NSString *user = [[NSApp delegate] getCachedUsername];
+  NSString *pass = [[NSApp delegate] getCachedPassword];
+  return [self authenticate:user : pass : req];
+}
+
 /**
  * @brief Fetches a list of stations for the logged in user
  *
@@ -216,7 +225,6 @@ static NSString *hierrs[] = {
  * stations found are stored internally in this Pandora object.
  */
 - (BOOL) fetchStations {
-  assert([self authenticated]);
   NSLogd(@"Fetching stations...");
 
   NSMutableDictionary *d = [self defaultDictionary];
@@ -236,7 +244,7 @@ static NSString *hierrs[] = {
     [self notify:@"hermes.stations" with:nil];
   }];
 
-  return [self sendRequest:r];
+  return [self sendAuthenticatedRequest:r];
 }
 
 /**
@@ -249,7 +257,6 @@ static NSString *hierrs[] = {
  * @param station the station to fetch more songs for
  */
 - (BOOL) getFragment: (Station*) station {
-  assert([self authenticated]);
   NSLogd(@"Getting fragment for %@...", [station name]);
 
   NSMutableDictionary *d = [self defaultDictionary];
@@ -313,7 +320,7 @@ static NSString *hierrs[] = {
     [self notify:name with:d];
   }];
 
-  return [self sendRequest:r];
+  return [self sendAuthenticatedRequest:r];
 }
 
 /**
@@ -360,7 +367,6 @@ static NSString *hierrs[] = {
  *        disliked
  */
 - (BOOL) rateSong:(Song*) song as:(BOOL) liked {
-  assert([self authenticated]);
   NSLogd(@"Rating song '%@' as %d...", [song title], liked);
 
   if (liked == TRUE) {
@@ -382,7 +388,7 @@ static NSString *hierrs[] = {
     [dict setObject:song forKey:@"song"];
     [self notify:@"hermes.song-rated" with:dict];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -395,7 +401,6 @@ static NSString *hierrs[] = {
  * @param song the song to tell Pandora not to play for awhile
  */
 - (BOOL) tiredOfSong: (Song*) song {
-  assert([self authenticated]);
   NSLogd(@"Getting tired of %@...", [song title]);
 
   NSMutableDictionary *d = [self defaultDictionary];
@@ -410,7 +415,7 @@ static NSString *hierrs[] = {
     [self notify:@"hermes.song-tired" with:dict];
   }];
 
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -425,7 +430,6 @@ static NSString *hierrs[] = {
  * @param search the query string to send to Pandora
  */
 - (BOOL) search: (NSString*) search {
-  assert([self authenticated]);
   NSLogd(@"Searching for %@...", search);
 
   NSMutableDictionary *d = [self defaultDictionary];
@@ -466,7 +470,7 @@ static NSString *hierrs[] = {
     [self notify:@"hermes.search-results" with:map];
   }];
 
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -482,8 +486,6 @@ static NSString *hierrs[] = {
  * @param musicId the identifier of the song/artist to create the station for
  */
 - (BOOL) createStation: (NSString*)musicId {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:musicId forKey:@"musicToken"];
 
@@ -498,7 +500,7 @@ static NSString *hierrs[] = {
     [stations addObject:s];
     [self notify:@"hermes.station-created" with:dict];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -509,8 +511,6 @@ static NSString *hierrs[] = {
  * @param stationToken the token of the station to remove
  */
 - (BOOL) removeStation: (NSString*)stationToken {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:stationToken forKey:@"stationToken"];
 
@@ -535,7 +535,7 @@ static NSString *hierrs[] = {
 
     [self notify:@"hermes.station-removed" with:nil];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -548,8 +548,6 @@ static NSString *hierrs[] = {
  * @param to the new name of the station
  */
 - (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:stationToken forKey:@"stationToken"];
   [d setObject:name forKey:@"stationName"];
@@ -560,7 +558,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.station-renamed" with:nil];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -592,8 +590,6 @@ static NSString *hierrs[] = {
  * @param station the station to fetch information for
  */
 - (BOOL) stationInfo:(Station *)station {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:[station token]forKey:@"stationToken"];
   [d setObject:[NSNumber numberWithBool:TRUE]
@@ -631,7 +627,7 @@ static NSString *hierrs[] = {
 
     [self notify:@"hermes.station-info" with:info];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -643,8 +639,6 @@ static NSString *hierrs[] = {
  * @param feedbackId the name of the feedback to delete
  */
 - (BOOL) deleteFeedback: (NSString*)feedbackId {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:feedbackId forKey:@"feedbackId"];
 
@@ -654,7 +648,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.feedback-deleted" with:nil];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -671,8 +665,6 @@ static NSString *hierrs[] = {
  * @param station the station to add the seed to
  */
 - (BOOL) addSeed: (NSString*)token to:(Station*)station {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:token forKey:@"musicToken"];
   [d setObject:[station token] forKey:@"stationToken"];
@@ -683,7 +675,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.seed-added" with:[d objectForKey:@"result"]];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 /**
@@ -696,8 +688,6 @@ static NSString *hierrs[] = {
  * @param seedId the identifier of the seed to be removed
  */
 - (BOOL) removeSeed: (NSString*)seedId {
-  assert([self authenticated]);
-
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:seedId forKey:@"seedId"];
 
@@ -707,7 +697,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* d) {
     [self notify:@"hermes.seed-removed" with:nil];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
 @end
