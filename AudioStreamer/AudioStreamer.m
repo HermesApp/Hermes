@@ -56,7 +56,6 @@ NSString * const AS_NETWORK_CONNECTION_FAILED_STRING = @"Network connection fail
 NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Audio packets are larger than kAQDefaultBufSize.";
 
 @interface AudioStreamer ()
-@property (readwrite) AudioStreamerState state;
 
 - (void)handlePropertyChangeForFileStream:(AudioFileStreamID)inAudioFileStream
                      fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
@@ -675,7 +674,7 @@ void ASReadStreamCallBack
     switch([[NSUserDefaults standardUserDefaults] integerForKey:ENABLED_PROXY]){
       case PROXY_HTTP:
           key = kCFStreamPropertyHTTPProxy;
-          proxySettings =
+          proxySettings = (CFDictionaryRef)
             [NSMutableDictionary dictionaryWithObjectsAndKeys:
               PREF_KEY_VALUE(PROXY_HTTP_HOST), kCFStreamPropertyHTTPProxyHost,
               PREF_KEY_VALUE(PROXY_HTTP_PORT), kCFStreamPropertyHTTPProxyPort,
@@ -684,7 +683,7 @@ void ASReadStreamCallBack
 
       case PROXY_SOCKS:
           key = kCFStreamPropertySOCKSProxy;
-          proxySettings =
+          proxySettings = (CFDictionaryRef)
             [NSMutableDictionary dictionaryWithObjectsAndKeys:
               PREF_KEY_VALUE(PROXY_SOCKS_HOST), kCFStreamPropertySOCKSProxyHost,
               PREF_KEY_VALUE(PROXY_SOCKS_PORT), kCFStreamPropertySOCKSProxyPort,
