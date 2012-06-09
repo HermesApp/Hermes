@@ -5,8 +5,8 @@
  *        being listened to and such.
  */
 
-#import "FMEngine.h"
-#import "Song.h"
+#import "FMEngine/FMEngine.h"
+#import "Pandora/Song.h"
 
 typedef enum scrobblestate {
   NewSong,
