@@ -1,3 +1,9 @@
+# Version 1.1.5 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.4...master)
+
+* [fixed] An assertion no longer trips when re-authenticating with Pandora
+
 # Version 1.1.4 (6/5/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.3...v1.1.4)
