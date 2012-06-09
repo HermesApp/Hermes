@@ -25,6 +25,7 @@
 #if TARGET_OS_IPHONE
 #import <CFNetwork/CFNetwork.h>
 #endif
+#import "PreferencesController.h"
 
 #define BitRateEstimationMaxPackets 5000
 #define BitRateEstimationMinPackets 50
@@ -668,9 +669,36 @@ void ASReadStreamCallBack
     //
     // Handle proxies
     //
-    CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
-    CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
-    CFRelease(proxySettings);
+    CFDictionaryRef proxySettings;
+    bool release = false;
+    CFStringRef key;
+    switch([[NSUserDefaults standardUserDefaults] integerForKey:ENABLED_PROXY]){
+      case PROXY_HTTP:
+          key = kCFStreamPropertyHTTPProxy;
+          proxySettings =
+            [NSMutableDictionary dictionaryWithObjectsAndKeys:
+              PREF_KEY_VALUE(PROXY_HTTP_HOST), kCFStreamPropertyHTTPProxyHost,
+              PREF_KEY_VALUE(PROXY_HTTP_PORT), kCFStreamPropertyHTTPProxyPort,
+              nil];
+          break;
+
+      case PROXY_SOCKS:
+          key = kCFStreamPropertySOCKSProxy;
+          proxySettings =
+            [NSMutableDictionary dictionaryWithObjectsAndKeys:
+              PREF_KEY_VALUE(PROXY_SOCKS_HOST), kCFStreamPropertySOCKSProxyHost,
+              PREF_KEY_VALUE(PROXY_SOCKS_PORT), kCFStreamPropertySOCKSProxyPort,
+              nil];
+          break;
+
+      default:
+        proxySettings = CFNetworkCopySystemProxySettings();
+        key = kCFStreamPropertyHTTPProxy;
+        release = true;
+        break;
+    }
+    CFReadStreamSetProperty(stream, key, proxySettings);
+    if (release) { CFRelease(proxySettings); }
 
     //
     // Handle SSL connections
