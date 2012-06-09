@@ -7,7 +7,7 @@
  */
 
 #include <string.h>
-#import <SBJson/SBJson.h>
+#import <Foundation/NSJSONSerialization.h>
 
 #import "FMEngine/NSString+FMEngine.h"
 #import "Pandora/API.h"
@@ -32,8 +32,6 @@
 
 - (id) init {
   activeRequests = [[NSMutableDictionary alloc] init];
-  json_parser = [[SBJsonParser alloc] init];
-  json_writer = [[SBJsonWriter alloc] init];
   return [super init];
 }
 
@@ -70,7 +68,11 @@
   [nsrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
   /* Create the body */
-  NSData *data = [json_writer dataWithObject: [request request]];
+  NSError *error;
+  NSData *data = [NSJSONSerialization dataWithJSONObject:[request request]
+                                                 options:0
+                                                   error:&error];
+  assert(error == nil);
   if ([request encrypted]) { data = PandoraEncrypt(data); }
   [nsrequest setHTTPBody: data];
 
@@ -173,8 +175,16 @@
   NSLog(@"%@", str);
 #endif
 
-  NSDictionary *dict = [json_parser objectWithData: [request response]];
-  [self cleanupConnection:connection : dict : nil];
+  NSError *error;
+  NSDictionary *dict =
+    [NSJSONSerialization JSONObjectWithData:[request response]
+                                    options:NSJSONReadingMutableContainers
+                                      error:&error];
+  NSString *err = nil;
+  if (error != nil) {
+    err = [error localizedDescription];
+  }
+  [self cleanupConnection:connection : dict : err];
 }
 
 @end

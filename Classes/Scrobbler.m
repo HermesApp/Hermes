@@ -7,7 +7,7 @@
  * which could probably use some polishing...
  */
 
-#import <SBJson/SBJson.h>
+#import <Foundation/NSJSONSerialization.h>
 
 #import "Keychain.h"
 #import "PreferencesController.h"
@@ -25,22 +25,6 @@
  */
 - (id) init {
   engine = [[FMEngine alloc] init];
-
-  /* Odd hack so we can use 'self' in the block */
-  __block Scrobbler *bself = self;
-  errorChecker = ^(NSData *data, NSError *error) {
-    if (error != nil) {
-      [bself error:[error localizedDescription]];
-      return;
-    }
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-    NSDictionary *object = [parser objectWithData:data];
-
-    if ([object objectForKey:@"error"] != nil) {
-      NSLogd(@"%@", object);
-      [bself error:[object objectForKey:@"message"]];
-    }
-  };
 
   PREF_OBSERVE_VALUE(self, PLEASE_SCROBBLE);
   [[NSNotificationCenter defaultCenter]
@@ -61,7 +45,6 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
       change:(NSDictionary *)change context:(void *)context {
-  NSLogd(@"here");
   if (PREF_KEY_BOOL(PLEASE_SCROBBLE)) {
     /* Try to get the saved session token, otherwise get a new one */
     NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
@@ -73,6 +56,40 @@
       sessionToken = str;
     }
   }
+}
+
+typedef void(^ScrobblerCallback)(NSDictionary*);
+
+/**
+ * @brief Generates a callback for the FMEngine to handle errors
+ *
+ * @param callback the callback to be invoked with the parsed JSON object if
+ *        the JSON was received without error and parsed without error
+ * @param handles if YES, then the callback will always be invoked with valid
+ *        JSON, otherwise if the json contains a last.fm error, the error will
+ *        be handled here and the callback will not be invoked.
+ */
+- (FMCallback) errorChecker:(ScrobblerCallback)callback
+              handlesErrors:(BOOL) handles {
+  return ^(NSData *data, NSError *error) {
+    if (error != nil) {
+      [self error:[error localizedDescription]];
+      return;
+    }
+
+    NSDictionary *object =
+        [NSJSONSerialization JSONObjectWithData:data
+                                        options:NSJSONReadingMutableContainers
+                                          error:&error];
+
+    if (error != nil) {
+      [self error:[error localizedDescription]];
+    } else if (!handles && [object objectForKey:@"error"] != nil) {
+      [self error:[object objectForKey:@"message"]];
+    } else {
+      callback(object);
+    }
+  };
 }
 
 /**
@@ -143,7 +160,7 @@
   NSString *method = status == FinalStatus ? @"track.scrobble"
                                            : @"track.updateNowPlaying";
   [engine performMethod:method
-           withCallback:errorChecker
+           withCallback:[self errorChecker:^(NSDictionary* _){} handlesErrors:NO]
          withParameters:dictionary
            useSignature:YES
              httpMethod:@"POST"];
@@ -175,7 +192,7 @@
 
   /* Relevant API documentation at http://www.last.fm/api/show/track.love */
   [engine performMethod:(loved ? @"track.love" : @"track.unlove")
-           withCallback:errorChecker
+           withCallback:[self errorChecker:^(NSDictionary *_){} handlesErrors:NO]
          withParameters:dictionary
            useSignature:YES
              httpMethod:@"POST"];
@@ -237,17 +254,8 @@
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
 
   /* More info at http://www.last.fm/api/show/auth.getToken */
-  FMCallback cb = ^(NSData *data, NSError *error) {
-    if (error != nil) {
-      [self error:[error localizedDescription]];
-      return;
-    }
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-
-    NSDictionary *object = [parser objectWithData:data];
-
+  ScrobblerCallback cb = ^(NSDictionary *object) {
     authToken = [object objectForKey:@"token"];
-
     if (authToken == nil || [@"" isEqual:authToken]) {
       authToken = nil;
       [self error:@"Couldn't get an auth token from last.fm!"];
@@ -257,7 +265,7 @@
   };
 
   [engine performMethod:@"auth.getToken"
-           withCallback:cb
+           withCallback:[self errorChecker:cb handlesErrors:NO]
          withParameters:dict
            useSignature:YES
              httpMethod:@"GET"];
@@ -277,14 +285,7 @@
   [dict setObject:authToken forKey:@"token"];
 
   /* More info at http://www.last.fm/api/show/auth.getSession */
-  FMCallback cb = ^(NSData *data, NSError *error) {
-    if (error != nil) {
-      [self error:[error localizedDescription]];
-      return;
-    }
-    SBJsonParser *parser = [[SBJsonParser alloc] init];
-    NSDictionary *object = [parser objectWithData:data];
-
+  ScrobblerCallback cb = ^(NSDictionary *object) {
     if ([object objectForKey:@"error"] != nil) {
       NSNumber *code = [object objectForKey:@"error"];
 
@@ -305,7 +306,7 @@
   };
 
   [engine performMethod:@"auth.getSession"
-           withCallback:cb
+           withCallback:[self errorChecker:cb handlesErrors:YES]
          withParameters:dict
            useSignature:YES
              httpMethod:@"GET"];
