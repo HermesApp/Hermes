@@ -1,6 +1,6 @@
-#import "Pandora.h"
-#import "AudioStreamer.h"
-#import "Song.h"
+@class Pandora;
+@class Song;
+@class AudioStreamer;
 
 @interface Station : NSObject<NSCoding> {
   BOOL shouldPlaySongOnFetch;

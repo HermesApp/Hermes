@@ -6,8 +6,8 @@
 //
 
 #import "HistoryItem.h"
-#import "Song.h"
 #import "Pandora.h"
+#import "Pandora/Song.h"
 
 @implementation HistoryItem
 

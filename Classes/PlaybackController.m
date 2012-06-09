@@ -8,6 +8,8 @@
  * to these actions as well
  */
 
+#import <AudioStreamer/AudioStreamer.h>
+
 #import "AppleMediaKeyController.h"
 #import "Growler.h"
 #import "HermesAppDelegate.h"

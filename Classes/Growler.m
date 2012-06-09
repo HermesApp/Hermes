@@ -10,7 +10,7 @@
 
 #import "Growler.h"
 #import "PreferencesController.h"
-#import "Song.h"
+#import "Pandora/Song.h"
 
 @implementation Growler
 

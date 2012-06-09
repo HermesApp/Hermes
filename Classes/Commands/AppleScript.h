@@ -5,8 +5,7 @@
 //  Created by Alex Crichton on 11/19/11.
 //
 
-#import <Cocoa/Cocoa.h>
-#import "Station.h"
+#import "Pandora/Station.h"
 
 // These match iTunes (4-char codes)
 typedef enum {

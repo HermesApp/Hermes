@@ -1,8 +1,8 @@
-#import "Pandora.h"
-#import "Crypt.h"
-#import "Station.h"
-#import "Song.h"
 #import "HermesAppDelegate.h"
+#import "Pandora.h"
+#import "Pandora/Crypt.h"
+#import "Pandora/Song.h"
+#import "Pandora/Station.h"
 
 @implementation SearchResult
 

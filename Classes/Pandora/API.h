@@ -1,13 +1,14 @@
 #ifndef _API_H
 #define _API_H
 
-#import "SBJson.h"
-
 #define PANDORA_API_HOST @"tuner.pandora.com"
 #define PANDORA_API_PATH @"/services/json/"
 #define PANDORA_API_VERSION @"5"
 
 typedef void(^PandoraCallback)(NSDictionary*);
+
+@class SBJsonParser;
+@class SBJsonWriter;
 
 @interface PandoraRequest : NSObject {
   /* Internal metadata */

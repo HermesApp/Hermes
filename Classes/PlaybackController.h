@@ -1,6 +1,7 @@
 #import <Cocoa/Cocoa.h>
-#import "Station.h"
+
 #import "ImageLoader.h"
+#import "Pandora/Station.h"
 #import "Scrobbler.h"
 
 @interface PlaybackController : NSObject {

@@ -1,7 +1,7 @@
 @class Station;
 
-#import "Song.h"
-#import "API.h"
+#import "Pandora/API.h"
+#import "Pandora/Song.h"
 
 #define PARTNER_USERNAME @"iphone"
 #define PARTNER_PASSWORD @"P2E4FC0EAD3*878N92B2CDp34I0B1@388137C"

@@ -1,7 +1,5 @@
-#import <Cocoa/Cocoa.h>
-#import <Quartz/Quartz.h>
 #import "Pandora.h"
-#import "Station.h"
+#import "Pandora/Station.h"
 
 #define LAST_STATION_KEY @"hermes.last-station"
 
