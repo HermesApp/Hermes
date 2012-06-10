@@ -28,11 +28,6 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
     default:
       assert(0);
   }
-
-  if (release) {
-    /* Transfer ownership to us so we release it eventually */
-    //conn = (__bridge_transfer URLConnection*) _conn;
-  }
 }
 
 - (void) dealloc {
