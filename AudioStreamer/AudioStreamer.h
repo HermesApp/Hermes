@@ -135,6 +135,7 @@ extern NSString * const ASStatusChangedNotification;
   AudioStreamerState state;
   AudioStreamerStopReason stopReason;
   AudioStreamerErrorCode errorCode;
+  NSError *networkError;
   OSStatus err;
 
   bool discontinuous;      // flag to indicate middle of the stream
@@ -175,6 +176,9 @@ extern NSString * const ASStatusChangedNotification;
 @property (readonly) double duration;
 @property (readwrite) UInt32 bitRate;
 @property (readonly) NSDictionary *httpHeaders;
+@property (readonly) NSError *networkError;
+
++ (NSString *)stringForErrorCode:(AudioStreamerErrorCode)anErrorCode;
 
 - (id)initWithURL:(NSURL *)aURL;
 - (void)start;

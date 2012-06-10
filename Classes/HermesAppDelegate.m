@@ -5,6 +5,8 @@
  * Contains startup routines, and other interfaces with the OS
  */
 
+#import <AudioStreamer/AudioStreamer.h>
+
 #import "AppleMediaKeyController.h"
 #import "AuthController.h"
 #import "Growler.h"
@@ -139,6 +141,12 @@
     object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(handleStreamError:)
+    name:@"hermes.stream-error"
+    object:nil];
+
+  [[NSNotificationCenter defaultCenter]
    addObserver:self
    selector:@selector(handlePandoraLoggedOut:)
    name:@"hermes.logged-out"
@@ -231,6 +239,14 @@
   [[playback playing] pause];
 }
 
+- (void) handleStreamError: (NSNotification*) notification {
+  lastStationErr = [notification object];
+  [self setCurrentView:errorView];
+  NSError *err = [[lastStationErr stream] networkError];
+  [errorLabel setStringValue:[err localizedDescription]];
+  [window orderFront:nil];
+}
+
 - (void) handlePandoraError: (NSNotification*) notification {
   NSString *err  = [[notification userInfo] objectForKey:@"error"];
   NSNumber *nscode = [[notification userInfo] objectForKey:@"code"];
@@ -291,9 +307,14 @@
 }
 
 - (void) retry:(id)sender {
-  if (lastRequest == nil) return;
-  [pandora sendRequest:lastRequest];
-  lastRequest = nil;
+  if (lastRequest != nil) {
+    [pandora sendRequest:lastRequest];
+    lastRequest = nil;
+  } else if (lastStationErr != nil) {
+    [lastStationErr retry:NO];
+    [playback show];
+    lastStationErr = nil;
+  }
 }
 
 - (void) handlePandoraLoggedOut: (NSNotification*) notification {

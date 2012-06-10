@@ -29,7 +29,7 @@
 - (void) next;
 - (void) pause;
 - (void) stop;
-- (void) retry;
+- (void) retry:(BOOL)countTries;
 - (BOOL) isPaused;
 - (void) setRadio: (Pandora*) radio;
 - (BOOL) isEqual:(id)object;

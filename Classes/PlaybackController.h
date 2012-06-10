@@ -39,6 +39,7 @@
 - (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;
+- (void) show;
 
 - (BOOL) play;
 - (BOOL) pause;
