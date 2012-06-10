@@ -7,6 +7,9 @@
 
 typedef void(^PandoraCallback)(NSDictionary*);
 
+@class SBJsonParser;
+@class SBJsonWriter;
+
 @interface PandoraRequest : NSObject {
   /* Internal metadata */
   PandoraCallback callback;
@@ -38,6 +41,10 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 @interface API : NSObject {
   int64_t syncOffset;
+
+  /* JSON parsing */
+  SBJsonParser *json_parser;
+  SBJsonWriter *json_writer;
 }
 
 - (int64_t) time;
