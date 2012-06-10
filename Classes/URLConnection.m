@@ -150,7 +150,6 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 + (void) setHTTPProxy:(CFReadStreamRef)stream
                  host:(NSString*)host
                  port:(NSInteger)port {
-  NSLogd(@"HTTP proxy => %@:%ld", host, port);
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
       host, kCFStreamPropertyHTTPProxyHost,
@@ -162,7 +161,6 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 + (void) setSOCKSProxy:(CFReadStreamRef)stream
                  host:(NSString*)host
                  port:(NSInteger)port {
-  NSLogd(@"SOCKS proxy => %@:%ld", host, port);
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
       host, kCFStreamPropertySOCKSProxyHost,
