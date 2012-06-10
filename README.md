@@ -56,9 +56,18 @@ ways you can develop against Hermes if you really want to.
    around to it soon, especially if it sounds appealing to me. I take all
    suggestions/feedback!
 
-2. Take a stab at it yourself if you're brave. The project is meant to be built
-   with Xcode 4. Just send me a pull request if you've got something fixed.
+2. Take a stab at it yourself if you're brave. Just send me a pull request if
+   you've got something fixed. Here's some common things to do at the command
+   line:
+
+        make        # build everything
+        make run    # build and run the application (logging to stdout)
+        make dbg    # build and run inside gdb
+
+        # Build with the 'Release' configuration instead of 'Debug'
+        make CONFIGURATION=Release [run|dbg]
 
 ## License
 
-Code is available under the MIT License
+Code is available under the [MIT
+License](https://github.com/alexcrichton/hermes/blob/master/LICENSE).
