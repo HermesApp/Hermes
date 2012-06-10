@@ -114,7 +114,8 @@
     [defaults removeObjectForKey:key];
   }
 
-  NSString *s = [defaults objectForKey:DESIRED_QUALITY];
+  NSString *s = [defaults objectForKey:@"hermes.audio-quality"];
+  if (s == nil) return;
   if ([s isEqualToString:@"high"]) {
     [defaults setInteger:QUALITY_HIGH forKey:DESIRED_QUALITY];
   } else if ([s isEqualToString:@"med"]) {

@@ -37,7 +37,6 @@ typedef void(^PandoraCallback)(NSDictionary*);
 @end
 
 @interface API : NSObject {
-  NSMutableDictionary *activeRequests;
   int64_t syncOffset;
 }
 

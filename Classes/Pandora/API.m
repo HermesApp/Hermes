@@ -13,6 +13,7 @@
 #import "Pandora/API.h"
 #import "Pandora/Crypt.h"
 #import "PreferencesController.h"
+#import "URLConnection.h"
 
 @implementation PandoraRequest
 
@@ -31,7 +32,6 @@
 @implementation API
 
 - (id) init {
-  activeRequests = [[NSMutableDictionary alloc] init];
   return [super init];
 }
 
@@ -76,115 +76,48 @@
   if ([request encrypted]) { data = PandoraEncrypt(data); }
   [nsrequest setHTTPBody: data];
 
-  /* Fetch the response asynchronously */
-  NSURLConnection *conn = [[NSURLConnection alloc]
-    initWithRequest:nsrequest delegate:self];
-
-  [activeRequests setObject:request
-    forKey:[NSNumber numberWithInteger: [conn hash]]];
-
-  return YES;
-}
-
-/**
- * @brief Helper for getting the request associated with a connection
- *
- * @param connection the connection to get a request for
- * @return the associated PandoraRequest object
- */
-- (PandoraRequest*) dataForConnection: (NSURLConnection*)connection {
-  return [activeRequests objectForKey:
-      [NSNumber numberWithInteger:[connection hash]]];
-}
-
-/**
- * @brief Cleans up all resources associated with a connection
- *
- * @param connection the connection to clean up
- * @param res the response from Pandora (parsed JSON), or nil if there wasn't
- *        one
- * @param fault the fault message if there is one already available, or nil
- */
-- (void)cleanupConnection:(NSURLConnection *)connection : (NSDictionary*)res
-                         :(NSString*) fault {
-  PandoraRequest *request = [self dataForConnection:connection];
-
-  /* Look for a fault message in the JSON if there is one */
-  if (res != nil && fault == nil) {
-    NSString *stat = [res objectForKey: @"stat"];
-    if ([stat isEqualToString: @"fail"]) {
-      fault = [res objectForKey: @"message"];
+  /* Create the connection with necessary callback for when done */
+  URLConnection *c =
+      [URLConnection connectionForRequest:nsrequest
+                        completionHandler:^(NSData *d, NSError *e) {
+    /* Parse the JSON if we don't have an error */
+    NSDictionary *dict = nil;
+    if (e == nil) {
+      dict = [NSJSONSerialization JSONObjectWithData:d
+                                             options:NSJSONReadingMutableContainers
+                                               error:&e];
     }
-  }
+    /* If we still don't have an error, look at the JSON for an error */
+    NSString *err = e == nil ? nil : [e localizedDescription];
+    if (dict != nil && err == nil) {
+      NSString *stat = [dict objectForKey:@"stat"];
+      if ([stat isEqualToString:@"fail"]) {
+        err = [dict objectForKey:@"message"];
+      }
+    }
 
-  if (res == nil || fault != nil) {
-    NSLogd(@"%@ %@", res, fault);
+    /* If we don't have an error, then all we need to do is invoked the
+       specified callback, otherwise build the error dictionary. */
+    if (err == nil) {
+      assert(dict != nil);
+      [request callback](dict);
+      return;
+    }
+
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    if (fault == nil) {
-      fault = @"Connection error";
-    }
-    NSArray *parts = [fault componentsSeparatedByString:@"|"];
-    if ([parts count] >= 3) {
-      fault = [parts objectAtIndex:2];
-    }
-    NSLogd(@"Fault: %@", fault);
 
     [info setValue:request forKey:@"request"];
-    [info setValue:fault   forKey:@"error"];
-    if (res != nil) {
-      [info setValue:[res objectForKey:@"code"] forKey:@"code"];
+    [info setValue:err     forKey:@"error"];
+    if (dict != nil) {
+      [info setValue:[dict objectForKey:@"code"] forKey:@"code"];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
                                                         object:self
                                                       userInfo:info];
-  } else {
-    /* Only invoke the callback if there's no faults */
-    [request callback](res);
-  }
+  }];
+  [c start];
 
-  /* Always free these up */
-  [activeRequests removeObjectForKey:[NSNumber numberWithInteger: [connection hash]]];
-}
-
-/* Implementation of the NSURLDelegate protocols */
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-  PandoraRequest *request = [self dataForConnection:connection];
-  [[request response] appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection
-    didReceiveResponse:(NSHTTPURLResponse *)response {
-  if ([response statusCode] < 200 || [response statusCode] >= 300) {
-    NSLogd(@"%ld", [response statusCode]);
-    [connection cancel];
-    [self cleanupConnection:connection : NULL : @"Didn't receive 2xx response"];
-  }
-}
-
-- (void)connection:(NSURLConnection *)connection
-  didFailWithError:(NSError *)error {
-  [self cleanupConnection:connection : NULL : [error localizedDescription]];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-  PandoraRequest *request = [self dataForConnection:connection];
-#ifdef DEBUG
-  NSString *str = [[NSString alloc] initWithData:[request response]
-                                        encoding:NSASCIIStringEncoding];
-  NSLog(@"%@", str);
-#endif
-
-  NSError *error;
-  NSDictionary *dict =
-    [NSJSONSerialization JSONObjectWithData:[request response]
-                                    options:NSJSONReadingMutableContainers
-                                      error:&error];
-  NSString *err = nil;
-  if (error != nil) {
-    err = [error localizedDescription];
-  }
-  [self cleanupConnection:connection : dict : err];
+  return YES;
 }
 
 @end
