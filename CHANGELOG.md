@@ -2,7 +2,11 @@
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.4...master)
 
+* [added] Proxy configuration for just the Hermes application. Be aware that
+          software updates will still go through the system proxy instead of the
+          Hermes-configured proxy
 * [fixed] An assertion no longer trips when re-authenticating with Pandora
+* [misc ] massive internal cleanup across the code base
 
 # Version 1.1.4 (6/5/12)
 
