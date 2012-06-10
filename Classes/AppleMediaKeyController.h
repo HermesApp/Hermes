@@ -24,19 +24,13 @@
 //  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <IOKit/hidsystem/ev_keymap.h>
-
-extern NSString * const MediaKeyPlayPauseNotification;
-extern NSString * const MediaKeyNextNotification;
-extern NSString * const MediaKeyPreviousNotification;
+#define MediaKeyPlayPauseNotification @"MediaKeyPlayPauseNotification"
+#define MediaKeyNextNotification      @"MediaKeyNextNotification"
+#define MediaKeyPreviousNotification  @"MediaKeyPreviousNotification"
 
 @interface AppleMediaKeyController : NSObject {
   CFMachPortRef _eventPort;
   CFRunLoopSourceRef _runLoopSource;
-
-  BOOL listening;
 }
-
-@property(nonatomic, assign, readonly) CFMachPortRef eventPort;
 
 @end
