@@ -7,7 +7,7 @@
  */
 
 #include <string.h>
-#import <Foundation/NSJSONSerialization.h>
+#import <SBJson/SBJson.h>
 
 #import "FMEngine/NSString+FMEngine.h"
 #import "Pandora/API.h"
@@ -32,6 +32,8 @@
 @implementation API
 
 - (id) init {
+  json_parser = [[SBJsonParser alloc] init];
+  json_writer = [[SBJsonWriter alloc] init];
   return [super init];
 }
 
@@ -68,11 +70,7 @@
   [nsrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
 
   /* Create the body */
-  NSError *error;
-  NSData *data = [NSJSONSerialization dataWithJSONObject:[request request]
-                                                 options:0
-                                                   error:&error];
-  assert(error == nil);
+  NSData *data = [json_writer dataWithObject: [request request]];
   if ([request encrypted]) { data = PandoraEncrypt(data); }
   [nsrequest setHTTPBody: data];
 
@@ -83,9 +81,9 @@
     /* Parse the JSON if we don't have an error */
     NSDictionary *dict = nil;
     if (e == nil) {
-      dict = [NSJSONSerialization JSONObjectWithData:d
-                                             options:NSJSONReadingMutableContainers
-                                               error:&e];
+      NSString *s = [[NSString alloc] initWithData:d
+                                          encoding:NSUTF8StringEncoding];
+      dict = [json_parser objectWithString:s error:&e];
     }
     /* If we still don't have an error, look at the JSON for an error */
     NSString *err = e == nil ? nil : [e localizedDescription];
@@ -116,8 +114,7 @@
                                                       userInfo:info];
   }];
   [c start];
-
-  return YES;
+  return TRUE;
 }
 
 @end
