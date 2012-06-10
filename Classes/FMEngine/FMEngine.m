@@ -38,14 +38,14 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   }
 
   #ifdef _USE_JSON_
-  if(![httpMethod isPOST]) {
+  if(![httpMethod isEqualToString:@"POST"]) {
     [tempDict setObject:@"json" forKey:@"format"];
   }
   #endif
 
   params = [NSDictionary dictionaryWithDictionary:tempDict];
 
-  if(![httpMethod isPOST]) {
+  if(![httpMethod isEqualToString:@"POST"]) {
     NSURL *dataURL = [self generateURLFromDictionary:params];
     request = [NSURLRequest requestWithURL:dataURL];
   } else {
