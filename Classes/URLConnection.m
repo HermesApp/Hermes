@@ -7,7 +7,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                                         CFStreamEventType eventType,
                                         void* _conn) {
   UInt8 buf[1024];
-  int len, release = 0;
+  int len;
   URLConnection* conn = (__bridge URLConnection*) _conn;
 
   switch (eventType) {
@@ -18,11 +18,9 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
       break;
     case kCFStreamEventErrorOccurred:
       conn->cb(nil, (__bridge_transfer NSError*) CFReadStreamCopyError(aStream));
-      release = 1;
       break;
     case kCFStreamEventEndEncountered: {
       conn->cb(conn->bytes, nil);
-      release = 1;
       break;
     }
     default:
