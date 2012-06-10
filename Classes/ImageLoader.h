@@ -1,10 +1,12 @@
+@class URLConnection;
+
 @interface ImageLoader : NSObject {
-  NSURLConnection *prev;
-  NSMutableData *data;
+  URLConnection *prev;
+  NSData *data;
   NSString *loadedURL;
 }
 
-@property (retain) NSMutableData *data;
+@property (retain) NSData *data;
 @property (retain) NSString *loadedURL;
 
 - (void) loadImageURL: (NSString*) url;
