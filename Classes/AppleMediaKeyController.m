@@ -25,85 +25,71 @@
 //  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#import <IOKit/hidsystem/ev_keymap.h>
+
 #import "AppleMediaKeyController.h"
 #import "PreferencesController.h"
-
-NSString * const MediaKeyPlayPauseNotification = @"MediaKeyPlayPauseNotification";
-NSString * const MediaKeyNextNotification = @"MediaKeyNextNotification";
-NSString * const MediaKeyPreviousNotification = @"MediaKeyPreviousNotification";
-
-static AppleMediaKeyController *mediaKeyController = nil;
 
 #define NX_KEYSTATE_UP      0x0A
 #define NX_KEYSTATE_DOWN    0x0B
 
 @implementation AppleMediaKeyController
 
-@synthesize eventPort = _eventPort;
-
-CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef event, void *refcon) {
-  /* If we're not currently binding keys, don't do anything and let someone
-     else take care of this event */
-  if (mediaKeyController == nil || !mediaKeyController->listening) {
-    return event;
+CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type,
+                            CGEventRef event, void *refcon) {
+  AppleMediaKeyController *m = (__bridge AppleMediaKeyController*) refcon;
+  if (!PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) return event;
+  assert(m != nil);
+  assert(m->_eventPort != nil);
+  switch (type) {
+    case kCGEventTapDisabledByTimeout:
+      CGEventTapEnable(m->_eventPort, TRUE);
+    default:
+      return event;
+    case NX_SYSDEFINED:
+      break;
   }
-  if(type == kCGEventTapDisabledByTimeout)
-    CGEventTapEnable([mediaKeyController eventPort], TRUE);
-
-  if(type != NX_SYSDEFINED)
-    return event;
 
   NSEvent *nsEvent = [NSEvent eventWithCGEvent:event];
 
-  if([nsEvent subtype] != 8)
+  if ([nsEvent subtype] != 8)
     return event;
 
-  int data = [nsEvent data1];
-  int keyCode = (data & 0xFFFF0000) >> 16;
-  int keyFlags = (data & 0xFFFF);
-  int keyState = (keyFlags & 0xFF00) >> 8;
+  int data         = [nsEvent data1];
+  int keyCode      = (data & 0xFFFF0000) >> 16;
+  int keyFlags     = (data & 0xFFFF);
+  int keyState     = (keyFlags & 0xFF00) >> 8;
   BOOL keyIsRepeat = (keyFlags & 0x1) > 0;
 
-  if(keyIsRepeat)
+  if (keyIsRepeat)
     return event;
 
-  NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+  NSString *name = nil;
   switch (keyCode) {
     case NX_KEYTYPE_PLAY:
-      if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyPlayPauseNotification object:(__bridge AppleMediaKeyController *)refcon];
-      if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
-        return NULL;
+      if (keyState == NX_KEYSTATE_DOWN)
+        name = MediaKeyPlayPauseNotification;
       break;
     case NX_KEYTYPE_FAST:
-      if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyNextNotification object:(__bridge AppleMediaKeyController *)refcon];
-      if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
-        return NULL;
+      if (keyState == NX_KEYSTATE_DOWN)
+        name = MediaKeyNextNotification;
       break;
     case NX_KEYTYPE_REWIND:
-      if(keyState == NX_KEYSTATE_DOWN)
-        [center postNotificationName:MediaKeyPreviousNotification object:(__bridge AppleMediaKeyController *)refcon];
-      if(keyState == NX_KEYSTATE_UP || keyState == NX_KEYSTATE_DOWN)
-        return NULL;
+      if (keyState == NX_KEYSTATE_DOWN)
+        name = MediaKeyPreviousNotification;
       break;
+    default:
+      return event;
   }
-  return event;
+  if (name != nil) {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center postNotificationName:name object:m];
+  }
+  return NULL;
 }
 
 - (id) init {
-  listening = FALSE;
-  PREF_OBSERVE_VALUE(self, PLEASE_BIND_MEDIA);
-  /* This should be a singleton class */
-  assert(mediaKeyController == nil);
-  mediaKeyController = self;
-  return [super init];
-}
-
-- (void) listen {
-  CFRunLoopRef runLoop;
-  assert(!listening);
-  listening = TRUE;
+  assert(_eventPort == nil);
 
   _eventPort = CGEventTapCreate(kCGSessionEventTap,
                                 kCGHeadInsertEventTap,
@@ -113,36 +99,23 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef 
                                 (__bridge void*) self);
   assert(_eventPort != NULL);
 
-  _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorSystemDefault, _eventPort, 0);
+  _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault,
+                                                 _eventPort, 0);
   assert(_runLoopSource != NULL);
-  runLoop = CFRunLoopGetCurrent();
-  assert(runLoop != NULL);
-  CFRunLoopAddSource(runLoop, _runLoopSource, kCFRunLoopCommonModes);
+  CFRunLoopAddSource(CFRunLoopGetCurrent(), _runLoopSource,
+                     kCFRunLoopCommonModes);
   NSLogd(@"Bound the media keys");
-}
-
-- (void) unlisten {
-  assert(listening);
-  listening = FALSE;
-  CFRelease(_eventPort);
-  CFRelease(_runLoopSource);
-  NSLogd(@"Unbound the media keys");
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-      change:(NSDictionary *)change context:(void *)context {
-  if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
-    if (!listening) [self listen];
-  } else if (listening) {
-    [self unlisten];
-  }
+  return [super init];
 }
 
 - (void)dealloc {
-  PREF_UNOBSERVE_VALUES(self, PLEASE_BIND_MEDIA);
-  if (listening) {
-    [self unlisten];
-  }
+  assert(_eventPort != nil);
+  CFRunLoopRemoveSource(CFRunLoopGetCurrent(), _runLoopSource,
+                        kCFRunLoopCommonModes);
+  CGEventTapEnable(_eventPort, FALSE);
+  CFRelease(_eventPort);
+  CFRelease(_runLoopSource);
+  NSLogd(@"Unbound the media keys");
 }
 
 @end
