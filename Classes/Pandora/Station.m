@@ -188,7 +188,6 @@
       return;
     } else if ([stream isPaused]) {
       [stream pause];
-      NSLogd(@"pausing stream");
       return;
     } else if ([stream isWaiting]) {
       waitingTimeout = [NSTimer scheduledTimerWithTimeInterval:0.1
