@@ -6,6 +6,7 @@
 //
 
 #import "HistoryItem.h"
+#import "ImageLoader.h"
 #import "Pandora.h"
 #import "Pandora/Song.h"
 
@@ -48,15 +49,6 @@
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
-- (void) imageLoaded: (NSNotification*) not {
-  if ([not object] != loader) {
-    return;
-  }
-  NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  [art setImage:image];
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void) updateUI {
   if (art == nil || [self representedObject] == nil) {
     return;
@@ -65,18 +57,10 @@
   Song *s = [self representedObject];
   NSString *a = [s art];
   if (a && ![a isEqual:@""]) {
-    if (loader != nil) {
-      [[NSNotificationCenter defaultCenter]
-       removeObserver:self name:@"image-loaded" object:loader];
-      loader = nil;
-    }
-    loader = [[ImageLoader alloc] init];
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(imageLoaded:)
-     name:@"image-loaded"
-     object:loader];
-    [loader loadImageURL:a];
+    [[ImageLoader loader] loadImageURL:a callback:^(NSData* data) {
+      NSImage *image = [[NSImage alloc] initWithData: data];
+      [art setImage:image];
+    }];
   }
 
   [like setEnabled:YES];
@@ -93,8 +77,6 @@
   if (view == nil) {
     return;
   }
-
-  loader = nil;
 
   art = nil;
   like = dislike = nil;

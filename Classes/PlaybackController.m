@@ -14,6 +14,7 @@
 #import "Growler.h"
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
+#import "ImageLoader.h"
 #import "PlaybackController.h"
 #import "Scrobbler.h"
 #import "StationsController.h"
@@ -69,14 +70,6 @@ BOOL playOnStart = YES;
     name:ASStatusChangedNotification
     object:nil];
 
-  loader = [[ImageLoader alloc] init];
-
-  [center
-    addObserver:self
-    selector:@selector(imageLoaded:)
-    name:@"image-loaded"
-    object:loader];
-
   [center
     addObserver:self
     selector:@selector(playpause:)
@@ -106,8 +99,8 @@ BOOL playOnStart = YES;
   [toolbar setVisible:NO];
   if (playing) {
     [playing stop];
+    [[ImageLoader loader] cancel:[[playing playing] art]];
   }
-  [loader cancel];
   [self setPlaying:nil];
   lastImgSrc = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hermes.volume"];
@@ -200,41 +193,6 @@ BOOL playOnStart = YES;
   }
 }
 
-- (void) imageLoaded: (NSNotification*) not {
-  assert([not object] == loader);
-  if (playing == nil || [playing playing] == nil) {
-    return;
-  }
-
-  NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  NSImage *growlImage = image;
-
-  if (image == nil) {
-    // Try the second art if this was just the first art
-    NSString *prev = [loader loadedURL];
-    NSString *orig = [[playing playing] art];
-    NSString *nxt  = [orig stringByReplacingOccurrencesOfString:@"130W_130H"
-                                                     withString:@"500W_500H"];
-
-    if ([prev isEqual:orig] && nxt != nil) {
-      [loader loadImageURL:nxt];
-      NSLogd(@"Failed retrieving: %@, now trying: %@", orig, nxt);
-      return;
-    }
-
-    image = [NSImage imageNamed:@"missing-album"];
-    growlImage = [NSApp icon];
-  }
-
-  if (![playing isPaused]) {
-    [GROWLER growl:[playing playing] withImage:growlImage isNew:YES];
-  }
-
-  [art setImage:image];
-  [artLoading setHidden:YES];
-  [artLoading stopAnimation:nil];
-}
-
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */
 - (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
   if (theItem != like) return YES;
@@ -320,12 +278,29 @@ BOOL playOnStart = YES;
     if ([song art] == nil || [[song art] isEqual: @""]) {
       [art setImage: [NSImage imageNamed:@"missing-album"]];
       [GROWLER growl:[playing playing] withImage:[art image] isNew:YES];
+      [artLoading setHidden:YES];
+      [artLoading stopAnimation:nil];
     } else {
       [artLoading startAnimation:nil];
       [artLoading setHidden:NO];
       [art setImage:nil];
       lastImgSrc = [song art];
-      [loader loadImageURL:lastImgSrc];
+      [[ImageLoader loader] loadImageURL:lastImgSrc
+                                callback:^(NSData *data) {
+        NSImage *image = [[NSImage alloc] initWithData:data];
+        NSImage *growlImage = image;
+
+        if (image == nil) {
+          image = [NSImage imageNamed:@"missing-album"];
+          growlImage = [NSApp icon];
+        }
+        if (![playing isPaused]) {
+          [GROWLER growl:[playing playing] withImage:growlImage isNew:YES];
+        }
+        [art setImage:image];
+        [artLoading setHidden:YES];
+        [artLoading stopAnimation:nil];
+      }];
     }
   } else {
     NSLogd(@"Skipping loading image");
@@ -363,7 +338,7 @@ BOOL playOnStart = YES;
   }
 
   [playing stop];
-  [loader cancel];
+  [[ImageLoader loader] cancel:[[playing playing] art]];
   [[NSApp delegate] setCurrentView:playbackView];
   [toolbar setVisible:YES];
 

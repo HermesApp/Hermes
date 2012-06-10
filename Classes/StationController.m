@@ -22,16 +22,11 @@
 
 - (id) init {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-  loader = [[ImageLoader alloc] init];
   Pandora *pandora = [[NSApp delegate] pandora];
   [center addObserver:self
              selector:@selector(stationInfo:)
                  name:@"hermes.station-info"
                object:nil];
-  [center addObserver:self
-             selector:@selector(imageLoaded:)
-                 name:@"image-loaded"
-               object:loader];
   [center addObserver:self
              selector:@selector(hideSpinner)
                  name:@"hermes.station-renamed"
@@ -106,7 +101,14 @@
                                    dateStyle:NSDateFormatterShortStyle
                                    timeStyle:NSDateFormatterNoStyle]];
   if ([info objectForKey:@"art"] != nil) {
-    [loader loadImageURL:[info objectForKey:@"art"]];
+    [[ImageLoader loader] loadImageURL:[info objectForKey:@"art"]
+                              callback:^(NSData* data) {
+      NSImage *image = [[NSImage alloc] initWithData:data];
+      if (image == nil) {
+        image = [NSImage imageNamed:@"missing-album"];
+      }
+      [art setImage:image];
+    }];
   } else {
     [art setImage:[NSImage imageNamed:@"missing-album"]];
   }
@@ -123,17 +125,6 @@
   [seedsResults reloadData];
   [seedsCurrent expandItem:@"songs"];
   [seedsCurrent expandItem:@"artists"];
-}
-
-/**
- * @brief Callback for loading an image
- */
-- (void) imageLoaded: (NSNotification*) not {
-  NSImage *image = [[NSImage alloc] initWithData: [loader data]];
-  if (image == nil) {
-    image = [NSImage imageNamed:@"missing-album"];
-  }
-  [art setImage:image];
 }
 
 - (IBAction) renameStation:(id)sender {

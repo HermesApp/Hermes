@@ -1,15 +1,17 @@
 @class URLConnection;
 
+typedef void(^ImageCallback)(NSData*);
+
 @interface ImageLoader : NSObject {
-  URLConnection *prev;
-  NSData *data;
-  NSString *loadedURL;
+  NSMutableArray *queue;
+  NSMutableArray *cbqueue;
+  URLConnection *cur;
+  NSString *curURL;
 }
 
-@property (retain) NSData *data;
-@property (retain) NSString *loadedURL;
++ (ImageLoader*) loader;
 
-- (void) loadImageURL: (NSString*) url;
-- (void) cancel;
+- (void) loadImageURL:(NSString*)url callback:(ImageCallback)cb;
+- (void) cancel: (NSString*)url;
 
 @end
