@@ -16,12 +16,14 @@ typedef enum scrobblestate {
 
 #define SCROBBLER [[NSApp delegate] scrobbler]
 
+@class SBJsonParser;
+
 @interface Scrobbler : NSObject {
   FMEngine *engine;
   NSString *authToken;
   NSString *sessionToken;
   NSTimer *timer;
-  FMCallback errorChecker;
+  SBJsonParser *parser;
 }
 
 - (void) fetchAuthToken;
