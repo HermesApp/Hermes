@@ -220,6 +220,7 @@ void ASReadStreamCallBack
 @implementation AudioStreamer
 
 @synthesize errorCode;
+@synthesize networkError;
 @synthesize state;
 @synthesize bitRate;
 @synthesize httpHeaders;
@@ -1198,7 +1199,8 @@ cleanup:
 
   if (eventType == kCFStreamEventErrorOccurred)
   {
-    [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
+    networkError = (NSError*) CFReadStreamCopyError(aStream);
+    [self failWithErrorCode:AS_NETWORK_CONNECTION_FAILED];
   }
   else if (eventType == kCFStreamEventEndEncountered)
   {

@@ -135,46 +135,69 @@
 
 - (void) seekToLastKnownTime {
   retrying = NO;
-  [stream seekToTime:lastKnownSeekTime];
+  if (lastKnownSeekTime != 0) {
+    [stream seekToTime:lastKnownSeekTime];
+  }
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   [waitingTimeout invalidate];
   waitingTimeout = nil;
 
-  if ([stream errorCode] != 0) {
-    /* Try a few times to re-initialize the stream just in case it was a fluke
-     * which caused the stream to fail */
-    NSLogd(@"Error on playback stream! count:%lu, Retrying...", tries);
-    [self retry];
-  } else if (retrying) {
-    /* If we were already retrying things, then we'll get a notification as soon
-       as the stream has enough packets to calculate the bit rate. This means
-       that we can correctly seek into the song. After we seek, we've
-       successfully re-synced the stream with what it was before the error
-       happened */
-    if ([stream calculatedBitRate] != 0) {
-      [self seekToLastKnownTime];
+  int code = [stream errorCode];
+  if (code != 0) {
+    /* If we've hit an error, then we want to record out current progress into
+       the song. Only do this if we're not in the process of retrying to
+       establish a connection, so that way we don't blow away the original
+       progress from when the error first happened */
+    if (!retrying) {
+      lastKnownSeekTime = [stream progress];
     }
+
+    /* If the network connection just outright failed, then we shouldn't be
+       retrying with a new auth token because it will never work for that
+       reason. Most likely this is some network trouble and we should have the
+       opportunity to hit a button to retry this specific connection so we can
+       at least hope to regain our current place in the song */
+    if (code == AS_NETWORK_CONNECTION_FAILED) {
+      NSLogd(@"network error: %@", [stream networkError]);
+      [[NSNotificationCenter defaultCenter]
+        postNotificationName:@"hermes.stream-error" object:self];
+
+    /* Otherwise, this might be because our authentication token is invalid, but
+       just in case, retry the current song automatically a few times before we
+       finally give up and clear our cache of songs (see below) */
+    } else {
+      NSLogd(@"Error on playback stream! count:%lu, Retrying...", tries);
+      NSLogd(@"error: %@", [AudioStreamer stringForErrorCode:code]);
+      [self retry:TRUE];
+    }
+
+  /* If we were already retrying things, then we'll get a notification as soon
+     as the stream has enough packets to calculate the bit rate. This means that
+     we can correctly seek into the song. After we seek, we've successfully
+     re-synced the stream with what it was before the error happened */
+  } else if (retrying && [stream calculatedBitRate] != 0) {
+    [self seekToLastKnownTime];
   }
 }
 
-- (void) retry {
-  if (tries > 2) {
-    NSLogd(@"Retried too many times, just nexting...");
-    /* If we retried a bunch and it didn't work, the most likely cause is that
-       the listed URL for the song has since expired. This probably also means
-       that anything else in the queue (fetched at the same time) is also
-       invalid, so empty the entire thing and have next fetch some more */
-    [songs removeAllObjects];
-    [self next];
-    return;
+- (void) retry:(BOOL)countTries {
+  if (countTries) {
+    if (tries > 2) {
+      NSLogd(@"Retried too many times, just nexting...");
+      /* If we retried a bunch and it didn't work, the most likely cause is that
+         the listed URL for the song has since expired. This probably also means
+         that anything else in the queue (fetched at the same time) is also
+         invalid, so empty the entire thing and have next fetch some more */
+      [songs removeAllObjects];
+      [self next];
+      return;
+    }
+    tries++;
   }
 
-  double progress = [stream progress];
-  tries++;
   retrying = YES;
-  lastKnownSeekTime = progress;
 
   [self setAudioStream];
   [stream start];

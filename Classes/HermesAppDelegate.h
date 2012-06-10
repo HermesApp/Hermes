@@ -24,6 +24,7 @@
   IBOutlet NSTextField *errorLabel;
   IBOutlet NSButton *errorButton;
   PandoraRequest *lastRequest;
+  Station *lastStationErr;
 
   IBOutlet NSWindow *window;
   IBOutlet NSWindow *newStationSheet;

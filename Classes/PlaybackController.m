@@ -116,6 +116,10 @@ BOOL playOnStart = YES;
    object:nil];
 }
 
+- (void) show {
+  [[NSApp delegate] setCurrentView:playbackView];
+}
+
 - (void) showSpinner {
   [songLoadingProgress setHidden:NO];
   [songLoadingProgress startAnimation:nil];
@@ -466,7 +470,7 @@ BOOL playOnStart = YES;
   [[NSApp delegate] setCurrentView:playbackView];
 
   if ([playing playing] != nil) {
-    [playing retry];
+    [playing retry:NO];
   } else {
     [playing play];
   }
