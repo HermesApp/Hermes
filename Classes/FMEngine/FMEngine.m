@@ -7,19 +7,12 @@
 //
 
 #import "FMEngine.h"
-#import "FMEngineURLConnection.h"
+#import "URLConnection.h"
 
 @implementation FMEngine
 
 static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   return [n1 caseInsensitiveCompare:n2];
-}
-
-- (id)init {
-  if ((self = [super init])) {
-    connections = [[NSMutableDictionary alloc] init];
-  }
-  return self;
 }
 
 - (NSString *)generateAuthTokenFromUsername:(NSString *)username password:(NSString *)password {
@@ -48,7 +41,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   if(![httpMethod isPOST]) {
     [tempDict setObject:@"json" forKey:@"format"];
   }
-
   #endif
 
   params = [NSDictionary dictionaryWithDictionary:tempDict];
@@ -58,60 +50,20 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     request = [NSURLRequest requestWithURL:dataURL];
   } else {
     #ifdef _USE_JSON_
-    request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_LASTFM_BASEURL_ stringByAppendingString:@"?format=json"]]];
+    request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_LASTFM_BASEURL_ @"?format=json"]];
     #else
     request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_LASTFM_BASEURL_]];
     #endif
     [request setHTTPMethod:httpMethod];
     [request setHTTPBody:[[self generatePOSTBodyFromDictionary:params] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request      addValue:@"application/x-www-form-urlencoded"
+        forHTTPHeaderField:@"Content-Type"];
   }
+  NSLogd(@"out: %@", [self generatePOSTBodyFromDictionary:params]);
 
-  FMEngineURLConnection *connection = [[FMEngineURLConnection alloc] initWithRequest:request];
-  NSString *connectionId = [connection identifier];
-  connection->callback = [callback copy];
-
-  if(connection) {
-    [connections setObject:connection forKey:connectionId];
-  }
-}
-
-- (NSData *)dataForMethod:(NSString *)method withParameters:(NSDictionary *)params useSignature:(BOOL)useSig httpMethod:(NSString *)httpMethod error:(NSError *)err {
-  NSString *dataSig;
-  NSMutableURLRequest *request;
-  NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithDictionary:params];
-
-  [tempDict setObject:method forKey:@"method"];
-  if(useSig == TRUE) {
-    dataSig = [self generateSignatureFromDictionary:tempDict];
-
-    [tempDict setObject:dataSig forKey:@"api_sig"];
-  }
-
-  #ifdef _USE_JSON_
-  if(![httpMethod isPOST]) {
-    [tempDict setObject:@"json" forKey:@"format"];
-  }
-  #endif
-
-  [tempDict setObject:method forKey:@"method"];
-  params = [NSDictionary dictionaryWithDictionary:tempDict];
-
-  if(![httpMethod isPOST]) {
-    NSURL *dataURL = [self generateURLFromDictionary:params];
-    request = [NSURLRequest requestWithURL:dataURL];
-  } else {
-    #ifdef _USE_JSON_
-    request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[_LASTFM_BASEURL_ stringByAppendingString:@"?format=json"]]];
-    #else
-    request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_LASTFM_BASEURL_]];
-    #endif
-
-    [request setHTTPMethod:httpMethod];
-    [request setHTTPBody:[[self generatePOSTBodyFromDictionary:params] dataUsingEncoding:NSUTF8StringEncoding]];
-  }
-
-  NSData *returnData = [FMEngineURLConnection sendSynchronousRequest:request returningResponse:nil error:&err];
-  return returnData;
+  URLConnection *connection = [URLConnection connectionForRequest:request
+                                                completionHandler:callback];
+  [connection start];
 }
 
 - (NSString *)generatePOSTBodyFromDictionary:(NSDictionary *)dict {
@@ -164,10 +116,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   NSString *signature = [rawSignature md5sum];
   return signature;
-}
-
-- (void)dealloc {
-  [[connections allValues] makeObjectsPerformSelector:@selector(cancel)];
 }
 
 @end

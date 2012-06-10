@@ -44,7 +44,6 @@
 		FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */; };
 		FA949679133AF3AD007B6F36 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = FA949678133AF3AD007B6F36 /* Credits.html */; };
 		FA94E6ED1368E5830063860C /* FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6E71368E5830063860C /* FMEngine.m */; };
-		FA94E6EE1368E5830063860C /* FMEngineURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6E91368E5830063860C /* FMEngineURLConnection.m */; };
 		FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6EB1368E5830063860C /* NSString+FMEngine.m */; };
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
@@ -156,8 +155,6 @@
 		FA949678133AF3AD007B6F36 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		FA94E6E61368E5830063860C /* FMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMEngine.h; sourceTree = "<group>"; };
 		FA94E6E71368E5830063860C /* FMEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMEngine.m; sourceTree = "<group>"; };
-		FA94E6E81368E5830063860C /* FMEngineURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMEngineURLConnection.h; sourceTree = "<group>"; };
-		FA94E6E91368E5830063860C /* FMEngineURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMEngineURLConnection.m; sourceTree = "<group>"; };
 		FA94E6EA1368E5830063860C /* NSString+FMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FMEngine.h"; sourceTree = "<group>"; };
 		FA94E6EB1368E5830063860C /* NSString+FMEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FMEngine.m"; sourceTree = "<group>"; };
 		FA94E6F61368E62C0063860C /* Scrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scrobbler.h; sourceTree = "<group>"; };
@@ -382,8 +379,6 @@
 			children = (
 				FA94E6E61368E5830063860C /* FMEngine.h */,
 				FA94E6E71368E5830063860C /* FMEngine.m */,
-				FA94E6E81368E5830063860C /* FMEngineURLConnection.h */,
-				FA94E6E91368E5830063860C /* FMEngineURLConnection.m */,
 				FA94E6EA1368E5830063860C /* NSString+FMEngine.h */,
 				FA94E6EB1368E5830063860C /* NSString+FMEngine.m */,
 			);
@@ -567,7 +562,6 @@
 				FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */,
 				FAD9EC15135DB41700560C5A /* AppleMediaKeyController.m in Sources */,
 				FA94E6ED1368E5830063860C /* FMEngine.m in Sources */,
-				FA94E6EE1368E5830063860C /* FMEngineURLConnection.m in Sources */,
 				FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */,
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
 				FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */,

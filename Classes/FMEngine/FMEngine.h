@@ -17,7 +17,7 @@
 #define _USE_JSON_ 1
 
 #define POST_TYPE  @"POST"
-#define GET_TYPE  @"GET"
+#define GET_TYPE   @"GET"
 
 typedef void(^FMCallback)(NSData*, NSError*);
 
@@ -25,7 +25,6 @@ typedef void(^FMCallback)(NSData*, NSError*);
 
 @interface FMEngine : NSObject {
   NSMutableData *receivedData;
-  NSMutableDictionary *connections;
 }
 
 - (NSString *)generateAuthTokenFromUsername:(NSString *)username password:(NSString *)password;
@@ -34,6 +33,5 @@ typedef void(^FMCallback)(NSData*, NSError*);
 - (NSURL *)generateURLFromDictionary:(NSDictionary *)dict;
 
 - (void)performMethod:(NSString *)method withCallback:(FMCallback)cb withParameters:(NSDictionary *)params useSignature:(BOOL)useSig httpMethod:(NSString *)httpMethod;
-- (NSData *)dataForMethod:(NSString *)method withParameters:(NSDictionary *)params useSignature:(BOOL)useSig httpMethod:(NSString *)httpMethod error:(NSError *)err;
 
 @end
