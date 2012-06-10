@@ -59,7 +59,6 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     [request      addValue:@"application/x-www-form-urlencoded"
         forHTTPHeaderField:@"Content-Type"];
   }
-  NSLogd(@"out: %@", [self generatePOSTBodyFromDictionary:params]);
 
   URLConnection *connection = [URLConnection connectionForRequest:request
                                                 completionHandler:callback];

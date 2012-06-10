@@ -5,10 +5,7 @@
 //  Created by Alex Crichton on 10/10/11.
 //
 
-#import "ImageLoader.h"
-
 @interface HistoryItem : NSCollectionViewItem {
-  ImageLoader *loader;
   NSButton *like;
   NSButton *dislike;
   NSButton *art;

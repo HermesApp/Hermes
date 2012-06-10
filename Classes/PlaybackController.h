@@ -1,6 +1,5 @@
 #import <Cocoa/Cocoa.h>
 
-#import "ImageLoader.h"
 #import "Pandora/Station.h"
 #import "Scrobbler.h"
 
@@ -26,7 +25,6 @@
   IBOutlet NSToolbar *toolbar;
 
   NSTimer *progressUpdateTimer;
-  ImageLoader *loader;
   Station *playing;
   BOOL scrobbleSent;
   NSString *lastImgSrc;
