@@ -39,12 +39,4 @@
   return [ms copy];
 }
 
-- (BOOL)isPOST {
-  if([self isEqualToString:@"POST"]) {
-    return TRUE;
-  }
-
-  return FALSE;
-}
-
 @end

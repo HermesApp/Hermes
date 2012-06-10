@@ -11,6 +11,5 @@
 @interface NSString (UUID)
 + (NSString *)stringWithNewUUID;
 - (NSString *)md5sum;
-- (BOOL)isPOST;
 - (NSString*) urlEncoded;
 @end
