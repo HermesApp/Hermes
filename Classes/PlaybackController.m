@@ -287,13 +287,14 @@ BOOL playOnStart = YES;
       lastImgSrc = [song art];
       [[ImageLoader loader] loadImageURL:lastImgSrc
                                 callback:^(NSData *data) {
-        NSImage *image = [[NSImage alloc] initWithData:data];
-        NSImage *growlImage = image;
-
-        if (image == nil) {
+        NSImage *image, *growlImage;
+        if (data == nil) {
           image = [NSImage imageNamed:@"missing-album"];
-          growlImage = [NSApp icon];
+          growlImage = [NSApp applicationIconImage];
+        } else {
+          image = growlImage = [[NSImage alloc] initWithData:data];
         }
+
         if (![playing isPaused]) {
           [GROWLER growl:[playing playing] withImage:growlImage isNew:YES];
         }
@@ -404,6 +405,9 @@ BOOL playOnStart = YES;
 - (IBAction)next: (id) sender {
   [art setImage:nil];
   [self showSpinner];
+  if ([playing playing] != nil) {
+    [[ImageLoader loader] cancel:[[playing playing] art]];
+  }
 
   [playing next];
 }
