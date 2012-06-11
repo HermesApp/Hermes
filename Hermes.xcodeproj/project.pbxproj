@@ -11,6 +11,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 971CC3991585DA11004D75BA /* NetworkConnection.m */; };
+		971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */; };
 		972CA4F815830FC000C0BB9E /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23515146BBD007F2605 /* NSObject+SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		972CA4F915830FC000C0BB9E /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23715146BBD007F2605 /* SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		972CA4FA15830FC000C0BB9E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23815146BBD007F2605 /* SBJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -139,6 +141,9 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		971CC3981585DA11004D75BA /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
+		971CC3991585DA11004D75BA /* NetworkConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkConnection.m; sourceTree = "<group>"; };
+		971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		97539FAB158442A500D1E65C /* URLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLConnection.h; sourceTree = "<group>"; };
 		97539FAC158442A500D1E65C /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
@@ -244,6 +249,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */,
 				FA37A26A15146CD4007F2605 /* libSBJson.a in Frameworks */,
 				FACF018B149A718300D1FB73 /* libAudioStreamer.a in Frameworks */,
 				FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */,
@@ -274,6 +280,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				971CC3981585DA11004D75BA /* NetworkConnection.h */,
+				971CC3991585DA11004D75BA /* NetworkConnection.m */,
 				97539FAB158442A500D1E65C /* URLConnection.h */,
 				97539FAC158442A500D1E65C /* URLConnection.m */,
 				FA0E5569147855DD00C36794 /* Models */,
@@ -290,6 +298,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */,
 				FA6E801A1438E4B700D01FB5 /* Growl.framework */,
 				FA228ECA137045F40070141A /* Security.framework */,
 				FA228EC8137045E90070141A /* AudioToolbox.framework */,
@@ -712,6 +721,7 @@
 				FA454685156604D100EE98C7 /* blowfish.c in Sources */,
 				FACFACD615673690008A2140 /* StationController.m in Sources */,
 				97539FAD158442A500D1E65C /* URLConnection.m in Sources */,
+				971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
