@@ -24,15 +24,6 @@
 @synthesize stations, auth, playback, pandora, window, history, station,
             growler, scrobbler;
 
-- (bool) isLion {
-  static SInt32 MacVersion = 0;
-
-  if (MacVersion == 0) {
-    Gestalt(gestaltSystemVersion, &MacVersion);
-  }
-  return MacVersion >= 0x1070;
-}
-
 - (id) init {
   if ((self = [super init])) {
     pandora = [[Pandora alloc] init];
@@ -128,8 +119,10 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  if ([self isLion]) {
+  if ([window respondsToSelector:@selector(setRestorable:)]) {
     [window setRestorable:YES];
+  }
+  if ([window respondsToSelector:@selector(setRestorationClass:)]) {
     [window setRestorationClass:[self class]];
   }
   [NSApp activateIgnoringOtherApps:YES];
