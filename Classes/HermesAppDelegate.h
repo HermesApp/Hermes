@@ -12,7 +12,6 @@
 @class Scrobbler;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
-
   Pandora *pandora;
 
   /* Generic loading view */
@@ -37,8 +36,6 @@
   IBOutlet StationController *station;
   IBOutlet Growler *growler;
   IBOutlet Scrobbler *scrobbler;
-
-  NSMenu *menu;
 }
 
 @property (readonly) NSWindow *window;

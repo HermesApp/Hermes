@@ -181,31 +181,44 @@
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
-  menu = [[NSMenu alloc] init];
+  NSMenu *menu = [[NSMenu alloc] init];
   NSMenuItem *menuItem;
   Song *song = [[playback playing] playing];
   if (song != nil) {
     [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]  action:nil keyEquivalent:@""];
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]  action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]
+                    action:nil
+             keyEquivalent:@""];
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]
+                    action:nil
+             keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
   }
+  NSString *title;
   if ([[playback playing] isPaused] || song == nil) {
-    menuItem = [menu addItemWithTitle:@"Play" action:@selector(playpause:) keyEquivalent:@"p"];
-    [menuItem setTarget:playback];
+    title = @"Play";
   } else {
-    menuItem = [menu addItemWithTitle:@"Pause" action:@selector(playpause:) keyEquivalent:@"p"];
-    [menuItem setTarget:playback];
+    title = @"Pause";
   }
-  menuItem = [menu addItemWithTitle:@"Next" action:@selector(next:) keyEquivalent:@"n"];
+  menuItem = [menu addItemWithTitle:title
+                             action:@selector(playpause:)
+                      keyEquivalent:@"p"];
+  [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Next"
+                             action:@selector(next:)
+                      keyEquivalent:@"n"];
   [menuItem setTarget:playback];
   if ([[song nrating] intValue] == 1) {
     [menu addItemWithTitle:@"Liked" action:nil keyEquivalent:@""];
   } else {
-    menuItem = [menu addItemWithTitle:@"Like" action:@selector(like:) keyEquivalent:@"l"];
+    menuItem = [menu addItemWithTitle:@"Like"
+                               action:@selector(like:)
+                        keyEquivalent:@"l"];
     [menuItem setTarget:playback];
   }
-  menuItem = [menu addItemWithTitle:@"Dislike" action:@selector(dislike:) keyEquivalent:@"d"];
+  menuItem = [menu addItemWithTitle:@"Dislike"
+                             action:@selector(dislike:)
+                      keyEquivalent:@"d"];
   [menuItem setTarget:playback];
   return menu;
 }
