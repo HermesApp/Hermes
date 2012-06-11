@@ -16,3 +16,7 @@ dbg: hermes
 
 archive:
 	$(XCB) -configuration Release -target 'Build sparkle metadata'
+
+clean:
+	$(XCB) clean
+	rm -rf build
