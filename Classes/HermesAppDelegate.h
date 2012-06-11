@@ -59,5 +59,6 @@
 - (NSString*) getCachedPassword;
 
 - (IBAction) retry:(id)sender;
+- (void) tryRetry;
 
 @end

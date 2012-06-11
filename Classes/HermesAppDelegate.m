@@ -324,6 +324,12 @@
   }
 }
 
+- (void) tryRetry {
+  if (lastRequest != nil || lastStationErr != nil) {
+    [self retry:nil];
+  }
+}
+
 - (void) handlePandoraLoggedOut: (NSNotification*) notification {
   [stations reset];
   [playback reset];

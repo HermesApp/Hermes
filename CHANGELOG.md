@@ -5,6 +5,8 @@
 * [added] Proxy configuration for just the Hermes application. Be aware that
           software updates will still go through the system proxy instead of the
           Hermes-configured proxy
+* [added] If network connectivity is lost, and then regained, automatically
+          resume playback if playback was previously happening.
 * [fixed] Improve error handling in cases of intermittent network connectivity
           by providing a way to maintain listening to the last song as soon as
           the network connection is restored
