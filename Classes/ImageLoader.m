@@ -38,6 +38,16 @@
     cb(d);
     cur = nil;
     curURL = nil;
+
+    /* If any pending requests are to this url, also satisfy them */
+    NSUInteger idx;
+    while ((idx = [queue indexOfObject:url]) != NSNotFound) {
+      [queue removeObjectAtIndex:idx];
+      ImageCallback cb = [cbqueue objectAtIndex:idx];
+      cb(d);
+      [cbqueue removeObjectAtIndex:idx];
+    }
+
     [self tryFetch];
   }];
   curURL = url;
