@@ -258,6 +258,7 @@
 }
 
 - (void) next {
+  lastKnownSeekTime = 0;
   if (playing == nil) {
     [songs removeObjectAtIndex:0];
     retrying = NO;
