@@ -157,8 +157,8 @@
   } else {
     [self showLoader];
     [pandora authenticate:savedUsername
-                         :savedPassword
-                         :nil];
+                 password:savedPassword
+                  request:nil];
   }
 
   NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
@@ -254,9 +254,10 @@
 }
 
 - (void) handlePandoraError: (NSNotification*) notification {
-  NSString *err  = [[notification userInfo] objectForKey:@"error"];
-  NSNumber *nscode = [[notification userInfo] objectForKey:@"code"];
-  NSLogd(@"error received %@", [notification userInfo]);
+  NSDictionary *info = [notification userInfo];
+  NSString *err  = [info objectForKey:@"error"];
+  NSNumber *nscode = [info objectForKey:@"code"];
+  NSLogd(@"error received %@", info);
   /* If this is a generic error (like a network error) it's possible to retry.
      Otherewise if it's a Pandora error (with a code listed) there's likely
      nothing we can do about it */
@@ -277,8 +278,8 @@
         } else {
           [pandora logoutNoNotify];
           [pandora authenticate:user
-                               :pass
-                               :[[notification userInfo] objectForKey:@"request"]];
+                       password:pass
+                        request:[info objectForKey:@"request"]];
         }
         return;
       }

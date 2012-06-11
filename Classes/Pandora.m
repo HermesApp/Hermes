@@ -169,10 +169,12 @@ static NSString *hierrs[] = {
  * @param req an optional request which will be retried once the authentication
  *        has completed
  */
-- (BOOL) authenticate:(NSString*)user :(NSString*)pass :(PandoraRequest*)req {
+- (BOOL) authenticate:(NSString*)user
+             password:(NSString*)pass
+              request:(PandoraRequest*)req {
   if (partner_id == nil) {
     return [self partnerLogin: ^() {
-      [self authenticate: user : pass : req];
+      [self authenticate:user password:pass request:req];
     }];
   }
 
@@ -215,7 +217,7 @@ static NSString *hierrs[] = {
   }
   NSString *user = [[NSApp delegate] getCachedUsername];
   NSString *pass = [[NSApp delegate] getCachedPassword];
-  return [self authenticate:user : pass : req];
+  return [self authenticate:user password:pass request:req];
 }
 
 /**

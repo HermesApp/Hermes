@@ -43,7 +43,9 @@ typedef void(^SyncCallback)(void);
 
 @property (retain) NSArray* stations;
 
-- (BOOL) authenticate: (NSString*)user :(NSString*)pass :(PandoraRequest*)req;
+- (BOOL) authenticate:(NSString*)user
+             password:(NSString*)password
+              request:(PandoraRequest*)req;
 - (BOOL) fetchStations;
 - (BOOL) getFragment: (Station*)station;
 - (BOOL) partnerLogin: (SyncCallback) cb;
