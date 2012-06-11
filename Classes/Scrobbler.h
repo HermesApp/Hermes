@@ -8,7 +8,7 @@
 #import "FMEngine/FMEngine.h"
 #import "Pandora/Song.h"
 
-typedef enum scrobblestate {
+typedef enum {
   NewSong,
   NowPlaying,
   FinalStatus
@@ -26,8 +26,6 @@ typedef enum scrobblestate {
   SBJsonParser *parser;
 }
 
-- (void) fetchAuthToken;
-- (void) fetchSessionToken;
 - (void) setPreference: (Song*)song loved:(BOOL)loved;
 - (void) scrobble: (Song*) song state: (ScrobbleState) status;
 

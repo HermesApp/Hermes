@@ -25,16 +25,10 @@
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
                   context:(void*) */
-#define PREF_PATH(name) (@"values." name)
-#define PREF_CONTROLLER [NSUserDefaultsController sharedUserDefaultsController]
-#define PREF_OBSERVE_VALUE(x, y) [PREF_CONTROLLER addObserver:(x)              \
-    forKeyPath:PREF_PATH(y)  options:NSKeyValueObservingOptionOld context:nil];
-#define PREF_UNOBSERVE_VALUES(x, y) [PREF_CONTROLLER removeObserver:(x)        \
-    forKeyPath:PREF_PATH(y) context:nil]
-#define PREF_KEY_VALUE(x) [[PREF_CONTROLLER values] valueForKey:(x)]
-#define PREF_KEY_BOOL(x) [(PREF_KEY_VALUE(x)) boolValue]
-#define PREF_KEY_SET_BOOL(x, y)                                                \
-    [[NSUserDefaults standardUserDefaults] setBool:y forKey:x]
+#define PREFERENCES              [NSUserDefaults standardUserDefaults]
+#define PREF_KEY_VALUE(x)        [PREFERENCES valueForKey:(x)]
+#define PREF_KEY_BOOL(x)         [PREFERENCES boolForKey:(x)]
+#define PREF_KEY_SET_BOOL(x, y)  [PREFERENCES setBool:y forKey:x]
 
 #define QUALITY_HIGH 0
 #define QUALITY_MED  1
