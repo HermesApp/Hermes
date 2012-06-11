@@ -26,8 +26,11 @@
 - (id) init {
   engine = [[FMEngine alloc] init];
   parser = [[SBJsonParser alloc] init];
+  sessionToken = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
+  if ([@"" isEqualToString:sessionToken]) {
+    sessionToken = nil;
+  }
 
-  PREF_OBSERVE_VALUE(self, PLEASE_SCROBBLE);
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(songPlayed:)
@@ -40,7 +43,6 @@
   if (timer != nil && [timer isValid]) {
     [timer invalidate];
   }
-  PREF_UNOBSERVE_VALUES(self, PLEASE_SCROBBLE);
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -131,13 +133,13 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @param status the playback state of the song
  */
 - (void) scrobble:(Song *)song state:(ScrobbleState)status {
-  /* If we don't have a sesion token yet, just ignore this for now */
-  if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
+  if (!PREF_KEY_BOOL(PLEASE_SCROBBLE) ||
+      (PREF_KEY_BOOL(ONLY_SCROBBLE_LIKED) && [[song nrating] intValue] != 1)) {
     return;
   }
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if ([defaults boolForKey:ONLY_SCROBBLE_LIKED] &&
-      [[song nrating] intValue] != 1) {
+  if (sessionToken == nil) {
+    [self fetchSessionToken];
+    /* just lose this scrobble, it's not mission critical anyway */
     return;
   }
 
@@ -174,13 +176,12 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @param loved whether the song should be 'loved' or 'unloved'
  */
 - (void) setPreference: (Song*)song loved:(BOOL)loved {
-  /* If we don't have a sesion token yet, just ignore this for now */
-  if (sessionToken == nil || [@"" isEqual:sessionToken] || song == nil) {
+  if (!PREF_KEY_BOOL(PLEASE_SCROBBLE) || !PREF_KEY_BOOL(PLEASE_SCROBBLE_LIKES)){
     return;
   }
-
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:PLEASE_SCROBBLE_LIKES]) {
+  if (sessionToken == nil) {
+    /* As above, it's "OK" if we drop this and just fetch a token for now */
+    [self fetchSessionToken];
     return;
   }
 
@@ -282,6 +283,12 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * authorization token.
  */
 - (void) fetchSessionToken {
+  /* If we don't have an auth token, then fetch one and it will fetch a session
+     token on succes */
+  if (authToken == nil) {
+    [self fetchAuthToken];
+    return;
+  }
   NSLogd(@"Fetching session token for last.fm...");
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];

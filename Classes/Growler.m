@@ -15,19 +15,8 @@
 @implementation Growler
 
 - (id) init {
-  PREF_OBSERVE_VALUE(self, PLEASE_GROWL);
+  [GrowlApplicationBridge setGrowlDelegate:self];
   return self;
-}
-
-- (void) dealloc {
-  PREF_UNOBSERVE_VALUES(self, PLEASE_GROWL);
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-      change:(NSDictionary *)change context:(void *)context {
-  if (PREF_KEY_BOOL(PLEASE_GROWL)) {
-    [GrowlApplicationBridge setGrowlDelegate:self];
-  }
 }
 
 - (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL)n {
