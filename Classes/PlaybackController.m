@@ -141,30 +141,13 @@ BOOL playOnStart = YES;
 - (void) songRated: (NSNotification*) not {
   Song *song = [[not userInfo] objectForKey:@"song"];
   if (song) {
-    [SCROBBLER setPreference:song loved:[[song nrating] intValue] == 1];
+    [SCROBBLER setPreference:song loved:([[song nrating] intValue] == 1)];
   }
   [self hideSpinner];
 }
 
 - (void) songTired: (NSNotification*) not {
-  /* I'm actually not sure if I should send this as a dislike..
-   * Could just mean "I've heard this 1000 times already!!!"
-   * I still think it's a good idea to send the song info for
-   * future utilization.
-   *
-  Song* song = [[not userInfo] objectForKey:@"song"];
-
-  if (song) {
-    [Scrobbler setPreference:song loved:NO];
-  }
-   */
   [self hideSpinner];
-}
-
-- (void) noSongs: (NSNotification*) not {
-  if ([playing playing] == nil) {
-    [[NSApp delegate] setCurrentView:noSongsView];
-  }
 }
 
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */

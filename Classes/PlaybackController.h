@@ -7,7 +7,6 @@
   IBOutlet NSProgressIndicator *songLoadingProgress;
 
   IBOutlet NSView *playbackView;
-  IBOutlet NSView *noSongsView;
 
   // Song view items
   IBOutlet NSTextField *artistLabel;
@@ -36,7 +35,6 @@
 + (BOOL) playOnStart;
 
 - (void) reset;
-- (void) noSongs: (NSNotification*) notification;
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;
 - (void) show;
