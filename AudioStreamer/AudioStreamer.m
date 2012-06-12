@@ -21,39 +21,20 @@
 //     distribution.
 //
 
+/* This file has been heavily modified since its original distribution bytes
+   Alex Crichton for the Hermes project */
+
 #import "AudioStreamer.h"
-#if TARGET_OS_IPHONE
-#import <CFNetwork/CFNetwork.h>
-#endif
 #import "URLConnection.h"
 
 #define BitRateEstimationMaxPackets 5000
 #define BitRateEstimationMinPackets 50
 
-NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
+#define CHECK_ERR(err, code) {                                                 \
+    if (err) { [self failWithErrorCode:code]; return; }                        \
+  }
 
-NSString * const AS_NO_ERROR_STRING = @"No error.";
-NSString * const AS_FILE_STREAM_GET_PROPERTY_FAILED_STRING = @"File stream get property failed.";
-NSString * const AS_FILE_STREAM_SEEK_FAILED_STRING = @"File stream seek failed.";
-NSString * const AS_FILE_STREAM_PARSE_BYTES_FAILED_STRING = @"Parse bytes failed.";
-NSString * const AS_FILE_STREAM_OPEN_FAILED_STRING = @"Open audio file stream failed.";
-NSString * const AS_FILE_STREAM_CLOSE_FAILED_STRING = @"Close audio file stream failed.";
-NSString * const AS_AUDIO_QUEUE_CREATION_FAILED_STRING = @"Audio queue creation failed.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED_STRING = @"Audio buffer allocation failed.";
-NSString * const AS_AUDIO_QUEUE_ENQUEUE_FAILED_STRING = @"Queueing of audio buffer failed.";
-NSString * const AS_AUDIO_QUEUE_ADD_LISTENER_FAILED_STRING = @"Audio queue add listener failed.";
-NSString * const AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED_STRING = @"Audio queue remove listener failed.";
-NSString * const AS_AUDIO_QUEUE_START_FAILED_STRING = @"Audio queue start failed.";
-NSString * const AS_AUDIO_QUEUE_BUFFER_MISMATCH_STRING = @"Audio queue buffers don't match.";
-NSString * const AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING = @"Audio queue dispose failed.";
-NSString * const AS_AUDIO_QUEUE_PAUSE_FAILED_STRING = @"Audio queue pause failed.";
-NSString * const AS_AUDIO_QUEUE_STOP_FAILED_STRING = @"Audio queue stop failed.";
-NSString * const AS_AUDIO_DATA_NOT_FOUND_STRING = @"No audio data found.";
-NSString * const AS_AUDIO_QUEUE_FLUSH_FAILED_STRING = @"Audio queue flush failed.";
-NSString * const AS_GET_AUDIO_TIME_FAILED_STRING = @"Audio queue get current time failed.";
-NSString * const AS_AUDIO_STREAMER_FAILED_STRING = @"Audio playback failed";
-NSString * const AS_NETWORK_CONNECTION_FAILED_STRING = @"Network connection failed";
-NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Audio packets are larger than kAQDefaultBufSize.";
+NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 
 @interface AudioStreamer ()
 
@@ -69,37 +50,12 @@ NSString * const AS_AUDIO_BUFFER_TOO_SMALL_STRING = @"Audio packets are larger t
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
                           propertyID:(AudioQueuePropertyID)inID;
 
-#if TARGET_OS_IPHONE
-- (void)handleInterruptionChangeToState:(AudioQueuePropertyID)inInterruptionState;
-#endif
-
 - (void)internalSeekToTime:(double)newSeekTime;
 - (void)enqueueBuffer;
 - (void)handleReadFromStream:(CFReadStreamRef)aStream
                    eventType:(CFStreamEventType)eventType;
 
 @end
-
-#pragma mark Audio Callback Function Prototypes
-
-void MyAudioQueueOutputCallback(void* inClientData, AudioQueueRef inAQ, AudioQueueBufferRef inBuffer);
-void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ, AudioQueuePropertyID inID);
-void MyPropertyListenerProc(  void *              inClientData,
-                            AudioFileStreamID        inAudioFileStream,
-                            AudioFileStreamPropertyID    inPropertyID,
-                            UInt32 *            ioFlags);
-void MyPacketsProc(        void *              inClientData,
-                   UInt32              inNumberBytes,
-                   UInt32              inNumberPackets,
-                   const void *          inInputData,
-                   AudioStreamPacketDescription  *inPacketDescriptions);
-OSStatus MyEnqueueBuffer(AudioStreamer* myData);
-
-#if TARGET_OS_IPHONE
-void MyAudioSessionInterruptionListener(void *inClientData, UInt32 inInterruptionState);
-#endif
-
-#pragma mark Audio Callback Function Implementations
 
 //
 // MyPropertyListenerProc
@@ -112,13 +68,13 @@ void MyAudioSessionInterruptionListener(void *inClientData, UInt32 inInterruptio
 // This function is adapted from Apple's example in AudioFileStreamExample with
 // kAudioQueueProperty_IsRunning listening added.
 //
-void MyPropertyListenerProc(  void *              inClientData,
-                            AudioFileStreamID        inAudioFileStream,
-                            AudioFileStreamPropertyID    inPropertyID,
-                            UInt32 *            ioFlags)
+void MyPropertyListenerProc(void *inClientData,
+                            AudioFileStreamID inAudioFileStream,
+                            AudioFileStreamPropertyID inPropertyID,
+                            UInt32 *ioFlags)
 {
   // this is called by audio file stream when it finds property values
-  AudioStreamer* streamer = (AudioStreamer *)inClientData;
+  AudioStreamer* streamer = (__bridge AudioStreamer *)inClientData;
   [streamer
    handlePropertyChangeForFileStream:inAudioFileStream
    fileStreamPropertyID:inPropertyID
@@ -143,7 +99,7 @@ void MyPacketsProc(        void *              inClientData,
                    AudioStreamPacketDescription  *inPacketDescriptions)
 {
   // this is called by audio file stream when it finds packets of audio
-  AudioStreamer* streamer = (AudioStreamer *)inClientData;
+  AudioStreamer* streamer = (__bridge AudioStreamer *)inClientData;
   [streamer
    handleAudioPackets:inInputData
    numberBytes:inNumberBytes
@@ -166,7 +122,7 @@ void MyAudioQueueOutputCallback(  void*          inClientData,
 {
   // this is called by the audio queue when it has finished decoding our data.
   // The buffer is now free to be reused.
-  AudioStreamer* streamer = (AudioStreamer*)inClientData;
+  AudioStreamer* streamer = (__bridge AudioStreamer*)inClientData;
   [streamer handleBufferCompleteForQueue:inAQ buffer:inBuffer];
 }
 
@@ -179,24 +135,9 @@ void MyAudioQueueOutputCallback(  void*          inClientData,
 //
 void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ, AudioQueuePropertyID inID)
 {
-  AudioStreamer* streamer = (AudioStreamer *)inUserData;
+  AudioStreamer* streamer = (__bridge AudioStreamer *)inUserData;
   [streamer handlePropertyChangeForQueue:inAQ propertyID:inID];
 }
-
-#if TARGET_OS_IPHONE
-//
-// MyAudioSessionInterruptionListener
-//
-// Invoked if the audio session is interrupted (like when the phone rings)
-//
-void MyAudioSessionInterruptionListener(void *inClientData, UInt32 inInterruptionState)
-{
-  AudioStreamer* streamer = (AudioStreamer *)inClientData;
-  [streamer handleInterruptionChangeToState:inInterruptionState];
-}
-#endif
-
-#pragma mark CFReadStream Callback Function Implementations
 
 //
 // ReadStreamCallBack
@@ -213,7 +154,7 @@ void ASReadStreamCallBack
  void* inClientInfo
  )
 {
-  AudioStreamer* streamer = (AudioStreamer *)inClientInfo;
+  AudioStreamer* streamer = (__bridge AudioStreamer *)inClientInfo;
   [streamer handleReadFromStream:aStream eventType:eventType];
 }
 
@@ -221,7 +162,7 @@ void ASReadStreamCallBack
 
 @synthesize errorCode;
 @synthesize networkError;
-@synthesize state;
+@synthesize state = state_;
 @synthesize bitRate;
 @synthesize httpHeaders;
 
@@ -230,18 +171,14 @@ void ASReadStreamCallBack
 //
 // Init method for the object.
 //
-- (id)initWithURL:(NSURL *)aURL
-{
-  self = [super init];
-  if (self != nil)
-  {
-    url = [aURL retain];
-  }
+- (id)initWithURL:(NSURL *)aURL {
+  url = aURL;
   return self;
 }
 
 - (BOOL)setVolume: (double) volume {
-  OSStatus rc = AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, volume);
+  OSStatus rc = AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume,
+                                       volume);
   return rc == 0;
 }
 
@@ -250,11 +187,8 @@ void ASReadStreamCallBack
 //
 // Releases instance memory.
 //
-- (void)dealloc
-{
+- (void)dealloc {
   [self stop];
-  [url release];
-  [super dealloc];
 }
 
 //
@@ -262,19 +196,12 @@ void ASReadStreamCallBack
 //
 // returns YES if the audio has reached a stopping condition.
 //
-- (BOOL)isFinishing
-{
-  @synchronized (self)
-  {
-    if ((errorCode != AS_NO_ERROR && state != AS_INITIALIZED) ||
-        ((state == AS_STOPPING || state == AS_STOPPED) &&
-         stopReason != AS_STOPPING_TEMPORARILY))
-    {
-      return YES;
-    }
+- (BOOL)isFinishing {
+  @synchronized (self) {
+    return (errorCode != AS_NO_ERROR && state_ != AS_INITIALIZED) ||
+           ((state_ == AS_STOPPING || state_ == AS_STOPPED) &&
+            stopReason != AS_STOPPING_TEMPORARILY);
   }
-
-  return NO;
 }
 
 //
@@ -282,19 +209,11 @@ void ASReadStreamCallBack
 //
 // returns YES if the run loop should exit.
 //
-- (BOOL)runLoopShouldExit
-{
-  @synchronized(self)
-  {
-    if (errorCode != AS_NO_ERROR ||
-        (state == AS_STOPPED &&
-         stopReason != AS_STOPPING_TEMPORARILY))
-    {
-      return YES;
-    }
+- (BOOL)runLoopShouldExit {
+  @synchronized(self) {
+    return errorCode != AS_NO_ERROR ||
+           (state_ == AS_STOPPED && stopReason != AS_STOPPING_TEMPORARILY);
   }
-
-  return NO;
 }
 
 //
@@ -308,100 +227,59 @@ void ASReadStreamCallBack
 //
 // returns the string representation of the error code
 //
-+ (NSString *)stringForErrorCode:(AudioStreamerErrorCode)anErrorCode
-{
-  switch (anErrorCode)
-  {
++ (NSString *)stringForErrorCode:(AudioStreamerErrorCode)anErrorCode {
+  switch (anErrorCode) {
     case AS_NO_ERROR:
-      return AS_NO_ERROR_STRING;
+      return @"No error.";
     case AS_FILE_STREAM_GET_PROPERTY_FAILED:
-      return AS_FILE_STREAM_GET_PROPERTY_FAILED_STRING;
+      return @"File stream get property failed";
+    case AS_FILE_STREAM_SET_PROPERTY_FAILED:
+      return @"File stream set property failed";
     case AS_FILE_STREAM_SEEK_FAILED:
-      return AS_FILE_STREAM_SEEK_FAILED_STRING;
+      return @"File stream seek failed";
     case AS_FILE_STREAM_PARSE_BYTES_FAILED:
-      return AS_FILE_STREAM_PARSE_BYTES_FAILED_STRING;
+      return @"Parse bytes failed";
     case AS_AUDIO_QUEUE_CREATION_FAILED:
-      return AS_AUDIO_QUEUE_CREATION_FAILED_STRING;
+      return @"Audio queue creation failed";
     case AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED:
-      return AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED_STRING;
+      return @"Audio queue buffer allocation failed";
     case AS_AUDIO_QUEUE_ENQUEUE_FAILED:
-      return AS_AUDIO_QUEUE_ENQUEUE_FAILED_STRING;
+      return @"Queueing of audio buffer failed";
     case AS_AUDIO_QUEUE_ADD_LISTENER_FAILED:
-      return AS_AUDIO_QUEUE_ADD_LISTENER_FAILED_STRING;
+      return @"Failed to add listener to audio queue";
     case AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED:
-      return AS_AUDIO_QUEUE_REMOVE_LISTENER_FAILED_STRING;
+      return @"Failed to remove listener from audio queue";
     case AS_AUDIO_QUEUE_START_FAILED:
-      return AS_AUDIO_QUEUE_START_FAILED_STRING;
+      return @"Failed to start the audio queue";
     case AS_AUDIO_QUEUE_BUFFER_MISMATCH:
-      return AS_AUDIO_QUEUE_BUFFER_MISMATCH_STRING;
+      return @"Audio queue buffer mismatch";
     case AS_FILE_STREAM_OPEN_FAILED:
-      return AS_FILE_STREAM_OPEN_FAILED_STRING;
+      return @"Failed to open file stream";
     case AS_FILE_STREAM_CLOSE_FAILED:
-      return AS_FILE_STREAM_CLOSE_FAILED_STRING;
+      return @"Failed to close the file stream";
     case AS_AUDIO_QUEUE_DISPOSE_FAILED:
-      return AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING;
+      return @"Couldn't dispose of audio queue";
     case AS_AUDIO_QUEUE_PAUSE_FAILED:
-      return AS_AUDIO_QUEUE_DISPOSE_FAILED_STRING;
+      return @"Failed to pause the audio queue";
     case AS_AUDIO_QUEUE_FLUSH_FAILED:
-      return AS_AUDIO_QUEUE_FLUSH_FAILED_STRING;
+      return @"Failed to flush the audio queue";
     case AS_AUDIO_DATA_NOT_FOUND:
-      return AS_AUDIO_DATA_NOT_FOUND_STRING;
+      return @"No audio data found";
     case AS_GET_AUDIO_TIME_FAILED:
-      return AS_GET_AUDIO_TIME_FAILED_STRING;
+      return @"Couldn't get audio time";
     case AS_NETWORK_CONNECTION_FAILED:
-      return AS_NETWORK_CONNECTION_FAILED_STRING;
+      return @"Network connection failure";
     case AS_AUDIO_QUEUE_STOP_FAILED:
-      return AS_AUDIO_QUEUE_STOP_FAILED_STRING;
+      return @"Audio queue stop failed";
     case AS_AUDIO_STREAMER_FAILED:
-      return AS_AUDIO_STREAMER_FAILED_STRING;
+      return @"Audio streamer failed";
     case AS_AUDIO_BUFFER_TOO_SMALL:
-      return AS_AUDIO_BUFFER_TOO_SMALL_STRING;
+      return @"Audio buffer too small";
     default:
-      return AS_AUDIO_STREAMER_FAILED_STRING;
+      break;
   }
 
-  return AS_AUDIO_STREAMER_FAILED_STRING;
-}
-
-//
-// presentAlertWithTitle:message:
-//
-// Common code for presenting error dialogs
-//
-// Parameters:
-//    title - title for the dialog
-//    message - main test for the dialog
-//
-- (void)presentAlertWithTitle:(NSString*)title message:(NSString*)message
-{
-#if TARGET_OS_IPHONE
-  UIAlertView *alert = [
-                        [[UIAlertView alloc]
-                         initWithTitle:title
-                         message:message
-                         delegate:self
-                         cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                         otherButtonTitles: nil]
-                        autorelease];
-  [alert
-   performSelector:@selector(show)
-   onThread:[NSThread mainThread]
-   withObject:nil
-   waitUntilDone:NO];
-#else
-//  NSAlert *alert =
-//  [NSAlert
-//   alertWithMessageText:title
-//   defaultButton:NSLocalizedString(@"OK", @"")
-//   alternateButton:nil
-//   otherButton:nil
-//   informativeTextWithFormat:message];
-//  [alert
-//   performSelector:@selector(runModal)
-//   onThread:[NSThread mainThread]
-//   withObject:nil
-//   waitUntilDone:NO];
-#endif
+  return @"Audio streaming failed";
 }
 
 //
@@ -412,42 +290,20 @@ void ASReadStreamCallBack
 // Parameters:
 //    anErrorCode - the error condition
 //
-- (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode
-{
-  @synchronized(self)
-  {
-    if (errorCode != AS_NO_ERROR)
-    {
+- (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode {
+  @synchronized(self) {
+    if (errorCode != AS_NO_ERROR) {
       // Only set the error once.
       return;
     }
 
     errorCode = anErrorCode;
 
-    if (err)
-    {
-      char *errChars = (char *)&err;
-      NSLog(@"%@ err: %c%c%c%c %d\n",
-            [AudioStreamer stringForErrorCode:anErrorCode],
-            errChars[3], errChars[2], errChars[1], errChars[0],
-            (int)err);
-    }
-    else
-    {
-      NSLog(@"%@", [AudioStreamer stringForErrorCode:anErrorCode]);
-    }
-
-    if (state == AS_PLAYING ||
-        state == AS_PAUSED ||
-        state == AS_BUFFERING)
-    {
-      self.state = AS_STOPPING;
+    if (state_ == AS_PLAYING || state_ == AS_PAUSED || state_ == AS_BUFFERING) {
+      [self setState:AS_STOPPING];
       stopReason = AS_STOPPING_ERROR;
       AudioQueueStop(audioQueue, true);
     }
-
-    [self presentAlertWithTitle:NSLocalizedStringFromTable(@"File Error", @"Errors", nil)
-                        message:NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil)];
   }
 }
 
@@ -457,14 +313,10 @@ void ASReadStreamCallBack
 // Method invoked on main thread to send notifications to the main thread's
 // notification center.
 //
-- (void)mainThreadStateNotification
-{
-  NSNotification *notification =
-  [NSNotification
-   notificationWithName:ASStatusChangedNotification
-   object:self];
+- (void)mainThreadStateNotification {
   [[NSNotificationCenter defaultCenter]
-   postNotification:notification];
+        postNotificationName:ASStatusChangedNotification
+                      object:self];
 }
 
 //
@@ -477,25 +329,17 @@ void ASReadStreamCallBack
 // Parameters:
 //    anErrorCode - the error condition
 //
-- (void)setState:(AudioStreamerState)aStatus
-{
-  @synchronized(self)
-  {
-    if (state != aStatus)
-    {
-      state = aStatus;
+- (void)setState:(AudioStreamerState)aStatus {
+  @synchronized(self) {
+    if (state_ == aStatus) return;
+    state_ = aStatus;
 
-      if ([[NSThread currentThread] isEqual:[NSThread mainThread]])
-      {
-        [self mainThreadStateNotification];
-      }
-      else
-      {
-        [self
-         performSelectorOnMainThread:@selector(mainThreadStateNotification)
-         withObject:nil
-         waitUntilDone:NO];
-      }
+    if ([[NSThread currentThread] isEqual:[NSThread mainThread]]) {
+      [self mainThreadStateNotification];
+    } else {
+      [self performSelectorOnMainThread:@selector(mainThreadStateNotification)
+                             withObject:nil
+                          waitUntilDone:NO];
     }
   }
 }
@@ -505,14 +349,8 @@ void ASReadStreamCallBack
 //
 // returns YES if the audio currently playing.
 //
-- (BOOL)isPlaying
-{
-  if (state == AS_PLAYING)
-  {
-    return YES;
-  }
-
-  return NO;
+- (BOOL)isPlaying {
+  return state_ == AS_PLAYING;
 }
 
 //
@@ -520,14 +358,8 @@ void ASReadStreamCallBack
 //
 // returns YES if the audio currently playing.
 //
-- (BOOL)isPaused
-{
-  if (state == AS_PAUSED)
-  {
-    return YES;
-  }
-
-  return NO;
+- (BOOL)isPaused {
+  return state_ == AS_PAUSED;
 }
 
 //
@@ -536,21 +368,14 @@ void ASReadStreamCallBack
 // returns YES if the AudioStreamer is waiting for a state transition of some
 // kind.
 //
-- (BOOL)isWaiting
-{
-  @synchronized(self)
-  {
-    if ([self isFinishing] ||
-        state == AS_STARTING_FILE_THREAD||
-        state == AS_WAITING_FOR_DATA ||
-        state == AS_WAITING_FOR_QUEUE_TO_START ||
-        state == AS_BUFFERING)
-    {
-      return YES;
-    }
+- (BOOL)isWaiting {
+  @synchronized(self) {
+    return [self isFinishing] ||
+        state_ == AS_STARTING_FILE_THREAD||
+        state_ == AS_WAITING_FOR_DATA ||
+        state_ == AS_WAITING_FOR_QUEUE_TO_START ||
+        state_ == AS_BUFFERING;
   }
-
-  return NO;
 }
 
 //
@@ -559,14 +384,8 @@ void ASReadStreamCallBack
 // returns YES if the AudioStream is in the AS_INITIALIZED state (i.e.
 // isn't doing anything).
 //
-- (BOOL)isIdle
-{
-  if (state == AS_INITIALIZED)
-  {
-    return YES;
-  }
-
-  return NO;
+- (BOOL)isIdle {
+  return state_ == AS_INITIALIZED;
 }
 
 //
@@ -579,39 +398,23 @@ void ASReadStreamCallBack
 //
 // returns a file type hint that can be passed to the AudioFileStream
 //
-+ (AudioFileTypeID)hintForFileExtension:(NSString *)fileExtension
-{
++ (AudioFileTypeID)hintForFileExtension:(NSString *)fileExtension {
   AudioFileTypeID fileTypeHint = kAudioFileAAC_ADTSType;
-  if ([fileExtension isEqual:@"mp3"])
-  {
+  if ([fileExtension isEqual:@"mp3"]) {
     fileTypeHint = kAudioFileMP3Type;
-  }
-  else if ([fileExtension isEqual:@"wav"])
-  {
+  } else if ([fileExtension isEqual:@"wav"]) {
     fileTypeHint = kAudioFileWAVEType;
-  }
-  else if ([fileExtension isEqual:@"aifc"])
-  {
+  } else if ([fileExtension isEqual:@"aifc"]) {
     fileTypeHint = kAudioFileAIFCType;
-  }
-  else if ([fileExtension isEqual:@"aiff"])
-  {
+  } else if ([fileExtension isEqual:@"aiff"]) {
     fileTypeHint = kAudioFileAIFFType;
-  }
-  else if ([fileExtension isEqual:@"m4a"])
-  {
+  } else if ([fileExtension isEqual:@"m4a"]) {
     fileTypeHint = kAudioFileM4AType;
-  }
-  else if ([fileExtension isEqual:@"mp4"])
-  {
+  } else if ([fileExtension isEqual:@"mp4"]) {
     fileTypeHint = kAudioFileMPEG4Type;
-  }
-  else if ([fileExtension isEqual:@"caf"])
-  {
+  } else if ([fileExtension isEqual:@"caf"]) {
     fileTypeHint = kAudioFileCAFType;
-  }
-  else if ([fileExtension isEqual:@"aac"])
-  {
+  } else if ([fileExtension isEqual:@"aac"]) {
     fileTypeHint = kAudioFileAAC_ADTSType;
   }
   return fileTypeHint;
@@ -623,99 +426,98 @@ void ASReadStreamCallBack
 // Open the audioFileStream to parse data and the fileHandle as the data
 // source.
 //
-- (BOOL)openReadStream
-{
-  @synchronized(self)
-  {
-    NSAssert([[NSThread currentThread] isEqual:internalThread],
-             @"File stream download must be started on the internalThread");
-    NSAssert(stream == nil, @"Download stream already initialized");
+- (BOOL)openReadStream {
+  NSAssert([[NSThread currentThread] isEqual:internalThread],
+           @"File stream download must be started on the internalThread");
+  NSAssert(stream == NULL, @"Download stream already initialized");
 
-    //
-    // Create the HTTP GET request
-    //
-    CFHTTPMessageRef message= CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (CFURLRef)url, kCFHTTPVersion1_1);
+  //
+  // Create the HTTP GET request
+  //
+  CFHTTPMessageRef message =
+      CFHTTPMessageCreateRequest(NULL,
+                                 CFSTR("GET"),
+                                 (__bridge CFURLRef) url,
+                                 kCFHTTPVersion1_1);
 
-    //
-    // If we are creating this request to seek to a location, set the
-    // requested byte range in the headers.
-    //
-    if (fileLength > 0 && seekByteOffset > 0)
-    {
-      CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Range"),
-                                       (CFStringRef)[NSString stringWithFormat:@"bytes=%ld-%ld", seekByteOffset, fileLength]);
-      discontinuous = YES;
-    }
-
-    //
-    // Create the read stream that will receive data from the HTTP request
-    //
-    stream = CFReadStreamCreateForHTTPRequest(NULL, message);
-    CFRelease(message);
-
-    //
-    // Enable stream redirection
-    //
-    if (CFReadStreamSetProperty(
-                                stream,
-                                kCFStreamPropertyHTTPShouldAutoredirect,
-                                kCFBooleanTrue) == false)
-    {
-      [self presentAlertWithTitle:NSLocalizedStringFromTable(@"File Error", @"Errors", nil)
-                          message:NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil)];
-      return NO;
-    }
-
-    //
-    // Handle proxies
-    //
-    [URLConnection setHermesProxy:stream];
-
-    //
-    // Handle SSL connections
-    //
-    if( [[url absoluteString] rangeOfString:@"https"].location != NSNotFound )
-    {
-      NSDictionary *sslSettings =
-      [NSDictionary dictionaryWithObjectsAndKeys:
-       (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
-       [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredCertificates,
-       [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredRoots,
-       [NSNumber numberWithBool:YES], kCFStreamSSLAllowsAnyRoot,
-       [NSNumber numberWithBool:NO], kCFStreamSSLValidatesCertificateChain,
-       [NSNull null], kCFStreamSSLPeerName,
-       nil];
-
-      CFReadStreamSetProperty(stream, kCFStreamPropertySSLSettings, sslSettings);
-    }
-
-    //
-    // We're now ready to receive data
-    //
-    self.state = AS_WAITING_FOR_DATA;
-
-    //
-    // Open the stream
-    //
-    if (!CFReadStreamOpen(stream))
-    {
-      CFRelease(stream);
-      [self presentAlertWithTitle:NSLocalizedStringFromTable(@"File Error", @"Errors", nil)
-                          message:NSLocalizedStringFromTable(@"Unable to configure network read stream.", @"Errors", nil)];
-      return NO;
-    }
-
-    //
-    // Set our callback function to receive the data
-    //
-    CFStreamClientContext context = {0, self, NULL, NULL, NULL};
-    CFReadStreamSetClient(
-                          stream,
-                          kCFStreamEventHasBytesAvailable | kCFStreamEventErrorOccurred | kCFStreamEventEndEncountered,
-                          ASReadStreamCallBack,
-                          &context);
-    CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(), kCFRunLoopCommonModes);
+  //
+  // If we are creating this request to seek to a location, set the
+  // requested byte range in the headers.
+  //
+  if (fileLength > 0 && seekByteOffset > 0) {
+   NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
+                                              seekByteOffset, fileLength];
+    CFHTTPMessageSetHeaderFieldValue(message,
+                                     CFSTR("Range"),
+                                     (__bridge CFStringRef) str);
+    discontinuous = YES;
   }
+
+  //
+  // Create the read stream that will receive data from the HTTP request
+  //
+  stream = CFReadStreamCreateForHTTPRequest(NULL, message);
+  CFRelease(message);
+
+  //
+  // Enable stream redirection
+  //
+  if (CFReadStreamSetProperty(stream,
+                              kCFStreamPropertyHTTPShouldAutoredirect,
+                              kCFBooleanTrue) == false) {
+    [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
+    return NO;
+  }
+
+  //
+  // Handle proxies
+  //
+  [URLConnection setHermesProxy:stream];
+
+  //
+  // Handle SSL connections
+  //
+  if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
+    NSDictionary *sslSettings =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
+     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredCertificates,
+     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredRoots,
+     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsAnyRoot,
+     [NSNumber numberWithBool:NO], kCFStreamSSLValidatesCertificateChain,
+     [NSNull null], kCFStreamSSLPeerName,
+     nil];
+
+    CFReadStreamSetProperty(stream, kCFStreamPropertySSLSettings,
+                            (__bridge CFDictionaryRef) sslSettings);
+  }
+
+  //
+  // We're now ready to receive data
+  //
+  [self setState:AS_WAITING_FOR_DATA];
+
+  //
+  // Open the stream
+  //
+  if (!CFReadStreamOpen(stream)) {
+    CFRelease(stream);
+    [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
+    return NO;
+  }
+
+  //
+  // Set our callback function to receive the data
+  //
+  CFStreamClientContext context = {0, (__bridge void*) self, NULL, NULL, NULL};
+  CFReadStreamSetClient(stream,
+                        kCFStreamEventHasBytesAvailable |
+                          kCFStreamEventErrorOccurred |
+                          kCFStreamEventEndEncountered,
+                        ASReadStreamCallBack,
+                        &context);
+  CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
+                                  kCFRunLoopCommonModes);
 
   return YES;
 }
@@ -745,60 +547,23 @@ void ASReadStreamCallBack
 // This method contains bits of the "main" function from Apple's example in
 // AudioFileStreamExample.
 //
-- (void)startInternal
-{
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+- (void)startInternal {
+  @autoreleasepool {
 
-  @synchronized(self)
-  {
-    if (state != AS_STARTING_FILE_THREAD)
-    {
-      if (state != AS_STOPPING &&
-          state != AS_STOPPED)
-      {
-        NSLog(@"### Not starting audio thread. State code is: %u", state);
-      }
-      self.state = AS_INITIALIZED;
-      [pool release];
-      return;
-    }
+  assert(state_ == AS_STARTING_FILE_THREAD);
 
-#if TARGET_OS_IPHONE
-    //
-    // Set the audio session category so that we continue to play if the
-    // iPhone/iPod auto-locks.
-    //
-    AudioSessionInitialize (
-                            NULL,                          // 'NULL' to use the default (main) run loop
-                            NULL,                          // 'NULL' to use the default run loop mode
-                            MyAudioSessionInterruptionListener,  // a reference to your interruption callback
-                            self                       // data to pass to your interruption listener callback
-                            );
-    UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
-    AudioSessionSetProperty (
-                             kAudioSessionProperty_AudioCategory,
-                             sizeof (sessionCategory),
-                             &sessionCategory
-                             );
-    AudioSessionSetActive(true);
-#endif
+  // initialize a mutex and condition so that we can block on buffers in use.
+  cond = [[NSCondition alloc] init];
 
-    // initialize a mutex and condition so that we can block on buffers in use.
-    pthread_mutex_init(&queueBuffersMutex, NULL);
-    pthread_cond_init(&queueBufferReadyCondition, NULL);
-
-    if (![self openReadStream])
-    {
-      goto cleanup;
-    }
+  if (![self openReadStream]) {
+    goto cleanup;
   }
 
   //
   // Process the run loop until playback is finished or failed.
   //
   BOOL isRunning = YES;
-  do
-  {
+  do {
     isRunning = [[NSRunLoop currentRunLoop]
                  runMode:NSDefaultRunLoopMode
                  beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
@@ -815,15 +580,10 @@ void ASReadStreamCallBack
     // handleBufferCompleteForQueue:buffer: should not change the state
     // (may not enter the synchronized section).
     //
-    if (buffersUsed == 0 && self.state == AS_PLAYING)
-    {
+    if (buffersUsed == 0 && state_ == AS_PLAYING) {
       err = AudioQueuePause(audioQueue);
-      if (err)
-      {
-        [self failWithErrorCode:AS_AUDIO_QUEUE_PAUSE_FAILED];
-        return;
-      }
-      self.state = AS_BUFFERING;
+      CHECK_ERR(err, AS_AUDIO_QUEUE_PAUSE_FAILED);
+      [self setState:AS_BUFFERING];
     }
   } while (isRunning && ![self runLoopShouldExit]);
 
@@ -834,8 +594,7 @@ cleanup:
     //
     // Cleanup the read stream if it is still open
     //
-    if (stream)
-    {
+    if (stream) {
       CFReadStreamClose(stream);
       CFRelease(stream);
       stream = nil;
@@ -844,8 +603,7 @@ cleanup:
     //
     // Close the audio file strea,
     //
-    if (audioFileStream)
-    {
+    if (audioFileStream) {
       err = AudioFileStreamClose(audioFileStream);
       audioFileStream = nil;
       if (err)
@@ -857,37 +615,26 @@ cleanup:
     //
     // Dispose of the Audio Queue
     //
-    if (audioQueue)
-    {
+    if (audioQueue) {
       err = AudioQueueDispose(audioQueue, true);
       audioQueue = nil;
-      if (err)
-      {
+      if (err) {
         [self failWithErrorCode:AS_AUDIO_QUEUE_DISPOSE_FAILED];
       }
     }
 
-    pthread_mutex_destroy(&queueBuffersMutex);
-    pthread_cond_destroy(&queueBufferReadyCondition);
-
-#if TARGET_OS_IPHONE
-    AudioSessionSetActive(false);
-#endif
-
-    [httpHeaders release];
     httpHeaders = nil;
 
     bytesFilled = 0;
     packetsFilled = 0;
     seekByteOffset = 0;
     packetBufferSize = 0;
-    self.state = AS_INITIALIZED;
+    [self setState:AS_INITIALIZED];
 
-    [internalThread release];
     internalThread = nil;
   }
 
-  [pool release];
+  } /* @autoreleasepool */
 }
 
 //
@@ -895,28 +642,20 @@ cleanup:
 //
 // Calls startInternal in a new thread.
 //
-- (void)start
-{
-  @synchronized (self)
-  {
-    if (state == AS_PAUSED)
-    {
-      [self pause];
-    }
-    else if (state == AS_INITIALIZED)
-    {
-      NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]],
-               @"Playback can only be started from the main thread.");
-      notificationCenter =
-      [[NSNotificationCenter defaultCenter] retain];
-      self.state = AS_STARTING_FILE_THREAD;
-      internalThread =
-      [[NSThread alloc]
-       initWithTarget:self
-       selector:@selector(startInternal)
-       object:nil];
-      [internalThread start];
-    }
+- (void) start {
+  assert(audioQueue == NULL);
+  assert(state_ == AS_INITIALIZED);
+  assert(internalThread == nil);
+  NSAssert([[NSThread currentThread] isEqual:[NSThread mainThread]],
+           @"Playback can only be started from the main thread.");
+
+  @synchronized (self) {
+    notificationCenter = [NSNotificationCenter defaultCenter];
+    [self setState:AS_STARTING_FILE_THREAD];
+    internalThread = [[NSThread alloc] initWithTarget:self
+                                             selector:@selector(startInternal)
+                                               object:nil];
+    [internalThread start];
   }
 }
 
@@ -926,8 +665,7 @@ cleanup:
 //
 - (void)internalSeekToTime:(double)newSeekTime
 {
-  if ([self calculatedBitRate] == 0.0 || fileLength <= 0)
-  {
+  if ([self calculatedBitRate] == 0.0 || fileLength <= 0) {
     return;
   }
 
@@ -935,14 +673,13 @@ cleanup:
   // Calculate the byte offset for seeking
   //
   seekByteOffset = dataOffset +
-  (newSeekTime / self.duration) * (fileLength - dataOffset);
+    (newSeekTime / self.duration) * (fileLength - dataOffset);
 
   //
   // Attempt to leave 1 useful packet at the end of the file (although in
   // reality, this may still seek too far if the file has a long trailer).
   //
-  if (seekByteOffset > fileLength - 2 * packetBufferSize)
-  {
+  if (seekByteOffset > fileLength - 2 * packetBufferSize) {
     seekByteOffset = fileLength - 2 * packetBufferSize;
   }
 
@@ -956,15 +693,12 @@ cleanup:
   // Attempt to align the seek with a packet boundary
   //
   double calculatedBitRate = [self calculatedBitRate];
-  if (packetDuration > 0 &&
-      calculatedBitRate > 0)
-  {
+  if (packetDuration > 0 && calculatedBitRate > 0) {
     UInt32 ioFlags = 0;
     SInt64 packetAlignedByteOffset;
     SInt64 seekPacket = floor(newSeekTime / packetDuration);
     err = AudioFileStreamSeek(audioFileStream, seekPacket, &packetAlignedByteOffset, &ioFlags);
-    if (!err && !(ioFlags & kAudioFileStreamSeekFlag_OffsetIsEstimated))
-    {
+    if (!err && !(ioFlags & kAudioFileStreamSeekFlag_OffsetIsEstimated)) {
       seekTime -= ((seekByteOffset - dataOffset) - packetAlignedByteOffset) * 8.0 / calculatedBitRate;
       seekByteOffset = packetAlignedByteOffset + dataOffset;
     }
@@ -973,8 +707,7 @@ cleanup:
   //
   // Close the current read straem
   //
-  if (stream)
-  {
+  if (stream) {
     CFReadStreamClose(stream);
     CFRelease(stream);
     stream = nil;
@@ -983,14 +716,10 @@ cleanup:
   //
   // Stop the audio queue
   //
-  self.state = AS_STOPPING;
+  [self setState:AS_STOPPING];
   stopReason = AS_STOPPING_TEMPORARILY;
   err = AudioQueueStop(audioQueue, true);
-  if (err)
-  {
-    [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
-    return;
-  }
+  CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
 
   //
   // Re-open the file stream. It will request a byte-range starting at
@@ -1008,10 +737,8 @@ cleanup:
 // Parameters:
 //    newTime - the time to seek to
 //
-- (void)seekToTime:(double)newSeekTime
-{
-  @synchronized(self)
-  {
+- (void)seekToTime:(double)newSeekTime {
+  @synchronized(self) {
     seekWasRequested = YES;
     requestedSeekTime = newSeekTime;
   }
@@ -1023,14 +750,11 @@ cleanup:
 // returns the current playback progress. Will return zero if sampleRate has
 // not yet been detected.
 //
-- (double)progress
-{
-  @synchronized(self)
-  {
-    if (sampleRate > 0 && ![self isFinishing])
-    {
-      if (state != AS_PLAYING && state != AS_PAUSED && state != AS_BUFFERING)
-      {
+- (double)progress {
+  @synchronized(self) {
+    if (sampleRate > 0 && ![self isFinishing]) {
+      if (state_ != AS_PLAYING && state_ != AS_PAUSED &&
+          state_ != AS_BUFFERING) {
         return lastProgress;
       }
 
@@ -1039,12 +763,9 @@ cleanup:
       err = AudioQueueGetCurrentTime(audioQueue, NULL, &queueTime, &discontinuity);
 
       const OSStatus AudioQueueStopped = 0x73746F70; // 0x73746F70 is 'stop'
-      if (err == AudioQueueStopped)
-      {
+      if (err == AudioQueueStopped) {
         return lastProgress;
-      }
-      else if (err)
-      {
+      } else if (err) {
         [self failWithErrorCode:AS_GET_AUDIO_TIME_FAILED];
       }
 
@@ -1092,12 +813,10 @@ cleanup:
 //
 // returns the calculated duration in seconds.
 //
-- (double)duration
-{
+- (double)duration {
   double calculatedBitRate = [self calculatedBitRate];
 
-  if (calculatedBitRate == 0 || fileLength == 0)
-  {
+  if (calculatedBitRate == 0 || fileLength == 0) {
     return 0.0;
   }
 
@@ -1107,31 +826,31 @@ cleanup:
 //
 // pause
 //
-// A togglable pause function.
+// Pause the stream if it's playing
 //
-- (void)pause
-{
-  @synchronized(self)
-  {
-    if (state == AS_PLAYING)
-    {
+- (void)pause {
+  assert(audioQueue != NULL);
+  @synchronized(self) {
+    if (state_ == AS_PLAYING) {
       err = AudioQueuePause(audioQueue);
-      if (err)
-      {
-        [self failWithErrorCode:AS_AUDIO_QUEUE_PAUSE_FAILED];
-        return;
-      }
-      self.state = AS_PAUSED;
+      CHECK_ERR(err, AS_AUDIO_QUEUE_PAUSE_FAILED);
+      [self setState:AS_PAUSED];
     }
-    else if (state == AS_PAUSED)
-    {
+  }
+}
+
+//
+// play
+//
+// Play the stream if it's not playing
+//
+- (void) play {
+  assert(audioQueue != NULL);
+  @synchronized(self) {
+    if (state_ == AS_PAUSED) {
       err = AudioQueueStart(audioQueue, NULL);
-      if (err)
-      {
-        [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
-        return;
-      }
-      self.state = AS_PLAYING;
+      CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
+      [self setState:AS_PLAYING];
     }
   }
 }
@@ -1146,33 +865,23 @@ cleanup:
 // "isPlaying" property so that it is guaranteed to transition to true and
 // back to false
 //
-- (void)stop
-{
-  @synchronized(self)
-  {
+- (void)stop {
+  @synchronized(self) {
     if (audioQueue &&
-        (state == AS_PLAYING || state == AS_PAUSED ||
-         state == AS_BUFFERING || state == AS_WAITING_FOR_QUEUE_TO_START))
-    {
-      self.state = AS_STOPPING;
+        (state_ == AS_PLAYING || state_ == AS_PAUSED ||
+         state_ == AS_BUFFERING || state_ == AS_WAITING_FOR_QUEUE_TO_START)) {
+      [self setState:AS_STOPPING];
       stopReason = AS_STOPPING_USER_ACTION;
       err = AudioQueueStop(audioQueue, true);
-      if (err)
-      {
-        [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
-        return;
-      }
-    }
-    else if (state != AS_INITIALIZED)
-    {
-      self.state = AS_STOPPED;
+      CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
+    } else if (state_ != AS_INITIALIZED) {
+      [self setState:AS_STOPPED];
       stopReason = AS_STOPPING_USER_ACTION;
     }
     seekWasRequested = NO;
   }
 
-  while (state != AS_INITIALIZED)
-  {
+  while (state_ != AS_INITIALIZED) {
     [NSThread sleepForTimeInterval:0.1];
   }
 }
@@ -1187,176 +896,129 @@ cleanup:
 //    eventType - the event which triggered this method
 //
 - (void)handleReadFromStream:(CFReadStreamRef)aStream
-                   eventType:(CFStreamEventType)eventType
-{
-  if (aStream != stream)
-  {
-    //
-    // Ignore messages from old streams
-    //
-    return;
-  }
+                   eventType:(CFStreamEventType)eventType {
+  assert(aStream == stream);
 
-  if (eventType == kCFStreamEventErrorOccurred)
-  {
-    networkError = (NSError*) CFReadStreamCopyError(aStream);
-    [self failWithErrorCode:AS_NETWORK_CONNECTION_FAILED];
-  }
-  else if (eventType == kCFStreamEventEndEncountered)
-  {
-    @synchronized(self)
-    {
-      if ([self isFinishing])
-      {
-        return;
-      }
-    }
+  switch (eventType) {
+    case kCFStreamEventErrorOccurred:
+      networkError = (__bridge_transfer NSError*) CFReadStreamCopyError(aStream);
+      [self failWithErrorCode:AS_NETWORK_CONNECTION_FAILED];
+      return;
 
-    //
-    // If there is a partially filled buffer, pass it to the AudioQueue for
-    // processing
-    //
-    if (bytesFilled)
-    {
-      if (self.state == AS_WAITING_FOR_DATA)
-      {
-        //
-        // Force audio data smaller than one whole buffer to play.
-        //
-        self.state = AS_FLUSHING_EOF;
-      }
-      [self enqueueBuffer];
-    }
-
-    @synchronized(self)
-    {
-      if (state == AS_WAITING_FOR_DATA)
-      {
-        [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
-      }
+    case kCFStreamEventEndEncountered:
+      if ([self isFinishing]) return;
 
       //
-      // We left the synchronized section to enqueue the buffer so we
-      // must check that we are !finished again before touching the
-      // audioQueue
+      // If there is a partially filled buffer, pass it to the AudioQueue for
+      // processing
       //
-      else if (![self isFinishing])
-      {
-        if (audioQueue)
-        {
+      if (bytesFilled) {
+        if (state_ == AS_WAITING_FOR_DATA) {
           //
-          // Set the progress at the end of the stream
+          // Force audio data smaller than one whole buffer to play.
           //
-          err = AudioQueueFlush(audioQueue);
-          if (err)
-          {
-            [self failWithErrorCode:AS_AUDIO_QUEUE_FLUSH_FAILED];
-            return;
-          }
+          [self setState:AS_FLUSHING_EOF];
+        }
+        [self enqueueBuffer];
+      }
 
-          self.state = AS_STOPPING;
-          stopReason = AS_STOPPING_EOF;
-          err = AudioQueueStop(audioQueue, false);
-          if (err)
-          {
-            [self failWithErrorCode:AS_AUDIO_QUEUE_FLUSH_FAILED];
-            return;
+      @synchronized(self) {
+        if (state_ == AS_WAITING_FOR_DATA) {
+          [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
+
+        //
+        // We left the synchronized section to enqueue the buffer so we
+        // must check that we are !finished again before touching the
+        // audioQueue
+        //
+        } else if (![self isFinishing]) {
+          if (audioQueue) {
+            //
+            // Set the progress at the end of the stream
+            //
+            err = AudioQueueFlush(audioQueue);
+            CHECK_ERR(err, AS_AUDIO_QUEUE_FLUSH_FAILED);
+
+            [self setState:AS_STOPPING];
+            stopReason = AS_STOPPING_EOF;
+            err = AudioQueueStop(audioQueue, false);
+            CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
+          } else {
+            [self setState:AS_STOPPED];
+            stopReason = AS_STOPPING_EOF;
           }
         }
-        else
-        {
-          self.state = AS_STOPPED;
-          stopReason = AS_STOPPING_EOF;
-        }
       }
+      return;
+
+    default:
+      return;
+
+    case kCFStreamEventHasBytesAvailable:
+      break;
+  }
+
+  /* Read off the HTTP headers into our own class if we haven't done so */
+  if (!httpHeaders) {
+    CFTypeRef message =
+        CFReadStreamCopyProperty(stream, kCFStreamPropertyHTTPResponseHeader);
+    httpHeaders = (__bridge_transfer NSDictionary *)
+        CFHTTPMessageCopyAllHeaderFields((CFHTTPMessageRef) message);
+    CFRelease(message);
+
+    //
+    // Only read the content length if we seeked to time zero, otherwise
+    // we only have a subset of the total bytes.
+    //
+    if (seekByteOffset == 0) {
+      fileLength = [[httpHeaders objectForKey:@"Content-Length"] integerValue];
     }
   }
-  else if (eventType == kCFStreamEventHasBytesAvailable)
-  {
-    if (!httpHeaders)
-    {
-      CFTypeRef message =
-      CFReadStreamCopyProperty(stream, kCFStreamPropertyHTTPResponseHeader);
-      httpHeaders =
-      (NSDictionary *)CFHTTPMessageCopyAllHeaderFields((CFHTTPMessageRef)message);
-      CFRelease(message);
 
-      //
-      // Only read the content length if we seeked to time zero, otherwise
-      // we only have a subset of the total bytes.
-      //
-      if (seekByteOffset == 0)
-      {
-        fileLength = [[httpHeaders objectForKey:@"Content-Length"] integerValue];
-      }
-    }
-
-    if (!audioFileStream)
-    {
-      //
-      // Attempt to guess the file type from the URL. Reading the MIME type
-      // from the httpHeaders might be a better approach since lots of
-      // URL's don't have the right extension.
-      //
-      // If you have a fixed file-type, you may want to hardcode this.
-      //
-      AudioFileTypeID fileTypeHint =
+  /* If we haven't yet opened up a file stream, then do so now */
+  if (!audioFileStream) {
+    //
+    // Attempt to guess the file type from the URL. Reading the MIME type
+    // from the httpHeaders might be a better approach since lots of
+    // URL's don't have the right extension.
+    //
+    // If you have a fixed file-type, you may want to hardcode this.
+    //
+    AudioFileTypeID fileTypeHint =
       [AudioStreamer hintForFileExtension:[[url path] pathExtension]];
 
-      // create an audio file stream parser
-      err = AudioFileStreamOpen(self, MyPropertyListenerProc, MyPacketsProc,
-                                fileTypeHint, &audioFileStream);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
-        return;
-      }
+    // create an audio file stream parser
+    err = AudioFileStreamOpen((__bridge void*) self, MyPropertyListenerProc,
+                              MyPacketsProc, fileTypeHint, &audioFileStream);
+    CHECK_ERR(err, AS_FILE_STREAM_OPEN_FAILED);
+  }
+
+  UInt8 bytes[kAQDefaultBufSize];
+  CFIndex length;
+  while (1) {
+    if ([self isFinishing] || !CFReadStreamHasBytesAvailable(stream)) {
+      return;
     }
 
-    UInt8 bytes[kAQDefaultBufSize];
-    CFIndex length;
-    @synchronized(self)
-    {
-      if ([self isFinishing] || !CFReadStreamHasBytesAvailable(stream))
-      {
-        return;
-      }
+    //
+    // Read the bytes from the stream
+    //
+    length = CFReadStreamRead(stream, bytes, kAQDefaultBufSize);
 
-      //
-      // Read the bytes from the stream
-      //
-      length = CFReadStreamRead(stream, bytes, kAQDefaultBufSize);
-
-      if (length == -1)
-      {
-        [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
-        return;
-      }
-
-      if (length == 0)
-      {
-        return;
-      }
+    if (length < 0) {
+      [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
+      return;
+    } else if (length == 0) {
+      return;
     }
 
-    if (discontinuous)
-    {
-      err = AudioFileStreamParseBytes(audioFileStream, length, bytes, kAudioFileStreamParseFlag_Discontinuity);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_PARSE_BYTES_FAILED];
-        return;
-      }
-    }
-    else
-    {
+    if (discontinuous) {
+      err = AudioFileStreamParseBytes(audioFileStream, length, bytes,
+                                      kAudioFileStreamParseFlag_Discontinuity);
+    } else {
       err = AudioFileStreamParseBytes(audioFileStream, length, bytes, 0);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_PARSE_BYTES_FAILED];
-        return;
-      }
     }
+    CHECK_ERR(err, AS_FILE_STREAM_PARSE_BYTES_FAILED);
   }
 }
 
@@ -1371,12 +1033,9 @@ cleanup:
 // This function is adapted from Apple's example in AudioFileStreamExample with
 // CBR functionality added.
 //
-- (void)enqueueBuffer
-{
-  @synchronized(self)
-  {
-    if ([self isFinishing] || stream == 0)
-    {
+- (void)enqueueBuffer {
+  @synchronized(self) {
+    if ([self isFinishing] || stream == 0) {
       return;
     }
 
@@ -1387,12 +1046,9 @@ cleanup:
     AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
     fillBuf->mAudioDataByteSize = bytesFilled;
 
-    if (packetsFilled)
-    {
+    if (packetsFilled) {
       err = AudioQueueEnqueueBuffer(audioQueue, fillBuf, packetsFilled, packetDescs);
-    }
-    else
-    {
+    } else {
       err = AudioQueueEnqueueBuffer(audioQueue, fillBuf, 0, NULL);
     }
 
@@ -1402,38 +1058,24 @@ cleanup:
       return;
     }
 
-    if (state == AS_BUFFERING ||
-        state == AS_WAITING_FOR_DATA ||
-        state == AS_FLUSHING_EOF ||
-        (state == AS_STOPPED && stopReason == AS_STOPPING_TEMPORARILY))
-    {
+    if (state_ == AS_BUFFERING ||
+        state_ == AS_WAITING_FOR_DATA ||
+        state_ == AS_FLUSHING_EOF ||
+        (state_ == AS_STOPPED && stopReason == AS_STOPPING_TEMPORARILY)) {
       //
       // Fill all the buffers before starting. This ensures that the
       // AudioFileStream stays a small amount ahead of the AudioQueue to
       // avoid an audio glitch playing streaming files on iPhone SDKs < 3.0
       //
-      if (state == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1)
-      {
-        if (self.state == AS_BUFFERING)
-        {
+      if (state_ == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1) {
+        if (state_ == AS_BUFFERING) {
           err = AudioQueueStart(audioQueue, NULL);
-          if (err)
-          {
-            [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
-            return;
-          }
-          self.state = AS_PLAYING;
-        }
-        else
-        {
-          self.state = AS_WAITING_FOR_QUEUE_TO_START;
-
+          CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
+          [self setState:AS_PLAYING];
+        } else {
+          [self setState:AS_WAITING_FOR_QUEUE_TO_START];
           err = AudioQueueStart(audioQueue, NULL);
-          if (err)
-          {
-            [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
-            return;
-          }
+          CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
         }
       }
     }
@@ -1445,12 +1087,12 @@ cleanup:
   }
 
   // wait until next buffer is not in use
-  pthread_mutex_lock(&queueBuffersMutex);
-  while (inuse[fillBufferIndex])
-  {
-    pthread_cond_wait(&queueBufferReadyCondition, &queueBuffersMutex);
+  [cond lock];
+  while (inuse[fillBufferIndex]) {
+    NSLog(@"waiting for a buffer");
+    [cond wait];
   }
-  pthread_mutex_unlock(&queueBuffersMutex);
+  [cond unlock];
 }
 
 //
@@ -1469,41 +1111,35 @@ cleanup:
   packetDuration = asbd.mFramesPerPacket / sampleRate;
 
   // create the audio queue
-  err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback, self, NULL, NULL, 0, &audioQueue);
-  if (err)
-  {
+  err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback,
+                            (__bridge void*) self, NULL, NULL, 0, &audioQueue);
+  if (err) {
     [self failWithErrorCode:AS_AUDIO_QUEUE_CREATION_FAILED];
     return;
   }
 
   // start the queue if it has not been started already
   // listen to the "isRunning" property
-  err = AudioQueueAddPropertyListener(audioQueue, kAudioQueueProperty_IsRunning, MyAudioQueueIsRunningCallback, self);
-  if (err)
-  {
-    [self failWithErrorCode:AS_AUDIO_QUEUE_ADD_LISTENER_FAILED];
-    return;
-  }
+  err = AudioQueueAddPropertyListener(audioQueue, kAudioQueueProperty_IsRunning,
+                                      MyAudioQueueIsRunningCallback,
+                                      (__bridge void*) self);
+  CHECK_ERR(err, AS_AUDIO_QUEUE_ADD_LISTENER_FAILED);
 
   // get the packet size if it is available
   UInt32 sizeOfUInt32 = sizeof(UInt32);
   err = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_PacketSizeUpperBound, &sizeOfUInt32, &packetBufferSize);
-  if (err || packetBufferSize == 0)
-  {
+  if (err || packetBufferSize == 0) {
     err = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_MaximumPacketSize, &sizeOfUInt32, &packetBufferSize);
-    if (err || packetBufferSize == 0)
-    {
+    if (err || packetBufferSize == 0) {
       // No packet size available, just use the default
       packetBufferSize = kAQDefaultBufSize;
     }
   }
 
   // allocate audio queue buffers
-  for (unsigned int i = 0; i < kNumAQBufs; ++i)
-  {
+  for (unsigned int i = 0; i < kNumAQBufs; ++i) {
     err = AudioQueueAllocateBuffer(audioQueue, packetBufferSize, &audioQueueBuffer[i]);
-    if (err)
-    {
+    if (err) {
       [self failWithErrorCode:AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED];
       return;
     }
@@ -1514,24 +1150,21 @@ cleanup:
   Boolean writable;
   OSStatus ignorableError;
   ignorableError = AudioFileStreamGetPropertyInfo(audioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, &writable);
-  if (ignorableError)
-  {
+  if (ignorableError) {
     return;
   }
 
   // get the cookie data
   void* cookieData = calloc(1, cookieSize);
   ignorableError = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, cookieData);
-  if (ignorableError)
-  {
+  if (ignorableError) {
     return;
   }
 
   // set the cookie on the queue.
   ignorableError = AudioQueueSetProperty(audioQueue, kAudioQueueProperty_MagicCookie, cookieData, cookieSize);
   free(cookieData);
-  if (ignorableError)
-  {
+  if (ignorableError) {
     return;
   }
 }
@@ -1548,107 +1181,81 @@ cleanup:
 //
 - (void)handlePropertyChangeForFileStream:(AudioFileStreamID)inAudioFileStream
                      fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
-                                  ioFlags:(UInt32 *)ioFlags
-{
-  @synchronized(self)
-  {
-    if ([self isFinishing])
-    {
-      return;
-    }
+                                  ioFlags:(UInt32 *)ioFlags {
+  assert(inAudioFileStream == audioFileStream);
+  if ([self isFinishing]) {
+    return;
+  }
 
-    if (inPropertyID == kAudioFileStreamProperty_ReadyToProducePackets)
-    {
+  switch (inPropertyID) {
+    case kAudioFileStreamProperty_ReadyToProducePackets:
+      /* TODO: why? */
       discontinuous = true;
-    }
-    else if (inPropertyID == kAudioFileStreamProperty_DataOffset)
-    {
+      break;
+
+    case kAudioFileStreamProperty_DataOffset: {
       SInt64 offset;
       UInt32 offsetSize = sizeof(offset);
-      err = AudioFileStreamGetProperty(inAudioFileStream, kAudioFileStreamProperty_DataOffset, &offsetSize, &offset);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-        return;
-      }
+      err = AudioFileStreamGetProperty(inAudioFileStream,
+              kAudioFileStreamProperty_DataOffset, &offsetSize, &offset);
+      CHECK_ERR(err, AS_FILE_STREAM_GET_PROPERTY_FAILED);
       dataOffset = offset;
 
-      if (audioDataByteCount)
-      {
+      if (audioDataByteCount) {
         fileLength = dataOffset + audioDataByteCount;
       }
+      break;
     }
-    else if (inPropertyID == kAudioFileStreamProperty_AudioDataByteCount)
-    {
+
+    case kAudioFileStreamProperty_AudioDataByteCount: {
       UInt32 byteCountSize = sizeof(UInt64);
-      err = AudioFileStreamGetProperty(inAudioFileStream, kAudioFileStreamProperty_AudioDataByteCount, &byteCountSize, &audioDataByteCount);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-        return;
-      }
+      err = AudioFileStreamGetProperty(inAudioFileStream,
+              kAudioFileStreamProperty_AudioDataByteCount,
+              &byteCountSize, &audioDataByteCount);
+      CHECK_ERR(err, AS_FILE_STREAM_GET_PROPERTY_FAILED);
       fileLength = dataOffset + audioDataByteCount;
+      break;
     }
-    else if (inPropertyID == kAudioFileStreamProperty_DataFormat)
-    {
-      if (asbd.mSampleRate == 0)
-      {
+
+    case kAudioFileStreamProperty_DataFormat: {
+      /* If we seeked, don't re-read the data */
+      if (asbd.mSampleRate == 0) {
         UInt32 asbdSize = sizeof(asbd);
 
-        // get the stream format.
-        err = AudioFileStreamGetProperty(inAudioFileStream, kAudioFileStreamProperty_DataFormat, &asbdSize, &asbd);
-        if (err)
-        {
-          [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-          return;
-        }
+        err = AudioFileStreamGetProperty(inAudioFileStream,
+                kAudioFileStreamProperty_DataFormat, &asbdSize, &asbd);
+        CHECK_ERR(err, AS_FILE_STREAM_GET_PROPERTY_FAILED);
       }
+      break;
     }
-    else if (inPropertyID == kAudioFileStreamProperty_FormatList)
-    {
+
+    /* TODO: if AAC or SBR needs to be supported, fix this */
+    /*case kAudioFileStreamProperty_FormatList: {
       Boolean outWriteable;
       UInt32 formatListSize;
-      err = AudioFileStreamGetPropertyInfo(inAudioFileStream, kAudioFileStreamProperty_FormatList, &formatListSize, &outWriteable);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-        return;
-      }
+      err = AudioFileStreamGetPropertyInfo(inAudioFileStream,
+              kAudioFileStreamProperty_FormatList,
+              &formatListSize, &outWriteable);
+      CHECK_ERR(err, AS_FILE_STREAM_GET_PROPERTY_FAILED);
 
       AudioFormatListItem *formatList = malloc(formatListSize);
-      err = AudioFileStreamGetProperty(inAudioFileStream, kAudioFileStreamProperty_FormatList, &formatListSize, formatList);
-      if (err)
-      {
-        [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-        return;
-      }
+      CHECK_ERR(formatList == NULL, AS_FILE_STREAM_GET_PROPERTY_FAILED);
+      err = AudioFileStreamGetProperty(inAudioFileStream,
+              kAudioFileStreamProperty_FormatList, &formatListSize, formatList);
+      CHECK_ERR(err, AS_FILE_STREAM_GET_PROPERTY_FAILED);
 
-      for (int i = 0; i * sizeof(AudioFormatListItem) < formatListSize; i += sizeof(AudioFormatListItem))
-      {
+      for (int i = 0; i * sizeof(AudioFormatListItem) < formatListSize;
+           i += sizeof(AudioFormatListItem)) {
         AudioStreamBasicDescription pasbd = formatList[i].mASBD;
 
         if (pasbd.mFormatID == kAudioFormatMPEG4AAC_HE)
         {
-          //
-          // We've found HE-AAC, remember this to tell the audio queue
-          // when we construct it.
-          //
-#if !TARGET_IPHONE_SIMULATOR
-          asbd = pasbd;
-#endif
           break;
         }
       }
       free(formatList);
-    }
-    else
-    {
-      //      NSLog(@"Property is %c%c%c%c",
-      //        ((char *)&inPropertyID)[3],
-      //        ((char *)&inPropertyID)[2],
-      //        ((char *)&inPropertyID)[1],
-      //        ((char *)&inPropertyID)[0]);
-    }
+      break;
+    }*/
   }
 }
 
@@ -1663,40 +1270,33 @@ cleanup:
 //    inNumberPackets - number of packets in the data
 //    inPacketDescriptions - packet descriptions
 //
-- (void)handleAudioPackets:(const void *)inInputData
+- (void)handleAudioPackets:(const void*)inInputData
                numberBytes:(UInt32)inNumberBytes
              numberPackets:(UInt32)inNumberPackets
-        packetDescriptions:(AudioStreamPacketDescription *)inPacketDescriptions;
-{
-  @synchronized(self)
-  {
-    if ([self isFinishing])
-    {
-      return;
-    }
+        packetDescriptions:(AudioStreamPacketDescription*)inPacketDescriptions {
 
-    if (bitRate == 0)
-    {
-      //
-      // m4a and a few other formats refuse to parse the bitrate so
-      // we need to set an "unparseable" condition here. If you know
-      // the bitrate (parsed it another way) you can set it on the
-      // class if needed.
-      //
-      bitRate = ~0;
-    }
+  if ([self isFinishing]) {
+    return;
+  }
 
-    // we have successfully read the first packests from the audio stream, so
-    // clear the "discontinuous" flag
-    if (discontinuous)
-    {
-      discontinuous = false;
-    }
+  if (bitRate == 0) {
+    //
+    // m4a and a few other formats refuse to parse the bitrate so
+    // we need to set an "unparseable" condition here. If you know
+    // the bitrate (parsed it another way) you can set it on the
+    // class if needed.
+    //
+    bitRate = ~0;
+  }
 
-    if (!audioQueue)
-    {
-      [self createQueue];
-    }
+  // we have successfully read the first packests from the audio stream, so
+  // clear the "discontinuous" flag
+  if (discontinuous) {
+    discontinuous = false;
+  }
+
+  if (!audioQueue) {
+    [self createQueue];
   }
 
   // the following code assumes we're streaming VBR data. for CBR data, the second branch is used.
@@ -1839,41 +1439,30 @@ cleanup:
 //    inBuffer - the buffer
 //
 - (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
-                              buffer:(AudioQueueBufferRef)inBuffer
-{
+                              buffer:(AudioQueueBufferRef)inBuffer {
   unsigned int bufIndex = -1;
-  for (unsigned int i = 0; i < kNumAQBufs; ++i)
-  {
-    if (inBuffer == audioQueueBuffer[i])
-    {
+  for (unsigned int i = 0; i < kNumAQBufs; ++i) {
+    if (inBuffer == audioQueueBuffer[i]) {
       bufIndex = i;
       break;
     }
   }
 
-  if (bufIndex == -1)
-  {
+  if (bufIndex == -1) {
     [self failWithErrorCode:AS_AUDIO_QUEUE_BUFFER_MISMATCH];
-    pthread_mutex_lock(&queueBuffersMutex);
-    pthread_cond_signal(&queueBufferReadyCondition);
-    pthread_mutex_unlock(&queueBuffersMutex);
+    [cond lock];
+    [cond signal];
+    [cond unlock];
     return;
   }
 
   // signal waiting thread that the buffer is free.
-  pthread_mutex_lock(&queueBuffersMutex);
+  [cond lock];
   inuse[bufIndex] = false;
   buffersUsed--;
 
-  //
-  //  Enable this logging to measure how many buffers are queued at any time.
-  //
-#if LOG_QUEUED_BUFFERS
-  NSLog(@"Queued buffers: %ld", buffersUsed);
-#endif
-
-  pthread_cond_signal(&queueBufferReadyCondition);
-  pthread_mutex_unlock(&queueBuffersMutex);
+  [cond signal];
+  [cond unlock];
 }
 
 //
@@ -1886,20 +1475,14 @@ cleanup:
 //    inID - the property ID
 //
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
-                          propertyID:(AudioQueuePropertyID)inID
-{
-  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+                          propertyID:(AudioQueuePropertyID)inID {
+  @autoreleasepool {
 
-  @synchronized(self)
-  {
-    if (inID == kAudioQueueProperty_IsRunning)
-    {
-      if (state == AS_STOPPING)
-      {
-        self.state = AS_STOPPED;
-      }
-      else if (state == AS_WAITING_FOR_QUEUE_TO_START)
-      {
+  @synchronized(self) {
+    if (inID == kAudioQueueProperty_IsRunning) {
+      if (state_ == AS_STOPPING) {
+        [self setState:AS_STOPPED];
+      } else if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
         //
         // Note about this bug avoidance quirk:
         //
@@ -1917,49 +1500,14 @@ cleanup:
         //
         [NSRunLoop currentRunLoop];
 
-        self.state = AS_PLAYING;
-      }
-      else
-      {
+        [self setState:AS_PLAYING];
+      } else {
         NSLog(@"AudioQueue changed state in unexpected way.");
       }
     }
   }
 
-  [pool release];
-}
-
-#if TARGET_OS_IPHONE
-//
-// handleInterruptionChangeForQueue:propertyID:
-//
-// Implementation for MyAudioQueueInterruptionListener
-//
-// Parameters:
-//    inAQ - the audio queue
-//    inID - the property ID
-//
-- (void)handleInterruptionChangeToState:(AudioQueuePropertyID)inInterruptionState
-{
-  if (inInterruptionState == kAudioSessionBeginInterruption)
-  {
-    if ([self isPlaying]) {
-      [self pause];
-
-      pausedByInterruption = YES;
-    }
-  }
-  else if (inInterruptionState == kAudioSessionEndInterruption)
-  {
-    AudioSessionSetActive( true );
-
-    if ([self isPaused] && pausedByInterruption) {
-      [self pause]; // this is actually resume
-
-      pausedByInterruption = NO; // this is redundant
-    }
   }
 }
-#endif
 
 @end
