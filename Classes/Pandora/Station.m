@@ -112,8 +112,6 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSURL *url;
 
-  NSLogd(@"%ld", [defaults integerForKey:DESIRED_QUALITY]);
-
   switch ([defaults integerForKey:DESIRED_QUALITY]) {
     case QUALITY_HIGH:
       NSLogd(@"quality high");
@@ -171,7 +169,7 @@
     } else {
       NSLogd(@"Error on playback stream! count:%lu, Retrying...", tries);
       NSLogd(@"error: %@", [AudioStreamer stringForErrorCode:code]);
-      [self retry:TRUE];
+      [self retry:YES];
     }
 
   /* If we were already retrying things, then we'll get a notification as soon
@@ -274,7 +272,11 @@
 }
 
 - (BOOL) isIdle {
-  return stream == nil || [stream isIdle];
+  return stream != nil && [stream isIdle];
+}
+
+- (BOOL) isError {
+  return stream != nil && [stream errorCode] != AS_NO_ERROR;
 }
 
 - (double) progress {
@@ -287,27 +289,21 @@
 
 - (void) next {
   lastKnownSeekTime = 0;
-  if (playing == nil) {
-    [songs removeObjectAtIndex:0];
-    retrying = NO;
-  } else {
-    [self stop];
-  }
+  [self stop];
   [self play];
 }
 
 - (void) stop {
-  if (!stream || !playing) {
-    return;
-  }
-
   [stream stop];
   stream = nil;
   playing = nil;
 }
 
-- (NSError*) streamNetworkError {
-  return [stream networkError];
+- (NSString*) streamNetworkError {
+  if ([stream errorCode] == AS_NETWORK_CONNECTION_FAILED) {
+    return [[stream networkError] localizedDescription];
+  }
+  return [AudioStreamer stringForErrorCode:[stream errorCode]];
 }
 
 - (void) setVolume:(double)volume {
