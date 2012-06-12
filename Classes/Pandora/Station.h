@@ -35,11 +35,12 @@
 - (BOOL) isPaused;
 - (BOOL) isPlaying;
 - (BOOL) isIdle;
+- (BOOL) isError;
 - (void) play;
 - (void) pause;
 - (void) stop;
 - (void) setVolume:(double)volume;
-- (NSError*) streamNetworkError;
+- (NSString*) streamNetworkError;
 - (double) duration;
 - (double) progress;
 

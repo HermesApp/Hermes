@@ -159,7 +159,9 @@ BOOL playOnStart = YES;
 
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
-  if ([playing isPlaying]) {
+  if ([playing isError]) {
+    /* Don't do anything */
+  } else if ([playing isPlaying]) {
     NSLogd(@"Stream playing now...");
     [playing setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
