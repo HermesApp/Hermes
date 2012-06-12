@@ -30,6 +30,7 @@
 - (void) pause;
 - (void) stop;
 - (void) retry:(BOOL)countTries;
+- (void) checkForIndefiniteBuffering;
 - (BOOL) isPaused;
 - (void) setRadio: (Pandora*) radio;
 - (BOOL) isEqual:(id)object;

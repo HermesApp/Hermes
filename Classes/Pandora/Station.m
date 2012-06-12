@@ -179,6 +179,8 @@
      re-synced the stream with what it was before the error happened */
   } else if (retrying && [stream calculatedBitRate] != 0) {
     [self seekToLastKnownTime];
+  } else {
+    [self checkForIndefiniteBuffering];
   }
 }
 
@@ -203,6 +205,32 @@
   [stream start];
 }
 
+- (void) retryWithCount {
+  [self retry:YES];
+}
+
+/**
+ * @brief Ensure that the stream doesn't indefinitely stay in the 'buffering'
+ *        state.
+ *
+ * Occasionally the AudioStreamer stream will enter a buffering state, and then
+ * refuse to ever get back out of the buffering state. For this reason, when
+ * this happens, give it a grace period before completely re-opening the
+ * connection with the stream by retrying the connection.
+ */
+- (void) checkForIndefiniteBuffering {
+  if ([stream state] == AS_BUFFERING) {
+    waitingTimeout =
+      [NSTimer scheduledTimerWithTimeInterval:0.3
+                                       target:self
+                                     selector:@selector(retryWithCount)
+                                     userInfo:nil
+                                      repeats:NO];
+    lastKnownSeekTime = [stream progress];
+    NSLogd(@"waiting for more data, will retry again soon...");
+  }
+}
+
 - (void) play {
   NSLogd(@"Playing %@", name);
   if (stream) {
@@ -213,12 +241,7 @@
       [stream pause];
       return;
     } else if ([stream isWaiting]) {
-      waitingTimeout = [NSTimer scheduledTimerWithTimeInterval:0.1
-                                                        target:self
-                                                      selector:@selector(retry)
-                                                      userInfo:nil
-                                                       repeats:NO];
-      NSLogd(@"waiting for more data, will retry again soon...");
+      [self checkForIndefiniteBuffering];
       return;
     }
 
