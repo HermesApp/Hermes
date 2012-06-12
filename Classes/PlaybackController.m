@@ -226,7 +226,7 @@ BOOL playOnStart = YES;
     /* The currently playing song finished playing */
     [self next:nil];
   } else {
-    NSLogd(@"unknown state...");
+    NSLogd(@"unknown state %d...", [streamer state]);
   }
 }
 
