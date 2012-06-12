@@ -134,13 +134,24 @@
       break;
     }
   }
+  if (last == nil) return NO;
 
-  if (last != nil) {
-    [[[NSApp delegate] playback] playStation:last];
-    [self selectStation: last];
-    return YES;
+  /* Restore station saved state on application startup */
+  static int tried_restore = 0;
+  if (!tried_restore) {
+    tried_restore = 1;
+    NSString *saved_state =
+      [[NSApp delegate] stateDirectory:@"station.savestate"];
+    if (saved_state != nil) {
+      Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
+      if ([last isEqual:s]) {
+        [last copyFrom:s];
+      }
+    }
   }
-  return NO;
+  [self selectStation: last];
+  [[[NSApp delegate] playback] playStation:last];
+  return YES;
 }
 
 /* ============================ NSDrawerDelegate protocol */
