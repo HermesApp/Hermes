@@ -21,20 +21,29 @@
 @property (retain) NSString *name;
 @property (retain) NSString *token;
 @property (retain) NSString *stationId;
-@property (retain) NSMutableArray *songs;
-@property (retain) AudioStreamer *stream;
 @property (retain) Song *playing;
 
-- (void) play;
 - (void) next;
-- (void) pause;
-- (void) stop;
 - (void) retry:(BOOL)countTries;
 - (void) checkForIndefiniteBuffering;
-- (BOOL) isPaused;
 - (void) setRadio: (Pandora*) radio;
 - (BOOL) isEqual:(id)object;
 - (void) fetchMoreSongs;
 - (void) copyFrom: (Station*) other;
+
+/* Interface to AudioStreamer */
+- (BOOL) isPaused;
+- (BOOL) isPlaying;
+- (BOOL) isIdle;
+- (void) play;
+- (void) pause;
+- (void) stop;
+- (void) setVolume:(double)volume;
+- (NSError*) streamNetworkError;
+- (double) duration;
+- (double) progress;
+
+/* Managing songs */
+- (void) clearSongList;
 
 @end

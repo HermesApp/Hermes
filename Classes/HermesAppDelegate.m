@@ -248,7 +248,7 @@
 - (void) handleStreamError: (NSNotification*) notification {
   lastStationErr = [notification object];
   [self setCurrentView:errorView];
-  NSError *err = [[lastStationErr stream] networkError];
+  NSError *err = [lastStationErr streamNetworkError];
   [errorLabel setStringValue:[err localizedDescription]];
   [window orderFront:nil];
 }

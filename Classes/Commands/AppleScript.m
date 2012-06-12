@@ -125,7 +125,7 @@ int savedVolume = 0;
   Station *playing = [playback playing];
   if (playing == nil) {
     return PlaybackStateStopped;
-  } else if ([[playing stream] isPaused]) {
+  } else if ([playing isPaused]) {
     return PlaybackStatePaused;
   }
   return PlaybackStatePlaying;

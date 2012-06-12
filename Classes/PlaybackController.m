@@ -60,12 +60,6 @@ BOOL playOnStart = YES;
 
   [center
     addObserver:self
-    selector:@selector(afterStationsLoaded)
-    name:@"hermes.stations"
-    object:[[NSApp delegate] pandora]];
-
-  [center
-    addObserver:self
     selector:@selector(playbackStateChanged:)
     name:ASStatusChangedNotification
     object:nil];
@@ -88,6 +82,19 @@ BOOL playOnStart = YES;
     name:MediaKeyNextNotification
     object:nil];
 
+  [center
+     addObserver:self
+     selector:@selector(songPlayed:)
+     name:@"song.playing"
+     object:nil];
+
+  int saved = [[NSUserDefaults standardUserDefaults]
+                  integerForKey:@"hermes.volume"];
+  if (saved == 0) {
+    saved = 100;
+  }
+  [self setIntVolume:saved];
+
   return self;
 }
 
@@ -101,19 +108,11 @@ BOOL playOnStart = YES;
     [playing stop];
     [[ImageLoader loader] cancel:[[playing playing] art]];
   }
-  [self setPlaying:nil];
+  playing = nil;
   lastImgSrc = nil;
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hermes.volume"];
   NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-  [[NSNotificationCenter defaultCenter]
-   removeObserver:self
-   name:@"song.playing"
-   object:nil];
-  [[NSNotificationCenter defaultCenter]
-   removeObserver:self
-   name:@"songs.loaded"
-   object:nil];
 }
 
 - (void) show {
@@ -137,35 +136,6 @@ BOOL playOnStart = YES;
   }
 
   return [NSKeyedArchiver archiveRootObject:[self playing] toFile:path];
-}
-
-- (void) afterStationsLoaded {
-  [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:@"song.playing"
-     object:nil];
-  [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:@"songs.loaded"
-     object:nil];
-
-  int saved = [[NSUserDefaults standardUserDefaults]
-                  integerForKey:@"hermes.volume"];
-  if (saved == 0) {
-    saved = 100;
-  }
-  [self setIntVolume:saved];
-
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(songPlayed:)
-     name:@"song.playing"
-     object:nil];
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(songsLoaded:)
-     name:@"songs.loaded"
-     object:nil];
 }
 
 - (void) songRated: (NSNotification*) not {
@@ -206,40 +176,30 @@ BOOL playOnStart = YES;
 
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
-  AudioStreamer *streamer = [playing stream];
-
-  if ([streamer errorCode] != 0) {
-    /* Errors are handle elsewhere, we just need to make sure we take no
-     * action here to muck up with whatever else is going on */
-    NSLogd(@"error registered in stream");
-  } else if ([streamer isPlaying]) {
+  if ([playing isPlaying]) {
     NSLogd(@"Stream playing now...");
-    [[playing stream] setVolume:[volume intValue]/100.0];
+    [playing setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
-  } else if ([streamer isPaused]) {
+  } else if ([playing isPaused]) {
     NSLogd(@"Stream paused now...");
     [playpause setImage:[NSImage imageNamed:@"play"]];
     [playbackProgress stopAnimation:nil];
-  } else if ([streamer isIdle]) {
+  } else if ([playing isIdle]) {
     NSLogd(@"Stream idle, nexting...");
     /* The currently playing song finished playing */
     [self next:nil];
-  } else {
-    NSLogd(@"unknown state %d...", [streamer state]);
   }
 }
 
 /* Re-draws the timer counting up the time of the played song */
 - (void)updateProgress: (NSTimer *)updatedTimer {
-  if (playing == nil || [playing stream] == nil || [playing isPaused]) {
+  if (![playing isPlaying]) {
     return;
   }
 
-  AudioStreamer *streamer = [playing stream];
-
-  double prog = [streamer progress];
-  double dur = [streamer duration];
+  double prog = [playing progress];
+  double dur = [playing duration];
 
   /* The AudioStreamer class needs some time to figure out how long the song
      actually is. If the duration listed is less than or equal to 0, just give
@@ -262,20 +222,12 @@ BOOL playOnStart = YES;
 }
 
 /*
- * Called whenever a song starts playing, updates all fields to reflect that the song is
- * playing
+ * Called whenever a song starts playing, updates all fields to reflect that the
+ * song is playing
  */
 - (void)songPlayed: (NSNotification *)aNotification {
   Song *song = [playing playing];
-  if (song == nil) {
-    song = [[playing songs] objectAtIndex:0];
-  }
-
-  if (song == nil) {
-    NSLogd(@"No song to play!?");
-    NSLogd(@"%@",[NSThread callStackSymbols]);
-    return;
-  }
+  assert(song != nil);
 
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
@@ -330,12 +282,6 @@ BOOL playOnStart = YES;
   [self hideSpinner];
 }
 
-- (void) songsLoaded: (NSNotification*) aNotification {
-  if ([playing playing] == nil && [[playing songs] count] > 0) {
-    [self songPlayed:nil];
-  }
-}
-
 /* Plays a new station */
 - (void) playStation: (Station*) station {
   if ([playing stationId] == [station stationId]) {
@@ -350,35 +296,20 @@ BOOL playOnStart = YES;
   if (station == nil) {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
   } else {
-    [[NSUserDefaults standardUserDefaults]
-      setObject:[station stationId]
-      forKey:LAST_STATION_KEY];
+    [[NSUserDefaults standardUserDefaults] setObject:[station stationId]
+                                              forKey:LAST_STATION_KEY];
   }
 
-  [self setPlaying:station];
+  playing = station;
   if (playOnStart) {
-    [playing play];
+    [station play];
   } else {
-    NSString *saved_state = [[NSApp delegate] stateDirectory:@"station.savestate"];
-    if (saved_state != nil) {
-      Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
-      if ([station isEqual:s]) {
-        [station copyFrom:s];
-      }
-    }
-    if ([station playing] != nil) {
-      [self songPlayed:nil];
-    } else if ([[station songs] count] > 0) {
-      [self songPlayed:nil];
-    } else {
-      [station fetchMoreSongs];
-    }
-    playOnStart = true;
+    playOnStart = 1;
   }
 }
 
 - (BOOL) play {
-  if ([[playing stream] isPlaying]) {
+  if ([playing isPlaying]) {
     return NO;
   } else {
     [playing play];
@@ -388,7 +319,7 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL) pause {
-  if ([[playing stream] isPlaying]) {
+  if ([playing isPlaying]) {
     [playing pause];
     return YES;
   } else {
@@ -398,10 +329,10 @@ BOOL playOnStart = YES;
 
 /* Toggle between playing and pausing */
 - (IBAction)playpause: (id) sender {
-  if ([[playing stream] isPlaying]) {
-    [self pause];
-  } else {
+  if ([playing isPaused]) {
     [self play];
+  } else {
+    [self pause];
   }
 }
 
@@ -425,11 +356,8 @@ BOOL playOnStart = YES;
 
   [self showSpinner];
 
-  if ([[self pandora] rateSong:playingSong as:YES]) {
-    [like setEnabled:NO];
-  } else {
-    NSLogd(@"Couldn't rate song?!");
-  }
+  [[self pandora] rateSong:playingSong as:YES];
+  [like setEnabled:NO];
 }
 
 /* Dislike button was hit */
@@ -441,14 +369,11 @@ BOOL playOnStart = YES;
 
   [self showSpinner];
 
-  if ([[self pandora] rateSong:playingSong as:NO]) {
-    /* Remaining songs in the queue are probably related to this one. If we
-     * dislike this one, remove all related songs to grab another 4 */
-    [[[self playing] songs] removeAllObjects];
-    [self next:sender];
-  } else {
-    NSLog(@"Couldn't rate song?!");
-  }
+  [[self pandora] rateSong:playingSong as:NO];
+  /* Remaining songs in the queue are probably related to this one. If we
+     dislike this one, remove all related songs to grab another set */
+  [playing clearSongList];
+  [self next:sender];
 }
 
 /* We are tired of the currently playing song, play another */
@@ -457,11 +382,8 @@ BOOL playOnStart = YES;
     return;
   }
 
-  if ([[self pandora] tiredOfSong:[playing playing]]) {
-    [self next:sender];
-  } else {
-    NSLog(@"Couldn't get tired of a song?!");
-  }
+  [[self pandora] tiredOfSong:[playing playing]];
+  [self next:sender];
 }
 
 /* Load more songs manually */
@@ -510,10 +432,9 @@ BOOL playOnStart = YES;
   if (vol < 0) { vol = 0; }
   if (vol > 100) { vol = 100; }
   [volume setIntValue:vol];
-  [[playing stream] setVolume: vol/100.0];
-  [[NSUserDefaults standardUserDefaults]
-        setInteger:vol
-            forKey:@"hermes.volume"];
+  [playing setVolume:vol/100.0];
+  [[NSUserDefaults standardUserDefaults] setInteger:vol
+                                             forKey:@"hermes.volume"];
 }
 
 - (int) getIntVolume {
@@ -521,8 +442,7 @@ BOOL playOnStart = YES;
 }
 
 - (IBAction) volumeChanged: (id) sender {
-  NSLogd(@"Volume changed to: %d", [volume intValue]);
-  if (playing && [playing stream]) {
+  if (playing && [playing isPlaying]) {
     [self setIntVolume:[volume intValue]];
   }
 }

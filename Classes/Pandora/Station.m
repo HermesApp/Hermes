@@ -7,12 +7,10 @@
 
 @implementation Station
 
-@synthesize stationId, name, songs, stream, playing, token;
+@synthesize stationId, name, playing, token;
 
 - (id) init {
-  [self setSongs:[NSMutableArray arrayWithCapacity:10]];
-  [self setPlaying:nil];
-  [self setStream:nil];
+  songs = [NSMutableArray arrayWithCapacity:10];
 
   /* Watch for error notifications */
   [[NSNotificationCenter defaultCenter]
@@ -96,6 +94,10 @@
     postNotificationName:@"songs.loaded" object:self];
 }
 
+- (void) clearSongList {
+  [songs removeAllObjects];
+}
+
 - (void) fetchMoreSongs {
   [radio getFragment: self];
 }
@@ -129,8 +131,7 @@
       break;
   }
   assert(url != nil);
-  AudioStreamer *s = [[AudioStreamer alloc] initWithURL: url];
-  [self setStream:s];
+  stream = [[AudioStreamer alloc] initWithURL: url];
 }
 
 - (void) seekToLastKnownTime {
@@ -234,18 +235,7 @@
 - (void) play {
   NSLogd(@"Playing %@", name);
   if (stream) {
-    if ([stream isPlaying]) {
-      NSLogd(@"Ignoring play, stream already playing");
-      return;
-    } else if ([stream isPaused]) {
-      [stream pause];
-      return;
-    } else if ([stream isWaiting]) {
-      [self checkForIndefiniteBuffering];
-      return;
-    }
-
-    NSLogd(@"Unknown state?!");
+    [stream play];
     return;
   }
 
@@ -256,12 +246,11 @@
     return;
   }
 
-  [self setPlaying:[songs objectAtIndex:0]];
+  playing = [songs objectAtIndex:0];
   [songs removeObjectAtIndex:0];
 
   [self setAudioStream];
   tries = 0;
-
   [stream start];
 
   [[NSNotificationCenter defaultCenter]
@@ -271,13 +260,29 @@
 }
 
 - (void) pause {
-  if (![stream isPaused]) {
+  if (stream != nil) {
     [stream pause];
   }
 }
 
 - (BOOL) isPaused {
-  return stream == nil || [stream isPaused];
+  return stream != nil && [stream isPaused];
+}
+
+- (BOOL) isPlaying {
+  return stream != nil && [stream isPlaying];
+}
+
+- (BOOL) isIdle {
+  return stream == nil || [stream isIdle];
+}
+
+- (double) progress {
+  return [stream progress];
+}
+
+- (double) duration {
+  return [stream duration];
 }
 
 - (void) next {
@@ -301,6 +306,14 @@
   playing = nil;
 }
 
+- (NSError*) streamNetworkError {
+  return [stream networkError];
+}
+
+- (void) setVolume:(double)volume {
+  [stream setVolume:volume];
+}
+
 - (void) copyFrom: (Station*) other {
   [songs removeAllObjects];
   /* Add the previously playing song to the front of the queue if
@@ -308,7 +321,7 @@
   if ([other playing] != nil) {
     [songs addObject:[other playing]];
   }
-  [songs addObjectsFromArray:[other songs]];
+  [songs addObjectsFromArray:other->songs];
   lastKnownSeekTime = other->lastKnownSeekTime;
   NSLogd(@"lastknown: %f", lastKnownSeekTime);
   if (lastKnownSeekTime > 0) {
