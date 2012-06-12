@@ -21,13 +21,11 @@
 //     distribution.
 //
 
-#if TARGET_OS_IPHONE
-#import <UIKit/UIKit.h>
-#else
-#import <Cocoa/Cocoa.h>
-#endif //TARGET_OS_IPHONE
+/* This file has been heavily modified since its original distribution bytes
+   Alex Crichton for the Hermes project */
 
-#include <pthread.h>
+#import <Cocoa/Cocoa.h>
+
 #include <AudioToolbox/AudioToolbox.h>
 
 #define LOG_QUEUED_BUFFERS 0
@@ -84,6 +82,7 @@ typedef enum
   AS_NO_ERROR = 0,
   AS_NETWORK_CONNECTION_FAILED,
   AS_FILE_STREAM_GET_PROPERTY_FAILED,
+  AS_FILE_STREAM_SET_PROPERTY_FAILED,
   AS_FILE_STREAM_SEEK_FAILED,
   AS_FILE_STREAM_PARSE_BYTES_FAILED,
   AS_FILE_STREAM_OPEN_FAILED,
@@ -107,9 +106,21 @@ typedef enum
 
 extern NSString * const ASStatusChangedNotification;
 
-@interface AudioStreamer : NSObject
-{
+@interface AudioStreamer : NSObject {
+  /* Properties specified at creation */
   NSURL *url;
+
+  /* Creates as part of the [start] method */
+  CFReadStreamRef stream;
+
+  /* Once the stream has bytes read from it, these are created */
+  NSDictionary *httpHeaders;
+  AudioFileStreamID audioFileStream;  // the audio file stream parser
+
+  /* The audio file stream will fill in these parameters */
+  UInt64 dataOffset;         /* offset into the file of the start of stream */
+  UInt64 audioDataByteCount; /* number of bytes of audio data in file */
+  AudioStreamBasicDescription asbd; /* description of audio */
 
   //
   // Special threading consideration:
@@ -117,8 +128,6 @@ extern NSString * const ASStatusChangedNotification;
   //  synchronized(self) block and only *after* checking that ![self isFinishing]
   //
   AudioQueueRef audioQueue;
-  AudioFileStreamID audioFileStream;  // the audio file stream parser
-  AudioStreamBasicDescription asbd;  // description of the audio
   NSThread *internalThread;      // the thread where the download and
   // audio file stream parsing occurs
 
@@ -130,9 +139,8 @@ extern NSString * const ASStatusChangedNotification;
   size_t packetsFilled;      // how many packets have been filled
   bool inuse[kNumAQBufs];      // flags to indicate that a buffer is still in use
   NSInteger buffersUsed;
-  NSDictionary *httpHeaders;
 
-  AudioStreamerState state;
+  AudioStreamerState state_;
   AudioStreamerStopReason stopReason;
   AudioStreamerErrorCode errorCode;
   NSError *networkError;
@@ -140,17 +148,13 @@ extern NSString * const ASStatusChangedNotification;
 
   bool discontinuous;      // flag to indicate middle of the stream
 
-  pthread_mutex_t queueBuffersMutex;      // a mutex to protect the inuse flags
-  pthread_cond_t queueBufferReadyCondition;  // a condition varable for handling the inuse flags
+  NSCondition *cond;       // blocking while waiting for buffers
 
-  CFReadStreamRef stream;
   NSNotificationCenter *notificationCenter;
 
   UInt32 bitRate;        // Bits per second in the file
-  NSInteger dataOffset;    // Offset of the first audio packet in the stream
   NSInteger fileLength;    // Length of the file in bytes
   NSInteger seekByteOffset;  // Seek offset within the file in bytes
-  UInt64 audioDataByteCount;  // Used when the actual number of audio bytes in
   // the file is known (more accurate than assuming
   // the whole file is audio)
 
@@ -165,9 +169,6 @@ extern NSString * const ASStatusChangedNotification;
   // time)
   double packetDuration;    // sample rate times frames per packet
   double lastProgress;    // last calculated progress point
-#if TARGET_OS_IPHONE
-  BOOL pausedByInterruption;
-#endif
 }
 
 @property AudioStreamerErrorCode errorCode;
@@ -184,6 +185,7 @@ extern NSString * const ASStatusChangedNotification;
 - (void)start;
 - (void)stop;
 - (void)pause;
+- (void)play;
 - (BOOL)isPlaying;
 - (BOOL)isPaused;
 - (BOOL)isWaiting;
