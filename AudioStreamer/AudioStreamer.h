@@ -118,27 +118,37 @@ extern NSString * const ASStatusChangedNotification;
   AudioFileStreamID audioFileStream;  // the audio file stream parser
 
   /* The audio file stream will fill in these parameters */
+  NSInteger fileLength;      /* length of file, set from http headers */
   UInt64 dataOffset;         /* offset into the file of the start of stream */
   UInt64 audioDataByteCount; /* number of bytes of audio data in file */
   AudioStreamBasicDescription asbd; /* description of audio */
+
+  /* Once properties have been read, packets arrive, and the audio queue is
+     created once the first packet arrives */
+  AudioQueueRef audioQueue;
+  UInt32 packetBufferSize;  /* guessed from audioFileStream */
+
+  /* When receiving audio data, raw data is placed into these buffers. The
+   * buffers are essentially a "ring buffer of buffers" as each buffer is cycled
+   * through and then freed when not in use. Each buffer can contain one or many
+   * packets, so the packetDescs array is a list of packets which describes the
+   * data in the next pending buffer (used to enqueue data into the AudioQueue
+   * structure */
+  AudioQueueBufferRef audioQueueBuffer[kNumAQBufs];
+  AudioStreamPacketDescription packetDescs[kAQMaxPacketDescs];
+  size_t packetsFilled;         /* number of valid entries in packetDescs */
+  size_t bytesFilled;           /* bytes in use in the pending buffer */
+  unsigned int fillBufferIndex; /* index of the pending buffer */
+  bool inuse[kNumAQBufs];       /* which buffers have yet to be processed */
+  NSInteger buffersUsed;        /* Number of buffers in use */
 
   //
   // Special threading consideration:
   //  The audioQueue property should only ever be accessed inside a
   //  synchronized(self) block and only *after* checking that ![self isFinishing]
   //
-  AudioQueueRef audioQueue;
   NSThread *internalThread;      // the thread where the download and
-  // audio file stream parsing occurs
-
-  AudioQueueBufferRef audioQueueBuffer[kNumAQBufs];    // audio queue buffers
-  AudioStreamPacketDescription packetDescs[kAQMaxPacketDescs];  // packet descriptions for enqueuing audio
-  unsigned int fillBufferIndex;  // the index of the audioQueueBuffer that is being filled
-  UInt32 packetBufferSize;
-  size_t bytesFilled;        // how many bytes have been filled
-  size_t packetsFilled;      // how many packets have been filled
-  bool inuse[kNumAQBufs];      // flags to indicate that a buffer is still in use
-  NSInteger buffersUsed;
+                                 // audio file stream parsing occurs
 
   AudioStreamerState state_;
   AudioStreamerStopReason stopReason;
@@ -153,7 +163,6 @@ extern NSString * const ASStatusChangedNotification;
   NSNotificationCenter *notificationCenter;
 
   UInt32 bitRate;        // Bits per second in the file
-  NSInteger fileLength;    // Length of the file in bytes
   NSInteger seekByteOffset;  // Seek offset within the file in bytes
   // the file is known (more accurate than assuming
   // the whole file is audio)
@@ -169,6 +178,10 @@ extern NSString * const ASStatusChangedNotification;
   // time)
   double packetDuration;    // sample rate times frames per packet
   double lastProgress;    // last calculated progress point
+
+  /* When changing the volume, registers an interest in volume change */
+  BOOL requestingVolume;
+  double requestedVolume;
 }
 
 @property AudioStreamerErrorCode errorCode;
@@ -192,6 +205,6 @@ extern NSString * const ASStatusChangedNotification;
 - (BOOL)isIdle;
 - (void)seekToTime:(double)newSeekTime;
 - (double)calculatedBitRate;
-- (BOOL)setVolume: (double) volume;
+- (void)setVolume: (double) volume;
 
 @end
