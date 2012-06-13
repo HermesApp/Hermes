@@ -173,13 +173,14 @@ void ASReadStreamCallBack
 //
 - (id)initWithURL:(NSURL *)aURL {
   url = aURL;
+  requestingVolume = NO;
   return self;
 }
 
-- (BOOL)setVolume: (double) volume {
-  OSStatus rc = AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume,
-                                       volume);
-  return rc == 0;
+- (void)setVolume: (double) volume {
+  requestedVolume = volume;
+  requestingVolume = YES;
+  NSLog(@"requesting");
 }
 
 //
@@ -568,10 +569,16 @@ void ASReadStreamCallBack
                  runMode:NSDefaultRunLoopMode
                  beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
 
+    NSLog(@"run loop iteration");
     @synchronized(self) {
       if (seekWasRequested) {
-        [self internalSeekToTime:requestedSeekTime];
         seekWasRequested = NO;
+        [self internalSeekToTime:requestedSeekTime];
+      }
+      if (requestingVolume && audioQueue != NULL) {
+        requestingVolume = NO;
+        AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume,
+                               requestedVolume);
       }
     }
 
@@ -1033,63 +1040,55 @@ cleanup:
 // This function is adapted from Apple's example in AudioFileStreamExample with
 // CBR functionality added.
 //
-- (void)enqueueBuffer {
-  @synchronized(self) {
-    if ([self isFinishing] || stream == 0) {
-      return;
-    }
+- (void) enqueueBuffer {
+  assert(stream != NULL);
+  if ([self isFinishing]) { return; }
 
-    inuse[fillBufferIndex] = true;    // set in use flag
-    buffersUsed++;
+  assert(!inuse[fillBufferIndex]);
+  inuse[fillBufferIndex] = true;    // set in use flag
+  buffersUsed++;
 
-    // enqueue buffer
-    AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
-    fillBuf->mAudioDataByteSize = bytesFilled;
+  // enqueue buffer
+  AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
+  fillBuf->mAudioDataByteSize = bytesFilled;
 
-    if (packetsFilled) {
-      err = AudioQueueEnqueueBuffer(audioQueue, fillBuf, packetsFilled, packetDescs);
-    } else {
-      err = AudioQueueEnqueueBuffer(audioQueue, fillBuf, 0, NULL);
-    }
+  assert(packetsFilled > 0);
+  err = AudioQueueEnqueueBuffer(audioQueue, fillBuf, packetsFilled,
+                                packetDescs);
+  CHECK_ERR(err, AS_AUDIO_QUEUE_ENQUEUE_FAILED);
 
-    if (err)
-    {
-      [self failWithErrorCode:AS_AUDIO_QUEUE_ENQUEUE_FAILED];
-      return;
-    }
-
-    if (state_ == AS_BUFFERING ||
-        state_ == AS_WAITING_FOR_DATA ||
-        state_ == AS_FLUSHING_EOF ||
-        (state_ == AS_STOPPED && stopReason == AS_STOPPING_TEMPORARILY)) {
-      //
-      // Fill all the buffers before starting. This ensures that the
-      // AudioFileStream stays a small amount ahead of the AudioQueue to
-      // avoid an audio glitch playing streaming files on iPhone SDKs < 3.0
-      //
-      if (state_ == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1) {
-        if (state_ == AS_BUFFERING) {
-          err = AudioQueueStart(audioQueue, NULL);
-          CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
-          [self setState:AS_PLAYING];
-        } else {
-          [self setState:AS_WAITING_FOR_QUEUE_TO_START];
-          err = AudioQueueStart(audioQueue, NULL);
-          CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
-        }
+  if (state_ == AS_BUFFERING ||
+      state_ == AS_WAITING_FOR_DATA ||
+      state_ == AS_FLUSHING_EOF ||
+      (state_ == AS_STOPPED && stopReason == AS_STOPPING_TEMPORARILY)) {
+    //
+    // Fill all the buffers before starting. This ensures that the
+    // AudioFileStream stays a small amount ahead of the AudioQueue to
+    // avoid an audio glitch playing streaming files on iPhone SDKs < 3.0
+    //
+    /* TODO: this is fucked up, start earlier? Reorganize code? what's with the
+             state transitions down here? */
+    if (state_ == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1) {
+      if (state_ == AS_BUFFERING) {
+        err = AudioQueueStart(audioQueue, NULL);
+        CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
+        [self setState:AS_PLAYING];
+      } else {
+        [self setState:AS_WAITING_FOR_QUEUE_TO_START];
+        err = AudioQueueStart(audioQueue, NULL);
+        CHECK_ERR(err, AS_AUDIO_QUEUE_START_FAILED);
       }
     }
-
-    // go to next buffer
-    if (++fillBufferIndex >= kNumAQBufs) fillBufferIndex = 0;
-    bytesFilled = 0;    // reset bytes filled
-    packetsFilled = 0;    // reset packets filled
   }
+
+  /* move on to the next buffer and wait for it to be in use */
+  if (++fillBufferIndex >= kNumAQBufs) fillBufferIndex = 0;
+  bytesFilled   = 0;    // reset bytes filled
+  packetsFilled = 0;    // reset packets filled
 
   // wait until next buffer is not in use
   [cond lock];
   while (inuse[fillBufferIndex]) {
-    NSLog(@"waiting for a buffer");
     [cond wait];
   }
   [cond unlock];
@@ -1105,18 +1104,15 @@ cleanup:
 // it could be handled any time after kAudioFileStreamProperty_ReadyToProducePackets
 // is true).
 //
-- (void)createQueue
-{
+- (void)createQueue {
+  assert(audioQueue == NULL);
   sampleRate = asbd.mSampleRate;
   packetDuration = asbd.mFramesPerPacket / sampleRate;
 
   // create the audio queue
   err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback,
                             (__bridge void*) self, NULL, NULL, 0, &audioQueue);
-  if (err) {
-    [self failWithErrorCode:AS_AUDIO_QUEUE_CREATION_FAILED];
-    return;
-  }
+  CHECK_ERR(err, AS_AUDIO_QUEUE_CREATION_FAILED);
 
   // start the queue if it has not been started already
   // listen to the "isRunning" property
@@ -1125,11 +1121,17 @@ cleanup:
                                       (__bridge void*) self);
   CHECK_ERR(err, AS_AUDIO_QUEUE_ADD_LISTENER_FAILED);
 
-  // get the packet size if it is available
+  /* Try to determine the packet size, eventually falling back to some
+     reasonable default of a size */
   UInt32 sizeOfUInt32 = sizeof(UInt32);
-  err = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_PacketSizeUpperBound, &sizeOfUInt32, &packetBufferSize);
+  err = AudioFileStreamGetProperty(audioFileStream,
+          kAudioFileStreamProperty_PacketSizeUpperBound, &sizeOfUInt32,
+          &packetBufferSize);
+
   if (err || packetBufferSize == 0) {
-    err = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_MaximumPacketSize, &sizeOfUInt32, &packetBufferSize);
+    err = AudioFileStreamGetProperty(audioFileStream,
+            kAudioFileStreamProperty_MaximumPacketSize, &sizeOfUInt32,
+            &packetBufferSize);
     if (err || packetBufferSize == 0) {
       // No packet size available, just use the default
       packetBufferSize = kAQDefaultBufSize;
@@ -1138,35 +1140,42 @@ cleanup:
 
   // allocate audio queue buffers
   for (unsigned int i = 0; i < kNumAQBufs; ++i) {
-    err = AudioQueueAllocateBuffer(audioQueue, packetBufferSize, &audioQueueBuffer[i]);
-    if (err) {
-      [self failWithErrorCode:AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED];
-      return;
-    }
+    err = AudioQueueAllocateBuffer(audioQueue, packetBufferSize,
+                                   &audioQueueBuffer[i]);
+    CHECK_ERR(err, AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED);
   }
+
+  /* Some audio formats have a "magic cookie" which needs to be transferred from
+     the file stream to the audio queue. If any of this fails it's "OK" because
+     the stream either doesn't have a magic or error will propogate later */
 
   // get the cookie size
   UInt32 cookieSize;
   Boolean writable;
   OSStatus ignorableError;
-  ignorableError = AudioFileStreamGetPropertyInfo(audioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, &writable);
+  ignorableError = AudioFileStreamGetPropertyInfo(audioFileStream,
+                     kAudioFileStreamProperty_MagicCookieData, &cookieSize,
+                     &writable);
   if (ignorableError) {
     return;
   }
 
   // get the cookie data
-  void* cookieData = calloc(1, cookieSize);
-  ignorableError = AudioFileStreamGetProperty(audioFileStream, kAudioFileStreamProperty_MagicCookieData, &cookieSize, cookieData);
+  void *cookieData = calloc(1, cookieSize);
+  if (cookieData == NULL) return;
+  ignorableError = AudioFileStreamGetProperty(audioFileStream,
+                     kAudioFileStreamProperty_MagicCookieData, &cookieSize,
+                     cookieData);
   if (ignorableError) {
+    free(cookieData);
     return;
   }
 
-  // set the cookie on the queue.
-  ignorableError = AudioQueueSetProperty(audioQueue, kAudioQueueProperty_MagicCookie, cookieData, cookieSize);
+  // set the cookie on the queue. Don't worry if it fails, all we'd to is return
+  // anyway
+  AudioQueueSetProperty(audioQueue, kAudioQueueProperty_MagicCookie, cookieData,
+                        cookieSize);
   free(cookieData);
-  if (ignorableError) {
-    return;
-  }
 }
 
 //
@@ -1298,133 +1307,55 @@ cleanup:
   if (!audioQueue) {
     [self createQueue];
   }
+  assert(inPacketDescriptions != NULL);
 
-  // the following code assumes we're streaming VBR data. for CBR data, the second branch is used.
-  if (inPacketDescriptions)
-  {
-    for (int i = 0; i < inNumberPackets; ++i)
-    {
-      SInt64 packetOffset = inPacketDescriptions[i].mStartOffset;
-      SInt64 packetSize   = inPacketDescriptions[i].mDataByteSize;
-      size_t bufSpaceRemaining;
+  /* Place each packet into a buffer and then send each buffer into the audio
+     queue */
+  for (int i = 0; i < inNumberPackets; i++) {
+    SInt64 packetOffset = inPacketDescriptions[i].mStartOffset;
+    SInt64 packetSize   = inPacketDescriptions[i].mDataByteSize;
 
-      if (processedPacketsCount < BitRateEstimationMaxPackets)
-      {
-        processedPacketsSizeTotal += packetSize;
-        processedPacketsCount += 1;
-      }
+    /* global statistics */
+    processedPacketsSizeTotal += packetSize;
+    processedPacketsCount++;
 
-      @synchronized(self)
-      {
-        // If the audio was terminated before this point, then
-        // exit.
-        if ([self isFinishing])
-        {
-          return;
-        }
+    // If the audio was terminated before this point, then
+    // exit.
+    if ([self isFinishing]) { return; }
 
-        if (packetSize > packetBufferSize)
-        {
-          [self failWithErrorCode:AS_AUDIO_BUFFER_TOO_SMALL];
-        }
+    /* This shouldn't happen because most of the time we read the packet buffer
+       size from the file stream, but if we restored to guessing it we could
+       come up too small here */
+    CHECK_ERR(packetSize > packetBufferSize, AS_AUDIO_BUFFER_TOO_SMALL);
 
-        bufSpaceRemaining = packetBufferSize - bytesFilled;
-      }
-
-      // if the space remaining in the buffer is not enough for this packet, then enqueue the buffer.
-      if (bufSpaceRemaining < packetSize)
-      {
-        [self enqueueBuffer];
-      }
-
-      @synchronized(self)
-      {
-        // If the audio was terminated while waiting for a buffer, then
-        // exit.
-        if ([self isFinishing])
-        {
-          return;
-        }
-
-        //
-        // If there was some kind of issue with enqueueBuffer and we didn't
-        // make space for the new audio data then back out
-        //
-        if (bytesFilled + packetSize > packetBufferSize)
-        {
-          return;
-        }
-
-        // copy data to the audio queue buffer
-        AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
-        memcpy((char*)fillBuf->mAudioData + bytesFilled, (const char*)inInputData + packetOffset, packetSize);
-
-        // fill out packet description
-        packetDescs[packetsFilled] = inPacketDescriptions[i];
-        packetDescs[packetsFilled].mStartOffset = bytesFilled;
-        // keep track of bytes filled and packets filled
-        bytesFilled += packetSize;
-        packetsFilled += 1;
-      }
-
-      // if that was the last free packet description, then enqueue the buffer.
-      size_t packetsDescsRemaining = kAQMaxPacketDescs - packetsFilled;
-      if (packetsDescsRemaining == 0) {
-        [self enqueueBuffer];
-      }
+    // if the space remaining in the buffer is not enough for this packet, then
+    // enqueue the buffer and wait for another to become available.
+    if (packetBufferSize - bytesFilled < packetSize) {
+      [self enqueueBuffer];
+      /* if we terminated while waiting, then bail out */
+      if ([self isFinishing]) { return; }
+      assert(bytesFilled == 0);
+      assert(packetBufferSize >= packetSize);
     }
-  }
-  else
-  {
-    size_t offset = 0;
-    while (inNumberBytes)
-    {
-      // if the space remaining in the buffer is not enough for this packet, then enqueue the buffer.
-      size_t bufSpaceRemaining = kAQDefaultBufSize - bytesFilled;
-      if (bufSpaceRemaining < inNumberBytes)
-      {
-        [self enqueueBuffer];
-      }
 
-      @synchronized(self)
-      {
-        // If the audio was terminated while waiting for a buffer, then
-        // exit.
-        if ([self isFinishing])
-        {
-          return;
-        }
+    // copy data to the audio queue buffer
+    AudioQueueBufferRef buf = audioQueueBuffer[fillBufferIndex];
+    memcpy(buf->mAudioData + bytesFilled,
+           inInputData + packetOffset,
+           packetSize);
 
-        bufSpaceRemaining = kAQDefaultBufSize - bytesFilled;
-        size_t copySize;
-        if (bufSpaceRemaining < inNumberBytes)
-        {
-          copySize = bufSpaceRemaining;
-        }
-        else
-        {
-          copySize = inNumberBytes;
-        }
+    // fill out packet description to pass to enqueue() later on
+    packetDescs[packetsFilled] = inPacketDescriptions[i];
+    // Make sure the offset is relative to the start of the audio buffer
+    packetDescs[packetsFilled].mStartOffset = bytesFilled;
+    // keep track of bytes filled and packets filled
+    bytesFilled += packetSize;
+    packetsFilled++;
 
-        //
-        // If there was some kind of issue with enqueueBuffer and we didn't
-        // make space for the new audio data then back out
-        //
-        if (bytesFilled > packetBufferSize)
-        {
-          return;
-        }
-
-        // copy data to the audio queue buffer
-        AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
-        memcpy((char*)fillBuf->mAudioData + bytesFilled, (const char*)(inInputData + offset), copySize);
-
-        // keep track of bytes filled and packets filled
-        bytesFilled += copySize;
-        packetsFilled = 0;
-        inNumberBytes -= copySize;
-        offset += copySize;
-      }
+    // if that was the last free packet description, then enqueue the buffer.
+    if (packetsFilled >= kAQMaxPacketDescs) {
+      [self enqueueBuffer];
+      assert(packetsFilled == 0);
     }
   }
 }
@@ -1440,27 +1371,26 @@ cleanup:
 //
 - (void)handleBufferCompleteForQueue:(AudioQueueRef)inAQ
                               buffer:(AudioQueueBufferRef)inBuffer {
-  unsigned int bufIndex = -1;
-  for (unsigned int i = 0; i < kNumAQBufs; ++i) {
-    if (inBuffer == audioQueueBuffer[i]) {
-      bufIndex = i;
-      break;
-    }
-  }
+  /* we're only registered for one audio queue... */
+  assert(inAQ == audioQueue);
+  /* Sanity check to make sure we're on one of the AudioQueue's internal threads
+     for processing data */
+  assert([NSThread currentThread] != internalThread);
+  assert([NSThread currentThread] != [NSThread mainThread]);
 
-  if (bufIndex == -1) {
-    [self failWithErrorCode:AS_AUDIO_QUEUE_BUFFER_MISMATCH];
-    [cond lock];
-    [cond signal];
-    [cond unlock];
-    return;
+  /* Figure out which buffer just became free, and it had better damn well be
+     one of our own buffers */
+  int idx;
+  for (idx = 0; idx < kNumAQBufs; idx++) {
+    if (audioQueueBuffer[idx] == inBuffer) break;
   }
+  assert(idx >= 0 && idx < kNumAQBufs);
+  assert(inuse[idx]);
 
   // signal waiting thread that the buffer is free.
   [cond lock];
-  inuse[bufIndex] = false;
+  inuse[idx] = false;
   buffersUsed--;
-
   [cond signal];
   [cond unlock];
 }
@@ -1476,34 +1406,40 @@ cleanup:
 //
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
                           propertyID:(AudioQueuePropertyID)inID {
+  /* Sanity check to make sure we're on one of the AudioQueue's internal threads
+     for processing data */
+  assert([NSThread currentThread] != internalThread);
+  assert([NSThread currentThread] != [NSThread mainThread]);
+  /* We only asked for one property, so the audio queue had better damn well
+     only tell us about this property */
+  assert(inID == kAudioQueueProperty_IsRunning);
+
   @autoreleasepool {
 
   @synchronized(self) {
-    if (inID == kAudioQueueProperty_IsRunning) {
-      if (state_ == AS_STOPPING) {
-        [self setState:AS_STOPPED];
-      } else if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
-        //
-        // Note about this bug avoidance quirk:
-        //
-        // On cleanup of the AudioQueue thread, on rare occasions, there would
-        // be a crash in CFSetContainsValue as a CFRunLoopObserver was getting
-        // removed from the CFRunLoop.
-        //
-        // After lots of testing, it appeared that the audio thread was
-        // attempting to remove CFRunLoop observers from the CFRunLoop after the
-        // thread had already deallocated the run loop.
-        //
-        // By creating an NSRunLoop for the AudioQueue thread, it changes the
-        // thread destruction order and seems to avoid this crash bug -- or
-        // at least I haven't had it since (nasty hard to reproduce error!)
-        //
-        [NSRunLoop currentRunLoop];
+    if (state_ == AS_STOPPING) {
+      [self setState:AS_STOPPED];
+    } else if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
+      //
+      // Note about this bug avoidance quirk:
+      //
+      // On cleanup of the AudioQueue thread, on rare occasions, there would
+      // be a crash in CFSetContainsValue as a CFRunLoopObserver was getting
+      // removed from the CFRunLoop.
+      //
+      // After lots of testing, it appeared that the audio thread was
+      // attempting to remove CFRunLoop observers from the CFRunLoop after the
+      // thread had already deallocated the run loop.
+      //
+      // By creating an NSRunLoop for the AudioQueue thread, it changes the
+      // thread destruction order and seems to avoid this crash bug -- or
+      // at least I haven't had it since (nasty hard to reproduce error!)
+      //
+      [NSRunLoop currentRunLoop];
 
-        [self setState:AS_PLAYING];
-      } else {
-        NSLog(@"AudioQueue changed state in unexpected way.");
-      }
+      [self setState:AS_PLAYING];
+    } else {
+      NSLog(@"AudioQueue changed state in unexpected way.");
     }
   }
 
