@@ -51,28 +51,15 @@
 
 #define kAQMaxPacketDescs 512  // Number of packet descriptions in our array
 
-typedef enum
-{
+typedef enum {
   AS_INITIALIZED = 0,
-  AS_STARTING_FILE_THREAD,
   AS_WAITING_FOR_DATA,
-  AS_FLUSHING_EOF,
   AS_WAITING_FOR_QUEUE_TO_START,
   AS_PLAYING,
-  AS_BUFFERING,
-  AS_STOPPING,
-  AS_STOPPED,
-  AS_PAUSED
+  AS_PAUSED,
+  AS_DONE,
+  AS_STOPPED
 } AudioStreamerState;
-
-typedef enum
-{
-  AS_NO_STOP = 0,
-  AS_STOPPING_EOF,
-  AS_STOPPING_USER_ACTION,
-  AS_STOPPING_ERROR,
-  AS_STOPPING_TEMPORARILY
-} AudioStreamerStopReason;
 
 typedef enum
 {
@@ -148,7 +135,6 @@ struct queued_packet;
 
   /* Internal meatadata about errors and state */
   AudioStreamerState state_;
-  AudioStreamerStopReason stopReason;
   AudioStreamerErrorCode errorCode;
   NSError *networkError;
   OSStatus err;
@@ -181,7 +167,7 @@ struct queued_packet;
 - (BOOL)isPlaying;
 - (BOOL)isPaused;
 - (BOOL)isWaiting;
-- (BOOL)isIdle;
+- (BOOL)isDone;
 - (BOOL)seekToTime:(double)newSeekTime;
 - (double)calculatedBitRate;
 - (BOOL)setVolume:(double)volume;

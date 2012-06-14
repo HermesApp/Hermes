@@ -180,6 +180,7 @@ void ASReadStreamCallBack
 //
 - (id)initWithURL:(NSURL *)aURL {
   url = aURL;
+  LOG(@"created with %@", aURL);
   return self;
 }
 
@@ -205,17 +206,6 @@ void ASReadStreamCallBack
     return YES;
   }
   return NO;
-}
-
-//
-// isFinishing
-//
-// returns YES if the audio has reached a stopping condition.
-//
-- (BOOL)isFinishing {
-  return (errorCode != AS_NO_ERROR && state_ != AS_INITIALIZED) ||
-         ((state_ == AS_STOPPING || state_ == AS_STOPPED) &&
-          stopReason != AS_STOPPING_TEMPORARILY);
 }
 
 //
@@ -293,19 +283,16 @@ void ASReadStreamCallBack
 //    anErrorCode - the error condition
 //
 - (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode {
+  // Only set the error once.
   if (errorCode != AS_NO_ERROR) {
-    // Only set the error once.
+    assert(state_ == AS_STOPPED);
     return;
   }
 
   LOG(@"got an error: %@", [AudioStreamer stringForErrorCode:anErrorCode]);
   errorCode = anErrorCode;
 
-  if (state_ == AS_PLAYING || state_ == AS_PAUSED || state_ == AS_BUFFERING) {
-    [self setState:AS_STOPPING];
-    stopReason = AS_STOPPING_ERROR;
-    AudioQueueStop(audioQueue, true);
-  }
+  [self stop];
 }
 
 //
@@ -315,34 +302,18 @@ void ASReadStreamCallBack
 // notification center.
 //
 - (void)mainThreadStateNotification {
-  [[NSNotificationCenter defaultCenter]
-        postNotificationName:ASStatusChangedNotification
-                      object:self];
 }
 
-//
-// setState:
-//
-// Sets the state and sends a notification that the state has changed.
-//
-// This method
-//
-// Parameters:
-//    anErrorCode - the error condition
-//
 - (void)setState:(AudioStreamerState)aStatus {
   LOG(@"transitioning to state:%d", aStatus);
+  LOG("%d %d", AS_DONE, AS_STOPPED);
 
   if (state_ == aStatus) return;
   state_ = aStatus;
 
-  if ([[NSThread currentThread] isEqual:[NSThread mainThread]]) {
-    [self mainThreadStateNotification];
-  } else {
-    [self performSelectorOnMainThread:@selector(mainThreadStateNotification)
-                           withObject:nil
-                        waitUntilDone:NO];
-  }
+  [[NSNotificationCenter defaultCenter]
+        postNotificationName:ASStatusChangedNotification
+                      object:self];
 }
 
 //
@@ -370,21 +341,15 @@ void ASReadStreamCallBack
 // kind.
 //
 - (BOOL)isWaiting {
-  return [self isFinishing] ||
-      state_ == AS_STARTING_FILE_THREAD||
-      state_ == AS_WAITING_FOR_DATA ||
-      state_ == AS_WAITING_FOR_QUEUE_TO_START ||
-      state_ == AS_BUFFERING;
+  return state_ == AS_WAITING_FOR_DATA ||
+         state_ == AS_WAITING_FOR_QUEUE_TO_START;
 }
 
-//
-// isIdle
-//
-// returns YES if the AudioStream is in the AS_INITIALIZED state (i.e.
-// isn't doing anything).
-//
-- (BOOL)isIdle {
-  return state_ == AS_INITIALIZED;
+/**
+ * @brief Calculates whether this streamer is done with all audio playback
+ */
+- (BOOL)isDone {
+  return state_ == AS_DONE || state_ == AS_STOPPED;
 }
 
 //
@@ -579,8 +544,6 @@ void ASReadStreamCallBack
   }
 
   /* Stop audio for now */
-  [self setState:AS_STOPPING];
-  stopReason = AS_STOPPING_TEMPORARILY;
   err = AudioQueueStop(audioQueue, true);
   if (err) {
     [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
@@ -599,11 +562,8 @@ void ASReadStreamCallBack
 //
 - (double)progress {
   double sampleRate = asbd.mSampleRate;
-  if (sampleRate <= 0) return lastProgress;
-  if (state_ != AS_PLAYING && state_ != AS_PAUSED &&
-      state_ != AS_BUFFERING) {
+  if (sampleRate <= 0 || (state_ != AS_PLAYING && state_ != AS_PAUSED))
     return lastProgress;
-  }
 
   AudioTimeStamp queueTime;
   Boolean discontinuity;
@@ -702,18 +662,6 @@ void ASReadStreamCallBack
 // back to false
 //
 - (void)stop {
-  LOG(@"stopping");
-  if (audioQueue &&
-      (state_ == AS_PLAYING || state_ == AS_PAUSED ||
-       state_ == AS_BUFFERING || state_ == AS_WAITING_FOR_QUEUE_TO_START)) {
-    [self setState:AS_STOPPING];
-    stopReason = AS_STOPPING_USER_ACTION;
-    err = AudioQueueStop(audioQueue, true);
-    CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
-  } else if (state_ != AS_INITIALIZED) {
-    [self setState:AS_STOPPED];
-    stopReason = AS_STOPPING_USER_ACTION;
-  }
   if (stream) {
     CFReadStreamClose(stream);
     CFRelease(stream);
@@ -733,6 +681,7 @@ void ASReadStreamCallBack
   // Dispose of the Audio Queue
   //
   if (audioQueue) {
+    AudioQueueStop(audioQueue, true);
     err = AudioQueueDispose(audioQueue, true);
     assert(!err);
     audioQueue = nil;
@@ -743,7 +692,10 @@ void ASReadStreamCallBack
   packetsFilled    = 0;
   seekByteOffset   = 0;
   packetBufferSize = 0;
-  [self setState:AS_INITIALIZED];
+
+  if (![self isDone]) {
+    [self setState:AS_STOPPED];
+  }
 }
 
 //
@@ -762,54 +714,35 @@ void ASReadStreamCallBack
 
   switch (eventType) {
     case kCFStreamEventErrorOccurred:
-      LOG("error");
+      LOG(@"error");
       networkError = (__bridge_transfer NSError*) CFReadStreamCopyError(aStream);
       [self failWithErrorCode:AS_NETWORK_CONNECTION_FAILED];
       return;
 
     case kCFStreamEventEndEncountered:
-      LOG("end");
+      LOG(@"end");
 
-      //
-      // If there is a partially filled buffer, pass it to the AudioQueue for
-      // processing
-      //
+      /* Flush out extra data if necessary */
       if (bytesFilled) {
-        if (state_ == AS_WAITING_FOR_DATA) {
-          //
-          // Force audio data smaller than one whole buffer to play.
-          //
-          [self setState:AS_FLUSHING_EOF];
-        }
         /* Disregard return value because we're at the end of the stream anyway
            so there's no bother in pausing it */
         if ([self enqueueBuffer] < 0) return;
       }
 
+      /* If we never received any packets, then we fail */
       if (state_ == AS_WAITING_FOR_DATA) {
         [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
 
-      //
-      // We left the synchronized section to enqueue the buffer so we
-      // must check that we are !finished again before touching the
-      // audioQueue
-      //
+      /* Flush an asynchronously stop the audio queue now that it won't be
+         receiving any more data */
       } else {
         if (audioQueue) {
-          //
-          // Set the progress at the end of the stream
-          //
           err = AudioQueueFlush(audioQueue);
           CHECK_ERR(err, AS_AUDIO_QUEUE_FLUSH_FAILED);
-
-          [self setState:AS_STOPPING];
-          stopReason = AS_STOPPING_EOF;
           err = AudioQueueStop(audioQueue, false);
           CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
-        } else {
-          [self setState:AS_STOPPED];
-          stopReason = AS_STOPPING_EOF;
         }
+        [self setState:AS_DONE];
       }
       return;
 
@@ -858,14 +791,7 @@ void ASReadStreamCallBack
 
   UInt8 bytes[kAQDefaultBufSize];
   CFIndex length;
-  while (1) {
-    if ([self isFinishing] || !CFReadStreamHasBytesAvailable(stream)) {
-      return;
-    }
-
-    //
-    // Read the bytes from the stream
-    //
+  while (state_ != AS_STOPPED && CFReadStreamHasBytesAvailable(stream)) {
     length = CFReadStreamRead(stream, bytes, kAQDefaultBufSize);
 
     if (length < 0) {
@@ -916,29 +842,19 @@ void ASReadStreamCallBack
   }
   LOG(@"committed buffer %d", fillBufferIndex);
 
-  if (state_ == AS_BUFFERING ||
-      state_ == AS_WAITING_FOR_DATA ||
-      state_ == AS_FLUSHING_EOF ||
-      (state_ == AS_STOPPED && stopReason == AS_STOPPING_TEMPORARILY)) {
+  if (state_ == AS_WAITING_FOR_DATA) {
     //
     // Fill all the buffers before starting. This ensures that the
     // AudioFileStream stays a small amount ahead of the AudioQueue to
     // avoid an audio glitch playing streaming files on iPhone SDKs < 3.0
     //
-    /* TODO: this is fucked up, start earlier? Reorganize code? what's with the
-             state transitions down here? */
-    if (state_ == AS_FLUSHING_EOF || buffersUsed == kNumAQBufs - 1) {
-      if (state_ == AS_BUFFERING) {
-        err = AudioQueueStart(audioQueue, NULL);
-        [self setState:AS_PLAYING];
-      } else {
-        [self setState:AS_WAITING_FOR_QUEUE_TO_START];
-        err = AudioQueueStart(audioQueue, NULL);
-      }
+    if (buffersUsed == kNumAQBufs - 1) {
+      err = AudioQueueStart(audioQueue, NULL);
       if (err) {
         [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
         return -1;
       }
+      [self setState:AS_WAITING_FOR_QUEUE_TO_START];
     }
   }
 
@@ -1148,6 +1064,7 @@ void ASReadStreamCallBack
                numberBytes:(UInt32)inNumberBytes
              numberPackets:(UInt32)inNumberPackets
         packetDescriptions:(AudioStreamPacketDescription*)inPacketDescriptions {
+  if (state_ == AS_STOPPED) return;
   // we have successfully read the first packests from the audio stream, so
   // clear the "discontinuous" flag
   if (discontinuous) {
@@ -1208,11 +1125,11 @@ void ASReadStreamCallBack
   // enqueue the buffer and wait for another to become available.
   if (packetBufferSize - bytesFilled < packetSize) {
     int hasFreeBuffer = [self enqueueBuffer];
-    assert(bytesFilled == 0);
-    assert(packetBufferSize >= packetSize);
     if (hasFreeBuffer <= 0) {
       return hasFreeBuffer;
     }
+    assert(bytesFilled == 0);
+    assert(packetBufferSize >= packetSize);
   }
 
   /* global statistics */
@@ -1242,6 +1159,7 @@ void ASReadStreamCallBack
  * This method is enqueued for delivery when an audio buffer is freed
  */
 - (void) enqueueCachedData {
+  if (state_ == AS_STOPPED) return;
   assert(!waitingOnBuffer);
   assert(!inuse[fillBufferIndex]);
   assert(stream != NULL);
@@ -1265,10 +1183,6 @@ void ASReadStreamCallBack
     queued_tail = NULL;
     CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                     kCFRunLoopCommonModes);
-
-  /* Otherwise, we should again be waiting on a buffer */
-  } else {
-    assert(waitingOnBuffer);
   }
 }
 
@@ -1337,14 +1251,8 @@ void ASReadStreamCallBack
 }
 
 - (void) queueRunningChanged {
-  if (state_ == AS_STOPPING) {
-    LOG(@"now stopped");
-    [self setState:AS_STOPPED];
-  } else if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
-    LOG(@"now playing");
+  if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
     [self setState:AS_PLAYING];
-  } else {
-    LOG(@"AudioQueue changed state in unexpected way.");
   }
 }
 
