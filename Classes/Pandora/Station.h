@@ -6,7 +6,9 @@
   BOOL shouldPlaySongOnFetch;
   BOOL retrying;
   BOOL nexting;
+  BOOL volumeSet;
   double lastKnownSeekTime;
+  double volume;
 
   NSInteger tries;
   NSString *name;

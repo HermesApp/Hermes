@@ -27,6 +27,7 @@
     [self setStationId:[aDecoder decodeObjectForKey:@"stationId"]];
     [self setName:[aDecoder decodeObjectForKey:@"name"]];
     [self setPlaying:[aDecoder decodeObjectForKey:@"playing"]];
+    [self setVolume:[aDecoder decodeFloatForKey:@"volume"]];
     lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
   }
@@ -42,6 +43,7 @@
     seek = [stream progress];
   }
   [aCoder encodeFloat:seek forKey:@"lastKnownSeekTime"];
+  [aCoder encodeFloat:volume forKey:@"volume"];
   [aCoder encodeObject:songs forKey:@"songs"];
 }
 
@@ -132,6 +134,7 @@
 	[stream stop];
   NSLogd(@"Creating with %@", url);
   stream = [[AudioStreamer alloc] initWithURL: url];
+  volumeSet = [stream setVolume:volume];
 }
 
 - (void) seekToLastKnownTime {
@@ -144,6 +147,9 @@
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   [waitingTimeout invalidate];
   waitingTimeout = nil;
+  if (!volumeSet) {
+    volumeSet = [stream setVolume:volume];
+  }
 
   int code = [stream errorCode];
   if (code != 0) {
@@ -308,8 +314,9 @@
   return [AudioStreamer stringForErrorCode:[stream errorCode]];
 }
 
-- (void) setVolume:(double)volume {
-  [stream setVolume:volume];
+- (void) setVolume:(double)vol {
+  volumeSet = [stream setVolume:vol];
+  self->volume = vol;
 }
 
 - (void) copyFrom: (Station*) other {
@@ -321,7 +328,7 @@
   }
   [songs addObjectsFromArray:other->songs];
   lastKnownSeekTime = other->lastKnownSeekTime;
-  NSLogd(@"lastknown: %f", lastKnownSeekTime);
+  volume = other->volume;
   if (lastKnownSeekTime > 0) {
     retrying = YES;
   }
