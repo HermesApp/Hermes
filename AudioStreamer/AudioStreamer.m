@@ -485,14 +485,24 @@ void ASReadStreamCallBack
                                             repeats:YES];
 }
 
+/**
+ * @brief Check the stream for a timeout, and trigger one if this is a timeout
+ *        situation
+ */
 - (void) checkTimeout {
+  /* If the read stream has been unscheduled and not rescheduled, then this tick
+     is irrelevant because we're not trying to read data anyway */
   if (unscheduled && !rescheduled) return;
+  /* If the read stream was unscheduled and then rescheduled, then we still
+     discard this sample (not enough of it was known to be in the "scheduled
+     state"), but we clear flags so we might process the next sample */
   if (rescheduled && unscheduled) {
     unscheduled = NO;
     rescheduled = NO;
     return;
   }
 
+  /* events happened? no timeout. */
   if (events > 0) {
     events = 0;
     return;
@@ -680,6 +690,8 @@ void ASReadStreamCallBack
   }
 
   [self closeReadStream];
+  [timeout invalidate];
+  timeout = nil;
 
   //
   // Close the audio file strea,
@@ -897,7 +909,9 @@ void ASReadStreamCallBack
       LOG(@"waiting for buffer %d", fillBufferIndex);
       CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
                                         kCFRunLoopCommonModes);
+      /* Make sure we don't have ourselves marked as rescheduled */
       unscheduled = YES;
+      rescheduled = NO;
       waitingOnBuffer = true;
       return 0;
 
@@ -1006,7 +1020,6 @@ void ASReadStreamCallBack
   switch (inPropertyID) {
     case kAudioFileStreamProperty_ReadyToProducePackets:
       LOG(@"ready for packets");
-      /* TODO: why? */
       discontinuous = true;
       break;
 
@@ -1049,7 +1062,7 @@ void ASReadStreamCallBack
       break;
     }
 
-    /* TODO: if AAC or SBR needs to be supported, fix this */
+    /* if AAC or SBR needs to be supported, fix this */
     /*case kAudioFileStreamProperty_FormatList: {
       Boolean outWriteable;
       UInt32 formatListSize;
