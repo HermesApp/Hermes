@@ -38,6 +38,7 @@
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;
 - (void) show;
+- (void) prepareFirst;
 
 - (BOOL) play;
 - (BOOL) pause;
