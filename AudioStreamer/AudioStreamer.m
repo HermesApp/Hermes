@@ -536,12 +536,7 @@ void ASReadStreamCallBack
     }
   }
 
-  /* Close the old stream */
-  if (stream) {
-    CFReadStreamClose(stream);
-    CFRelease(stream);
-    stream = nil;
-  }
+  [self closeReadStream];
 
   /* Stop audio for now */
   err = AudioQueueStop(audioQueue, true);
@@ -568,12 +563,8 @@ void ASReadStreamCallBack
   AudioTimeStamp queueTime;
   Boolean discontinuity;
   err = AudioQueueGetCurrentTime(audioQueue, NULL, &queueTime, &discontinuity);
-
-  const OSStatus AudioQueueStopped = 0x73746F70; // 0x73746F70 is 'stop'
-  if (err == AudioQueueStopped) {
+  if (err) {
     return lastProgress;
-  } else if (err) {
-    [self failWithErrorCode:AS_GET_AUDIO_TIME_FAILED];
   }
 
   double progress = seekTime + queueTime.mSampleTime / sampleRate;
@@ -662,11 +653,11 @@ void ASReadStreamCallBack
 // back to false
 //
 - (void)stop {
-  if (stream) {
-    CFReadStreamClose(stream);
-    CFRelease(stream);
-    stream = nil;
+  if (![self isDone]) {
+    [self setState:AS_STOPPED];
   }
+
+  [self closeReadStream];
 
   //
   // Close the audio file strea,
@@ -692,9 +683,25 @@ void ASReadStreamCallBack
   packetsFilled    = 0;
   seekByteOffset   = 0;
   packetBufferSize = 0;
+}
 
-  if (![self isDone]) {
-    [self setState:AS_STOPPED];
+/**
+ * @brief Closes the read stream and frees all queued data
+ */
+- (void) closeReadStream {
+  if (waitingOnBuffer) waitingOnBuffer = FALSE;
+  queued_packet_t *cur = queued_head;
+  while (cur != NULL) {
+    queued_packet_t *tmp = cur->next;
+    free(cur);
+    cur = tmp;
+  }
+  queued_head = queued_tail = NULL;
+
+  if (stream) {
+    CFReadStreamClose(stream);
+    CFRelease(stream);
+    stream = nil;
   }
 }
 
@@ -742,7 +749,6 @@ void ASReadStreamCallBack
           err = AudioQueueStop(audioQueue, false);
           CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
         }
-        [self setState:AS_DONE];
       }
       return;
 
@@ -1218,13 +1224,23 @@ void ASReadStreamCallBack
   @synchronized(self) {
     inuse[idx] = false;
     buffersUsed--;
-    if (waitingOnBuffer) {
+    if (buffersUsed == 0 && queued_head == NULL && stream != nil &&
+        CFReadStreamGetStatus(stream) == kCFStreamStatusAtEnd) {
+      assert(!waitingOnBuffer);
+      [self performSelectorOnMainThread:@selector(setStateObj:)
+                             withObject:[NSNumber numberWithInt:AS_DONE]
+                          waitUntilDone:NO];
+    } else if (waitingOnBuffer) {
       waitingOnBuffer = false;
       [self performSelectorOnMainThread:@selector(enqueueCachedData)
                              withObject:nil
                           waitUntilDone:NO];
     }
   }
+}
+
+- (void) setStateObj:(NSNumber*) num {
+  [self setState:[num intValue]];
 }
 
 //
