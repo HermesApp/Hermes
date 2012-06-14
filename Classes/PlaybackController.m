@@ -159,9 +159,7 @@ BOOL playOnStart = YES;
 
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
-  if ([playing isError]) {
-    /* Don't do anything */
-  } else if ([playing isPlaying]) {
+  if ([playing isPlaying]) {
     NSLogd(@"Stream playing now...");
     [playing setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
@@ -170,10 +168,6 @@ BOOL playOnStart = YES;
     NSLogd(@"Stream paused now...");
     [playpause setImage:[NSImage imageNamed:@"play"]];
     [playbackProgress stopAnimation:nil];
-  } else if ([playing isIdle]) {
-    NSLogd(@"Stream idle, nexting...");
-    /* The currently playing song finished playing */
-    [self next:nil];
   }
 }
 
