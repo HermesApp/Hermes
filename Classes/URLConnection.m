@@ -9,26 +9,35 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   UInt8 buf[1024];
   int len;
   URLConnection* conn = (__bridge URLConnection*) _conn;
+  conn->events++;
 
   switch (eventType) {
     case kCFStreamEventHasBytesAvailable:
+      NSLogd(@"got some bytes");
       while ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
         [conn->bytes appendBytes:buf length:len];
       }
-      break;
+      return;
     case kCFStreamEventErrorOccurred:
+      NSLogd(@"got an error");
       conn->cb(nil, (__bridge_transfer NSError*) CFReadStreamCopyError(aStream));
       break;
     case kCFStreamEventEndEncountered: {
+      NSLogd(@"got an end");
       conn->cb(conn->bytes, nil);
       break;
     }
     default:
       assert(0);
   }
+
+  conn->cb = nil;
+  [conn->timeout invalidate];
+  conn->timeout = nil;
 }
 
 - (void) dealloc {
+  [timeout invalidate];
   if (stream != nil) {
     CFReadStreamClose(stream);
     CFRelease(stream);
@@ -71,7 +80,8 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   CFRelease(message);
 
   /* Handle SSL connections */
-  if ([[[request URL] absoluteString] rangeOfString:@"https"].location != NSNotFound) {
+  NSString *urlstring = [[request URL] absoluteString];
+  if ([urlstring rangeOfString:@"https"].location == 0) {
     NSDictionary *settings =
     [NSDictionary dictionaryWithObjectsAndKeys:
      (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
@@ -109,6 +119,23 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                         &context);
   CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                   kCFRunLoopCommonModes);
+  timeout = [NSTimer scheduledTimerWithTimeInterval:3
+                                             target:self
+                                           selector:@selector(checkTimeout)
+                                           userInfo:nil
+                                            repeats:YES];
+}
+
+- (void) checkTimeout {
+  if (events > 0 || cb == nil || stream == NULL) return;
+
+  CFReadStreamClose(stream);
+  CFRelease(stream);
+  NSError *error = [NSError errorWithDomain:@"Connection timeout."
+                                       code:0
+                                   userInfo:nil];
+  cb(nil, error);
+  cb = nil;
 }
 
 - (void) setHermesProxy {
