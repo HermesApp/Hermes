@@ -18,7 +18,6 @@
   Pandora *radio;
   AudioStreamer *stream;
   Song *playing;
-  NSTimer *waitingTimeout;
 }
 
 @property (retain) NSString *name;
