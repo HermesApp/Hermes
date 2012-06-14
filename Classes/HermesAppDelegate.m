@@ -318,6 +318,7 @@
   if (lastRequest != nil) {
     [pandora sendRequest:lastRequest];
     lastRequest = nil;
+    [self showLoader];
   } else if (lastStationErr != nil) {
     [lastStationErr retry:NO];
     [playback show];

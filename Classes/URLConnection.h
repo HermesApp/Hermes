@@ -4,6 +4,8 @@ typedef void(^URLConnectionCallback)(NSData*, NSError*);
   CFReadStreamRef stream;
   URLConnectionCallback cb;
   NSMutableData *bytes;
+  NSTimer *timeout;
+  int events;
 }
 
 + (URLConnection*) connectionForRequest:(NSURLRequest*)request
