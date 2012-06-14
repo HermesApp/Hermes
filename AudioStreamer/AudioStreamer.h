@@ -25,10 +25,7 @@
    Alex Crichton for the Hermes project */
 
 #import <Cocoa/Cocoa.h>
-
 #include <AudioToolbox/AudioToolbox.h>
-
-#define LOG_QUEUED_BUFFERS 0
 
 #define kNumAQBufs 16      // Number of audio queue buffers we allocate.
 // Needs to be big enough to keep audio pipeline
@@ -145,9 +142,11 @@ struct queued_packet;
   NSInteger buffersUsed;        /* Number of buffers in use */
 
   /* cache state */
+  bool waitingOnBuffer;
   struct queued_packet *queued_head;
   struct queued_packet *queued_tail;
 
+  /* Internal meatadata about errors and state */
   AudioStreamerState state_;
   AudioStreamerStopReason stopReason;
   AudioStreamerErrorCode errorCode;
@@ -155,35 +154,20 @@ struct queued_packet;
   OSStatus err;
 
   bool discontinuous;      // flag to indicate middle of the stream
-  bool waitingOnBuffer;
 
-  UInt32 bitRate;        // Bits per second in the file
   NSInteger seekByteOffset;  // Seek offset within the file in bytes
   // the file is known (more accurate than assuming
   // the whole file is audio)
 
-  UInt64 processedPacketsCount;    // number of packets accumulated for bitrate estimation
+  UInt64 processedPacketsCount;
   UInt64 processedPacketsSizeTotal;  // byte size of accumulated estimation packets
 
   double seekTime;
-  BOOL seekWasRequested;
-  double requestedSeekTime;
-  double sampleRate;      // Sample rate of the file (used to compare with
-  // samples played by the queue for current playback
-  // time)
-  double packetDuration;    // sample rate times frames per packet
   double lastProgress;    // last calculated progress point
-
-  /* When changing the volume, registers an interest in volume change */
-  BOOL requestingVolume;
-  double requestedVolume;
 }
 
 @property AudioStreamerErrorCode errorCode;
 @property (readonly) AudioStreamerState state;
-@property (readonly) double progress;
-@property (readonly) double duration;
-@property (readwrite) UInt32 bitRate;
 @property (readonly) NSDictionary *httpHeaders;
 @property (readonly) NSError *networkError;
 
@@ -198,8 +182,10 @@ struct queued_packet;
 - (BOOL)isPaused;
 - (BOOL)isWaiting;
 - (BOOL)isIdle;
-- (void)seekToTime:(double)newSeekTime;
+- (BOOL)seekToTime:(double)newSeekTime;
 - (double)calculatedBitRate;
-- (void)setVolume: (double) volume;
+- (BOOL)setVolume:(double)volume;
+- (double)duration;
+- (double)progress;
 
 @end
