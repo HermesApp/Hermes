@@ -129,13 +129,14 @@
       break;
   }
   assert(url != nil);
+	[stream stop];
   stream = [[AudioStreamer alloc] initWithURL: url];
 }
 
 - (void) seekToLastKnownTime {
   retrying = NO;
   if (lastKnownSeekTime != 0) {
-    [stream seekToTime:lastKnownSeekTime];
+    //[stream seekToTime:lastKnownSeekTime];
   }
 }
 
@@ -200,8 +201,8 @@
 
   retrying = YES;
 
-  [self setAudioStream];
-  [stream start];
+  //[self setAudioStream];
+  //[stream start];
 }
 
 - (void) retryWithCount {

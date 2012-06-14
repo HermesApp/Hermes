@@ -106,6 +106,8 @@ typedef enum
 
 extern NSString * const ASStatusChangedNotification;
 
+struct queued_packet;
+
 @interface AudioStreamer : NSObject {
   /* Properties specified at creation */
   NSURL *url;
@@ -142,13 +144,9 @@ extern NSString * const ASStatusChangedNotification;
   bool inuse[kNumAQBufs];       /* which buffers have yet to be processed */
   NSInteger buffersUsed;        /* Number of buffers in use */
 
-  //
-  // Special threading consideration:
-  //  The audioQueue property should only ever be accessed inside a
-  //  synchronized(self) block and only *after* checking that ![self isFinishing]
-  //
-  NSThread *internalThread;      // the thread where the download and
-                                 // audio file stream parsing occurs
+  /* cache state */
+  struct queued_packet *queued_head;
+  struct queued_packet *queued_tail;
 
   AudioStreamerState state_;
   AudioStreamerStopReason stopReason;
@@ -157,10 +155,7 @@ extern NSString * const ASStatusChangedNotification;
   OSStatus err;
 
   bool discontinuous;      // flag to indicate middle of the stream
-
-  NSCondition *cond;       // blocking while waiting for buffers
-
-  NSNotificationCenter *notificationCenter;
+  bool waitingOnBuffer;
 
   UInt32 bitRate;        // Bits per second in the file
   NSInteger seekByteOffset;  // Seek offset within the file in bytes
