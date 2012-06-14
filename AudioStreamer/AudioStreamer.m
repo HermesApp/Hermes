@@ -34,10 +34,10 @@
     if (err) { [self failWithErrorCode:code]; return; }                        \
   }
 
-#define LOG(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args)
+//#define LOG(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args)
+#define LOG(...)
 
 typedef struct queued_packet {
-  UInt32 size;
   AudioStreamPacketDescription desc;
   struct queued_packet *next;
   char data[];
@@ -171,7 +171,6 @@ void ASReadStreamCallBack
 @synthesize errorCode;
 @synthesize networkError;
 @synthesize state = state_;
-@synthesize bitRate;
 @synthesize httpHeaders;
 
 //
@@ -181,7 +180,6 @@ void ASReadStreamCallBack
 //
 - (id)initWithURL:(NSURL *)aURL {
   url = aURL;
-  requestingVolume = NO;
   return self;
 }
 
@@ -194,16 +192,19 @@ void ASReadStreamCallBack
   [self stop];
 }
 
-- (void)setVolume: (double) volume {
-  LOG(@"volume");
-  if (audioQueue == NULL) {
-    LOG(@"volumeq");
-    requestedVolume = volume;
-    requestingVolume = YES;
-  } else {
-    LOG(@"volume2");
+/**
+ * @brief Attempt to set the volume on the audio queue
+ *
+ * @return YES if the volume was set, or NO if the audio queue wasn't to have
+ *         the volume ready to be set. When the state for this audio streamer
+ *         changes internally to have a stream, then setVolume: will work
+ */
+- (BOOL)setVolume: (double) volume {
+  if (audioQueue != NULL) {
     AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume, volume);
+    return YES;
   }
+  return NO;
 }
 
 //
@@ -215,16 +216,6 @@ void ASReadStreamCallBack
   return (errorCode != AS_NO_ERROR && state_ != AS_INITIALIZED) ||
          ((state_ == AS_STOPPING || state_ == AS_STOPPED) &&
           stopReason != AS_STOPPING_TEMPORARILY);
-}
-
-//
-// runLoopShouldExit
-//
-// returns YES if the run loop should exit.
-//
-- (BOOL)runLoopShouldExit {
-  return errorCode != AS_NO_ERROR ||
-         (state_ == AS_STOPPED && stopReason != AS_STOPPING_TEMPORARILY);
 }
 
 //
@@ -428,28 +419,28 @@ void ASReadStreamCallBack
   return fileTypeHint;
 }
 
-//
-// openReadStream
-//
-// Open the audioFileStream to parse data and the fileHandle as the data
-// source.
-//
+/**
+ * @brief Creates a new stream for reading audio data
+ *
+ * The stream is currently only compatible with remote HTTP sources. The stream
+ * opened could possibly be seeked into the middle of the file, or have other
+ * things like proxies attached to it.
+ *
+ * @return YES if the stream was opened, or NO if it failed to open
+ */
 - (BOOL)openReadStream {
   NSAssert(stream == NULL, @"Download stream already initialized");
 
-  //
-  // Create the HTTP GET request
-  //
+  /* Create our GET request */
   CFHTTPMessageRef message =
       CFHTTPMessageCreateRequest(NULL,
                                  CFSTR("GET"),
                                  (__bridge CFURLRef) url,
                                  kCFHTTPVersion1_1);
 
-  //
-  // If we are creating this request to seek to a location, set the
-  // requested byte range in the headers.
-  //
+  /* When seeking to a time within the stream, we both already know the file
+     length and the seekByteOffset will be set to know what to send to the
+     remote server */
   if (fileLength > 0 && seekByteOffset > 0) {
    NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
                                               seekByteOffset, fileLength];
@@ -459,38 +450,28 @@ void ASReadStreamCallBack
     discontinuous = YES;
   }
 
-  //
-  // Create the read stream that will receive data from the HTTP request
-  //
   stream = CFReadStreamCreateForHTTPRequest(NULL, message);
   CFRelease(message);
 
-  //
-  // Enable stream redirection
-  //
-  if (CFReadStreamSetProperty(stream,
-                              kCFStreamPropertyHTTPShouldAutoredirect,
-                              kCFBooleanTrue) == false) {
+  /* Follow redirection codes by default */
+  if (!CFReadStreamSetProperty(stream,
+                               kCFStreamPropertyHTTPShouldAutoredirect,
+                               kCFBooleanTrue)) {
     [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
     return NO;
   }
 
-  //
-  // Handle proxies
-  //
   [URLConnection setHermesProxy:stream];
 
-  //
-  // Handle SSL connections
-  //
+  /* handle SSL connections */
   if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
     NSDictionary *sslSettings =
     [NSDictionary dictionaryWithObjectsAndKeys:
      (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
-     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredCertificates,
-     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsExpiredRoots,
-     [NSNumber numberWithBool:YES], kCFStreamSSLAllowsAnyRoot,
-     [NSNumber numberWithBool:NO], kCFStreamSSLValidatesCertificateChain,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredCertificates,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredRoots,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsAnyRoot,
+     [NSNumber numberWithBool:YES], kCFStreamSSLValidatesCertificateChain,
      [NSNull null], kCFStreamSSLPeerName,
      nil];
 
@@ -498,23 +479,16 @@ void ASReadStreamCallBack
                             (__bridge CFDictionaryRef) sslSettings);
   }
 
-  //
-  // We're now ready to receive data
-  //
   [self setState:AS_WAITING_FOR_DATA];
 
-  //
-  // Open the stream
-  //
   if (!CFReadStreamOpen(stream)) {
     CFRelease(stream);
     [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
     return NO;
   }
 
-  //
-  // Set our callback function to receive the data
-  //
+  /* Set the callback to receive a few events, and then we're ready to
+     schedule and go */
   CFStreamClientContext context = {0, (__bridge void*) self, NULL, NULL, NULL};
   CFReadStreamSetClient(stream,
                         kCFStreamEventHasBytesAvailable |
@@ -528,12 +502,12 @@ void ASReadStreamCallBack
   return YES;
 }
 
-//
-//
-// start
-//
-// Calls startInternal in a new thread.
-//
+/**
+ * @brief Starts playback of this audio stream.
+ *
+ * This method can only be invoked once, and other methods will not work before
+ * this method has been invoked
+ */
 - (void) start {
   assert(audioQueue == NULL);
   assert(stream == NULL);
@@ -541,18 +515,23 @@ void ASReadStreamCallBack
   [self openReadStream];
 }
 
-//
-// seekToTime:
-//
-// Attempts to seek to the new time. Will be ignored if the bitrate or fileLength
-// are unknown.
-//
-// Parameters:
-//    newTime - the time to seek to
-//
-- (void)seekToTime:(double)newSeekTime {
+/**
+ * @brief Seek to a specified time in the audio stream
+ *
+ * This can only happen once the bit rate of the stream is konwn because
+ * otherwise the byte offset to the stream is not known. For this reason the
+ * function can fail to actually seek.
+ *
+ * Additionally, seeking to a new time involves re-opening the audio stream with
+ * the remote source, although this is done under the hood.
+ *
+ * @param newSeekTime the time in seconds to seek to
+ * @return YES if the stream will be seeking, or NO if the stream did not have
+ *         enough information available to it to seek to the specified time.
+ */
+- (BOOL)seekToTime:(double)newSeekTime {
   if ([self calculatedBitRate] == 0.0 || fileLength <= 0) {
-    return;
+    return NO;
   }
 
   //
@@ -579,6 +558,7 @@ void ASReadStreamCallBack
   // Attempt to align the seek with a packet boundary
   //
   double calculatedBitRate = [self calculatedBitRate];
+  double packetDuration = asbd.mFramesPerPacket / asbd.mSampleRate;
   if (packetDuration > 0 && calculatedBitRate > 0) {
     UInt32 ioFlags = 0;
     SInt64 packetAlignedByteOffset;
@@ -591,28 +571,24 @@ void ASReadStreamCallBack
     }
   }
 
-  //
-  // Close the current read straem
-  //
+  /* Close the old stream */
   if (stream) {
     CFReadStreamClose(stream);
     CFRelease(stream);
     stream = nil;
   }
 
-  //
-  // Stop the audio queue
-  //
+  /* Stop audio for now */
   [self setState:AS_STOPPING];
   stopReason = AS_STOPPING_TEMPORARILY;
   err = AudioQueueStop(audioQueue, true);
-  CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
+  if (err) {
+    [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
+    return NO;
+  }
 
-  //
-  // Re-open the file stream. It will request a byte-range starting at
-  // seekByteOffset.
-  //
-  [self openReadStream];
+  /* Open a new stream with a new offset */
+  return [self openReadStream];
 }
 
 //
@@ -622,34 +598,31 @@ void ASReadStreamCallBack
 // not yet been detected.
 //
 - (double)progress {
-  if (sampleRate > 0 && ![self isFinishing]) {
-    if (state_ != AS_PLAYING && state_ != AS_PAUSED &&
-        state_ != AS_BUFFERING) {
-      return lastProgress;
-    }
-
-    AudioTimeStamp queueTime;
-    Boolean discontinuity;
-    err = AudioQueueGetCurrentTime(audioQueue, NULL, &queueTime, &discontinuity);
-
-    const OSStatus AudioQueueStopped = 0x73746F70; // 0x73746F70 is 'stop'
-    if (err == AudioQueueStopped) {
-      return lastProgress;
-    } else if (err) {
-      [self failWithErrorCode:AS_GET_AUDIO_TIME_FAILED];
-    }
-
-    double progress = seekTime + queueTime.mSampleTime / sampleRate;
-    if (progress < 0.0)
-    {
-      progress = 0.0;
-    }
-
-    lastProgress = progress;
-    return progress;
+  double sampleRate = asbd.mSampleRate;
+  if (sampleRate <= 0) return lastProgress;
+  if (state_ != AS_PLAYING && state_ != AS_PAUSED &&
+      state_ != AS_BUFFERING) {
+    return lastProgress;
   }
 
-  return lastProgress;
+  AudioTimeStamp queueTime;
+  Boolean discontinuity;
+  err = AudioQueueGetCurrentTime(audioQueue, NULL, &queueTime, &discontinuity);
+
+  const OSStatus AudioQueueStopped = 0x73746F70; // 0x73746F70 is 'stop'
+  if (err == AudioQueueStopped) {
+    return lastProgress;
+  } else if (err) {
+    [self failWithErrorCode:AS_GET_AUDIO_TIME_FAILED];
+  }
+
+  double progress = seekTime + queueTime.mSampleTime / sampleRate;
+  if (progress < 0.0) {
+    progress = 0.0;
+  }
+
+  lastProgress = progress;
+  return progress;
 }
 
 //
@@ -659,17 +632,15 @@ void ASReadStreamCallBack
 //   packet if available, otherwise it returns the nominal bitrate. Will return
 //   zero if no useful option available.
 //
-- (double)calculatedBitRate
-{
-  if (packetDuration && processedPacketsCount > BitRateEstimationMinPackets)
-  {
-    double averagePacketByteSize = processedPacketsSizeTotal / processedPacketsCount;
-    return 8.0 * averagePacketByteSize / packetDuration;
-  }
+- (double)calculatedBitRate {
+  double sampleRate     = asbd.mSampleRate;
+  double packetDuration = asbd.mFramesPerPacket / sampleRate;
 
-  if (bitRate)
-  {
-    return (double)bitRate;
+  if (packetDuration && processedPacketsCount > BitRateEstimationMinPackets) {
+    double averagePacketByteSize = processedPacketsSizeTotal /
+                                    processedPacketsCount;
+    /* bits/byte x bytes/packet x packets/sec = bits/sec */
+    return 8 * averagePacketByteSize / packetDuration;
   }
 
   return 0;
@@ -798,7 +769,6 @@ void ASReadStreamCallBack
 
     case kCFStreamEventEndEncountered:
       LOG("end");
-      if ([self isFinishing]) return;
 
       //
       // If there is a partially filled buffer, pass it to the AudioQueue for
@@ -814,7 +784,6 @@ void ASReadStreamCallBack
         /* Disregard return value because we're at the end of the stream anyway
            so there's no bother in pausing it */
         if ([self enqueueBuffer] < 0) return;
-        if ([self isFinishing]) return;
       }
 
       if (state_ == AS_WAITING_FOR_DATA) {
@@ -850,8 +819,8 @@ void ASReadStreamCallBack
     case kCFStreamEventHasBytesAvailable:
       break;
   }
+  LOG(@"data");
 
-  LOG("data");
   /* Read off the HTTP headers into our own class if we haven't done so */
   if (!httpHeaders) {
     CFTypeRef message =
@@ -973,7 +942,6 @@ void ASReadStreamCallBack
     }
   }
 
-
   /* move on to the next buffer and wait for it to be in use */
   if (++fillBufferIndex >= kNumAQBufs) fillBufferIndex = 0;
   bytesFilled   = 0;    // reset bytes filled
@@ -981,6 +949,7 @@ void ASReadStreamCallBack
 
   @synchronized(self) {
     if (inuse[fillBufferIndex]) {
+      LOG(@"waiting for buffer %d", fillBufferIndex);
       CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
                                         kCFRunLoopCommonModes);
       waitingOnBuffer = true;
@@ -1003,8 +972,6 @@ void ASReadStreamCallBack
 //
 - (void)createQueue {
   assert(audioQueue == NULL);
-  sampleRate = asbd.mSampleRate;
-  packetDuration = asbd.mFramesPerPacket / sampleRate;
 
   // create the audio queue
   err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback,
@@ -1040,13 +1007,6 @@ void ASReadStreamCallBack
     err = AudioQueueAllocateBuffer(audioQueue, packetBufferSize,
                                    &audioQueueBuffer[i]);
     CHECK_ERR(err, AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED);
-  }
-
-  /* If we previously requested a certain volume, set that now */
-  if (requestingVolume) {
-    requestingVolume = NO;
-    AudioQueueSetParameter(audioQueue, kAudioQueueParam_Volume,
-                           requestedVolume);
   }
 
   /* Some audio formats have a "magic cookie" which needs to be transferred from
@@ -1096,9 +1056,6 @@ void ASReadStreamCallBack
                      fileStreamPropertyID:(AudioFileStreamPropertyID)inPropertyID
                                   ioFlags:(UInt32 *)ioFlags {
   assert(inAudioFileStream == audioFileStream);
-  if ([self isFinishing]) {
-    return;
-  }
 
   switch (inPropertyID) {
     case kAudioFileStreamProperty_ReadyToProducePackets:
@@ -1191,21 +1148,6 @@ void ASReadStreamCallBack
                numberBytes:(UInt32)inNumberBytes
              numberPackets:(UInt32)inNumberPackets
         packetDescriptions:(AudioStreamPacketDescription*)inPacketDescriptions {
-
-  if ([self isFinishing]) {
-    return;
-  }
-
-  if (bitRate == 0) {
-    //
-    // m4a and a few other formats refuse to parse the bitrate so
-    // we need to set an "unparseable" condition here. If you know
-    // the bitrate (parsed it another way) you can set it on the
-    // class if needed.
-    //
-    bitRate = ~0;
-  }
-
   // we have successfully read the first packests from the audio stream, so
   // clear the "discontinuous" flag
   if (discontinuous) {
@@ -1221,7 +1163,7 @@ void ASReadStreamCallBack
   /* Place each packet into a buffer and then send each buffer into the audio
      queue */
   int i;
-  for (i = 0; i < inNumberPackets && !waitingOnBuffer; i++) {
+  for (i = 0; i < inNumberPackets && !waitingOnBuffer && queued_head == NULL; i++) {
     AudioStreamPacketDescription *desc = &inPacketDescriptions[i];
     int ret = [self handlePacket:(inInputData + desc->mStartOffset)
                             desc:desc];
@@ -1229,17 +1171,14 @@ void ASReadStreamCallBack
     if (!ret) break;
   }
   if (i == inNumberPackets) return;
-  assert(waitingOnBuffer);
 
   for (; i < inNumberPackets; i++) {
-    LOG(@"Queueing packet: %d", i);
     /* Allocate the packet */
     UInt32 size = inPacketDescriptions[i].mDataByteSize;
     queued_packet_t *packet = malloc(sizeof(queued_packet_t) + size);
     CHECK_ERR(packet == NULL, AS_AUDIO_QUEUE_ENQUEUE_FAILED);
 
     /* Prepare the packet */
-    packet->size = size;
     packet->next = NULL;
     packet->desc = inPacketDescriptions[i];
     packet->desc.mStartOffset = 0;
@@ -1297,23 +1236,37 @@ void ASReadStreamCallBack
   return 1;
 }
 
+/**
+ * @brief Internal helper for sending cached packets to the audio queue
+ *
+ * This method is enqueued for delivery when an audio buffer is freed
+ */
 - (void) enqueueCachedData {
   assert(!waitingOnBuffer);
-  queued_packet_t *cur, *next;
-  cur = queued_head;
+  assert(!inuse[fillBufferIndex]);
+  assert(stream != NULL);
+  LOG(@"processing some cached data");
+
+  /* Queue up as many packets as possible into the buffers */
+  queued_packet_t *cur = queued_head;
   while (cur != NULL) {
     int ret = [self handlePacket:cur->data desc:&cur->desc];
     CHECK_ERR(ret < 0, AS_AUDIO_QUEUE_ENQUEUE_FAILED);
     if (ret == 0) break;
-    next = cur->next;
+    queued_packet_t *next = cur->next;
     free(cur);
     cur = next;
   }
   queued_head = cur;
+
+  /* If we finished queueing all our saved packets, we can re-schedule the
+   * stream to run */
   if (cur == NULL) {
     queued_tail = NULL;
     CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                     kCFRunLoopCommonModes);
+
+  /* Otherwise, we should again be waiting on a buffer */
   } else {
     assert(waitingOnBuffer);
   }
@@ -1344,7 +1297,8 @@ void ASReadStreamCallBack
   }
   assert(idx >= 0 && idx < kNumAQBufs);
   assert(inuse[idx]);
-  LOG(@"buffer finished:%d", idx);
+
+  LOG(@"buffer %d finished", idx);
 
   // signal waiting thread that the buffer is free.
   @synchronized(self) {
