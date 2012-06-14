@@ -5,6 +5,7 @@
 @interface Station : NSObject<NSCoding> {
   BOOL shouldPlaySongOnFetch;
   BOOL retrying;
+  BOOL nexting;
   double lastKnownSeekTime;
 
   NSInteger tries;
@@ -25,7 +26,6 @@
 
 - (void) next;
 - (void) retry:(BOOL)countTries;
-- (void) checkForIndefiniteBuffering;
 - (void) setRadio: (Pandora*) radio;
 - (BOOL) isEqual:(id)object;
 - (void) fetchMoreSongs;

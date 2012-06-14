@@ -130,13 +130,14 @@
   }
   assert(url != nil);
 	[stream stop];
+  NSLogd(@"Creating with %@", url);
   stream = [[AudioStreamer alloc] initWithURL: url];
 }
 
 - (void) seekToLastKnownTime {
   retrying = NO;
   if (lastKnownSeekTime != 0) {
-    //[stream seekToTime:lastKnownSeekTime];
+    [stream seekToTime:lastKnownSeekTime];
   }
 }
 
@@ -177,10 +178,28 @@
      as the stream has enough packets to calculate the bit rate. This means that
      we can correctly seek into the song. After we seek, we've successfully
      re-synced the stream with what it was before the error happened */
-  } else if (retrying && [stream calculatedBitRate] != 0) {
-    [self seekToLastKnownTime];
-  } else {
-    [self checkForIndefiniteBuffering];
+  } else if ([stream isPlaying]) {
+    NSLogd(@"is playing now");
+    if (retrying && [stream calculatedBitRate] != 0) {
+      NSLogd(@"succeeded a retry, seeking now");
+      [self seekToLastKnownTime];
+    }
+
+  /* If the stream waits for data, don't let it wait forever */
+  } else if ([stream isWaiting]) {
+    NSLogd(@"is waiting now");
+    waitingTimeout =
+      [NSTimer scheduledTimerWithTimeInterval:1
+                                       target:self
+                                     selector:@selector(retryWithCount)
+                                     userInfo:nil
+                                      repeats:NO];
+    lastKnownSeekTime = [stream progress];
+
+  /* When the stream has finished, move on to the next song */
+  } else if ([stream isDone]) {
+    NSLogd(@"is stopped now");
+    if (!nexting) [self next];
   }
 }
 
@@ -201,34 +220,12 @@
 
   retrying = YES;
 
-  //[self setAudioStream];
-  //[stream start];
+  [self setAudioStream];
+  [stream start];
 }
 
 - (void) retryWithCount {
   [self retry:YES];
-}
-
-/**
- * @brief Ensure that the stream doesn't indefinitely stay in the 'buffering'
- *        state.
- *
- * Occasionally the AudioStreamer stream will enter a buffering state, and then
- * refuse to ever get back out of the buffering state. For this reason, when
- * this happens, give it a grace period before completely re-opening the
- * connection with the stream by retrying the connection.
- */
-- (void) checkForIndefiniteBuffering {
-  if ([stream state] == AS_BUFFERING) {
-    waitingTimeout =
-      [NSTimer scheduledTimerWithTimeInterval:0.3
-                                       target:self
-                                     selector:@selector(retryWithCount)
-                                     userInfo:nil
-                                      repeats:NO];
-    lastKnownSeekTime = [stream progress];
-    NSLogd(@"waiting for more data, will retry again soon...");
-  }
 }
 
 - (void) play {
@@ -273,7 +270,7 @@
 }
 
 - (BOOL) isIdle {
-  return stream != nil && [stream isIdle];
+  return stream != nil && [stream isDone];
 }
 
 - (BOOL) isError {
@@ -289,14 +286,18 @@
 }
 
 - (void) next {
+  if (nexting) return;
+  nexting = YES;
   lastKnownSeekTime = 0;
+  retrying = FALSE;
   [self stop];
   [self play];
+  nexting = NO;
 }
 
 - (void) stop {
   [stream stop];
-  stream = nil;
+  stream  = nil;
   playing = nil;
 }
 
