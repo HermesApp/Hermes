@@ -145,8 +145,6 @@
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
-  [waitingTimeout invalidate];
-  waitingTimeout = nil;
   if (!volumeSet) {
     volumeSet = [stream setVolume:volume];
   }
@@ -166,7 +164,7 @@
        reason. Most likely this is some network trouble and we should have the
        opportunity to hit a button to retry this specific connection so we can
        at least hope to regain our current place in the song */
-    if (code == AS_NETWORK_CONNECTION_FAILED) {
+    if (code == AS_NETWORK_CONNECTION_FAILED || code == AS_TIMED_OUT) {
       NSLogd(@"network error: %@", [stream networkError]);
       [[NSNotificationCenter defaultCenter]
         postNotificationName:@"hermes.stream-error" object:self];
@@ -190,17 +188,6 @@
       NSLogd(@"succeeded a retry, seeking now");
       [self seekToLastKnownTime];
     }
-
-  /* If the stream waits for data, don't let it wait forever */
-  } else if ([stream isWaiting]) {
-    NSLogd(@"is waiting now");
-    waitingTimeout =
-      [NSTimer scheduledTimerWithTimeInterval:1
-                                       target:self
-                                     selector:@selector(retryWithCount)
-                                     userInfo:nil
-                                      repeats:NO];
-    lastKnownSeekTime = [stream progress];
 
   /* When the stream has finished, move on to the next song */
   } else if ([stream isDone]) {

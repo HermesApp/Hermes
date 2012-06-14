@@ -127,7 +127,10 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 }
 
 - (void) checkTimeout {
-  if (events > 0 || cb == nil || stream == NULL) return;
+  if (events > 0 || cb == nil || stream == NULL) {
+    events = 0;
+    return;
+  }
 
   CFReadStreamClose(stream);
   CFRelease(stream);

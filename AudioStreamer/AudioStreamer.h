@@ -85,13 +85,15 @@ typedef enum
   AS_AUDIO_QUEUE_FLUSH_FAILED,
   AS_AUDIO_STREAMER_FAILED,
   AS_GET_AUDIO_TIME_FAILED,
-  AS_AUDIO_BUFFER_TOO_SMALL
+  AS_AUDIO_BUFFER_TOO_SMALL,
+  AS_TIMED_OUT
 } AudioStreamerErrorCode;
 
 extern NSString * const ASStatusChangedNotification;
 
 struct queued_packet;
 
+/* TODO: design dox */
 @interface AudioStreamer : NSObject {
   /* Properties specified at creation */
   NSURL *url;
@@ -150,6 +152,12 @@ struct queued_packet;
 
   double seekTime;
   double lastProgress;    // last calculated progress point
+
+  /* Timeout management */
+  NSTimer *timeout;
+  BOOL unscheduled;
+  BOOL rescheduled;
+  int events;
 }
 
 @property AudioStreamerErrorCode errorCode;

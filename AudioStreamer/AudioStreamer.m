@@ -34,8 +34,8 @@
     if (err) { [self failWithErrorCode:code]; return; }                        \
   }
 
-//#define LOG(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args)
-#define LOG(...)
+#define LOG(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args)
+//#define LOG(...)
 
 typedef struct queued_packet {
   AudioStreamPacketDescription desc;
@@ -478,6 +478,28 @@ void ASReadStreamCallBack
   assert(stream == NULL);
   assert(state_ == AS_INITIALIZED);
   [self openReadStream];
+  timeout = [NSTimer scheduledTimerWithTimeInterval:2
+                                             target:self
+                                           selector:@selector(checkTimeout)
+                                           userInfo:nil
+                                            repeats:YES];
+}
+
+- (void) checkTimeout {
+  if (unscheduled && !rescheduled) return;
+  if (rescheduled && unscheduled) {
+    unscheduled = NO;
+    rescheduled = NO;
+    return;
+  }
+
+  if (events > 0) {
+    events = 0;
+    return;
+  }
+
+  networkError = [NSError errorWithDomain:@"Timed out" code:1 userInfo:nil];
+  [self failWithErrorCode:AS_TIMED_OUT];
 }
 
 /**
@@ -718,6 +740,7 @@ void ASReadStreamCallBack
                    eventType:(CFStreamEventType)eventType {
   assert(aStream == stream);
   assert(!waitingOnBuffer);
+  events++;
 
   switch (eventType) {
     case kCFStreamEventErrorOccurred:
@@ -874,6 +897,7 @@ void ASReadStreamCallBack
       LOG(@"waiting for buffer %d", fillBufferIndex);
       CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
                                         kCFRunLoopCommonModes);
+      unscheduled = YES;
       waitingOnBuffer = true;
       return 0;
 
@@ -1187,6 +1211,7 @@ void ASReadStreamCallBack
    * stream to run */
   if (cur == NULL) {
     queued_tail = NULL;
+    rescheduled = YES;
     CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                     kCFRunLoopCommonModes);
   }
