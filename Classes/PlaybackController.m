@@ -161,7 +161,6 @@ BOOL playOnStart = YES;
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   if ([playing isPlaying]) {
     NSLogd(@"Stream playing now...");
-    [playing setVolume:[volume intValue]/100.0];
     [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
   } else if ([playing isPaused]) {
