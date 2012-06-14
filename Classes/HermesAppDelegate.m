@@ -178,6 +178,7 @@
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults registerDefaults:app_defaults];
   [self migrateDefaults:defaults];
+  [playback prepareFirst];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {

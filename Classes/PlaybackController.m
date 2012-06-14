@@ -87,15 +87,16 @@ BOOL playOnStart = YES;
      selector:@selector(songPlayed:)
      name:@"song.playing"
      object:nil];
+  return self;
+}
 
+- (void) prepareFirst {
   int saved = [[NSUserDefaults standardUserDefaults]
                   integerForKey:@"hermes.volume"];
   if (saved == 0) {
     saved = 100;
   }
   [self setIntVolume:saved];
-
-  return self;
 }
 
 - (Pandora*) pandora {
@@ -110,7 +111,6 @@ BOOL playOnStart = YES;
   }
   playing = nil;
   lastImgSrc = nil;
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"hermes.volume"];
   NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 }
@@ -285,6 +285,7 @@ BOOL playOnStart = YES;
   } else {
     playOnStart = 1;
   }
+  [playing setVolume:[volume intValue]/100.0];
 }
 
 - (BOOL) play {
