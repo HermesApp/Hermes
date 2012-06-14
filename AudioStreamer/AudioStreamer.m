@@ -65,103 +65,47 @@ NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 
 @end
 
-//
-// MyPropertyListenerProc
-//
-// Receives notification when the AudioFileStream has audio packets to be
-// played. In response, this function creates the AudioQueue, getting it
-// ready to begin playback (playback won't begin until audio packets are
-// sent to the queue in MyEnqueueBuffer).
-//
-// This function is adapted from Apple's example in AudioFileStreamExample with
-// kAudioQueueProperty_IsRunning listening added.
-//
+/* AudioFileStream callback when properties are available */
 void MyPropertyListenerProc(void *inClientData,
                             AudioFileStreamID inAudioFileStream,
                             AudioFileStreamPropertyID inPropertyID,
-                            UInt32 *ioFlags)
-{
-  // this is called by audio file stream when it finds property values
+                            UInt32 *ioFlags) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inClientData;
-  [streamer
-   handlePropertyChangeForFileStream:inAudioFileStream
-   fileStreamPropertyID:inPropertyID
-   ioFlags:ioFlags];
+  [streamer handlePropertyChangeForFileStream:inAudioFileStream
+                         fileStreamPropertyID:inPropertyID
+                                      ioFlags:ioFlags];
 }
 
-//
-// MyPacketsProc
-//
-// When the AudioStream has packets to be played, this function gets an
-// idle audio buffer and copies the audio packets into it. The calls to
-// MyEnqueueBuffer won't return until there are buffers available (or the
-// playback has been stopped).
-//
-// This function is adapted from Apple's example in AudioFileStreamExample with
-// CBR functionality added.
-//
-void MyPacketsProc(        void *              inClientData,
-                   UInt32              inNumberBytes,
-                   UInt32              inNumberPackets,
-                   const void *          inInputData,
-                   AudioStreamPacketDescription  *inPacketDescriptions)
-{
-  // this is called by audio file stream when it finds packets of audio
+/* AudioFileStream callback when packets are available */
+void MyPacketsProc(void *inClientData, UInt32 inNumberBytes, UInt32
+                   inNumberPackets, const void *inInputData,
+                   AudioStreamPacketDescription  *inPacketDescriptions) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inClientData;
-  [streamer
-   handleAudioPackets:inInputData
-   numberBytes:inNumberBytes
-   numberPackets:inNumberPackets
-   packetDescriptions:inPacketDescriptions];
+  [streamer handleAudioPackets:inInputData
+                   numberBytes:inNumberBytes
+                 numberPackets:inNumberPackets
+            packetDescriptions:inPacketDescriptions];
 }
 
-//
-// MyAudioQueueOutputCallback
-//
-// Called from the AudioQueue when playback of specific buffers completes. This
-// function signals from the AudioQueue thread to the AudioStream thread that
-// the buffer is idle and available for copying data.
-//
-// This function is unchanged from Apple's example in AudioFileStreamExample.
-//
-void MyAudioQueueOutputCallback(  void*          inClientData,
-                                AudioQueueRef      inAQ,
-                                AudioQueueBufferRef    inBuffer)
-{
-  // this is called by the audio queue when it has finished decoding our data.
-  // The buffer is now free to be reused.
+/* AudioQueue callback notifying that a buffer is done, invoked on AudioQueue's
+ * own personal threads, not the main thread */
+void MyAudioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
+                                AudioQueueBufferRef inBuffer) {
   AudioStreamer* streamer = (__bridge AudioStreamer*)inClientData;
   [streamer handleBufferCompleteForQueue:inAQ buffer:inBuffer];
 }
 
-//
-// MyAudioQueueIsRunningCallback
-//
-// Called from the AudioQueue when playback is started or stopped. This
-// information is used to toggle the observable "isPlaying" property and
-// set the "finished" flag.
-//
-void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ, AudioQueuePropertyID inID)
-{
+/* AudioQueue callback that a property has changed, invoked on AudioQueue's own
+ * personal threads like above */
+void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ,
+                                   AudioQueuePropertyID inID) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inUserData;
   [streamer handlePropertyChangeForQueue:inAQ propertyID:inID];
 }
 
-//
-// ReadStreamCallBack
-//
-// This is the callback for the CFReadStream from the network connection. This
-// is where all network data is passed to the AudioFileStream.
-//
-// Invoked when an error occurs, the stream ends or we have data to read.
-//
-void ASReadStreamCallBack
-(
- CFReadStreamRef aStream,
- CFStreamEventType eventType,
- void* inClientInfo
- )
-{
+/* CFReadStream callback when an event has occurred */
+void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
+                          void* inClientInfo) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inClientInfo;
   [streamer handleReadFromStream:aStream eventType:eventType];
 }
