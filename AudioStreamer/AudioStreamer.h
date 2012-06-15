@@ -27,12 +27,6 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <Foundation/Foundation.h>
 
-/* Number of buffers, should phase out soon... */
-#define kNumAQBufs 16
-
-/* Needs to be big enough to hold one packet of audio */
-#define kAQDefaultBufSize 2048
-
 /* Maximum number of packets which can be contained in one buffer */
 #define kAQMaxPacketDescs 512
 
@@ -81,12 +75,16 @@ struct queued_packet;
 /* Compact description of what the AudioStreamer can do, for a detailed
    description of all methods, see the source, AudioStreamer.m */
 @interface AudioStreamer : NSObject {
-  /* Properties specified at creation */
-  NSURL *url;
-  int proxyType;
-  NSString *proxyHost;
-  int proxyPort;
+  /* Properties specified before the stream starts. None of these properties
+   * should be changed after the stream has started or otherwise it could cause
+   * internal inconsistencies in the stream */
+  NSURL           *url;
+  int             proxyType;  /* defaults to whatever the system says */
+  NSString        *proxyHost;
+  int             proxyPort;
   AudioFileTypeID fileType;
+  UInt32          bufferSize; /* attempted to be guessed, but fallback here */
+  UInt32          bufferCnt;
 
   /* Creates as part of the [start] method */
   CFReadStreamRef stream;
@@ -118,13 +116,13 @@ struct queued_packet;
    * packets, so the packetDescs array is a list of packets which describes the
    * data in the next pending buffer (used to enqueue data into the AudioQueue
    * structure */
-  AudioQueueBufferRef audioQueueBuffer[kNumAQBufs];
+  AudioQueueBufferRef *buffers;
   AudioStreamPacketDescription packetDescs[kAQMaxPacketDescs];
   size_t packetsFilled;         /* number of valid entries in packetDescs */
   size_t bytesFilled;           /* bytes in use in the pending buffer */
   unsigned int fillBufferIndex; /* index of the pending buffer */
-  bool inuse[kNumAQBufs];       /* which buffers have yet to be processed */
-  NSInteger buffersUsed;        /* Number of buffers in use */
+  BOOL *inuse;                  /* which buffers have yet to be processed */
+  UInt32 buffersUsed;           /* Number of buffers in use */
 
   /* cache state (see above description) */
   bool waitingOnBuffer;
@@ -139,22 +137,25 @@ struct queued_packet;
 
   /* Miscellaneous metadata */
   bool discontinuous;        /* flag to indicate the middle of a stream */
-  UInt64 seekByteOffset;  /* position with the file to seek */
+  UInt64 seekByteOffset;     /* position with the file to seek */
   double seekTime;
-  UInt64 processedPacketsCount;
-  UInt64 processedPacketsSizeTotal;
   double lastProgress;       /* last calculated progress point */
+  UInt64 processedPacketsCount;     /* bit rate calculation utility */
+  UInt64 processedPacketsSizeTotal; /* helps calculate the bit rate */
 }
 
 @property AudioStreamerErrorCode errorCode;
 @property (readonly) AudioStreamerState state;
 @property (readonly) NSDictionary *httpHeaders;
 @property (readonly) NSError *networkError;
+@property (readonly) NSURL *url;
+@property (readwrite) UInt32 bufferCnt;
+@property (readwrite) UInt32 bufferSize;
 
 + (NSString*) stringForErrorCode:(AudioStreamerErrorCode)anErrorCode;
 
 /* Creating an audio stream and managing properties before starting */
-- (AudioStreamer*) initWithURL:(NSURL*)url;
++ (AudioStreamer*) streamWithURL:(NSURL*)url;
 - (void) setHTTPProxy:(NSString*)host port:(int)port;
 - (void) setSOCKSProxy:(NSString*)host port:(int)port;
 - (void) setFileType:(AudioFileTypeID)type;

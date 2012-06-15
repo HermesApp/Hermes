@@ -132,7 +132,7 @@
   assert(url != nil);
   [stream stop];
   NSLogd(@"Creating with %@", url);
-  stream = [[AudioStreamer alloc] initWithURL: url];
+  stream = [AudioStreamer streamWithURL: url];
   volumeSet = [stream setVolume:volume];
 }
 

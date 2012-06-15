@@ -33,6 +33,10 @@
 #define PROXY_SOCKS  1
 #define PROXY_HTTP   2
 
+/* Default number and size of audio queue buffers */
+#define kDefaultNumAQBufs 16
+#define kDefaultAQDefaultBufSize 2048
+
 #define CHECK_ERR(err, code) {                                                 \
     if (err) { [self failWithErrorCode:code]; return; }                        \
   }
@@ -165,10 +169,8 @@ NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 /* Woohoo, actual implementation now! */
 @implementation AudioStreamer
 
-@synthesize errorCode;
-@synthesize networkError;
+@synthesize errorCode, networkError, httpHeaders, url, bufferCnt, bufferSize;
 @synthesize state = state_;
-@synthesize httpHeaders;
 
 /* AudioFileStream callback when properties are available */
 void MyPropertyListenerProc(void *inClientData,
@@ -215,15 +217,22 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   [streamer handleReadFromStream:aStream eventType:eventType];
 }
 
-//
-// initWithURL
-//
-// Init method for the object.
-//
-- (id)initWithURL:(NSURL *)aURL {
-  url = aURL;
-  LOG(@"created with %@", aURL);
-  return self;
+/**
+ * @brief Allocate a new audio stream with the specified url
+ *
+ * Thre created stream has not started playback. This gives an opportunity to
+ * configure the rest of the stream as necessary. To start playback, send the
+ * stream an explicit 'start' message.
+ *
+ * @param url the remote source of audio
+ * @return the stream to configure and being playback with
+ */
++ (AudioStreamer*) streamWithURL:(NSURL*)url{
+  AudioStreamer *stream = [[AudioStreamer alloc] init];
+  stream->url = url;
+  stream->bufferCnt  = kDefaultNumAQBufs;
+  stream->bufferSize = kDefaultAQDefaultBufSize;
+  return stream;
 }
 
 //
@@ -904,7 +913,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     case kCFStreamEventHasBytesAvailable:
       break;
   }
-  //LOG(@"data");
+  LOG(@"data");
 
   /* Read off the HTTP headers into our own class if we haven't done so */
   if (!httpHeaders) {
@@ -935,10 +944,10 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     CHECK_ERR(err, AS_FILE_STREAM_OPEN_FAILED);
   }
 
-  UInt8 bytes[kAQDefaultBufSize];
+  UInt8 bytes[2048];
   CFIndex length;
   while (state_ != AS_STOPPED && CFReadStreamHasBytesAvailable(stream)) {
-    length = CFReadStreamRead(stream, bytes, kAQDefaultBufSize);
+    length = CFReadStreamRead(stream, bytes, sizeof(bytes));
 
     if (length < 0) {
       [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
@@ -976,7 +985,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   buffersUsed++;
 
   // enqueue buffer
-  AudioQueueBufferRef fillBuf = audioQueueBuffer[fillBufferIndex];
+  AudioQueueBufferRef fillBuf = buffers[fillBufferIndex];
   fillBuf->mAudioDataByteSize = bytesFilled;
 
   assert(packetsFilled > 0);
@@ -986,15 +995,12 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     [self failWithErrorCode:AS_AUDIO_QUEUE_ENQUEUE_FAILED];
     return -1;
   }
-  //LOG(@"committed buffer %d", fillBufferIndex);
+  LOG(@"committed buffer %d", fillBufferIndex);
 
   if (state_ == AS_WAITING_FOR_DATA) {
-    //
-    // Fill all the buffers before starting. This ensures that the
-    // AudioFileStream stays a small amount ahead of the AudioQueue to
-    // avoid an audio glitch playing streaming files on iPhone SDKs < 3.0
-    //
-    if (buffersUsed == kNumAQBufs - 1) {
+    /* Once we have a small amount of queued data, then we can go ahead and
+     * start the audio queue and the file stream should remain ahead of it */
+    if (bufferCnt < 3 || buffersUsed > 2) {
       err = AudioQueueStart(audioQueue, NULL);
       if (err) {
         [self failWithErrorCode:AS_AUDIO_QUEUE_START_FAILED];
@@ -1005,13 +1011,13 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   }
 
   /* move on to the next buffer and wait for it to be in use */
-  if (++fillBufferIndex >= kNumAQBufs) fillBufferIndex = 0;
+  if (++fillBufferIndex >= bufferCnt) fillBufferIndex = 0;
   bytesFilled   = 0;    // reset bytes filled
   packetsFilled = 0;    // reset packets filled
 
   @synchronized(self) {
     if (inuse[fillBufferIndex]) {
-      //LOG(@"waiting for buffer %d", fillBufferIndex);
+      LOG(@"waiting for buffer %d", fillBufferIndex);
       CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
                                         kCFRunLoopCommonModes);
       /* Make sure we don't have ourselves marked as rescheduled */
@@ -1063,14 +1069,18 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
             &packetBufferSize);
     if (err || packetBufferSize == 0) {
       // No packet size available, just use the default
-      packetBufferSize = kAQDefaultBufSize;
+      packetBufferSize = bufferSize;
     }
   }
 
   // allocate audio queue buffers
-  for (unsigned int i = 0; i < kNumAQBufs; ++i) {
+  buffers = malloc(bufferCnt * sizeof(buffers[0]));
+  CHECK_ERR(buffers == NULL, AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED);
+  inuse = calloc(bufferCnt, sizeof(inuse[0]));
+  CHECK_ERR(inuse == NULL, AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED);
+  for (unsigned int i = 0; i < bufferCnt; ++i) {
     err = AudioQueueAllocateBuffer(audioQueue, packetBufferSize,
-                                   &audioQueueBuffer[i]);
+                                   &buffers[i]);
     CHECK_ERR(err, AS_AUDIO_QUEUE_BUFFER_ALLOCATION_FAILED);
   }
 
@@ -1285,7 +1295,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   processedPacketsCount++;
 
   // copy data to the audio queue buffer
-  AudioQueueBufferRef buf = audioQueueBuffer[fillBufferIndex];
+  AudioQueueBufferRef buf = buffers[fillBufferIndex];
   memcpy(buf->mAudioData + bytesFilled, data, packetSize);
 
   // fill out packet description to pass to enqueue() later on
@@ -1296,8 +1306,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   bytesFilled += packetSize;
   packetsFilled++;
 
-  /* Make sure that our packets per buffer don't get backed up too much */
-  if (packetsFilled >= kAQMaxPacketDescs) return -1;
+  /* If filled our buffer with packets, then commit it to the system */
+  if (packetsFilled >= kAQMaxPacketDescs) return [self enqueueBuffer];
   return 1;
 }
 
@@ -1311,7 +1321,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   assert(!waitingOnBuffer);
   assert(!inuse[fillBufferIndex]);
   assert(stream != NULL);
-  //LOG(@"processing some cached data");
+  LOG(@"processing some cached data");
 
   /* Queue up as many packets as possible into the buffers */
   queued_packet_t *cur = queued_head;
@@ -1354,14 +1364,14 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   /* Figure out which buffer just became free, and it had better damn well be
      one of our own buffers */
-  int idx;
-  for (idx = 0; idx < kNumAQBufs; idx++) {
-    if (audioQueueBuffer[idx] == inBuffer) break;
+  UInt32 idx;
+  for (idx = 0; idx < bufferCnt; idx++) {
+    if (buffers[idx] == inBuffer) break;
   }
-  assert(idx >= 0 && idx < kNumAQBufs);
+  assert(idx >= 0 && idx < bufferCnt);
   assert(inuse[idx]);
 
-  //LOG(@"buffer %d finished", idx);
+  LOG(@"buffer %d finished", idx);
 
   // signal waiting thread that the buffer is free.
   @synchronized(self) {
