@@ -339,48 +339,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 }
 
 //
-// failWithErrorCode:
-//
-// Sets the playback state to failed and logs the error.
-//
-// Parameters:
-//    anErrorCode - the error condition
-//
-- (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode {
-  // Only set the error once.
-  if (errorCode != AS_NO_ERROR) {
-    assert(state_ == AS_STOPPED);
-    return;
-  }
-
-  LOG(@"got an error: %@", [AudioStreamer stringForErrorCode:anErrorCode]);
-  errorCode = anErrorCode;
-
-  [self stop];
-}
-
-//
-// mainThreadStateNotification
-//
-// Method invoked on main thread to send notifications to the main thread's
-// notification center.
-//
-- (void)mainThreadStateNotification {
-}
-
-- (void)setState:(AudioStreamerState)aStatus {
-  LOG(@"transitioning to state:%d", aStatus);
-  LOG("%d %d", AS_DONE, AS_STOPPED);
-
-  if (state_ == aStatus) return;
-  state_ = aStatus;
-
-  [[NSNotificationCenter defaultCenter]
-        postNotificationName:ASStatusChangedNotification
-                      object:self];
-}
-
-//
 // isPlaying
 //
 // returns YES if the audio currently playing.
@@ -416,150 +374,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   return state_ == AS_DONE || state_ == AS_STOPPED;
 }
 
-//
-// hintForFileExtension:
-//
-// Generates a first guess for the file type based on the file's extension
-//
-// Parameters:
-//    fileExtension - the file extension
-//
-// returns a file type hint that can be passed to the AudioFileStream
-//
-+ (AudioFileTypeID)hintForFileExtension:(NSString *)fileExtension {
-  AudioFileTypeID fileTypeHint = kAudioFileAAC_ADTSType;
-  if ([fileExtension isEqual:@"mp3"]) {
-    fileTypeHint = kAudioFileMP3Type;
-  } else if ([fileExtension isEqual:@"wav"]) {
-    fileTypeHint = kAudioFileWAVEType;
-  } else if ([fileExtension isEqual:@"aifc"]) {
-    fileTypeHint = kAudioFileAIFCType;
-  } else if ([fileExtension isEqual:@"aiff"]) {
-    fileTypeHint = kAudioFileAIFFType;
-  } else if ([fileExtension isEqual:@"m4a"]) {
-    fileTypeHint = kAudioFileM4AType;
-  } else if ([fileExtension isEqual:@"mp4"]) {
-    fileTypeHint = kAudioFileMPEG4Type;
-  } else if ([fileExtension isEqual:@"caf"]) {
-    fileTypeHint = kAudioFileCAFType;
-  } else if ([fileExtension isEqual:@"aac"]) {
-    fileTypeHint = kAudioFileAAC_ADTSType;
-  }
-  return fileTypeHint;
-}
-
-/**
- * @brief Creates a new stream for reading audio data
- *
- * The stream is currently only compatible with remote HTTP sources. The stream
- * opened could possibly be seeked into the middle of the file, or have other
- * things like proxies attached to it.
- *
- * @return YES if the stream was opened, or NO if it failed to open
- */
-- (BOOL)openReadStream {
-  NSAssert(stream == NULL, @"Download stream already initialized");
-
-  /* Create our GET request */
-  CFHTTPMessageRef message =
-      CFHTTPMessageCreateRequest(NULL,
-                                 CFSTR("GET"),
-                                 (__bridge CFURLRef) url,
-                                 kCFHTTPVersion1_1);
-
-  /* When seeking to a time within the stream, we both already know the file
-     length and the seekByteOffset will be set to know what to send to the
-     remote server */
-  if (fileLength > 0 && seekByteOffset > 0) {
-   NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
-                                              seekByteOffset, fileLength];
-    CFHTTPMessageSetHeaderFieldValue(message,
-                                     CFSTR("Range"),
-                                     (__bridge CFStringRef) str);
-    discontinuous = YES;
-  }
-
-  stream = CFReadStreamCreateForHTTPRequest(NULL, message);
-  CFRelease(message);
-
-  /* Follow redirection codes by default */
-  if (!CFReadStreamSetProperty(stream,
-                               kCFStreamPropertyHTTPShouldAutoredirect,
-                               kCFBooleanTrue)) {
-    [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
-    return NO;
-  }
-
-  /* Deal with proxies */
-  switch (proxyType) {
-    case PROXY_HTTP: {
-      CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-        [NSMutableDictionary dictionaryWithObjectsAndKeys:
-          proxyHost, kCFStreamPropertyHTTPProxyHost,
-          [NSNumber numberWithInt:proxyPort], kCFStreamPropertyHTTPProxyPort,
-          nil];
-      CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy,
-                              proxySettings);
-      break;
-    }
-    case PROXY_SOCKS: {
-      CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-        [NSMutableDictionary dictionaryWithObjectsAndKeys:
-          proxyHost, kCFStreamPropertySOCKSProxyHost,
-          [NSNumber numberWithInt:proxyPort], kCFStreamPropertySOCKSProxyPort,
-          nil];
-      CFReadStreamSetProperty(stream, kCFStreamPropertySOCKSProxy,
-                              proxySettings);
-      break;
-    }
-    default:
-    case PROXY_SYSTEM: {
-      CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
-      CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
-      CFRelease(proxySettings);
-      break;
-    }
-  }
-
-  /* handle SSL connections */
-  if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
-    NSDictionary *sslSettings =
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredCertificates,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredRoots,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsAnyRoot,
-     [NSNumber numberWithBool:YES], kCFStreamSSLValidatesCertificateChain,
-     [NSNull null], kCFStreamSSLPeerName,
-     nil];
-
-    CFReadStreamSetProperty(stream, kCFStreamPropertySSLSettings,
-                            (__bridge CFDictionaryRef) sslSettings);
-  }
-
-  [self setState:AS_WAITING_FOR_DATA];
-
-  if (!CFReadStreamOpen(stream)) {
-    CFRelease(stream);
-    [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
-    return NO;
-  }
-
-  /* Set the callback to receive a few events, and then we're ready to
-     schedule and go */
-  CFStreamClientContext context = {0, (__bridge void*) self, NULL, NULL, NULL};
-  CFReadStreamSetClient(stream,
-                        kCFStreamEventHasBytesAvailable |
-                          kCFStreamEventErrorOccurred |
-                          kCFStreamEventEndEncountered,
-                        ASReadStreamCallBack,
-                        &context);
-  CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
-                                  kCFRunLoopCommonModes);
-
-  return YES;
-}
-
 /**
  * @brief Starts playback of this audio stream.
  *
@@ -581,35 +395,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
                                            userInfo:nil
                                             repeats:YES];
   return YES;
-}
-
-/**
- * @brief Check the stream for a timeout, and trigger one if this is a timeout
- *        situation
- */
-- (void) checkTimeout {
-  /* Ignore if we're in the paused state */
-  if (state_ == AS_PAUSED) return;
-  /* If the read stream has been unscheduled and not rescheduled, then this tick
-     is irrelevant because we're not trying to read data anyway */
-  if (unscheduled && !rescheduled) return;
-  /* If the read stream was unscheduled and then rescheduled, then we still
-     discard this sample (not enough of it was known to be in the "scheduled
-     state"), but we clear flags so we might process the next sample */
-  if (rescheduled && unscheduled) {
-    unscheduled = NO;
-    rescheduled = NO;
-    return;
-  }
-
-  /* events happened? no timeout. */
-  if (events > 0) {
-    events = 0;
-    return;
-  }
-
-  networkError = [NSError errorWithDomain:@"Timed out" code:1 userInfo:nil];
-  [self failWithErrorCode:AS_TIMED_OUT];
 }
 
 /**
@@ -838,24 +623,212 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   packetBufferSize = 0;
 }
 
-/**
- * @brief Closes the read stream and frees all queued data
- */
-- (void) closeReadStream {
-  if (waitingOnBuffer) waitingOnBuffer = FALSE;
-  queued_packet_t *cur = queued_head;
-  while (cur != NULL) {
-    queued_packet_t *tmp = cur->next;
-    free(cur);
-    cur = tmp;
-  }
-  queued_head = queued_tail = NULL;
+/* Internal Functions ======================================================= */
 
-  if (stream) {
-    CFReadStreamClose(stream);
-    CFRelease(stream);
-    stream = nil;
+//
+// failWithErrorCode:
+//
+// Sets the playback state to failed and logs the error.
+//
+// Parameters:
+//    anErrorCode - the error condition
+//
+- (void)failWithErrorCode:(AudioStreamerErrorCode)anErrorCode {
+  // Only set the error once.
+  if (errorCode != AS_NO_ERROR) {
+    assert(state_ == AS_STOPPED);
+    return;
   }
+
+  LOG(@"got an error: %@", [AudioStreamer stringForErrorCode:anErrorCode]);
+  errorCode = anErrorCode;
+
+  [self stop];
+}
+
+- (void)setState:(AudioStreamerState)aStatus {
+  LOG(@"transitioning to state:%d", aStatus);
+  LOG("%d %d", AS_DONE, AS_STOPPED);
+
+  if (state_ == aStatus) return;
+  state_ = aStatus;
+
+  [[NSNotificationCenter defaultCenter]
+        postNotificationName:ASStatusChangedNotification
+                      object:self];
+}
+
+/**
+ * @brief Check the stream for a timeout, and trigger one if this is a timeout
+ *        situation
+ */
+- (void) checkTimeout {
+  /* Ignore if we're in the paused state */
+  if (state_ == AS_PAUSED) return;
+  /* If the read stream has been unscheduled and not rescheduled, then this tick
+     is irrelevant because we're not trying to read data anyway */
+  if (unscheduled && !rescheduled) return;
+  /* If the read stream was unscheduled and then rescheduled, then we still
+     discard this sample (not enough of it was known to be in the "scheduled
+     state"), but we clear flags so we might process the next sample */
+  if (rescheduled && unscheduled) {
+    unscheduled = NO;
+    rescheduled = NO;
+    return;
+  }
+
+  /* events happened? no timeout. */
+  if (events > 0) {
+    events = 0;
+    return;
+  }
+
+  networkError = [NSError errorWithDomain:@"Timed out" code:1 userInfo:nil];
+  [self failWithErrorCode:AS_TIMED_OUT];
+}
+
+//
+// hintForFileExtension:
+//
+// Generates a first guess for the file type based on the file's extension
+//
+// Parameters:
+//    fileExtension - the file extension
+//
+// returns a file type hint that can be passed to the AudioFileStream
+//
++ (AudioFileTypeID)hintForFileExtension:(NSString *)fileExtension {
+  AudioFileTypeID fileTypeHint = kAudioFileAAC_ADTSType;
+  if ([fileExtension isEqual:@"mp3"]) {
+    fileTypeHint = kAudioFileMP3Type;
+  } else if ([fileExtension isEqual:@"wav"]) {
+    fileTypeHint = kAudioFileWAVEType;
+  } else if ([fileExtension isEqual:@"aifc"]) {
+    fileTypeHint = kAudioFileAIFCType;
+  } else if ([fileExtension isEqual:@"aiff"]) {
+    fileTypeHint = kAudioFileAIFFType;
+  } else if ([fileExtension isEqual:@"m4a"]) {
+    fileTypeHint = kAudioFileM4AType;
+  } else if ([fileExtension isEqual:@"mp4"]) {
+    fileTypeHint = kAudioFileMPEG4Type;
+  } else if ([fileExtension isEqual:@"caf"]) {
+    fileTypeHint = kAudioFileCAFType;
+  } else if ([fileExtension isEqual:@"aac"]) {
+    fileTypeHint = kAudioFileAAC_ADTSType;
+  }
+  return fileTypeHint;
+}
+
+/**
+ * @brief Creates a new stream for reading audio data
+ *
+ * The stream is currently only compatible with remote HTTP sources. The stream
+ * opened could possibly be seeked into the middle of the file, or have other
+ * things like proxies attached to it.
+ *
+ * @return YES if the stream was opened, or NO if it failed to open
+ */
+- (BOOL)openReadStream {
+  NSAssert(stream == NULL, @"Download stream already initialized");
+
+  /* Create our GET request */
+  CFHTTPMessageRef message =
+      CFHTTPMessageCreateRequest(NULL,
+                                 CFSTR("GET"),
+                                 (__bridge CFURLRef) url,
+                                 kCFHTTPVersion1_1);
+
+  /* When seeking to a time within the stream, we both already know the file
+     length and the seekByteOffset will be set to know what to send to the
+     remote server */
+  if (fileLength > 0 && seekByteOffset > 0) {
+   NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
+                                              seekByteOffset, fileLength];
+    CFHTTPMessageSetHeaderFieldValue(message,
+                                     CFSTR("Range"),
+                                     (__bridge CFStringRef) str);
+    discontinuous = YES;
+  }
+
+  stream = CFReadStreamCreateForHTTPRequest(NULL, message);
+  CFRelease(message);
+
+  /* Follow redirection codes by default */
+  if (!CFReadStreamSetProperty(stream,
+                               kCFStreamPropertyHTTPShouldAutoredirect,
+                               kCFBooleanTrue)) {
+    [self failWithErrorCode:AS_FILE_STREAM_GET_PROPERTY_FAILED];
+    return NO;
+  }
+
+  /* Deal with proxies */
+  switch (proxyType) {
+    case PROXY_HTTP: {
+      CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:
+          proxyHost, kCFStreamPropertyHTTPProxyHost,
+          [NSNumber numberWithInt:proxyPort], kCFStreamPropertyHTTPProxyPort,
+          nil];
+      CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy,
+                              proxySettings);
+      break;
+    }
+    case PROXY_SOCKS: {
+      CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
+        [NSMutableDictionary dictionaryWithObjectsAndKeys:
+          proxyHost, kCFStreamPropertySOCKSProxyHost,
+          [NSNumber numberWithInt:proxyPort], kCFStreamPropertySOCKSProxyPort,
+          nil];
+      CFReadStreamSetProperty(stream, kCFStreamPropertySOCKSProxy,
+                              proxySettings);
+      break;
+    }
+    default:
+    case PROXY_SYSTEM: {
+      CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
+      CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
+      CFRelease(proxySettings);
+      break;
+    }
+  }
+
+  /* handle SSL connections */
+  if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
+    NSDictionary *sslSettings =
+    [NSDictionary dictionaryWithObjectsAndKeys:
+     (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredCertificates,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredRoots,
+     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsAnyRoot,
+     [NSNumber numberWithBool:YES], kCFStreamSSLValidatesCertificateChain,
+     [NSNull null], kCFStreamSSLPeerName,
+     nil];
+
+    CFReadStreamSetProperty(stream, kCFStreamPropertySSLSettings,
+                            (__bridge CFDictionaryRef) sslSettings);
+  }
+
+  [self setState:AS_WAITING_FOR_DATA];
+
+  if (!CFReadStreamOpen(stream)) {
+    CFRelease(stream);
+    [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
+    return NO;
+  }
+
+  /* Set the callback to receive a few events, and then we're ready to
+     schedule and go */
+  CFStreamClientContext context = {0, (__bridge void*) self, NULL, NULL, NULL};
+  CFReadStreamSetClient(stream,
+                        kCFStreamEventHasBytesAvailable |
+                          kCFStreamEventErrorOccurred |
+                          kCFStreamEventEndEncountered,
+                        ASReadStreamCallBack,
+                        &context);
+  CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
+                                  kCFRunLoopCommonModes);
+
+  return YES;
 }
 
 //
@@ -1426,6 +1399,26 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 - (void) queueRunningChanged {
   if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
     [self setState:AS_PLAYING];
+  }
+}
+
+/**
+ * @brief Closes the read stream and frees all queued data
+ */
+- (void) closeReadStream {
+  if (waitingOnBuffer) waitingOnBuffer = FALSE;
+  queued_packet_t *cur = queued_head;
+  while (cur != NULL) {
+    queued_packet_t *tmp = cur->next;
+    free(cur);
+    cur = tmp;
+  }
+  queued_head = queued_tail = NULL;
+
+  if (stream) {
+    CFReadStreamClose(stream);
+    CFRelease(stream);
+    stream = nil;
   }
 }
 
