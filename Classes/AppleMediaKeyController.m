@@ -89,10 +89,33 @@ CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type,
 }
 
 - (id) init {
+  assert(_eventPort == nil);
+
+  _eventPort = CGEventTapCreate(kCGSessionEventTap,
+                                kCGHeadInsertEventTap,
+                                kCGEventTapOptionDefault,
+                                CGEventMaskBit(NX_SYSDEFINED),
+                                tapEventCallback,
+                                (__bridge void*) self);
+  assert(_eventPort != NULL);
+
+  _runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault,
+                                                 _eventPort, 0);
+  assert(_runLoopSource != NULL);
+  CFRunLoopAddSource(CFRunLoopGetCurrent(), _runLoopSource,
+                     kCFRunLoopCommonModes);
+  NSLogd(@"Bound the media keys");
   return [super init];
 }
 
 - (void)dealloc {
+  assert(_eventPort != nil);
+  CFRunLoopRemoveSource(CFRunLoopGetCurrent(), _runLoopSource,
+                        kCFRunLoopCommonModes);
+  CGEventTapEnable(_eventPort, FALSE);
+  CFRelease(_eventPort);
+  CFRelease(_runLoopSource);
+  NSLogd(@"Unbound the media keys");
 }
 
 @end
