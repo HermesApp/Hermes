@@ -169,8 +169,90 @@ NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 /* Woohoo, actual implementation now! */
 @implementation AudioStreamer
 
-@synthesize errorCode, networkError, httpHeaders, url, bufferCnt, bufferSize;
-@synthesize state = state_;
+/**
+ * @brief If an error occurs on the stream, then this variable is set with the
+ *        code corresponding to the error
+ *
+ * By default this is AS_NO_ERROR.
+ */
+@synthesize errorCode;
+
+/* TODO: make this go away */
+@synthesize networkError;
+
+/**
+ * @brief Headers received from the remote source
+ *
+ * Used to determine file size, but other information may be useful as well
+ */
+@synthesize httpHeaders;
+
+/**
+ * @brief The remote resource that this stream is playing, this is a read-only
+ *        property and cannot be changed after creation
+ */
+@synthesize url;
+
+/**
+ * @brief The file type of this audio stream
+ *
+ * This is an optional parameter. If not specified, then the file type will be
+ * attempted to be inferred from the extension on the url specified. If your URL
+ * doesn't conform to what AudioStreamer internally detects, then use this to
+ * explicitly mark the file type. If marked, then no inferring is done.
+ */
+@synthesize fileType;
+
+/**
+ * @brief The number of audio buffers to have
+ *
+ * Each audio buffer contains one or more packets of audio data. This amount is
+ * only relevant if infinite buffering is turned off. This is the amount of data
+ * which is stored in memory while playing. Once this memory is full, the remote
+ * connection will not be read and will not receive any more data until one of
+ * the buffers becomes available.
+ *
+ * With infinite buffering turned on, this number should be at least 3 or so to
+ * make sure that there's always data to be read. With infinite buffering turned
+ * off, this should be a number to not consume too much memory, but to also keep
+ * up with the remote data stream. The incoming data should always be able to
+ * stay ahead of these buffers being filled
+ */
+@synthesize bufferCnt;
+
+/**
+ * @brief The default size for each buffer allocated
+ *
+ * Each buffer's size is attempted to be guessed from the audio stream being
+ * received. This way each buffer is tuned for the audio stream itself. If this
+ * inferring of the buffer size fails, however, this is used as a fallback as
+ * how large each buffer should be.
+ *
+ * If you find that this is being used, then it should be coordinated with
+ * bufferCnt above to make sure that the audio stays responsive and slightly
+ * behind the HTTP stream
+ */
+@synthesize bufferSize;
+
+/**
+ * @brief Flag if to infinitely buffer data
+ *
+ * If this flag is set to NO, then a statically sized buffer is used as
+ * determined by bufferCnt and bufferSize above and the read stream will be
+ * descheduled when those fill up. This limits the bandwidth consumed to the
+ * remote source and also limits memory usage.
+ *
+ * If, however, you wish to hold the entire stream in memory, then you can set
+ * this flag to YES. In this state, the stream will be entirely downloaded,
+ * regardless if the buffers are full or not. This way if the network stream
+ * cuts off halfway through a song, the rest of the song will be downloaded
+ * locally to finish off. The next song might still be in trouble, however...
+ * With this turned on, memory usage will be higher because the entire stream
+ * will be downloaded as fast as possible, and the bandwidth to the remote will
+ * also be consumed. Depending on the situtation, this might not be that bad of
+ * a problem.
+ */
+@synthesize bufferInfinite;
 
 /* AudioFileStream callback when properties are available */
 void MyPropertyListenerProc(void *inClientData,
@@ -266,18 +348,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   proxyHost = host;
   proxyPort = port;
   proxyType = PROXY_SOCKS;
-}
-
-/**
- * @brief Set the file type of the stream so it doesn't need to be guessed
- *
- * Normally the file type is guessed from the extension of the URL, but this can
- * be used to explicitly set the file type
- *
- * @param type the file type to use for the stream
- */
-- (void) setFileType:(AudioFileTypeID) type {
-  fileType = type;
 }
 
 /**
@@ -642,6 +712,14 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     assert(!err);
     audioQueue = nil;
   }
+  if (buffers != NULL) {
+    free(buffers);
+    buffers = NULL;
+  }
+  if (inuse != NULL) {
+    free(inuse);
+    inuse = NULL;
+  }
 
   httpHeaders      = nil;
   bytesFilled      = 0;
@@ -871,7 +949,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 - (void)handleReadFromStream:(CFReadStreamRef)aStream
                    eventType:(CFStreamEventType)eventType {
   assert(aStream == stream);
-  assert(!waitingOnBuffer);
+  assert(!waitingOnBuffer || bufferInfinite);
   events++;
 
   switch (eventType) {
@@ -883,6 +961,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
     case kCFStreamEventEndEncountered:
       LOG(@"end");
+      [timeout invalidate];
+      timeout = nil;
 
       /* Flush out extra data if necessary */
       if (bytesFilled) {
@@ -894,16 +974,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
       /* If we never received any packets, then we fail */
       if (state_ == AS_WAITING_FOR_DATA) {
         [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
-
-      /* Flush an asynchronously stop the audio queue now that it won't be
-         receiving any more data */
-      } else {
-        if (audioQueue) {
-          err = AudioQueueFlush(audioQueue);
-          CHECK_ERR(err, AS_AUDIO_QUEUE_FLUSH_FAILED);
-          err = AudioQueueStop(audioQueue, false);
-          CHECK_ERR(err, AS_AUDIO_QUEUE_STOP_FAILED);
-        }
       }
       return;
 
@@ -1015,14 +1085,36 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   bytesFilled   = 0;    // reset bytes filled
   packetsFilled = 0;    // reset packets filled
 
+  /* If we have no more queued data, and the stream has reached its end, then
+     we're not going to be enqueueing any more buffers to the audio stream. In
+     this case flush it out and asynchronously stop it */
+  if (queued_head == NULL &&
+      CFReadStreamGetStatus(stream) == kCFStreamStatusAtEnd) {
+    err = AudioQueueFlush(audioQueue);
+    if (err) {
+      [self failWithErrorCode:AS_AUDIO_QUEUE_FLUSH_FAILED];
+      return -1;
+    }
+    err = AudioQueueStop(audioQueue, false);
+    if (err) {
+      [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
+      return -1;
+    }
+  }
+
+  /* The inuse array is also managed by a separate AudioQueue internal thread,
+     so we need to synchronize around unscheduling the read stream to ensure
+     that our state is always coherent */
   @synchronized(self) {
     if (inuse[fillBufferIndex]) {
       LOG(@"waiting for buffer %d", fillBufferIndex);
-      CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
-                                        kCFRunLoopCommonModes);
-      /* Make sure we don't have ourselves marked as rescheduled */
-      unscheduled = YES;
-      rescheduled = NO;
+      if (!bufferInfinite) {
+        CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
+                                          kCFRunLoopCommonModes);
+        /* Make sure we don't have ourselves marked as rescheduled */
+        unscheduled = YES;
+        rescheduled = NO;
+      }
       waitingOnBuffer = true;
       return 0;
 
@@ -1340,8 +1432,10 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   if (cur == NULL) {
     queued_tail = NULL;
     rescheduled = YES;
-    CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
-                                    kCFRunLoopCommonModes);
+    if (!bufferInfinite) {
+      CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
+                                      kCFRunLoopCommonModes);
+    }
   }
 }
 

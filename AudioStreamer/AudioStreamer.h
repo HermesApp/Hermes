@@ -77,7 +77,8 @@ struct queued_packet;
 @interface AudioStreamer : NSObject {
   /* Properties specified before the stream starts. None of these properties
    * should be changed after the stream has started or otherwise it could cause
-   * internal inconsistencies in the stream */
+   * internal inconsistencies in the stream. Detail explanations of each
+   * property can be found in the source */
   NSURL           *url;
   int             proxyType;  /* defaults to whatever the system says */
   NSString        *proxyHost;
@@ -85,6 +86,7 @@ struct queued_packet;
   AudioFileTypeID fileType;
   UInt32          bufferSize; /* attempted to be guessed, but fallback here */
   UInt32          bufferCnt;
+  BOOL            bufferInfinite;
 
   /* Creates as part of the [start] method */
   CFReadStreamRef stream;
@@ -145,12 +147,13 @@ struct queued_packet;
 }
 
 @property AudioStreamerErrorCode errorCode;
-@property (readonly) AudioStreamerState state;
 @property (readonly) NSDictionary *httpHeaders;
 @property (readonly) NSError *networkError;
 @property (readonly) NSURL *url;
 @property (readwrite) UInt32 bufferCnt;
 @property (readwrite) UInt32 bufferSize;
+@property (readwrite) AudioFileTypeID fileType;
+@property (readwrite) BOOL bufferInfinite;
 
 + (NSString*) stringForErrorCode:(AudioStreamerErrorCode)anErrorCode;
 
@@ -158,7 +161,6 @@ struct queued_packet;
 + (AudioStreamer*) streamWithURL:(NSURL*)url;
 - (void) setHTTPProxy:(NSString*)host port:(int)port;
 - (void) setSOCKSProxy:(NSString*)host port:(int)port;
-- (void) setFileType:(AudioFileTypeID)type;
 
 /* Management of the stream and testing state */
 - (BOOL) start;
