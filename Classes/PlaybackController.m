@@ -172,10 +172,6 @@ BOOL playOnStart = YES;
 
 /* Re-draws the timer counting up the time of the played song */
 - (void)updateProgress: (NSTimer *)updatedTimer {
-  if (![playing isPlaying]) {
-    return;
-  }
-
   double prog, dur;
 
   if (![playing progress:&prog] || ![playing duration:&dur]) {
