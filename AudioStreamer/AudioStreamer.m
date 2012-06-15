@@ -212,7 +212,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   [streamer handleReadFromStream:aStream eventType:eventType];
 }
 
-
 //
 // initWithURL
 //
@@ -494,6 +493,10 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
  */
 - (BOOL) progress:(double*)ret {
   double sampleRate = asbd.mSampleRate;
+  if (state_ == AS_STOPPED) {
+    *ret = lastProgress;
+    return YES;
+  }
   if (sampleRate <= 0 || (state_ != AS_PLAYING && state_ != AS_PAUSED))
     return NO;
 
@@ -651,6 +654,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     assert(state_ == AS_STOPPED);
     return;
   }
+  /* Attempt to save our last point of progress */
+  [self progress:&lastProgress];
 
   LOG(@"got an error: %@", [AudioStreamer stringForErrorCode:anErrorCode]);
   errorCode = anErrorCode;
@@ -897,7 +902,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     case kCFStreamEventHasBytesAvailable:
       break;
   }
-  LOG(@"data");
+  //LOG(@"data");
 
   /* Read off the HTTP headers into our own class if we haven't done so */
   if (!httpHeaders) {
@@ -979,7 +984,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     [self failWithErrorCode:AS_AUDIO_QUEUE_ENQUEUE_FAILED];
     return -1;
   }
-  LOG(@"committed buffer %d", fillBufferIndex);
+  //LOG(@"committed buffer %d", fillBufferIndex);
 
   if (state_ == AS_WAITING_FOR_DATA) {
     //
@@ -1004,7 +1009,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   @synchronized(self) {
     if (inuse[fillBufferIndex]) {
-      LOG(@"waiting for buffer %d", fillBufferIndex);
+      //LOG(@"waiting for buffer %d", fillBufferIndex);
       CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
                                         kCFRunLoopCommonModes);
       /* Make sure we don't have ourselves marked as rescheduled */
@@ -1304,7 +1309,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   assert(!waitingOnBuffer);
   assert(!inuse[fillBufferIndex]);
   assert(stream != NULL);
-  LOG(@"processing some cached data");
+  //LOG(@"processing some cached data");
 
   /* Queue up as many packets as possible into the buffers */
   queued_packet_t *cur = queued_head;
@@ -1354,7 +1359,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   assert(idx >= 0 && idx < kNumAQBufs);
   assert(inuse[idx]);
 
-  LOG(@"buffer %d finished", idx);
+  //LOG(@"buffer %d finished", idx);
 
   // signal waiting thread that the buffer is free.
   @synchronized(self) {

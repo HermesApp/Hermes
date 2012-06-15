@@ -48,12 +48,6 @@
 }
 
 - (void) stopObserving {
-  if (radio != nil) {
-    [[NSNotificationCenter defaultCenter]
-     removeObserver:self
-     name:nil
-     object:radio];
-  }
 }
 
 - (void) dealloc {
@@ -67,7 +61,12 @@
 }
 
 - (void) setRadio:(Pandora *)pandora {
-  [self stopObserving];
+  if (radio != nil) {
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:nil
+     object:radio];
+  }
   radio = pandora;
 
   NSString *n = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
@@ -131,7 +130,7 @@
       break;
   }
   assert(url != nil);
-	[stream stop];
+  [stream stop];
   NSLogd(@"Creating with %@", url);
   stream = [[AudioStreamer alloc] initWithURL: url];
   volumeSet = [stream setVolume:volume];
