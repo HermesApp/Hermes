@@ -13,17 +13,14 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 
   switch (eventType) {
     case kCFStreamEventHasBytesAvailable:
-      NSLogd(@"got some bytes");
       while ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
         [conn->bytes appendBytes:buf length:len];
       }
       return;
     case kCFStreamEventErrorOccurred:
-      NSLogd(@"got an error");
       conn->cb(nil, (__bridge_transfer NSError*) CFReadStreamCopyError(aStream));
       break;
     case kCFStreamEventEndEncountered: {
-      NSLogd(@"got an end");
       conn->cb(conn->bytes, nil);
       break;
     }
