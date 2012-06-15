@@ -24,8 +24,8 @@
 /* This file has been heavily modified since its original distribution bytes
    Alex Crichton for the Hermes project */
 
-#import <Cocoa/Cocoa.h>
-#include <AudioToolbox/AudioToolbox.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <Foundation/Foundation.h>
 
 /* Number of buffers, should phase out soon... */
 #define kNumAQBufs 16
@@ -86,6 +86,7 @@ struct queued_packet;
   int proxyType;
   NSString *proxyHost;
   int proxyPort;
+  AudioFileTypeID fileType;
 
   /* Creates as part of the [start] method */
   CFReadStreamRef stream;
@@ -101,7 +102,7 @@ struct queued_packet;
   AudioFileStreamID audioFileStream;
 
   /* The audio file stream will fill in these parameters */
-  NSInteger fileLength;      /* length of file, set from http headers */
+  UInt64 fileLength;         /* length of file, set from http headers */
   UInt64 dataOffset;         /* offset into the file of the start of stream */
   UInt64 audioDataByteCount; /* number of bytes of audio data in file */
   AudioStreamBasicDescription asbd; /* description of audio */
@@ -138,7 +139,7 @@ struct queued_packet;
 
   /* Miscellaneous metadata */
   bool discontinuous;        /* flag to indicate the middle of a stream */
-  NSInteger seekByteOffset;  /* position with the file to seek */
+  UInt64 seekByteOffset;  /* position with the file to seek */
   double seekTime;
   UInt64 processedPacketsCount;
   UInt64 processedPacketsSizeTotal;
@@ -156,6 +157,7 @@ struct queued_packet;
 - (AudioStreamer*) initWithURL:(NSURL*)url;
 - (void) setHTTPProxy:(NSString*)host port:(int)port;
 - (void) setSOCKSProxy:(NSString*)host port:(int)port;
+- (void) setFileType:(AudioFileTypeID)type;
 
 /* Management of the stream and testing state */
 - (BOOL) start;

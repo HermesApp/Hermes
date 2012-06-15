@@ -258,6 +258,18 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 }
 
 /**
+ * @brief Set the file type of the stream so it doesn't need to be guessed
+ *
+ * Normally the file type is guessed from the extension of the URL, but this can
+ * be used to explicitly set the file type
+ *
+ * @param type the file type to use for the stream
+ */
+- (void) setFileType:(AudioFileTypeID) type {
+  fileType = type;
+}
+
+/**
  * @brief Attempt to set the volume on the audio queue
  *
  * @return YES if the volume was set, or NO if the audio queue wasn't to have
@@ -906,14 +918,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   /* If we haven't yet opened up a file stream, then do so now */
   if (!audioFileStream) {
-    //
-    // Attempt to guess the file type from the URL. Reading the MIME type
-    // from the httpHeaders might be a better approach since lots of
-    // URL's don't have the right extension.
-    //
-    // If you have a fixed file-type, you may want to hardcode this.
-    //
-    AudioFileTypeID fileTypeHint =
+    /* If a file type wasn't specified, we have to guess */
+    AudioFileTypeID fileTypeHint = fileType != 0 ? fileType :
       [AudioStreamer hintForFileExtension:[[url path] pathExtension]];
 
     // create an audio file stream parser
