@@ -42,8 +42,8 @@
 - (void) stop;
 - (void) setVolume:(double)volume;
 - (NSString*) streamNetworkError;
-- (double) duration;
-- (double) progress;
+- (BOOL) duration:(double*)ret;
+- (BOOL) progress:(double*)ret;
 
 /* Managing songs */
 - (void) clearSongList;

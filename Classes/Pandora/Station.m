@@ -38,9 +38,9 @@
   [aCoder encodeObject:stationId forKey:@"stationId"];
   [aCoder encodeObject:name forKey:@"name"];
   [aCoder encodeObject:playing forKey:@"playing"];
-  float seek = -1;
+  double seek = -1;
   if (playing) {
-    seek = [stream progress];
+    [stream progress:&seek];
   }
   [aCoder encodeFloat:seek forKey:@"lastKnownSeekTime"];
   [aCoder encodeFloat:volume forKey:@"volume"];
@@ -150,13 +150,16 @@
   }
 
   int code = [stream errorCode];
+  double bitrate;
   if (code != 0) {
     /* If we've hit an error, then we want to record out current progress into
        the song. Only do this if we're not in the process of retrying to
        establish a connection, so that way we don't blow away the original
        progress from when the error first happened */
     if (!retrying) {
-      lastKnownSeekTime = [stream progress];
+      if (![stream progress:&lastKnownSeekTime]) {
+        lastKnownSeekTime = 0;
+      }
     }
 
     /* If the network connection just outright failed, then we shouldn't be
@@ -184,7 +187,7 @@
      re-synced the stream with what it was before the error happened */
   } else if ([stream isPlaying]) {
     NSLogd(@"is playing now");
-    if (retrying && [stream calculatedBitRate] != 0) {
+    if (retrying && [stream calculatedBitRate:&bitrate]) {
       NSLogd(@"succeeded a retry, seeking now");
       [self seekToLastKnownTime];
     }
@@ -270,12 +273,12 @@
   return stream != nil && [stream errorCode] != AS_NO_ERROR;
 }
 
-- (double) progress {
-  return [stream progress];
+- (BOOL) progress:(double*)ret {
+  return [stream progress:ret];
 }
 
-- (double) duration {
-  return [stream duration];
+- (BOOL) duration:(double*)ret {
+  return [stream duration:ret];
 }
 
 - (void) next {

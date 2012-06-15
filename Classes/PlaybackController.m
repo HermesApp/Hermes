@@ -176,13 +176,11 @@ BOOL playOnStart = YES;
     return;
   }
 
-  double prog = [playing progress];
-  double dur = [playing duration];
+  double prog, dur;
 
-  /* The AudioStreamer class needs some time to figure out how long the song
-     actually is. If the duration listed is less than or equal to 0, just give
-     it some more time to figure this out */
-  if (dur <= 0) {
+  if (![playing progress:&prog] || ![playing duration:&dur]) {
+    [progressLabel setStringValue:@"-:--/-:--"];
+    [playbackProgress setDoubleValue:0];
     return;
   }
 
