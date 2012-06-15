@@ -133,6 +133,7 @@
   [stream stop];
   NSLogd(@"Creating with %@", url);
   stream = [AudioStreamer streamWithURL: url];
+  [stream setBufferInfinite:TRUE];
   volumeSet = [stream setVolume:volume];
 }
 
