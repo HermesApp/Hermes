@@ -37,8 +37,11 @@
     if (err) { [self failWithErrorCode:code]; return; }                        \
   }
 
+#ifdef DEBUG
 #define LOG(fmt, args...) NSLog(@"%s " fmt, __PRETTY_FUNCTION__, ##args)
-//#define LOG(...)
+#else
+#define LOG(...)
+#endif
 
 typedef struct queued_packet {
   AudioStreamPacketDescription desc;
@@ -665,7 +668,6 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
 - (void)setState:(AudioStreamerState)aStatus {
   LOG(@"transitioning to state:%d", aStatus);
-  LOG("%d %d", AS_DONE, AS_STOPPED);
 
   if (state_ == aStatus) return;
   state_ = aStatus;
