@@ -342,6 +342,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9728D8F5158C400F00C078A4 /* CoreServices.framework */,
 				9728D877158C3D1F00C078A4 /* Cocoa.framework */,
 				9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */,
 				9728D8A1158C3E5300C078A4 /* Foundation.framework */,
@@ -381,7 +382,6 @@
 		29B97314FDCFA39411CA2CEA /* Pithos */ = {
 			isa = PBXGroup;
 			children = (
-				9728D8F5158C400F00C078A4 /* CoreServices.framework */,
 				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
