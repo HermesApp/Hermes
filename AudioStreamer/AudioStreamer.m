@@ -78,8 +78,6 @@ NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 @implementation AudioStreamer
 
 @synthesize errorCode;
-
-/* TODO: make this go away */
 @synthesize networkError;
 @synthesize httpHeaders;
 @synthesize url;
@@ -87,6 +85,7 @@ NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 @synthesize bufferCnt;
 @synthesize bufferSize;
 @synthesize bufferInfinite;
+@synthesize timeoutInterval;
 
 /* AudioFileStream callback when properties are available */
 void MyPropertyListenerProc(void *inClientData,
@@ -138,6 +137,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   stream->url = url;
   stream->bufferCnt  = kDefaultNumAQBufs;
   stream->bufferSize = kDefaultAQDefaultBufSize;
+  stream->timeoutInterval = 10;
   return stream;
 }
 
@@ -247,7 +247,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   assert(audioQueue == NULL);
   assert(state_ == AS_INITIALIZED);
   [self openReadStream];
-  timeout = [NSTimer scheduledTimerWithTimeInterval:2
+  timeout = [NSTimer scheduledTimerWithTimeInterval:timeoutInterval
                                              target:self
                                            selector:@selector(checkTimeout)
                                            userInfo:nil
