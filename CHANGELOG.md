@@ -1,6 +1,6 @@
-# Version 1.1.5 (unreleased)
+# Version 1.1.5 (6/16/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.4...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.4...v1.1.5)
 
 * [added] Proxy configuration for just the Hermes application. Be aware that
           software updates will still go through the system proxy instead of the
