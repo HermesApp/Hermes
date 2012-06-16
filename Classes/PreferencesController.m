@@ -1,7 +1,7 @@
+#import <SPMediaKeyTap/SPMediaKeyTap.h>
+
+#import "HermesAppDelegate.h"
 #import "PreferencesController.h"
-#import "Scrobbler.h"
-#import "Growler.h"
-#import "AppleMediaKeyController.h"
 
 @implementation PreferencesController
 
@@ -52,6 +52,15 @@
 
 - (IBAction) showNetwork: (id) sender {
   [self setPreferenceView:network as:@"network"];
+}
+
+- (IBAction) bindMediaChanged: (id) sender {
+  SPMediaKeyTap *mediaKeyTap = [[NSApp delegate] mediaKeyTap];
+  if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
+    [mediaKeyTap startWatchingMediaKeys];
+  } else {
+    [mediaKeyTap startWatchingMediaKeys];
+  }
 }
 
 @end

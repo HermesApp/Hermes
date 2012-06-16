@@ -13,20 +13,48 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 971CC3991585DA11004D75BA /* NetworkConnection.m */; };
 		971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */; };
-		972CA4F815830FC000C0BB9E /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23515146BBD007F2605 /* NSObject+SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4F915830FC000C0BB9E /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23715146BBD007F2605 /* SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FA15830FC000C0BB9E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23815146BBD007F2605 /* SBJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FB15830FC000C0BB9E /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23A15146BBD007F2605 /* SBJsonStreamParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FC15830FC000C0BB9E /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23C15146BBD007F2605 /* SBJsonStreamParserAccumulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FD15830FC000C0BB9E /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23E15146BBD007F2605 /* SBJsonStreamParserAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FE15830FC000C0BB9E /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24015146BBD007F2605 /* SBJsonStreamParserState.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA4FF15830FC000C0BB9E /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24215146BBD007F2605 /* SBJsonStreamWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA50015830FC000C0BB9E /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24415146BBD007F2605 /* SBJsonStreamWriterAccumulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA50115830FC000C0BB9E /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24615146BBD007F2605 /* SBJsonStreamWriterState.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA50215830FC000C0BB9E /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24815146BBD007F2605 /* SBJsonTokeniser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA50315830FC000C0BB9E /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24A15146BBD007F2605 /* SBJsonUTF8Stream.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA50415830FC000C0BB9E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24C15146BBD007F2605 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		972CA5051583101E00C0BB9E /* AudioStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = FACF0183149A713700D1FB73 /* AudioStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D894158C3D6C00C078A4 /* SPMediaKeyTap.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */; };
+		9728D895158C3D7700C078A4 /* SPMediaKeyTap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */; };
+		9728D89A158C3DA500C078A4 /* SPMediaKeyTap.h in Headers */ = {isa = PBXBuildFile; fileRef = 9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */; };
+		9728D89B158C3DA500C078A4 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */; };
+		9728D89F158C3E4800C078A4 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D89E158C3E4800C078A4 /* IOKit.framework */; };
+		9728D8A3158C3E5D00C078A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D877158C3D1F00C078A4 /* Cocoa.framework */; };
+		9728D8A4158C3E6400C078A4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D89C158C3E3C00C078A4 /* Carbon.framework */; };
+		9728D8CF158C3EC500C078A4 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23615146BBD007F2605 /* NSObject+SBJson.m */; };
+		9728D8D0158C3EC500C078A4 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23915146BBD007F2605 /* SBJsonParser.m */; };
+		9728D8D1158C3EC500C078A4 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23B15146BBD007F2605 /* SBJsonStreamParser.m */; };
+		9728D8D2158C3EC500C078A4 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23D15146BBD007F2605 /* SBJsonStreamParserAccumulator.m */; };
+		9728D8D3158C3EC500C078A4 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23F15146BBD007F2605 /* SBJsonStreamParserAdapter.m */; };
+		9728D8D4158C3EC500C078A4 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24115146BBD007F2605 /* SBJsonStreamParserState.m */; };
+		9728D8D5158C3EC500C078A4 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24315146BBD007F2605 /* SBJsonStreamWriter.m */; };
+		9728D8D6158C3EC500C078A4 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24515146BBD007F2605 /* SBJsonStreamWriterAccumulator.m */; };
+		9728D8D7158C3EC500C078A4 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24715146BBD007F2605 /* SBJsonStreamWriterState.m */; };
+		9728D8D8158C3EC500C078A4 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24915146BBD007F2605 /* SBJsonTokeniser.m */; };
+		9728D8D9158C3EC500C078A4 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24B15146BBD007F2605 /* SBJsonUTF8Stream.m */; };
+		9728D8DA158C3EC500C078A4 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24D15146BBD007F2605 /* SBJsonWriter.m */; };
+		9728D8DB158C3EE800C078A4 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FACF0184149A713700D1FB73 /* AudioStreamer.m */; };
+		9728D8E0158C3F0500C078A4 /* SBJson.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8AC158C3EA200C078A4 /* SBJson.framework */; };
+		9728D8E1158C3F0800C078A4 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8C0158C3EA900C078A4 /* AudioStreamer.framework */; };
+		9728D8E2158C3F0F00C078A4 /* SBJson.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9728D8AC158C3EA200C078A4 /* SBJson.framework */; };
+		9728D8E3158C3F0F00C078A4 /* AudioStreamer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9728D8C0158C3EA900C078A4 /* AudioStreamer.framework */; };
+		9728D8E4158C3F1B00C078A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */; };
+		9728D8E5158C3F1E00C078A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8A1158C3E5300C078A4 /* Foundation.framework */; };
+		9728D8E6158C3F2800C078A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8A1158C3E5300C078A4 /* Foundation.framework */; };
+		9728D8E7158C3F4300C078A4 /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23515146BBD007F2605 /* NSObject+SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8E8158C3F4300C078A4 /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23715146BBD007F2605 /* SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8E9158C3F4300C078A4 /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23815146BBD007F2605 /* SBJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8EA158C3F4300C078A4 /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23A15146BBD007F2605 /* SBJsonStreamParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8EB158C3F4300C078A4 /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23C15146BBD007F2605 /* SBJsonStreamParserAccumulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8EC158C3F4300C078A4 /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A23E15146BBD007F2605 /* SBJsonStreamParserAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8ED158C3F4300C078A4 /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24015146BBD007F2605 /* SBJsonStreamParserState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8EE158C3F4300C078A4 /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24215146BBD007F2605 /* SBJsonStreamWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8EF158C3F4300C078A4 /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24415146BBD007F2605 /* SBJsonStreamWriterAccumulator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F0158C3F4300C078A4 /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24615146BBD007F2605 /* SBJsonStreamWriterState.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F1158C3F4300C078A4 /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24815146BBD007F2605 /* SBJsonTokeniser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F2158C3F4300C078A4 /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24A15146BBD007F2605 /* SBJsonUTF8Stream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F3158C3F4300C078A4 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = FA37A24C15146BBD007F2605 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F4158C3F5300C078A4 /* AudioStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = FACF0183149A713700D1FB73 /* AudioStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9728D8F6158C400F00C078A4 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8F5158C400F00C078A4 /* CoreServices.framework */; };
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
@@ -34,7 +62,6 @@
 		FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */ = {isa = PBXBuildFile; fileRef = FA0E555914784A3000C36794 /* Hermes.sdef */; };
 		FA0E556114784AF500C36794 /* AppleScript.m in Sources */ = {isa = PBXBuildFile; fileRef = FA0E556014784AF500C36794 /* AppleScript.m */; };
 		FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = FA1063BD132C6A8A00D6DE42 /* Keychain.m */; };
-		FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228EC8137045E90070141A /* AudioToolbox.framework */; };
 		FA228ECB137045F40070141A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA228ECA137045F40070141A /* Security.framework */; };
 		FA229D6514429E48008AB9FE /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = FA229D6414429E48008AB9FE /* history.png */; };
 		FA229D6814429F69008AB9FE /* HistoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA229D6714429F68008AB9FE /* HistoryController.m */; };
@@ -44,19 +71,6 @@
 		FA2A3F98132BF9F50089AECC /* Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F92132BF9F50089AECC /* Crypt.m */; };
 		FA2A3F99132BF9F50089AECC /* Song.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F95132BF9F50089AECC /* Song.m */; };
 		FA2A3F9A132BF9F50089AECC /* Station.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2A3F97132BF9F50089AECC /* Station.m */; };
-		FA37A24F15146BBD007F2605 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23615146BBD007F2605 /* NSObject+SBJson.m */; };
-		FA37A25215146BBD007F2605 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23915146BBD007F2605 /* SBJsonParser.m */; };
-		FA37A25415146BBD007F2605 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23B15146BBD007F2605 /* SBJsonStreamParser.m */; };
-		FA37A25615146BBD007F2605 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23D15146BBD007F2605 /* SBJsonStreamParserAccumulator.m */; };
-		FA37A25815146BBD007F2605 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A23F15146BBD007F2605 /* SBJsonStreamParserAdapter.m */; };
-		FA37A25A15146BBD007F2605 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24115146BBD007F2605 /* SBJsonStreamParserState.m */; };
-		FA37A25C15146BBD007F2605 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24315146BBD007F2605 /* SBJsonStreamWriter.m */; };
-		FA37A25E15146BBD007F2605 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24515146BBD007F2605 /* SBJsonStreamWriterAccumulator.m */; };
-		FA37A26015146BBD007F2605 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24715146BBD007F2605 /* SBJsonStreamWriterState.m */; };
-		FA37A26215146BBD007F2605 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24915146BBD007F2605 /* SBJsonTokeniser.m */; };
-		FA37A26415146BBD007F2605 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24B15146BBD007F2605 /* SBJsonUTF8Stream.m */; };
-		FA37A26615146BBD007F2605 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA37A24D15146BBD007F2605 /* SBJsonWriter.m */; };
-		FA37A26A15146CD4007F2605 /* libSBJson.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA37A0B715146ACE007F2605 /* libSBJson.a */; };
 		FA3CFE29132F9D30003554E2 /* missing-album.png in Resources */ = {isa = PBXBuildFile; fileRef = FA3CFE28132F9D30003554E2 /* missing-album.png */; };
 		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
 		FA454685156604D100EE98C7 /* blowfish.c in Sources */ = {isa = PBXBuildFile; fileRef = FA454683156604D100EE98C7 /* blowfish.c */; };
@@ -75,13 +89,10 @@
 		FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6EB1368E5830063860C /* NSString+FMEngine.m */; };
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
-		FACF0185149A713700D1FB73 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FACF0184149A713700D1FB73 /* AudioStreamer.m */; };
-		FACF018B149A718300D1FB73 /* libAudioStreamer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACF017D149A713700D1FB73 /* libAudioStreamer.a */; };
 		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
 		FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = FAD42FA3136790DE00E935CA /* dsa_pub.pem */; };
-		FAD9EC15135DB41700560C5A /* AppleMediaKeyController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */; };
 		FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEFFAB0132CB173007DC6FB /* AuthController.m */; };
 		FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFBD4132CC0E2007DC6FB /* error_icon.png */; };
 		FAEFFC4D132D6D2A007DC6FB /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = FAEFFC4B132D6D2A007DC6FB /* pause.png */; };
@@ -91,12 +102,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FA37A0C315146AFA007F2605 /* PBXContainerItemProxy */ = {
+		9728D896158C3D8200C078A4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = FA37A0B615146ACE007F2605;
+			remoteGlobalIDString = 9728D875158C3D1F00C078A4;
+			remoteInfo = SPMediaKeyTap;
+		};
+		9728D8DC158C3EF600C078A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9728D8AB158C3EA200C078A4;
 			remoteInfo = SBJson;
+		};
+		9728D8DE158C3EF900C078A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9728D8BF158C3EA900C078A4;
+			remoteInfo = AudioStreamer;
 		};
 		FAA313F613C98C9A00314C73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -104,13 +129,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8D1107260486CEB800E47090;
 			remoteInfo = Hermes;
-		};
-		FACF0189149A715C00D1FB73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FACF017C149A713700D1FB73;
-			remoteInfo = AudioStreamer;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -121,7 +139,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				9728D894158C3D6C00C078A4 /* SPMediaKeyTap.framework in CopyFiles */,
 				FAD42FA013678FB000E935CA /* Sparkle.framework in CopyFiles */,
+				9728D8E2158C3F0F00C078A4 /* SBJson.framework in CopyFiles */,
+				9728D8E3158C3F0F00C078A4 /* AudioStreamer.framework in CopyFiles */,
 				FA6E801F1438E96F00D01FB5 /* Growl.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -144,6 +165,19 @@
 		971CC3981585DA11004D75BA /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
 		971CC3991585DA11004D75BA /* NetworkConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkConnection.m; sourceTree = "<group>"; };
 		971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMediaKeyTap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9728D877158C3D1F00C078A4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		9728D88C158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SPInvocationGrabbing.h"; sourceTree = "<group>"; };
+		9728D88D158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SPInvocationGrabbing.m"; sourceTree = "<group>"; };
+		9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
+		9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; };
+		9728D89C158C3E3C00C078A4 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		9728D89E158C3E4800C078A4 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		9728D8A1158C3E5300C078A4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9728D8AC158C3EA200C078A4 /* SBJson.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SBJson.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9728D8C0158C3EA900C078A4 /* AudioStreamer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AudioStreamer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9728D8F5158C400F00C078A4 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		97539FAB158442A500D1E65C /* URLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLConnection.h; sourceTree = "<group>"; };
 		97539FAC158442A500D1E65C /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
@@ -174,7 +208,6 @@
 		FA2A3F95132BF9F50089AECC /* Song.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Song.m; sourceTree = "<group>"; };
 		FA2A3F96132BF9F50089AECC /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
 		FA2A3F97132BF9F50089AECC /* Station.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Station.m; sourceTree = "<group>"; };
-		FA37A0B715146ACE007F2605 /* libSBJson.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSBJson.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA37A23515146BBD007F2605 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
 		FA37A23615146BBD007F2605 /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
 		FA37A23715146BBD007F2605 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
@@ -225,15 +258,12 @@
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scrobbler.m; sourceTree = "<group>"; };
 		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_sparkle.sh; sourceTree = "<group>"; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
-		FACF017D149A713700D1FB73 /* libAudioStreamer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioStreamer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		FACFACD415673690008A2140 /* StationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationController.h; sourceTree = "<group>"; };
 		FACFACD515673690008A2140 /* StationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationController.m; sourceTree = "<group>"; };
 		FAD42F8713678F7500E935CA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		FAD42FA3136790DE00E935CA /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
-		FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppleMediaKeyController.h; sourceTree = "<group>"; };
-		FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppleMediaKeyController.m; sourceTree = "<group>"; };
 		FAEFFAAF132CB173007DC6FB /* AuthController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthController.h; sourceTree = "<group>"; };
 		FAEFFAB0132CB173007DC6FB /* AuthController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthController.m; sourceTree = "<group>"; };
 		FAEFFBD4132CC0E2007DC6FB /* error_icon.png */ = {isa = PBXFileReference; explicitFileType = image.png; path = error_icon.png; sourceTree = "<group>"; };
@@ -249,28 +279,42 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9728D8E1158C3F0800C078A4 /* AudioStreamer.framework in Frameworks */,
+				9728D8E0158C3F0500C078A4 /* SBJson.framework in Frameworks */,
 				971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */,
-				FA37A26A15146CD4007F2605 /* libSBJson.a in Frameworks */,
-				FACF018B149A718300D1FB73 /* libAudioStreamer.a in Frameworks */,
+				9728D895158C3D7700C078A4 /* SPMediaKeyTap.framework in Frameworks */,
 				FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */,
 				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
-				FA228EC9137045E90070141A /* AudioToolbox.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FA37A0B415146ACE007F2605 /* Frameworks */ = {
+		9728D872158C3D1F00C078A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9728D8A4158C3E6400C078A4 /* Carbon.framework in Frameworks */,
+				9728D8A3158C3E5D00C078A4 /* Cocoa.framework in Frameworks */,
+				9728D89F158C3E4800C078A4 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FACF017A149A713700D1FB73 /* Frameworks */ = {
+		9728D8A8158C3EA200C078A4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9728D8E6158C3F2800C078A4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9728D8BC158C3EA900C078A4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9728D8F6158C400F00C078A4 /* CoreServices.framework in Frameworks */,
+				9728D8E5158C3F1E00C078A4 /* Foundation.framework in Frameworks */,
+				9728D8E4158C3F1B00C078A4 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +342,11 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9728D877158C3D1F00C078A4 /* Cocoa.framework */,
+				9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */,
+				9728D8A1158C3E5300C078A4 /* Foundation.framework */,
+				9728D89E158C3E4800C078A4 /* IOKit.framework */,
+				9728D89C158C3E3C00C078A4 /* Carbon.framework */,
 				971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */,
 				FA6E801A1438E4B700D01FB5 /* Growl.framework */,
 				FA228ECA137045F40070141A /* Security.framework */,
@@ -322,8 +371,9 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Hermes.app */,
-				FACF017D149A713700D1FB73 /* libAudioStreamer.a */,
-				FA37A0B715146ACE007F2605 /* libSBJson.a */,
+				9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */,
+				9728D8AC158C3EA200C078A4 /* SBJson.framework */,
+				9728D8C0158C3EA900C078A4 /* AudioStreamer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -331,6 +381,8 @@
 		29B97314FDCFA39411CA2CEA /* Pithos */ = {
 			isa = PBXGroup;
 			children = (
+				9728D8F5158C400F00C078A4 /* CoreServices.framework */,
+				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -378,13 +430,30 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
+		9728D887158C3D3100C078A4 /* SPMediaKeyTap */ = {
+			isa = PBXGroup;
+			children = (
+				9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */,
+				9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */,
+				9728D888158C3D3100C078A4 /* SPInvocationGrabbing */,
+			);
+			path = SPMediaKeyTap;
+			sourceTree = SOURCE_ROOT;
+		};
+		9728D888158C3D3100C078A4 /* SPInvocationGrabbing */ = {
+			isa = PBXGroup;
+			children = (
+				9728D88C158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.h */,
+				9728D88D158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.m */,
+			);
+			path = SPInvocationGrabbing;
+			sourceTree = "<group>";
+		};
 		FA0E55661478557900C36794 /* External */ = {
 			isa = PBXGroup;
 			children = (
 				FA454683156604D100EE98C7 /* blowfish.c */,
 				FA454684156604D100EE98C7 /* blowfish.h */,
-				FAD9EC13135DB41700560C5A /* AppleMediaKeyController.h */,
-				FAD9EC14135DB41700560C5A /* AppleMediaKeyController.m */,
 				FA94E6E31368E5830063860C /* FMEngine */,
 			);
 			name = External;
@@ -528,31 +597,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		FA37A0B515146ACE007F2605 /* Headers */ = {
+		9728D873158C3D1F00C078A4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				972CA4F815830FC000C0BB9E /* NSObject+SBJson.h in Headers */,
-				972CA4F915830FC000C0BB9E /* SBJson.h in Headers */,
-				972CA4FA15830FC000C0BB9E /* SBJsonParser.h in Headers */,
-				972CA4FB15830FC000C0BB9E /* SBJsonStreamParser.h in Headers */,
-				972CA4FC15830FC000C0BB9E /* SBJsonStreamParserAccumulator.h in Headers */,
-				972CA4FD15830FC000C0BB9E /* SBJsonStreamParserAdapter.h in Headers */,
-				972CA4FE15830FC000C0BB9E /* SBJsonStreamParserState.h in Headers */,
-				972CA4FF15830FC000C0BB9E /* SBJsonStreamWriter.h in Headers */,
-				972CA50015830FC000C0BB9E /* SBJsonStreamWriterAccumulator.h in Headers */,
-				972CA50115830FC000C0BB9E /* SBJsonStreamWriterState.h in Headers */,
-				972CA50215830FC000C0BB9E /* SBJsonTokeniser.h in Headers */,
-				972CA50315830FC000C0BB9E /* SBJsonUTF8Stream.h in Headers */,
-				972CA50415830FC000C0BB9E /* SBJsonWriter.h in Headers */,
+				9728D89A158C3DA500C078A4 /* SPMediaKeyTap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FACF017B149A713700D1FB73 /* Headers */ = {
+		9728D8A9158C3EA200C078A4 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				972CA5051583101E00C0BB9E /* AudioStreamer.h in Headers */,
+				9728D8E7158C3F4300C078A4 /* NSObject+SBJson.h in Headers */,
+				9728D8E8158C3F4300C078A4 /* SBJson.h in Headers */,
+				9728D8E9158C3F4300C078A4 /* SBJsonParser.h in Headers */,
+				9728D8EA158C3F4300C078A4 /* SBJsonStreamParser.h in Headers */,
+				9728D8EB158C3F4300C078A4 /* SBJsonStreamParserAccumulator.h in Headers */,
+				9728D8EC158C3F4300C078A4 /* SBJsonStreamParserAdapter.h in Headers */,
+				9728D8ED158C3F4300C078A4 /* SBJsonStreamParserState.h in Headers */,
+				9728D8EE158C3F4300C078A4 /* SBJsonStreamWriter.h in Headers */,
+				9728D8EF158C3F4300C078A4 /* SBJsonStreamWriterAccumulator.h in Headers */,
+				9728D8F0158C3F4300C078A4 /* SBJsonStreamWriterState.h in Headers */,
+				9728D8F1158C3F4300C078A4 /* SBJsonTokeniser.h in Headers */,
+				9728D8F2158C3F4300C078A4 /* SBJsonUTF8Stream.h in Headers */,
+				9728D8F3158C3F4300C078A4 /* SBJsonWriter.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9728D8BD158C3EA900C078A4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9728D8F4158C3F5300C078A4 /* AudioStreamer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,8 +666,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				FA37A0C415146AFA007F2605 /* PBXTargetDependency */,
-				FACF018A149A715C00D1FB73 /* PBXTargetDependency */,
+				9728D8DF158C3EF900C078A4 /* PBXTargetDependency */,
+				9728D8DD158C3EF600C078A4 /* PBXTargetDependency */,
+				9728D897158C3D8200C078A4 /* PBXTargetDependency */,
 			);
 			name = Hermes;
 			productInstallPath = "$(HOME)/Applications";
@@ -598,13 +676,32 @@
 			productReference = 8D1107320486CEB800E47090 /* Hermes.app */;
 			productType = "com.apple.product-type.application";
 		};
-		FA37A0B615146ACE007F2605 /* SBJson */ = {
+		9728D875158C3D1F00C078A4 /* SPMediaKeyTap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA37A0C215146ACF007F2605 /* Build configuration list for PBXNativeTarget "SBJson" */;
+			buildConfigurationList = 9728D885158C3D1F00C078A4 /* Build configuration list for PBXNativeTarget "SPMediaKeyTap" */;
 			buildPhases = (
-				FA37A0B315146ACE007F2605 /* Sources */,
-				FA37A0B415146ACE007F2605 /* Frameworks */,
-				FA37A0B515146ACE007F2605 /* Headers */,
+				9728D871158C3D1F00C078A4 /* Sources */,
+				9728D872158C3D1F00C078A4 /* Frameworks */,
+				9728D873158C3D1F00C078A4 /* Headers */,
+				9728D874158C3D1F00C078A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SPMediaKeyTap;
+			productName = SPMediaKeyTap;
+			productReference = 9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		9728D8AB158C3EA200C078A4 /* SBJson */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9728D8B8158C3EA200C078A4 /* Build configuration list for PBXNativeTarget "SBJson" */;
+			buildPhases = (
+				9728D8A7158C3EA200C078A4 /* Sources */,
+				9728D8A8158C3EA200C078A4 /* Frameworks */,
+				9728D8A9158C3EA200C078A4 /* Headers */,
+				9728D8AA158C3EA200C078A4 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -612,16 +709,17 @@
 			);
 			name = SBJson;
 			productName = SBJson;
-			productReference = FA37A0B715146ACE007F2605 /* libSBJson.a */;
-			productType = "com.apple.product-type.library.static";
+			productReference = 9728D8AC158C3EA200C078A4 /* SBJson.framework */;
+			productType = "com.apple.product-type.framework";
 		};
-		FACF017C149A713700D1FB73 /* AudioStreamer */ = {
+		9728D8BF158C3EA900C078A4 /* AudioStreamer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FACF0188149A713700D1FB73 /* Build configuration list for PBXNativeTarget "AudioStreamer" */;
+			buildConfigurationList = 9728D8CC158C3EA900C078A4 /* Build configuration list for PBXNativeTarget "AudioStreamer" */;
 			buildPhases = (
-				FACF0179149A713700D1FB73 /* Sources */,
-				FACF017A149A713700D1FB73 /* Frameworks */,
-				FACF017B149A713700D1FB73 /* Headers */,
+				9728D8BB158C3EA900C078A4 /* Sources */,
+				9728D8BC158C3EA900C078A4 /* Frameworks */,
+				9728D8BD158C3EA900C078A4 /* Headers */,
+				9728D8BE158C3EA900C078A4 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -629,8 +727,8 @@
 			);
 			name = AudioStreamer;
 			productName = AudioStreamer;
-			productReference = FACF017D149A713700D1FB73 /* libAudioStreamer.a */;
-			productType = "com.apple.product-type.library.static";
+			productReference = 9728D8C0158C3EA900C078A4 /* AudioStreamer.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -650,6 +748,7 @@
 				Japanese,
 				French,
 				German,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Pithos */;
 			projectDirPath = "";
@@ -657,8 +756,9 @@
 			targets = (
 				8D1107260486CEB800E47090 /* Hermes */,
 				FAA313F013C98A7300314C73 /* Build sparkle metadata */,
-				FACF017C149A713700D1FB73 /* AudioStreamer */,
-				FA37A0B615146ACE007F2605 /* SBJson */,
+				9728D875158C3D1F00C078A4 /* SPMediaKeyTap */,
+				9728D8AB158C3EA200C078A4 /* SBJson */,
+				9728D8BF158C3EA900C078A4 /* AudioStreamer */,
 			);
 		};
 /* End PBXProject section */
@@ -690,6 +790,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9728D874158C3D1F00C078A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9728D8AA158C3EA200C078A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9728D8BE158C3EA900C078A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -709,7 +830,6 @@
 				FA6FE347132FF5AA00D1FF1C /* API.m in Sources */,
 				FA560C511331701E00215F71 /* ImageLoader.m in Sources */,
 				FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */,
-				FAD9EC15135DB41700560C5A /* AppleMediaKeyController.m in Sources */,
 				FA94E6ED1368E5830063860C /* FMEngine.m in Sources */,
 				FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */,
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
@@ -725,50 +845,63 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FA37A0B315146ACE007F2605 /* Sources */ = {
+		9728D871158C3D1F00C078A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA37A24F15146BBD007F2605 /* NSObject+SBJson.m in Sources */,
-				FA37A25215146BBD007F2605 /* SBJsonParser.m in Sources */,
-				FA37A25415146BBD007F2605 /* SBJsonStreamParser.m in Sources */,
-				FA37A25615146BBD007F2605 /* SBJsonStreamParserAccumulator.m in Sources */,
-				FA37A25815146BBD007F2605 /* SBJsonStreamParserAdapter.m in Sources */,
-				FA37A25A15146BBD007F2605 /* SBJsonStreamParserState.m in Sources */,
-				FA37A25C15146BBD007F2605 /* SBJsonStreamWriter.m in Sources */,
-				FA37A25E15146BBD007F2605 /* SBJsonStreamWriterAccumulator.m in Sources */,
-				FA37A26015146BBD007F2605 /* SBJsonStreamWriterState.m in Sources */,
-				FA37A26215146BBD007F2605 /* SBJsonTokeniser.m in Sources */,
-				FA37A26415146BBD007F2605 /* SBJsonUTF8Stream.m in Sources */,
-				FA37A26615146BBD007F2605 /* SBJsonWriter.m in Sources */,
+				9728D89B158C3DA500C078A4 /* SPMediaKeyTap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FACF0179149A713700D1FB73 /* Sources */ = {
+		9728D8A7158C3EA200C078A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FACF0185149A713700D1FB73 /* AudioStreamer.m in Sources */,
+				9728D8CF158C3EC500C078A4 /* NSObject+SBJson.m in Sources */,
+				9728D8D0158C3EC500C078A4 /* SBJsonParser.m in Sources */,
+				9728D8D1158C3EC500C078A4 /* SBJsonStreamParser.m in Sources */,
+				9728D8D2158C3EC500C078A4 /* SBJsonStreamParserAccumulator.m in Sources */,
+				9728D8D3158C3EC500C078A4 /* SBJsonStreamParserAdapter.m in Sources */,
+				9728D8D4158C3EC500C078A4 /* SBJsonStreamParserState.m in Sources */,
+				9728D8D5158C3EC500C078A4 /* SBJsonStreamWriter.m in Sources */,
+				9728D8D6158C3EC500C078A4 /* SBJsonStreamWriterAccumulator.m in Sources */,
+				9728D8D7158C3EC500C078A4 /* SBJsonStreamWriterState.m in Sources */,
+				9728D8D8158C3EC500C078A4 /* SBJsonTokeniser.m in Sources */,
+				9728D8D9158C3EC500C078A4 /* SBJsonUTF8Stream.m in Sources */,
+				9728D8DA158C3EC500C078A4 /* SBJsonWriter.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9728D8BB158C3EA900C078A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9728D8DB158C3EE800C078A4 /* AudioStreamer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FA37A0C415146AFA007F2605 /* PBXTargetDependency */ = {
+		9728D897158C3D8200C078A4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = FA37A0B615146ACE007F2605 /* SBJson */;
-			targetProxy = FA37A0C315146AFA007F2605 /* PBXContainerItemProxy */;
+			target = 9728D875158C3D1F00C078A4 /* SPMediaKeyTap */;
+			targetProxy = 9728D896158C3D8200C078A4 /* PBXContainerItemProxy */;
+		};
+		9728D8DD158C3EF600C078A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9728D8AB158C3EA200C078A4 /* SBJson */;
+			targetProxy = 9728D8DC158C3EF600C078A4 /* PBXContainerItemProxy */;
+		};
+		9728D8DF158C3EF900C078A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9728D8BF158C3EA900C078A4 /* AudioStreamer */;
+			targetProxy = 9728D8DE158C3EF900C078A4 /* PBXContainerItemProxy */;
 		};
 		FAA313F713C98C9A00314C73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 8D1107260486CEB800E47090 /* Hermes */;
 			targetProxy = FAA313F613C98C9A00314C73 /* PBXContainerItemProxy */;
-		};
-		FACF018A149A715C00D1FB73 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FACF017C149A713700D1FB73 /* AudioStreamer */;
-			targetProxy = FACF0189149A715C00D1FB73 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -792,6 +925,149 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		9728D883158C3D1F00C078A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		9728D884158C3D1F00C078A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		9728D8B9158C3EA200C078A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		9728D8BA158C3EA200C078A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		9728D8CD158C3EA900C078A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		9728D8CE158C3EA900C078A4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				INSTALL_PATH = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -912,57 +1188,6 @@
 			};
 			name = Release;
 		};
-		FA37A0C015146ACE007F2605 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks\"",
-				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/build/Release\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		FA37A0C115146ACE007F2605 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks\"",
-				);
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_VERSION = "";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/build/Release\"",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		FAA313F213C98A7300314C73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1002,41 +1227,33 @@
 			};
 			name = Release;
 		};
-		FACF0186149A713700D1FB73 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		FACF0187149A713700D1FB73 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9728D885158C3D1F00C078A4 /* Build configuration list for PBXNativeTarget "SPMediaKeyTap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9728D883158C3D1F00C078A4 /* Debug */,
+				9728D884158C3D1F00C078A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9728D8B8158C3EA200C078A4 /* Build configuration list for PBXNativeTarget "SBJson" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9728D8B9158C3EA200C078A4 /* Debug */,
+				9728D8BA158C3EA200C078A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9728D8CC158C3EA900C078A4 /* Build configuration list for PBXNativeTarget "AudioStreamer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9728D8CD158C3EA900C078A4 /* Debug */,
+				9728D8CE158C3EA900C078A4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Hermes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1055,29 +1272,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA37A0C215146ACF007F2605 /* Build configuration list for PBXNativeTarget "SBJson" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FA37A0C015146ACE007F2605 /* Debug */,
-				FA37A0C115146ACE007F2605 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build sparkle metadata" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FAA313F213C98A7300314C73 /* Debug */,
 				FAA313F313C98A7300314C73 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FACF0188149A713700D1FB73 /* Build configuration list for PBXNativeTarget "AudioStreamer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FACF0186149A713700D1FB73 /* Debug */,
-				FACF0187149A713700D1FB73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

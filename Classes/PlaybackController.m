@@ -9,8 +9,8 @@
  */
 
 #import <AudioStreamer/AudioStreamer.h>
+#import <SPMediaKeyTap/SPMediaKeyTap.h>
 
-#import "AppleMediaKeyController.h"
 #import "Growler.h"
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
@@ -65,29 +65,38 @@ BOOL playOnStart = YES;
     object:nil];
 
   [center
-    addObserver:self
-    selector:@selector(playpause:)
-    name:MediaKeyPlayPauseNotification
-    object:nil];
-
-  [center
-    addObserver:NSApp
-    selector:@selector(activateIgnoringOtherApps:)
-    name:MediaKeyPreviousNotification
-    object:nil];
-
-  [center
-    addObserver:self
-    selector:@selector(next:)
-    name:MediaKeyNextNotification
-    object:nil];
-
-  [center
      addObserver:self
      selector:@selector(songPlayed:)
      name:@"song.playing"
      object:nil];
   return self;
+}
+
+/* see https://github.com/nevyn/SPMediaKeyTap */
+- (void) mediaKeyTap:(SPMediaKeyTap*)keyTap
+      receivedMediaKeyEvent:(NSEvent*)event {
+  assert([event type] == NSSystemDefined &&
+         [event subtype] == SPSystemDefinedEventMediaKeys);
+
+  int keyCode = (([event data1] & 0xFFFF0000) >> 16);
+  int keyFlags = ([event data1] & 0x0000FFFF);
+  int keyState = (((keyFlags & 0xFF00) >> 8)) == 0xA;
+  if (keyState != 1) return;
+
+  switch (keyCode) {
+
+    case NX_KEYTYPE_PLAY:
+      [self playpause:nil];
+      return;
+
+    case NX_KEYTYPE_FAST:
+      [self next:nil];
+      return;
+
+    case NX_KEYTYPE_REWIND:
+      [NSApp activateIgnoringOtherApps:NO];
+      return;
+  }
 }
 
 - (void) prepareFirst {

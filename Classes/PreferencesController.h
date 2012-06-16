@@ -51,4 +51,6 @@
 - (IBAction) showPlayback: (id) sender;
 - (IBAction) showNetwork: (id) sender;
 
+- (IBAction) bindMediaChanged: (id) sender;
+
 @end

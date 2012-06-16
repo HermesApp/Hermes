@@ -6,8 +6,8 @@
  */
 
 #import <AudioStreamer/AudioStreamer.h>
+#import <SPMediaKeyTap/SPMediaKeyTap.h>
 
-#import "AppleMediaKeyController.h"
 #import "AuthController.h"
 #import "Growler.h"
 #import "HermesAppDelegate.h"
@@ -22,7 +22,7 @@
 @implementation HermesAppDelegate
 
 @synthesize stations, auth, playback, pandora, window, history, station,
-            growler, scrobbler;
+            growler, scrobbler, mediaKeyTap;
 
 - (id) init {
   if ((self = [super init])) {
@@ -179,6 +179,11 @@
   [defaults registerDefaults:app_defaults];
   [self migrateDefaults:defaults];
   [playback prepareFirst];
+
+  mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:playback];
+  if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
+    [mediaKeyTap startWatchingMediaKeys];
+  }
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
