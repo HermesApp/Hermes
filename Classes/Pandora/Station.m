@@ -134,6 +134,18 @@
   NSLogd(@"Creating with %@", url);
   stream = [AudioStreamer streamWithURL: url];
   [stream setBufferInfinite:TRUE];
+  switch ([PREF_KEY_VALUE(ENABLED_PROXY) intValue]) {
+    case PROXY_HTTP:
+      [stream setHTTPProxy:PREF_KEY_VALUE(PROXY_HTTP_HOST)
+                      port:[PREF_KEY_VALUE(PROXY_HTTP_PORT) intValue]];
+      break;
+    case PROXY_SOCKS:
+      [stream setSOCKSProxy:PREF_KEY_VALUE(PROXY_SOCKS_HOST)
+                       port:[PREF_KEY_VALUE(PROXY_SOCKS_PORT) intValue]];
+      break;
+    default:
+      break;
+  }
   volumeSet = [stream setVolume:volume];
 }
 
