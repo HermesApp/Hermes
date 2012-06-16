@@ -46,21 +46,6 @@
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-      change:(NSDictionary *)change context:(void *)context {
-  if (PREF_KEY_BOOL(PLEASE_SCROBBLE)) {
-    /* Try to get the saved session token, otherwise get a new one */
-    NSString *str = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
-    if (str == nil || [@"" isEqual:str]) {
-      NSLogd(@"No saved sesssion token for last.fm, fetching another");
-      [self fetchAuthToken];
-    } else {
-      NSLogd(@"Found saved sessionn token found for last.fm");
-      sessionToken = str;
-    }
-  }
-}
-
 typedef void(^ScrobblerCallback)(NSDictionary*);
 
 /**
@@ -75,8 +60,10 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 - (FMCallback) errorChecker:(ScrobblerCallback)callback
               handlesErrors:(BOOL) handles {
   return ^(NSData *data, NSError *error) {
+    /* If this is a network error, then this doesn't need to result in an
+     * annoying popup dialog saying so. This entire app depends on the network
+     * so everyone will know soon enough that the network is down */
     if (error != nil) {
-      [self error:[error localizedDescription]];
       return;
     }
 
@@ -84,6 +71,8 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
                                         encoding:NSUTF8StringEncoding];
     NSDictionary *object = [parser objectWithString:s error:&error];
 
+    /* If this is a last.fm error, however, then this is a serious issue which
+     * may need to be addressed manually, so do display a dialog here */
     if (error != nil) {
       [self error:[error localizedDescription]];
     } else if (!handles && [object objectForKey:@"error"] != nil) {
