@@ -10,6 +10,7 @@
 @class PandoraRequest;
 @class Growler;
 @class Scrobbler;
+@class SPMediaKeyTap;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
   Pandora *pandora;
@@ -36,6 +37,7 @@
   IBOutlet StationController *station;
   IBOutlet Growler *growler;
   IBOutlet Scrobbler *scrobbler;
+  IBOutlet SPMediaKeyTap *mediaKeyTap;
 }
 
 @property (readonly) NSWindow *window;
@@ -47,6 +49,7 @@
 @property (retain) Pandora *pandora;
 @property (retain) Growler *growler;
 @property (retain) Scrobbler *scrobbler;
+@property (retain) SPMediaKeyTap *mediaKeyTap;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
