@@ -285,7 +285,7 @@ BOOL playOnStart = YES;
   if (playOnStart) {
     [station play];
   } else {
-    playOnStart = 1;
+    playOnStart = YES;
   }
   [playing setVolume:[volume intValue]/100.0];
 }
