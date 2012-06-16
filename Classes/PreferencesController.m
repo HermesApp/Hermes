@@ -59,7 +59,7 @@
   if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
     [mediaKeyTap startWatchingMediaKeys];
   } else {
-    [mediaKeyTap startWatchingMediaKeys];
+    [mediaKeyTap stopWatchingMediaKeys];
   }
 }
 
