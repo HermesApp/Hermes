@@ -323,7 +323,12 @@
   if (lastRequest != nil) {
     [pandora sendRequest:lastRequest];
     lastRequest = nil;
-    [self showLoader];
+    if ([playback playing] && ([[playback playing] isPlaying] ||
+                               [[playback playing] isPaused])) {
+      [playback show];
+    } else {
+      [self showLoader];
+    }
   } else if (lastStationErr != nil) {
     [lastStationErr retry:NO];
     [playback show];
@@ -348,9 +353,9 @@
 
 + (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
                               state:(NSCoder *)state
-                  completionHandler:(void (^)(NSWindow *, NSError *))completionHandler {
+                  completionHandler:(void (^)(NSWindow *, NSError *))done {
   [PlaybackController setPlayOnStart:NO];
-  completionHandler(nil, nil);
+  done(nil, nil);
   return YES;
 }
 
