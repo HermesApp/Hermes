@@ -116,7 +116,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                         &context);
   CFReadStreamScheduleWithRunLoop(stream, CFRunLoopGetCurrent(),
                                   kCFRunLoopCommonModes);
-  timeout = [NSTimer scheduledTimerWithTimeInterval:3
+  timeout = [NSTimer scheduledTimerWithTimeInterval:10
                                              target:self
                                            selector:@selector(checkTimeout)
                                            userInfo:nil
