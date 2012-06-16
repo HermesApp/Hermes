@@ -176,6 +176,7 @@ struct queued_packet;
   UInt32          bufferSize; /* attempted to be guessed, but fallback here */
   UInt32          bufferCnt;
   BOOL            bufferInfinite;
+  int             timeoutInterval;
 
   /* Creates as part of the [start] method */
   CFReadStreamRef stream;
@@ -297,6 +298,8 @@ struct queued_packet;
  * off, this should be a number to not consume too much memory, but to also keep
  * up with the remote data stream. The incoming data should always be able to
  * stay ahead of these buffers being filled
+ *
+ * Default: 16
  */
 @property (readwrite) UInt32 bufferCnt;
 
@@ -311,6 +314,8 @@ struct queued_packet;
  * If you find that this is being used, then it should be coordinated with
  * bufferCnt above to make sure that the audio stays responsive and slightly
  * behind the HTTP stream
+ *
+ * Default: 2048
  */
 @property (readwrite) UInt32 bufferSize;
 
@@ -321,6 +326,8 @@ struct queued_packet;
  * attempted to be inferred from the extension on the url specified. If your URL
  * doesn't conform to what AudioStreamer internally detects, then use this to
  * explicitly mark the file type. If marked, then no inferring is done.
+ *
+ * Default: (guess)
  */
 @property (readwrite) AudioFileTypeID fileType;
 
@@ -341,8 +348,24 @@ struct queued_packet;
  * will be downloaded as fast as possible, and the bandwidth to the remote will
  * also be consumed. Depending on the situtation, this might not be that bad of
  * a problem.
+ *
+ * Default: NO
  */
 @property (readwrite) BOOL bufferInfinite;
+
+/**
+ * Interval to consider timeout if no network activity is seen
+ *
+ * When downloading audio data from a remote source, this is the interval in
+ * which to consider it a timeout if no data is received. If the stream is
+ * paused, then that time interval is not counted. This only counts if we are
+ * waiting for data and an amount of time larger than this elapses.
+ *
+ * The units of this variable is seconds.
+ *
+ * Default: 10
+ */
+@property (readwrite) int timeoutInterval;
 
 /**
  * Set an HTTP proxy for this stream
