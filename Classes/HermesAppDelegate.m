@@ -171,6 +171,7 @@
   [app_defaults setObject:@"0" forKey:PLEASE_CLOSE_DRAWER];
   [app_defaults setObject:[NSNumber numberWithInt:PROXY_SYSTEM]
                    forKey:ENABLED_PROXY];
+  [app_defaults setObject:@"0" forKey:PROXY_AUDIO];
   [app_defaults setObject:[NSNumber numberWithInt:QUALITY_MED]
                    forKey:DESIRED_QUALITY];
   [app_defaults setObject:[NSNumber numberWithInt:130] forKey:DRAWER_WIDTH];

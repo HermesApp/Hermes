@@ -21,6 +21,7 @@
 #define PROXY_HTTP_PORT       @"httpProxyPort"
 #define PROXY_SOCKS_HOST      @"socksProxyHost"
 #define PROXY_SOCKS_PORT      @"socksProxyPort"
+#define PROXY_AUDIO           @"proxyAudio"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
