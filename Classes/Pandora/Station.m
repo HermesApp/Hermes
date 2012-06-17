@@ -135,17 +135,19 @@
   stream = [AudioStreamer streamWithURL: url];
   [stream setBufferInfinite:TRUE];
   [stream setTimeoutInterval:15];
-  switch ([PREF_KEY_VALUE(ENABLED_PROXY) intValue]) {
-    case PROXY_HTTP:
-      [stream setHTTPProxy:PREF_KEY_VALUE(PROXY_HTTP_HOST)
-                      port:[PREF_KEY_VALUE(PROXY_HTTP_PORT) intValue]];
-      break;
-    case PROXY_SOCKS:
-      [stream setSOCKSProxy:PREF_KEY_VALUE(PROXY_SOCKS_HOST)
-                       port:[PREF_KEY_VALUE(PROXY_SOCKS_PORT) intValue]];
-      break;
-    default:
-      break;
+  if (PREF_KEY_VALUE(PROXY_AUDIO)) {
+    switch ([PREF_KEY_VALUE(ENABLED_PROXY) intValue]) {
+      case PROXY_HTTP:
+        [stream setHTTPProxy:PREF_KEY_VALUE(PROXY_HTTP_HOST)
+                        port:[PREF_KEY_VALUE(PROXY_HTTP_PORT) intValue]];
+        break;
+      case PROXY_SOCKS:
+        [stream setSOCKSProxy:PREF_KEY_VALUE(PROXY_SOCKS_HOST)
+                         port:[PREF_KEY_VALUE(PROXY_SOCKS_PORT) intValue]];
+        break;
+      default:
+        break;
+    }
   }
   volumeSet = [stream setVolume:volume];
 }
