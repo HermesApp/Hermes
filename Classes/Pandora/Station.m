@@ -47,13 +47,9 @@
   [aCoder encodeObject:songs forKey:@"songs"];
 }
 
-- (void) stopObserving {
-}
-
 - (void) dealloc {
-  [self stop];
-
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [self stop];
 }
 
 - (BOOL) isEqual:(id)object {
@@ -160,6 +156,7 @@
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
+  if ([aNotification object] != stream) return;
   if (!volumeSet) {
     volumeSet = [stream setVolume:volume];
   }
@@ -307,6 +304,7 @@
 }
 
 - (void) stop {
+  nexting = YES;
   [stream stop];
   stream  = nil;
   playing = nil;
