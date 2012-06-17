@@ -1,6 +1,6 @@
-# Version 1.1.6 (unreleased)
+# Version 1.1.6 (6/17/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.5...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.5...v1.1.6)
 
 * [added] Add an option to not proxy audio streams because it's not necessarily
           required by Pandora. Thanks to @osener for the suggestion.
