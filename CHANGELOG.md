@@ -4,6 +4,7 @@
 
 * [added] Add an option to not proxy audio streams because it's not necessarily
           required by Pandora. Thanks to @osener for the suggestion.
+* [fixed] Switching stations no longer plays two songs
 
 # Version 1.1.5 (6/16/12)
 
