@@ -11,6 +11,7 @@
 @class Growler;
 @class Scrobbler;
 @class SPMediaKeyTap;
+@class Server;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
   Pandora *pandora;
@@ -50,6 +51,7 @@
 @property (retain) Growler *growler;
 @property (retain) Scrobbler *scrobbler;
 @property (retain) SPMediaKeyTap *mediaKeyTap;
+@property (retain) Server *server;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;

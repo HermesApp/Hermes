@@ -18,11 +18,12 @@
 #import "Scrobbler.h"
 #import "StationController.h"
 #import "StationsController.h"
+#import "Server.h"
 
 @implementation HermesAppDelegate
 
 @synthesize stations, auth, playback, pandora, window, history, station,
-            growler, scrobbler, mediaKeyTap;
+            growler, scrobbler, mediaKeyTap, server;
 
 - (id) init {
   if ((self = [super init])) {
@@ -181,6 +182,9 @@
   [self migrateDefaults:defaults];
   [playback prepareFirst];
 
+  server = [[Server alloc] init];
+  [server beginListeningOnPort:63092];
+  
   mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:playback];
   if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
     [mediaKeyTap startWatchingMediaKeys];
