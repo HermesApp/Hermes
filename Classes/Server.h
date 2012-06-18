@@ -33,10 +33,12 @@
             dislike current song
     the server can also update station list at any time by sending stations in the format described under "list stations", it can also update currently playing song information in the method described under "list playing". 
  
-Additonal Features to add:
+ Future:
     list playing state
     make list playing list whether the song is liked/disliked
     make list laying transmit a URL for album cover and song info
+    bonjour support
+    server configuration and disable option in preferences. 
  */
 
 @interface Server : NSObject
