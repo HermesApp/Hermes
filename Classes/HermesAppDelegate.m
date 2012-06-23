@@ -381,4 +381,8 @@
   return [folder stringByAppendingPathComponent: file];
 }
 
+- (IBAction) donate:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=58H9GQKN28GNL"]];
+}
+
 @end
