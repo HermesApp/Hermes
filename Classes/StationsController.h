@@ -11,14 +11,19 @@
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
 
-  // New station things
+  /* New station by searching */
   IBOutlet NSTextField *search;
   IBOutlet NSOutlineView *results;
   IBOutlet NSProgressIndicator *searchSpinner;
   IBOutlet NSImageView *errorIndicator;
 
-  // Last known results
+  /* New station by genres */
+  IBOutlet NSOutlineView *genres;
+  IBOutlet NSProgressIndicator *genreSpinner;
+
+  /* Last known results */
   NSDictionary *lastResults;
+  NSArray *genreResults;
 
   FileReader *reader;
 }
@@ -39,6 +44,7 @@
 - (IBAction)search: (id)sender;
 - (IBAction)cancelCreateStation: (id)sender;
 - (IBAction)createStation: (id)sender;
+- (IBAction)createStationGenre: (id)sender;
 
 - (int) stationIndex: (Station*) station;
 
