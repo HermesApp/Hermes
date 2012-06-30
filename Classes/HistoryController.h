@@ -18,6 +18,7 @@
   IBOutlet NSButton *like;
   IBOutlet NSButton *dislike;
   IBOutlet NSDrawer *drawer;
+  IBOutlet NSProgressIndicator *spinner;
 }
 
 @property(retain, readwrite) IBOutlet NSMutableArray *songs;
@@ -38,5 +39,6 @@
 - (IBAction) gotoArtist:(id)sender;
 - (IBAction) gotoSong:(id)sender;
 - (IBAction) gotoAlbum:(id)sender;
+- (IBAction) showLyrics:(id)sender;
 
 @end
