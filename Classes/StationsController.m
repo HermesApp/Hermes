@@ -21,6 +21,11 @@
     selector:@selector(searchResultsLoaded:)
     name:@"hermes.search-results"
     object:[[NSApp delegate] pandora]];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+    selector:@selector(genreStationsLoaded:)
+    name:@"hermes.genre-stations"
+    object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
@@ -185,34 +190,57 @@
 }
 
 /* ============================ NSOutlineViewDataSource protocol */
-- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
-  if (item == nil) {
-    return [[lastResults allKeys] objectAtIndex:index];
+- (id)outlineView:(NSOutlineView*)oview child:(NSInteger)index ofItem:(id)item {
+  if (oview == results) {
+    if (item == nil) {
+      return [[lastResults allKeys] objectAtIndex:index];
+    }
+
+    return [[lastResults objectForKey:item] objectAtIndex:index];
   }
 
-  return [[lastResults objectForKey:item] objectAtIndex:index];
+  if (item == nil) {
+    return [genreResults objectAtIndex:index];
+  }
+  return [[item objectForKey:@"stations"] objectAtIndex:index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
-  return [lastResults objectForKey:item] != nil;
+  if (outlineView == results) {
+    return [lastResults objectForKey:item] != nil;
+  } else {
+    return [item objectForKey:@"categoryName"] != nil;
+  }
 }
 
-- (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
-  if (item == nil) {
-    return [[lastResults allKeys] count];
+- (NSInteger)outlineView:(NSOutlineView*)oview numberOfChildrenOfItem:(id)item {
+  if (oview == results) {
+    if (item == nil) {
+      return [[lastResults allKeys] count];
+    }
+
+    return [[lastResults objectForKey:item] count];
   }
 
-  return [[lastResults objectForKey:item] count];
+  if (item == nil) {
+    return [genreResults count];
+  }
+  return [[item objectForKey:@"stations"] count];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView
   objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
-
-  if ([item isKindOfClass:[NSString class]]) {
-    return item;
+  if (outlineView == results) {
+    if ([item isKindOfClass:[NSString class]]) {
+      return item;
+    }
+    Station *s = item;
+    return [s name];
   }
-  Station *s = item;
-  return [s name];
+
+  NSString *str = [item objectForKey:@"categoryName"];
+  if (str != nil) return str;
+  return [item objectForKey:@"stationName"];
 }
 
 /* ============================ Other callbacks */
@@ -223,6 +251,8 @@
 
   [searchSpinner setHidden:YES];
   [searchSpinner stopAnimation:nil];
+  [genreSpinner setHidden:YES];
+  [genreSpinner stopAnimation:nil];
   [stationsTable reloadData];
   [self selectStation:s];
   [[[NSApp delegate] playback] playStation:s];
@@ -268,6 +298,13 @@
   }
 }
 
+- (void) genreStationsLoaded: (NSNotification*) not {
+  genreResults = [[not userInfo] objectForKey:@"categories"];
+  [genres reloadData];
+  [genreSpinner stopAnimation:nil];
+  [genreSpinner setHidden:YES];
+}
+
 /* ============================ Callbacks for IBActions and such */
 
 /* Called after the user has authenticated */
@@ -303,6 +340,9 @@
   [results reloadData];
   [[NSApp delegate] showNewStationSheet];
   [search becomeFirstResponder];
+  [[self pandora] genreStations];
+  [genreSpinner startAnimation:nil];
+  [genreSpinner setHidden:NO];
 }
 
 /* Callback for the search box on the create sheet */
@@ -335,6 +375,17 @@
   [searchSpinner startAnimation:nil];
 
   [[self pandora] createStation:[result value]];
+}
+
+/* Callback for creating a station by genre */
+- (IBAction) createStationGenre:(id)sender {
+  id item = [genres itemAtRow:[genres selectedRow]];
+  NSString *token = [item objectForKey:@"stationToken"];
+  if (token == nil) return;
+
+  [genreSpinner setHidden:NO];
+  [genreSpinner startAnimation:nil];
+  [[self pandora] createStation:token];
 }
 
 /* Callback for the dialog which is shown when deleting a station */

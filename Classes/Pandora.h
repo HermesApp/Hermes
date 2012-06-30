@@ -59,6 +59,7 @@ typedef void(^SyncCallback)(void);
 - (BOOL) deleteFeedback: (NSString*)feedbackId;
 - (BOOL) addSeed: (NSString*)token to:(Station*)station;
 - (BOOL) removeSeed: (NSString*)seedId;
+- (BOOL) genreStations;
 - (void) logout;
 - (void) logoutNoNotify;
 

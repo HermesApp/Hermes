@@ -702,4 +702,24 @@ static NSString *hierrs[] = {
   return [self sendAuthenticatedRequest:req];
 }
 
+/**
+ * @brief Fetch the "genre stations" from pandora
+ *
+ * Pandora provides some pre-defined genre stations available to create a
+ * station from, and this provides the API to fetch those. The
+ * "hermes.genre-stations" event is fired when done with the extra information
+ * of the response from Pandora.
+ */
+- (BOOL) genreStations {
+  NSMutableDictionary *d = [self defaultDictionary];
+
+  PandoraRequest *req = [self defaultRequest:@"station.getGenreStations"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:@"hermes.genre-stations" with:[d objectForKey:@"result"]];
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
 @end
