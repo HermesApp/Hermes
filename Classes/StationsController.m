@@ -1,9 +1,11 @@
-#import "StationsController.h"
-#import "Pandora.h"
+#import "FileReader.h"
 #import "HermesAppDelegate.h"
-#import "PreferencesController.h"
+#import "Pandora.h"
+#import "Pandora/Station.h"
 #import "PlaybackController.h"
+#import "PreferencesController.h"
 #import "StationController.h"
+#import "StationsController.h"
 
 @implementation StationsController
 
@@ -143,10 +145,20 @@
     NSString *saved_state =
       [[NSApp delegate] stateDirectory:@"station.savestate"];
     if (saved_state != nil) {
-      Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
-      if ([last isEqual:s]) {
-        [last copyFrom:s];
-      }
+      reader = [FileReader readerForFile:saved_state
+                       completionHandler:^(NSData *data, NSError *err) {
+        if (err == nil) {
+          Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
+          if ([last isEqual:s]) {
+            [last copyFrom:s];
+          }
+        }
+        [self selectStation: last];
+        [[[NSApp delegate] playback] playStation:last];
+        return;
+      }];
+      [reader start];
+      return YES;
     }
   }
   [self selectStation: last];

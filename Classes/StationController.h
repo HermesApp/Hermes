@@ -4,7 +4,6 @@
  */
 
 @class Station;
-@class ImageLoader;
 
 @interface StationController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
   IBOutlet NSWindow *window;
@@ -34,7 +33,6 @@
   IBOutlet NSButton *deleteFeedback;
 
   Station *cur_station;
-  ImageLoader *loader;
   NSString *station_url;
 }
 

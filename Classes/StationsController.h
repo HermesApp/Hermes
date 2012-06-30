@@ -1,7 +1,7 @@
-#import "Pandora.h"
-#import "Pandora/Station.h"
-
 #define LAST_STATION_KEY @"hermes.last-station"
+
+@class FileReader;
+@class Station;
 
 @interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
@@ -20,6 +20,8 @@
 
   // Last known results
   NSDictionary *lastResults;
+
+  FileReader *reader;
 }
 
 - (void) showDrawer;
