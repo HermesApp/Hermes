@@ -181,10 +181,12 @@
   [self migrateDefaults:defaults];
   [playback prepareFirst];
 
+#ifndef DEBUG
   mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:playback];
   if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
     [mediaKeyTap startWatchingMediaKeys];
   }
+#endif
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
