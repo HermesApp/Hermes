@@ -6,15 +6,6 @@
 //
 
 @interface HistoryItem : NSCollectionViewItem {
-  NSButton *like;
-  NSButton *dislike;
   NSButton *art;
 }
-
-- (IBAction) like:(id)sender;
-- (IBAction) dislike:(id)sender;
-- (IBAction) gotoArtist:(id)sender;
-- (IBAction) gotoAlbum:(id)sender;
-- (IBAction) gotoTitle:(id)sender;
-
 @end

@@ -14,6 +14,7 @@
 #define PLEASE_GROWL_PLAY     @"pleaseGrowlPlay"
 #define PLEASE_CLOSE_DRAWER   @"pleaseCloseDrawer"
 #define DRAWER_WIDTH          @"drawerWidth"
+#define HIST_DRAWER_WIDTH     @"histDrawerWidth"
 #define DESIRED_QUALITY       @"audioQuality"
 #define LAST_PREF_PANE        @"lastPrefPane"
 #define ENABLED_PROXY         @"enabledProxy"
@@ -22,6 +23,7 @@
 #define PROXY_SOCKS_HOST      @"socksProxyHost"
 #define PROXY_SOCKS_PORT      @"socksProxyPort"
 #define PROXY_AUDIO           @"proxyAudio"
+#define OPEN_DRAWER           @"openDrawer"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
@@ -30,6 +32,7 @@
 #define PREF_KEY_VALUE(x)        [PREFERENCES valueForKey:(x)]
 #define PREF_KEY_BOOL(x)         [PREFERENCES boolForKey:(x)]
 #define PREF_KEY_SET_BOOL(x, y)  [PREFERENCES setBool:y forKey:x]
+#define PREF_KEY_SET_INT(x, y)   [PREFERENCES setInteger:y forKey:x]
 
 #define QUALITY_HIGH 0
 #define QUALITY_MED  1

@@ -7,7 +7,6 @@
 
   IBOutlet NSView *view;
 
-  IBOutlet NSButton *showStations;
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
@@ -26,7 +25,6 @@
 
 - (void) showDrawer;
 - (void) hideDrawer;
-- (IBAction) toggleDrawer: (id) sender;
 - (void) show;
 - (void) reset;
 
