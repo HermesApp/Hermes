@@ -5,13 +5,17 @@
 //  Created by Alex Crichton on 10/9/11.
 //
 
+#import <SBJson/SBJson.h>
+
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "FileReader.h"
+#import "FMEngine/NSString+FMEngine.h"
 #import "Pandora/Song.h"
 #import "PlaybackController.h"
 #import "PreferencesController.h"
 #import "StationsController.h"
+#import "URLConnection.h"
 
 #define HISTORY_LIMIT 20
 
@@ -144,6 +148,44 @@
 
 - (void) hideDrawer {
   [drawer close];
+}
+
+- (IBAction) showLyrics:(id)sender {
+  Song* s = [self selectedItem];
+  if (s == nil) return;
+  NSString *surl =
+    [NSString
+      stringWithFormat:@"http://lyrics.wikia.com/api.php?artist=%@&song=%@&fmt=realjson",
+      [[s artist] urlEncoded], [[s title] urlEncoded]];
+  NSURL *url = [NSURL URLWithString:surl];
+  NSURLRequest *req = [NSURLRequest requestWithURL:url];
+  NSLogd(@"Fetch: %@", surl);
+  URLConnection *conn = [URLConnection connectionForRequest:req
+                                  completionHandler:^(NSData *d, NSError *err) {
+    if (err == nil) {
+      SBJsonParser *parser = [[SBJsonParser alloc] init];
+      NSString *s = [[NSString alloc] initWithData:d
+                                          encoding:NSUTF8StringEncoding];
+      NSDictionary *object = [parser objectWithString:s error:&err];
+      if (err == nil) {
+        NSString *url = [object objectForKey:@"url"];
+        [spinner setHidden:YES];
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
+        return;
+      }
+    }
+    NSAlert *alert = [NSAlert alertWithError:err];
+    [alert setMessageText:@"Couldn't open lyrics"];
+    [alert setInformativeText:[err localizedDescription]];
+    [alert beginSheetModalForWindow:[[NSApp delegate] window]
+                      modalDelegate:nil
+                     didEndSelector:nil
+                        contextInfo:nil];
+  }];
+
+  [conn setHermesProxy];
+  [conn start];
+  [spinner setHidden:NO];
 }
 
 @end
