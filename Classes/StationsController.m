@@ -63,9 +63,7 @@
 }
 
 - (void) showDrawer {
-  [showStations setImage:[NSImage imageNamed:@"NSLeftFacingTriangleTemplate"]];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setValue:@"0" forKey:PLEASE_CLOSE_DRAWER];
   NSSize s;
   s.height = 100;
   s.width = [defaults integerForKey:DRAWER_WIDTH];
@@ -75,21 +73,9 @@
 
 - (void) hideDrawer {
   [stations close];
-  [showStations setImage:[NSImage imageNamed:@"NSRightFacingTriangleTemplate"]];
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  [defaults setValue:@"1" forKey:PLEASE_CLOSE_DRAWER];
-}
-
-- (IBAction) toggleDrawer: (id) sender {
-  if ([stations state] == NSDrawerOpenState) {
-    [self hideDrawer];
-  } else {
-    [self showDrawer];
-  }
 }
 
 - (void) reset {
-  [self hideDrawer];
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
@@ -262,11 +248,7 @@
   if ([self playingStation] == nil && ![self playSavedStation]) {
     [[NSApp delegate] setCurrentView:view];
   }
-  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-  if (![defaults boolForKey:PLEASE_CLOSE_DRAWER] ||
-      [defaults objectForKey:LAST_STATION_KEY] == nil) {
-    [self showDrawer];
-  }
+  [[NSApp delegate] handleDrawer];
 }
 
 /* Called whenever search results are received */

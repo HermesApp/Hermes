@@ -11,6 +11,10 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		97177194159EAA7D00EE3355 /* cd.png in Resources */ = {isa = PBXBuildFile; fileRef = 97177193159EAA7D00EE3355 /* cd.png */; };
+		97177198159EAF6F00EE3355 /* HistoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 97177197159EAF6F00EE3355 /* HistoryView.m */; };
+		9717719A159EB0E200EE3355 /* music-note.png in Resources */ = {isa = PBXBuildFile; fileRef = 97177199159EB0E200EE3355 /* music-note.png */; };
+		9717719D159EBBBF00EE3355 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9717719C159EBBBF00EE3355 /* FileReader.m */; };
 		971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 971CC3991585DA11004D75BA /* NetworkConnection.m */; };
 		971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */; };
 		9728D894158C3D6C00C078A4 /* SPMediaKeyTap.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */; };
@@ -56,6 +60,7 @@
 		9728D8F4158C3F5300C078A4 /* AudioStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = FACF0183149A713700D1FB73 /* AudioStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9728D8F6158C400F00C078A4 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D8F5158C400F00C078A4 /* CoreServices.framework */; };
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
+		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
@@ -162,6 +167,12 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		97177193159EAA7D00EE3355 /* cd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cd.png; sourceTree = "<group>"; };
+		97177196159EAF6F00EE3355 /* HistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryView.h; sourceTree = "<group>"; };
+		97177197159EAF6F00EE3355 /* HistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryView.m; sourceTree = "<group>"; };
+		97177199159EB0E200EE3355 /* music-note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "music-note.png"; sourceTree = "<group>"; };
+		9717719B159EBBBF00EE3355 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
+		9717719C159EBBBF00EE3355 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
 		971CC3981585DA11004D75BA /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
 		971CC3991585DA11004D75BA /* NetworkConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkConnection.m; sourceTree = "<group>"; };
 		971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -180,6 +191,7 @@
 		9728D8F5158C400F00C078A4 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		97539FAB158442A500D1E65C /* URLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLConnection.h; sourceTree = "<group>"; };
 		97539FAC158442A500D1E65C /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
+		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -270,7 +282,6 @@
 		FAEFFC4B132D6D2A007DC6FB /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		FAEFFC4C132D6D2A007DC6FB /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		FAEFFC51132D6EC5007DC6FB /* fast_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fast_forward.png; sourceTree = "<group>"; };
-		FAFF50CE132EFDCB00F02CE0 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
 		FAFF50D0132EFDD800F02CE0 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -335,6 +346,8 @@
 				FA2A3F90132BF9F50089AECC /* Pandora */,
 				256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */,
+				9717719B159EBBBF00EE3355 /* FileReader.h */,
+				9717719C159EBBBF00EE3355 /* FileReader.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -489,6 +502,8 @@
 				FA2A3F76132BF97E0089AECC /* StationsController.m */,
 				FACFACD415673690008A2140 /* StationController.h */,
 				FACFACD515673690008A2140 /* StationController.m */,
+				97177196159EAF6F00EE3355 /* HistoryView.h */,
+				97177197159EAF6F00EE3355 /* HistoryView.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -576,6 +591,9 @@
 		FAEFFBFF132D620B007DC6FB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				97E0DA34159EDF7C00BEA465 /* radio.png */,
+				97177199159EB0E200EE3355 /* music-note.png */,
+				97177193159EAA7D00EE3355 /* cd.png */,
 				FA57076F156D700900AD5E66 /* action.png */,
 				FA04AE9A14438F1000819310 /* thumbdown.png */,
 				FA04AE9B14438F1000819310 /* thumbup.png */,
@@ -586,7 +604,6 @@
 				FA3CFE28132F9D30003554E2 /* missing-album.png */,
 				FAFF50D0132EFDD800F02CE0 /* delete.png */,
 				FAEFFC51132D6EC5007DC6FB /* fast_forward.png */,
-				FAFF50CE132EFDCB00F02CE0 /* accept.png */,
 				FAEFFC4B132D6D2A007DC6FB /* pause.png */,
 				FAEFFC4C132D6D2A007DC6FB /* play.png */,
 				FAEFFBD4132CC0E2007DC6FB /* error_icon.png */,
@@ -787,6 +804,9 @@
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
 				FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */,
 				FA570770156D700900AD5E66 /* action.png in Resources */,
+				97177194159EAA7D00EE3355 /* cd.png in Resources */,
+				9717719A159EB0E200EE3355 /* music-note.png in Resources */,
+				97E0DA35159EDF7C00BEA465 /* radio.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -842,6 +862,8 @@
 				FACFACD615673690008A2140 /* StationController.m in Sources */,
 				97539FAD158442A500D1E65C /* URLConnection.m in Sources */,
 				971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */,
+				97177198159EAF6F00EE3355 /* HistoryView.m in Sources */,
+				9717719D159EBBBF00EE3355 /* FileReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1083,6 +1105,7 @@
 					"\"$(SRCROOT)/Classes\"",
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
+				PBXBuildsContinueAfterErrors = 0;
 				PRODUCT_NAME = Hermes;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
@@ -1112,6 +1135,7 @@
 					"\"$(SRCROOT)/Classes\"",
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
+				PBXBuildsContinueAfterErrors = 0;
 				PRODUCT_NAME = Hermes;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = macosx;
@@ -1237,6 +1261,7 @@
 				9728D884158C3D1F00C078A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9728D8B8158C3EA200C078A4 /* Build configuration list for PBXNativeTarget "SBJson" */ = {
 			isa = XCConfigurationList;
@@ -1245,6 +1270,7 @@
 				9728D8BA158C3EA200C078A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9728D8CC158C3EA900C078A4 /* Build configuration list for PBXNativeTarget "AudioStreamer" */ = {
 			isa = XCConfigurationList;
@@ -1253,6 +1279,7 @@
 				9728D8CE158C3EA900C078A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Hermes" */ = {
 			isa = XCConfigurationList;

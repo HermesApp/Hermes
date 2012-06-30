@@ -2,6 +2,11 @@
 
 #define USERNAME_KEY @"pandora.username"
 
+#define DRAWER_STATIONS  0
+#define DRAWER_HISTORY   1
+#define DRAWER_NONE_HIST 2
+#define DRAWER_NONE_STA  3
+
 @class StationsController;
 @class AuthController;
 @class PlaybackController;
@@ -28,6 +33,7 @@
 
   IBOutlet NSWindow *window;
   IBOutlet NSWindow *newStationSheet;
+  IBOutlet NSToolbarItem *drawerToggle;
 
   /* Objects */
   IBOutlet StationsController *stations;
@@ -61,7 +67,14 @@
 - (NSString*) getCachedUsername;
 - (NSString*) getCachedPassword;
 
-- (IBAction) retry:(id)sender;
 - (void) tryRetry;
+- (void) handleDrawer;
+
+- (IBAction) donate:(id)sender;
+- (IBAction) retry:(id)sender;
+- (IBAction) toggleDrawerContent:(id)sender;
+- (IBAction) toggleDrawerVisible:(id)sender;
+- (IBAction) showStationsDrawer:(id)sender;
+- (IBAction) showHistoryDrawer:(id)sender;
 
 @end

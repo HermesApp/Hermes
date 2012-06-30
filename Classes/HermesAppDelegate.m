@@ -174,6 +174,10 @@
   [app_defaults setObject:@"0" forKey:PROXY_AUDIO];
   [app_defaults setObject:[NSNumber numberWithInt:QUALITY_MED]
                    forKey:DESIRED_QUALITY];
+  [app_defaults setObject:[NSNumber numberWithInt:DRAWER_STATIONS]
+                   forKey:OPEN_DRAWER];
+  [app_defaults setObject:[NSNumber numberWithInt:150]
+                   forKey:HIST_DRAWER_WIDTH];
   [app_defaults setObject:[NSNumber numberWithInt:130] forKey:DRAWER_WIDTH];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -348,6 +352,8 @@
 - (void) handlePandoraLoggedOut: (NSNotification*) notification {
   [stations reset];
   [playback reset];
+  [stations hideDrawer];
+  [history hideDrawer];
 
   /* Remove our credentials */
   [self cacheAuth:@"" :@""];
@@ -385,6 +391,88 @@
 
 - (IBAction) donate:(id)sender {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=58H9GQKN28GNL"]];
+}
+
+- (void) historyShow {
+  [history showDrawer];
+  [drawerToggle setImage:[NSImage imageNamed:@"radio"]];
+}
+
+- (void) stationsShow {
+  [stations showDrawer];
+  [drawerToggle setImage:[NSImage imageNamed:@"history"]];
+}
+
+- (IBAction) showHistoryDrawer:(id)sender {
+  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_HISTORY) return;
+  [self historyShow];
+  [stations hideDrawer];
+  PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_HISTORY);
+}
+
+- (IBAction) showStationsDrawer:(id)sender {
+  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_STATIONS) return;
+  [history hideDrawer];
+  [self stationsShow];
+  PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_STATIONS);
+}
+
+- (void) handleDrawer {
+  switch ([PREF_KEY_VALUE(OPEN_DRAWER) intValue]) {
+    case DRAWER_NONE_HIST:
+    case DRAWER_NONE_STA:
+      break;
+    case DRAWER_HISTORY:
+      [self historyShow];
+      break;
+    case DRAWER_STATIONS:
+      [self stationsShow];
+      break;
+  }
+}
+
+- (IBAction) toggleDrawerContent:(id)sender {
+  switch ([PREF_KEY_VALUE(OPEN_DRAWER) intValue]) {
+    case DRAWER_NONE_HIST:
+      [self historyShow];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_HISTORY);
+      break;
+    case DRAWER_NONE_STA:
+      [self stationsShow];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_STATIONS);
+      break;
+    case DRAWER_HISTORY:
+      [self stationsShow];
+      [history hideDrawer];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_STATIONS);
+      break;
+    case DRAWER_STATIONS:
+      [stations hideDrawer];
+      [self historyShow];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_HISTORY);
+      break;
+  }
+}
+
+- (IBAction) toggleDrawerVisible:(id)sender {
+  switch ([PREF_KEY_VALUE(OPEN_DRAWER) intValue]) {
+    case DRAWER_NONE_HIST:
+      [self historyShow];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_HISTORY);
+      break;
+    case DRAWER_NONE_STA:
+      [self stationsShow];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_STATIONS);
+      break;
+    case DRAWER_HISTORY:
+      [history hideDrawer];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_HIST);
+      break;
+    case DRAWER_STATIONS:
+      [stations hideDrawer];
+      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_STA);
+      break;
+  }
 }
 
 @end

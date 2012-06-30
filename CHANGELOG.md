@@ -1,3 +1,9 @@
+# Version 1.1.7 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.6...master)
+
+* [added] New UI for viewing song history in a drawer instead of a popup
+
 # Version 1.1.6 (6/17/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.5...v1.1.6)
