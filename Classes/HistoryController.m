@@ -32,7 +32,10 @@
     if (err) return;
     assert(data != nil);
     NSArray *s = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    [controller addObjects:s];
+    for (Song *song in s) {
+      if ([songs indexOfObject:song] == NSNotFound)
+        [controller addObject:song];
+    }
     reader = nil;
   }];
   [reader start];

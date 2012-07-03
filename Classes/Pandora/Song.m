@@ -80,4 +80,8 @@
           containerSpecifier:nil key:@"songs" name:[self title]];
 }
 
+- (BOOL) isEqual:(id)object {
+  return [token isEqual:[object token]];
+}
+
 @end
