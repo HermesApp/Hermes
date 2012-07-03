@@ -34,5 +34,6 @@
 
 + (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;
+- (BOOL) isEqual:(id)other;
 
 @end
