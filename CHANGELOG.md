@@ -4,6 +4,8 @@
 
 * [added] New UI for viewing song history in a drawer instead of a popup
 * [added] Stations can now be created by genre as well as by seed
+* [added] Button in history view to view the lyrics of a song
+* [fixed] Disliking the current song in the history skips it and moves on
 
 # Version 1.1.6 (6/17/12)
 
