@@ -48,13 +48,13 @@ BOOL playOnStart = YES;
 
   [center
     addObserver:self
-    selector:@selector(songRated:)
+    selector:@selector(hideSpinner)
     name:@"hermes.song-rated"
     object:[[NSApp delegate] pandora]];
 
   [center
     addObserver:self
-    selector:@selector(songTired:)
+    selector:@selector(hideSpinner)
     name:@"hermes.song-tired"
     object:[[NSApp delegate] pandora]];
 
@@ -145,18 +145,6 @@ BOOL playOnStart = YES;
   }
 
   return [NSKeyedArchiver archiveRootObject:[self playing] toFile:path];
-}
-
-- (void) songRated: (NSNotification*) not {
-  Song *song = [[not userInfo] objectForKey:@"song"];
-  if (song) {
-    [SCROBBLER setPreference:song loved:([[song nrating] intValue] == 1)];
-  }
-  [self hideSpinner];
-}
-
-- (void) songTired: (NSNotification*) not {
-  [self hideSpinner];
 }
 
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */

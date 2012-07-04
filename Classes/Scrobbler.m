@@ -36,6 +36,11 @@
        selector:@selector(songPlayed:)
            name:@"song.playing"
          object:nil];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(songRated:)
+           name:@"hermes.song-rated"
+         object:nil];
   return self;
 }
 
@@ -91,6 +96,16 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   Song *playing = [station playing];
   if (playing != nil) {
     [self scrobble:playing state:NewSong];
+  }
+}
+
+/**
+ * @brief Callback for when a song is rated
+ */
+- (void) songRated:(NSNotification*) not {
+  Song *song = [[not userInfo] objectForKey:@"song"];
+  if (song) {
+    [self setPreference:song loved:([[song nrating] intValue] == 1)];
   }
 }
 

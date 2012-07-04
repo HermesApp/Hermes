@@ -103,6 +103,10 @@
   [[self pandora] rateSong:s as:NO];
   [like setEnabled:YES];
   [dislike setEnabled:NO];
+  PlaybackController *playback = [[NSApp delegate] playback];
+  if ([[playback playing] playing] == s) {
+    [playback next:nil];
+  }
 }
 
 - (IBAction)gotoSong:(id)sender {
