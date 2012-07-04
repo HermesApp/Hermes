@@ -1,6 +1,6 @@
-# Version 1.1.7 (unreleased)
+# Version 1.1.7 (7/4/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.6...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.6...v1.1.7)
 
 * [added] New UI for viewing song history in a drawer instead of a popup
 * [added] Stations can now be created by genre as well as by seed
