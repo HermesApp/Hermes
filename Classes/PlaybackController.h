@@ -34,6 +34,8 @@
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;
 
+//- (void) applicationOpened;
+
 - (void) reset;
 - (void) playStation: (Station*) station;
 - (BOOL) saveState;

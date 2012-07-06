@@ -39,12 +39,18 @@ BOOL playOnStart = YES;
   }
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-  progressUpdateTimer = [NSTimer
-    scheduledTimerWithTimeInterval:.3
-    target:self
-    selector:@selector(updateProgress:)
-    userInfo:nil
-    repeats:YES];
+  progressUpdateTimer = nil;
+
+  [center addObserver:self
+             selector:@selector(windowClosing)
+                 name:NSWindowWillCloseNotification
+               object:[[NSApp delegate] window]];
+
+  [center addObserver:self
+             selector:@selector(windowOpening)
+                 name:NSWindowDidBecomeKeyNotification
+               object:[[NSApp delegate] window]];
+  [self windowOpening];
 
   [center
     addObserver:self
@@ -70,6 +76,22 @@ BOOL playOnStart = YES;
      name:@"song.playing"
      object:nil];
   return self;
+}
+
+/* Don't run the timer when the application is closed */
+- (void) windowClosing {
+  [progressUpdateTimer invalidate];
+  progressUpdateTimer = nil;
+}
+
+- (void) windowOpening {
+  if (progressUpdateTimer != nil) return;
+  progressUpdateTimer = [NSTimer
+    scheduledTimerWithTimeInterval:.3
+    target:self
+    selector:@selector(updateProgress:)
+    userInfo:nil
+    repeats:YES];
 }
 
 /* see https://github.com/nevyn/SPMediaKeyTap */
