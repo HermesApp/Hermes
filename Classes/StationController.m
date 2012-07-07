@@ -123,8 +123,21 @@
   adislikes = [info objectForKey:@"dislikes"];
   [deleteFeedback setEnabled:TRUE];
   seeds = [info objectForKey:@"seeds"];
-  [seedAdd setEnabled:TRUE];
-  [seedDel setEnabled:TRUE];
+  if ([cur_station allowAddMusic]) {
+    [seedAdd setEnabled:TRUE];
+    [seedDel setEnabled:TRUE];
+    [seedSearch setEnabled:TRUE];
+    [seedAdd setToolTip:@""];
+    [seedDel setToolTip:@""];
+    [seedSearch setToolTip:@""];
+  } else {
+    [seedAdd setEnabled:NO];
+    [seedDel setEnabled:NO];
+    [seedSearch setEnabled:NO];
+    [seedAdd setToolTip:@"Cannot add seeds to this station"];
+    [seedDel setToolTip:@"Cannot modify the seeds of this station"];
+    [seedSearch setToolTip:@"Cannot add seeds to this station"];
+  }
   [likes reloadData];
   [dislikes reloadData];
   [seedsCurrent reloadData];
