@@ -133,6 +133,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 }
 
 + (AudioStreamer*) streamWithURL:(NSURL*)url{
+  assert(url != nil);
   AudioStreamer *stream = [[AudioStreamer alloc] init];
   stream->url = url;
   stream->bufferCnt  = kDefaultNumAQBufs;
@@ -502,25 +503,50 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 // returns a file type hint that can be passed to the AudioFileStream
 //
 + (AudioFileTypeID)hintForFileExtension:(NSString *)fileExtension {
-  AudioFileTypeID fileTypeHint = kAudioFileAAC_ADTSType;
   if ([fileExtension isEqual:@"mp3"]) {
-    fileTypeHint = kAudioFileMP3Type;
+    return kAudioFileMP3Type;
   } else if ([fileExtension isEqual:@"wav"]) {
-    fileTypeHint = kAudioFileWAVEType;
+    return kAudioFileWAVEType;
   } else if ([fileExtension isEqual:@"aifc"]) {
-    fileTypeHint = kAudioFileAIFCType;
+    return kAudioFileAIFCType;
   } else if ([fileExtension isEqual:@"aiff"]) {
-    fileTypeHint = kAudioFileAIFFType;
+    return kAudioFileAIFFType;
   } else if ([fileExtension isEqual:@"m4a"]) {
-    fileTypeHint = kAudioFileM4AType;
+    return kAudioFileM4AType;
   } else if ([fileExtension isEqual:@"mp4"]) {
-    fileTypeHint = kAudioFileMPEG4Type;
+    return kAudioFileMPEG4Type;
   } else if ([fileExtension isEqual:@"caf"]) {
-    fileTypeHint = kAudioFileCAFType;
+    return kAudioFileCAFType;
   } else if ([fileExtension isEqual:@"aac"]) {
-    fileTypeHint = kAudioFileAAC_ADTSType;
+    return kAudioFileAAC_ADTSType;
   }
-  return fileTypeHint;
+  return 0;
+}
+
+/**
+ * @brief Guess the file type based on the listed MIME type in the http response
+ *
+ * Code from:
+ * https://github.com/DigitalDJ/AudioStreamer/blob/master/Classes/AudioStreamer.m
+ */
++ (AudioFileTypeID) hintForMIMEType:(NSString*)mimeType {
+  if ([mimeType isEqual:@"audio/mpeg"]) {
+    return kAudioFileMP3Type;
+  } else if ([mimeType isEqual:@"audio/x-wav"]) {
+    return kAudioFileWAVEType;
+  } else if ([mimeType isEqual:@"audio/x-aiff"]) {
+    return kAudioFileAIFFType;
+  } else if ([mimeType isEqual:@"audio/x-m4a"]) {
+    return kAudioFileM4AType;
+  } else if ([mimeType isEqual:@"audio/mp4"]) {
+    return kAudioFileMPEG4Type;
+  } else if ([mimeType isEqual:@"audio/x-caf"]) {
+    return kAudioFileCAFType;
+  } else if ([mimeType isEqual:@"audio/aac"] ||
+             [mimeType isEqual:@"audio/aacp"]) {
+    return kAudioFileAAC_ADTSType;
+  }
+  return 0;
 }
 
 /**
@@ -547,7 +573,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
      remote server */
   if (fileLength > 0 && seekByteOffset > 0) {
    NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
-                                              seekByteOffset, fileLength];
+                                              seekByteOffset, fileLength - 1];
     CFHTTPMessageSetHeaderFieldValue(message,
                                      CFSTR("Range"),
                                      (__bridge CFStringRef) str);
@@ -703,12 +729,21 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   /* If we haven't yet opened up a file stream, then do so now */
   if (!audioFileStream) {
     /* If a file type wasn't specified, we have to guess */
-    AudioFileTypeID fileTypeHint = fileType != 0 ? fileType :
-      [AudioStreamer hintForFileExtension:[[url path] pathExtension]];
+    if (fileType == 0) {
+      fileType = [AudioStreamer hintForMIMEType:
+                    [httpHeaders objectForKey:@"Content-Type"]];
+      if (fileType == 0) {
+        fileType = [AudioStreamer hintForFileExtension:
+                      [[url path] pathExtension]];
+        if (fileType == 0) {
+          fileType = kAudioFileMP3Type;
+        }
+      }
+    }
 
     // create an audio file stream parser
     err = AudioFileStreamOpen((__bridge void*) self, MyPropertyListenerProc,
-                              MyPacketsProc, fileTypeHint, &audioFileStream);
+                              MyPacketsProc, fileType, &audioFileStream);
     CHECK_ERR(err, AS_FILE_STREAM_OPEN_FAILED);
   }
 
@@ -796,30 +831,19 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
       [self failWithErrorCode:AS_AUDIO_QUEUE_FLUSH_FAILED];
       return -1;
     }
-    err = AudioQueueStop(audioQueue, false);
-    if (err) {
-      [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
-      return -1;
-    }
   }
 
-  /* The inuse array is also managed by a separate AudioQueue internal thread,
-     so we need to synchronize around unscheduling the read stream to ensure
-     that our state is always coherent */
-  @synchronized(self) {
-    if (inuse[fillBufferIndex]) {
-      LOG(@"waiting for buffer %d", fillBufferIndex);
-      if (!bufferInfinite) {
-        CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
-                                          kCFRunLoopCommonModes);
-        /* Make sure we don't have ourselves marked as rescheduled */
-        unscheduled = YES;
-        rescheduled = NO;
-      }
-      waitingOnBuffer = true;
-      return 0;
-
+  if (inuse[fillBufferIndex]) {
+    LOG(@"waiting for buffer %d", fillBufferIndex);
+    if (!bufferInfinite) {
+      CFReadStreamUnscheduleFromRunLoop(stream, CFRunLoopGetCurrent(),
+                                        kCFRunLoopCommonModes);
+      /* Make sure we don't have ourselves marked as rescheduled */
+      unscheduled = YES;
+      rescheduled = NO;
     }
+    waitingOnBuffer = true;
+    return 0;
   }
   return 1;
 }
@@ -839,7 +863,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   // create the audio queue
   err = AudioQueueNewOutput(&asbd, MyAudioQueueOutputCallback,
-                            (__bridge void*) self, NULL, NULL, 0, &audioQueue);
+                            (__bridge void*) self, CFRunLoopGetCurrent(), NULL,
+                            0, &audioQueue);
   CHECK_ERR(err, AS_AUDIO_QUEUE_CREATION_FAILED);
 
   // start the queue if it has not been started already
@@ -1153,9 +1178,8 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
                               buffer:(AudioQueueBufferRef)inBuffer {
   /* we're only registered for one audio queue... */
   assert(inAQ == audioQueue);
-  /* Sanity check to make sure we're on one of the AudioQueue's internal threads
-     for processing data */
-  assert([NSThread currentThread] != [NSThread mainThread]);
+  /* Sanity check to make sure we're on the right thread */
+  assert([NSThread currentThread] == [NSThread mainThread]);
 
   /* Figure out which buffer just became free, and it had better damn well be
      one of our own buffers */
@@ -1168,27 +1192,23 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   LOG(@"buffer %d finished", idx);
 
-  // signal waiting thread that the buffer is free.
-  @synchronized(self) {
-    inuse[idx] = false;
-    buffersUsed--;
-    if (buffersUsed == 0 && queued_head == NULL && stream != nil &&
-        CFReadStreamGetStatus(stream) == kCFStreamStatusAtEnd) {
-      assert(!waitingOnBuffer);
-      [self performSelectorOnMainThread:@selector(setStateObj:)
-                             withObject:[NSNumber numberWithInt:AS_DONE]
-                          waitUntilDone:NO];
-    } else if (waitingOnBuffer) {
-      waitingOnBuffer = false;
-      [self performSelectorOnMainThread:@selector(enqueueCachedData)
-                             withObject:nil
-                          waitUntilDone:NO];
-    }
-  }
-}
+  /* Signal the buffer is no longer in use */
+  inuse[idx] = false;
+  buffersUsed--;
 
-- (void) setStateObj:(NSNumber*) num {
-  [self setState:[num intValue]];
+  /* If there is absolutely no more data which will ever come into the stream,
+   * then we're done with the audio */
+  if (buffersUsed == 0 && queued_head == NULL && stream != nil &&
+      CFReadStreamGetStatus(stream) == kCFStreamStatusAtEnd) {
+    assert(!waitingOnBuffer);
+    [self setState:AS_DONE];
+
+  /* Otherwise we just opened up a buffer so try to fill it with some cached
+   * data if there is any available */
+  } else if (waitingOnBuffer) {
+    waitingOnBuffer = false;
+    [self enqueueCachedData];
+  }
 }
 
 //
@@ -1202,19 +1222,12 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 //
 - (void)handlePropertyChangeForQueue:(AudioQueueRef)inAQ
                           propertyID:(AudioQueuePropertyID)inID {
-  /* Sanity check to make sure we're on one of the AudioQueue's internal threads
-     for processing data */
-  assert([NSThread currentThread] != [NSThread mainThread]);
+  /* Sanity check to make sure we're on the expected thread */
+  assert([NSThread currentThread] == [NSThread mainThread]);
   /* We only asked for one property, so the audio queue had better damn well
      only tell us about this property */
   assert(inID == kAudioQueueProperty_IsRunning);
 
-  [self performSelectorOnMainThread:@selector(queueRunningChanged)
-                         withObject:nil
-                      waitUntilDone:NO];
-}
-
-- (void) queueRunningChanged {
   if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
     [self setState:AS_PLAYING];
   }

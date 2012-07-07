@@ -118,11 +118,9 @@ struct queued_packet;
  *
  * This final stage is also implemented by Apple, and receives all of the full
  * buffers of data from the AudioFileStream's parsed packets. The implementation
- * manages its own set of threads, and callbacks are invoked on the internal
- * threads, not the main thread. The two callbacks that the audio stream is
- * interested in are playback state changing and audio buffers being freed. In
- * both cases, a message is queued for delivery on the main thread to prevent
- * synchronization issues.
+ * manages its own set of threads, but callbacks are invoked on the main thread.
+ * The two callbacks that the audio stream is interested in are playback state
+ * changing and audio buffers being freed.
  *
  * When a buffer is freed, then it is marked as so, and if the stream was
  * waiting for a buffer to be freed a message to empty the queue as much as
@@ -322,10 +320,13 @@ struct queued_packet;
 /**
  * The file type of this audio stream
  *
- * This is an optional parameter. If not specified, then the file type will be
- * attempted to be inferred from the extension on the url specified. If your URL
- * doesn't conform to what AudioStreamer internally detects, then use this to
- * explicitly mark the file type. If marked, then no inferring is done.
+ * This is an optional parameter. If not specified, then then the file type will
+ * be guessed. First, the MIME type of the response is used to guess the file
+ * type, and if that fails the extension on the url is used. If that fails as
+ * well, then the default is an MP3 stream.
+ *
+ * If this property is set, then no inferring is done and that file type is
+ * always used.
  *
  * Default: (guess)
  */
