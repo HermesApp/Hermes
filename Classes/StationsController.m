@@ -6,6 +6,7 @@
 #import "PreferencesController.h"
 #import "StationController.h"
 #import "StationsController.h"
+#import "HermesAppDelegate.h"
 
 @implementation StationsController
 
@@ -436,7 +437,8 @@
 - (IBAction)editSelected:(id)sender {
   Station *s = [self selectedStation];
   if (s == nil || [[s name] isEqualToString: @"QuickMix"]) return;
-  [[[NSApp delegate] station] editStation: s];
+  StationController *c = [(HermesAppDelegate*)[NSApp delegate] station];
+  [c editStation:s];
 }
 
 @end

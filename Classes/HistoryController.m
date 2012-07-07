@@ -87,11 +87,12 @@
   return [[NSApp delegate] pandora];
 }
 
-- (void) updateThumbs {
+- (void) selectionChanged {
   Song* s = [self selectedItem];
   [like setEnabled:NO];
   [dislike setEnabled:NO];
   if (s == nil) return;
+  if ([[s station] shared]) return;
 
   [like setEnabled:[[s nrating] intValue] != 1];
   [dislike setEnabled:[[s nrating] intValue] != -1];

@@ -5,7 +5,7 @@
 @implementation Song
 
 @synthesize artist, title, album, highUrl, stationId, nrating,
-  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl, stationToken;
+  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl, station;
 
 - (id) initWithCoder: (NSCoder *)coder {
   if ((self = [super init])) {
@@ -22,7 +22,6 @@
     [self setArtistUrl:[coder decodeObjectForKey:@"artistUrl"]];
     [self setTitleUrl:[coder decodeObjectForKey:@"titleUrl"]];
     [self setToken:[coder decodeObjectForKey:@"token"]];
-    [self setStationToken:[coder decodeObjectForKey:@"stationToken"]];
   }
   return self;
 }
@@ -60,7 +59,6 @@
   [info setValue: artistUrl forKey:@"artistUrl"];
   [info setValue: titleUrl forKey:@"titleUrl"];
   [info setValue: token forKey:@"token"];
-  [info setValue: stationToken forKey:@"stationToken"];
   return info;
 }
 

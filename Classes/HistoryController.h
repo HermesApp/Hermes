@@ -33,7 +33,7 @@
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index;
 - (void) removeObjectFromSongsAtIndex:(NSUInteger)index;
 
-- (void) updateThumbs;
+- (void) selectionChanged;
 - (IBAction) likeSelected:(id)sender;
 - (IBAction) dislikeSelected:(id)sender;
 - (IBAction) gotoArtist:(id)sender;

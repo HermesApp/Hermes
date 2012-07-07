@@ -1,3 +1,5 @@
+@class Station;
+
 @interface Song : NSObject <NSCoding> {
   NSString *artist;
   NSString *title;
@@ -13,7 +15,6 @@
   NSString *highUrl;
   NSString *medUrl;
   NSString *lowUrl;
-  NSString *stationToken;
 }
 
 @property (retain) NSString *artist;
@@ -30,7 +31,7 @@
 @property (retain) NSString *highUrl;
 @property (retain) NSString *medUrl;
 @property (retain) NSString *lowUrl;
-@property (retain) NSString *stationToken;
+@property (retain) Station *station;
 
 + (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;

@@ -30,6 +30,9 @@
     [self setVolume:[aDecoder decodeFloatForKey:@"volume"]];
     lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
+    for (Song *s in songs) {
+      [s setStation:self];
+    }
   }
   return self;
 }
