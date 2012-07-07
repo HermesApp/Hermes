@@ -18,8 +18,6 @@
 @class SPMediaKeyTap;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
-  Pandora *pandora;
-
   /* Generic loading view */
   IBOutlet NSView *loadingView;
   IBOutlet NSProgressIndicator *loadingIcon;
@@ -31,31 +29,20 @@
   PandoraRequest *lastRequest;
   Station *lastStationErr;
 
-  IBOutlet NSWindow *window;
   IBOutlet NSWindow *newStationSheet;
   IBOutlet NSToolbarItem *drawerToggle;
-
-  /* Objects */
-  IBOutlet StationsController *stations;
-  IBOutlet AuthController *auth;
-  IBOutlet PlaybackController *playback;
-  IBOutlet HistoryController *history;
-  IBOutlet StationController *station;
-  IBOutlet Growler *growler;
-  IBOutlet Scrobbler *scrobbler;
-  IBOutlet SPMediaKeyTap *mediaKeyTap;
 }
 
-@property (readonly) NSWindow *window;
-@property (readonly) StationsController *stations;
-@property (readonly) HistoryController *history;
-@property (retain) AuthController *auth;
-@property (retain) PlaybackController *playback;
-@property (retain) StationController *station;
-@property (retain) Pandora *pandora;
-@property (retain) Growler *growler;
-@property (retain) Scrobbler *scrobbler;
-@property (retain) SPMediaKeyTap *mediaKeyTap;
+@property Pandora *pandora;
+@property IBOutlet NSWindow *window;
+@property IBOutlet StationsController *stations;
+@property IBOutlet HistoryController *history;
+@property IBOutlet AuthController *auth;
+@property IBOutlet PlaybackController *playback;
+@property IBOutlet StationController *station;
+@property IBOutlet Growler *growler;
+@property IBOutlet Scrobbler *scrobbler;
+@property IBOutlet SPMediaKeyTap *mediaKeyTap;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;

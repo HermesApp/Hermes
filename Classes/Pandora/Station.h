@@ -11,22 +11,18 @@
   double volume;
 
   NSInteger tries;
-  NSString *name;
-  NSString *stationId;
-  NSString *token;
   NSMutableArray *songs;
   Pandora *radio;
   AudioStreamer *stream;
-  Song *playing;
 }
 
-@property (retain) NSString *name;
-@property (retain) NSString *token;
-@property (retain) NSString *stationId;
-@property (retain) Song *playing;
-@property (readwrite) BOOL shared;
-@property (readwrite) BOOL allowRename;
-@property (readwrite) BOOL allowAddMusic;
+@property NSString *name;
+@property NSString *token;
+@property NSString *stationId;
+@property Song *playing;
+@property BOOL shared;
+@property BOOL allowRename;
+@property BOOL allowAddMusic;
 
 - (void) next;
 - (void) retry:(BOOL)countTries;

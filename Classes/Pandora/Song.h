@@ -1,37 +1,22 @@
 @class Station;
 
-@interface Song : NSObject <NSCoding> {
-  NSString *artist;
-  NSString *title;
-  NSString *album;
-  NSString *art;
-  NSString *stationId;
-  NSNumber *nrating;
-  NSString *albumUrl;
-  NSString *artistUrl;
-  NSString *titleUrl;
-  NSString *token;
+@interface Song : NSObject <NSCoding>
 
-  NSString *highUrl;
-  NSString *medUrl;
-  NSString *lowUrl;
-}
+@property NSString *artist;
+@property NSString *title;
+@property NSString *album;
+@property NSString *art;
+@property NSString *stationId;
+@property NSNumber *nrating;
+@property NSString *albumUrl;
+@property NSString *artistUrl;
+@property NSString *titleUrl;
+@property NSString *token;
 
-@property (retain) NSString *artist;
-@property (retain) NSString *title;
-@property (retain) NSString *album;
-@property (retain) NSString *art;
-@property (retain) NSString *stationId;
-@property (retain) NSNumber *nrating;
-@property (retain) NSString *albumUrl;
-@property (retain) NSString *artistUrl;
-@property (retain) NSString *titleUrl;
-@property (retain) NSString *token;
-
-@property (retain) NSString *highUrl;
-@property (retain) NSString *medUrl;
-@property (retain) NSString *lowUrl;
-@property (retain) Station *station;
+@property NSString *highUrl;
+@property NSString *medUrl;
+@property NSString *lowUrl;
+@property Station *station;
 
 + (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;

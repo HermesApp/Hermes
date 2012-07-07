@@ -11,8 +11,6 @@
 @interface HistoryController : NSObject {
   IBOutlet NSWindow *history;
   IBOutlet NSCollectionView *collection;
-  NSMutableArray *songs;
-  NSArrayController *controller;
   FileReader *reader;
 
   IBOutlet NSButton *like;
@@ -21,8 +19,8 @@
   IBOutlet NSProgressIndicator *spinner;
 }
 
-@property(retain, readwrite) IBOutlet NSMutableArray *songs;
-@property(retain, readwrite) IBOutlet NSArrayController *controller;
+@property IBOutlet NSMutableArray *songs;
+@property IBOutlet NSArrayController *controller;
 
 - (void) showDrawer;
 - (void) hideDrawer;
