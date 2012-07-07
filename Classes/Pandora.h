@@ -18,13 +18,10 @@
 typedef void(^SyncCallback)(void);
 
 /* Wrapper for search results */
-@interface SearchResult : NSObject {
-  NSString *name;
-  NSString *value;
-}
+@interface SearchResult : NSObject
 
-@property (retain) NSString *name;
-@property (retain) NSString *value;
+@property NSString *name;
+@property NSString *value;
 
 @end
 
@@ -41,7 +38,7 @@ typedef void(^SyncCallback)(void);
   uint64_t start_time;
 }
 
-@property (retain) NSArray* stations;
+@property (readonly) NSArray* stations;
 
 - (BOOL) authenticate:(NSString*)user
              password:(NSString*)password

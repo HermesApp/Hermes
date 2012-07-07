@@ -1,6 +1,3 @@
-#ifndef _API_H
-#define _API_H
-
 #define PANDORA_API_HOST @"tuner.pandora.com"
 #define PANDORA_API_PATH @"/services/json/"
 #define PANDORA_API_VERSION @"5"
@@ -10,32 +7,22 @@ typedef void(^PandoraCallback)(NSDictionary*);
 @class SBJsonParser;
 @class SBJsonWriter;
 
-@interface PandoraRequest : NSObject {
-  /* Internal metadata */
-  PandoraCallback callback;
-  BOOL tls;
-  BOOL encrypted;
+@interface PandoraRequest : NSObject
 
-  /* URL parameters */
-  NSString *method;
-  NSString *authToken;
-  NSString *partnerId;
-  NSString *userId;
+/* URL parameters */
+@property NSString *method;
+@property NSString *authToken;
+@property NSString *partnerId;
+@property NSString *userId;
 
-  /* JSON data */
-  NSMutableDictionary *request;
-  NSMutableData *response;
-}
+/* JSON data */
+@property NSMutableDictionary *request;
+@property NSMutableData *response;
 
-@property (retain, readwrite) NSString *method;
-@property (retain, readwrite) NSString *authToken;
-@property (retain, readwrite) NSString *partnerId;
-@property (retain, readwrite) NSString *userId;
-@property (retain, readwrite) NSMutableDictionary *request;
-@property (retain, readwrite) NSMutableData *response;
+/* Internal metadata */
 @property (copy) PandoraCallback callback;
-@property (readwrite) BOOL tls;
-@property (readwrite) BOOL encrypted;
+@property BOOL tls;
+@property BOOL encrypted;
 
 @end
 
@@ -51,5 +38,3 @@ typedef void(^PandoraCallback)(NSDictionary*);
 - (BOOL) sendRequest: (PandoraRequest*) request;
 
 @end
-
-#endif /* _API_H */

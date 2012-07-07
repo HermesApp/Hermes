@@ -7,6 +7,6 @@
 
 @interface HistoryView : NSView
 
-@property (readwrite) BOOL selected;
+@property BOOL selected;
 
 @end

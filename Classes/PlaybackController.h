@@ -25,12 +25,11 @@
   IBOutlet NSToolbar *toolbar;
 
   NSTimer *progressUpdateTimer;
-  Station *playing;
   BOOL scrobbleSent;
   NSString *lastImgSrc;
 }
 
-@property (retain) Station *playing;
+@property (readonly) Station *playing;
 
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;
