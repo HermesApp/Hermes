@@ -24,6 +24,9 @@
 @property (retain) NSString *token;
 @property (retain) NSString *stationId;
 @property (retain) Song *playing;
+@property (readwrite) BOOL shared;
+@property (readwrite) BOOL allowRename;
+@property (readwrite) BOOL allowAddMusic;
 
 - (void) next;
 - (void) retry:(BOOL)countTries;
