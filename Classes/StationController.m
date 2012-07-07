@@ -92,7 +92,13 @@
   [progress stopAnimation:nil];
 
   station_url = [info objectForKey:@"url"];
-  [stationName setEnabled:TRUE];
+  if ([cur_station allowRename]) {
+    [stationName setEnabled:TRUE];
+    [stationName setToolTip:@"Change the station's name"];
+  } else {
+    [stationName setEnabled:FALSE];
+    [stationName setToolTip:@"Not allowed to change the station's name"];
+  }
   [stationName setStringValue:[info objectForKey:@"name"]];
   NSArray *genres = [info objectForKey:@"genres"];
   [stationGenres setStringValue:[genres componentsJoinedByString:@", "]];
