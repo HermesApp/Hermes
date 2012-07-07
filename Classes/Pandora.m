@@ -290,7 +290,7 @@ static NSString *hierrs[] = {
       [song setAlbumUrl: [s objectForKey:@"albumDetailUrl"]];
       [song setArtistUrl: [s objectForKey:@"artistDetailUrl"]];
       [song setTitleUrl: [s objectForKey:@"songDetailUrl"]];
-      [song setStationToken:[station token]];
+      [song setStation:station];
 
       id _urls = [s objectForKey:@"additionalAudioUrl"];
       if ([_urls isKindOfClass:[NSArray class]]) {
@@ -383,7 +383,7 @@ static NSString *hierrs[] = {
   NSMutableDictionary *d = [self defaultDictionary];
   [d setObject:[song token] forKey:@"trackToken"];
   [d setObject:[NSNumber numberWithBool:liked] forKey:@"isPositive"];
-  [d setObject:[song stationToken] forKey:@"stationToken"];
+  [d setObject:[[song station] token] forKey:@"stationToken"];
 
   PandoraRequest *req = [self defaultRequest:@"station.addFeedback"];
   [req setRequest:d];
