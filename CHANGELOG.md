@@ -1,3 +1,10 @@
+# Version 1.1.8 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.7...master)
+
+* [added] The internal timer to update the GUI is now paused when the
+          application is not visible
+
 # Version 1.1.7 (7/4/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.6...v1.1.7)
