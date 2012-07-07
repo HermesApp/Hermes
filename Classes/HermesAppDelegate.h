@@ -16,6 +16,7 @@
 @class Growler;
 @class Scrobbler;
 @class SPMediaKeyTap;
+@class NetworkConnection;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
   /* Generic loading view */
@@ -33,16 +34,17 @@
   IBOutlet NSToolbarItem *drawerToggle;
 }
 
-@property Pandora *pandora;
-@property IBOutlet NSWindow *window;
-@property IBOutlet StationsController *stations;
-@property IBOutlet HistoryController *history;
-@property IBOutlet AuthController *auth;
-@property IBOutlet PlaybackController *playback;
-@property IBOutlet StationController *station;
-@property IBOutlet Growler *growler;
-@property IBOutlet Scrobbler *scrobbler;
-@property IBOutlet SPMediaKeyTap *mediaKeyTap;
+@property (readonly) Pandora *pandora;
+@property (readonly) IBOutlet NSWindow *window;
+@property (readonly) IBOutlet StationsController *stations;
+@property (readonly) IBOutlet HistoryController *history;
+@property (readonly) IBOutlet AuthController *auth;
+@property (readonly) IBOutlet PlaybackController *playback;
+@property (readonly) IBOutlet StationController *station;
+@property (readonly) IBOutlet Growler *growler;
+@property (readonly) IBOutlet Scrobbler *scrobbler;
+@property (readonly) IBOutlet SPMediaKeyTap *mediaKeyTap;
+@property (readonly) IBOutlet NetworkConnection *networkManager;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
