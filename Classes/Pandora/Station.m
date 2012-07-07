@@ -7,7 +7,7 @@
 
 @implementation Station
 
-@synthesize stationId, name, playing, token;
+@synthesize stationId, name, playing, token, shared, allowAddMusic, allowRename;
 
 - (id) init {
   songs = [NSMutableArray arrayWithCapacity:10];

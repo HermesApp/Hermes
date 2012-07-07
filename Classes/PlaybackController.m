@@ -171,8 +171,31 @@ BOOL playOnStart = YES;
 
 /* If not implemented, disabled toolbar items suddenly get re-enabled? */
 - (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
-  if (theItem != like) return YES;
+  /* most items are always enabled */
+  if (theItem != like && theItem != dislike) return YES;
+
+  /* Always fix the tooltip, just in case */
+  if (theItem == like) {
+    [theItem setToolTip:@"Like the current song"];
+  } else {
+    [theItem setToolTip:@"Dislike and skip the current song"];
+  }
+
+  /* If we're not doing anything, they're enabled */
   if (playing == nil || [playing playing] == nil) return YES;
+
+  /* Can't like/dislike on shared stations */
+  if ([playing shared]) {
+    if (theItem == like) {
+      [theItem setToolTip:@"Can't like songs on a shared station"];
+    } else {
+      [theItem setToolTip:@"Can't dislike songs on a shared station"];
+    }
+    return NO;
+  }
+
+  /* Finally it's based on ratings */
+  if (theItem == dislike) return YES;
   return [[[playing playing] nrating] intValue] == 0;
 }
 

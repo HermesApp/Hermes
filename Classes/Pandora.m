@@ -150,6 +150,9 @@ static NSString *hierrs[] = {
   [station setName:[s objectForKey:@"stationName"]];
   [station setStationId:[s objectForKey:@"stationId"]];
   [station setToken:[s objectForKey:@"stationToken"]];
+  [station setShared:[[s objectForKey:@"isShared"] boolValue]];
+  [station setAllowAddMusic:[[s objectForKey:@"allowAddMusic"] boolValue]];
+  [station setAllowRename:[[s objectForKey:@"allowRename"] boolValue]];
   [station setRadio:self];
 
   if ([[s objectForKey:@"isQuickMix"] boolValue]) {
