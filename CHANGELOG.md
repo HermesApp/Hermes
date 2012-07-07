@@ -4,6 +4,8 @@
 
 * [added] The internal timer to update the GUI is now paused when the
           application is not visible
+* [added] Respect permissions on pandora stations for liking/disliking songs,
+          renaming stations, and adding seeds to stations
 
 # Version 1.1.7 (7/4/12)
 
