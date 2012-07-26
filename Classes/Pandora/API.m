@@ -21,10 +21,11 @@
             request, method, encrypted;
 
 - (id) init {
+  if (!(self = [super init])) { return nil; }
   authToken = partnerId = userId = @"";
   response = [[NSMutableData alloc] init];
   tls = encrypted = TRUE;
-  return [super init];
+  return self;
 }
 
 @end
@@ -32,9 +33,10 @@
 @implementation API
 
 - (id) init {
+  if (!(self = [super init])) { return nil; }
   json_parser = [[SBJsonParser alloc] init];
   json_writer = [[SBJsonWriter alloc] init];
-  return [super init];
+  return self;
 }
 
 /**
