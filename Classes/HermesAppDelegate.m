@@ -67,7 +67,7 @@
   NSView *superview = [window contentView];
 
   if ([[superview subviews] count] > 0) {
-    NSView *prev_view = [[superview subviews] objectAtIndex:0];
+    NSView *prev_view = [superview subviews][0];
     if (prev_view == view) {
       return;
     }
@@ -84,26 +84,27 @@
 }
 
 - (void) migrateDefaults:(NSUserDefaults*) defaults {
-  NSMutableDictionary *map = [NSMutableDictionary dictionary];
-  [map setObject:PLEASE_BIND_MEDIA forKey:@"hermes.please-bind-media"];
-  [map setObject:PLEASE_SCROBBLE forKey:@"hermes.please-scrobble"];
-  [map setObject:PLEASE_SCROBBLE_LIKES forKey:@"hermes.please-scrobble-likes"];
-  [map setObject:ONLY_SCROBBLE_LIKED forKey:@"hermes.only-scrobble-likes"];
-  [map setObject:PLEASE_GROWL forKey:@"hermes.please-growl"];
-  [map setObject:PLEASE_GROWL_NEW forKey:@"hermes.please-growl-new"];
-  [map setObject:PLEASE_GROWL_PLAY forKey:@"hermes.please-growl-play"];
-  [map setObject:PLEASE_CLOSE_DRAWER forKey:@"hermes.please-close-drawer"];
-  [map setObject:DRAWER_WIDTH forKey:@"hermes.drawer-width"];
-  [map setObject:DESIRED_QUALITY forKey:@"hermes.audio-quality"];
-  [map setObject:LAST_PREF_PANE forKey:@"hermes.last-pref-pane"];
+  NSDictionary *map = @{
+    @"hermes.please-bind-media":        PLEASE_BIND_MEDIA,
+    @"hermes.please-scrobble":          PLEASE_SCROBBLE,
+    @"hermes.please-scrobble-likes":    PLEASE_SCROBBLE_LIKES,
+    @"hermes.only-scrobble-likes":      ONLY_SCROBBLE_LIKED,
+    @"hermes.please-growl":             PLEASE_GROWL,
+    @"hermes.please-growl-new":         PLEASE_GROWL_NEW,
+    @"hermes.please-growl-play":        PLEASE_GROWL_PLAY,
+    @"hermes.please-close-drawer":      PLEASE_CLOSE_DRAWER,
+    @"hermes.drawer-width":             DRAWER_WIDTH,
+    @"hermes.audio-quality":            DESIRED_QUALITY,
+    @"hermes.last-pref-pane":           LAST_PREF_PANE
+  };
 
   NSDictionary *d = [defaults dictionaryRepresentation];
 
   for (NSString *key in d) {
-    NSString *newKey = [map objectForKey:key];
+    NSString *newKey = map[key];
     if (newKey == nil) continue;
     [defaults setObject:[defaults objectForKey:key]
-                 forKey:[map objectForKey:key]];
+                 forKey:map[key]];
     [defaults removeObjectForKey:key];
   }
 
@@ -161,24 +162,21 @@
                   request:nil];
   }
 
-  NSMutableDictionary *app_defaults = [NSMutableDictionary dictionary];
-  [app_defaults setObject:@"0" forKey:PLEASE_SCROBBLE];
-  [app_defaults setObject:@"0" forKey:ONLY_SCROBBLE_LIKED];
-  [app_defaults setObject:@"1" forKey:PLEASE_GROWL];
-  [app_defaults setObject:@"1" forKey:PLEASE_GROWL_PLAY];
-  [app_defaults setObject:@"1" forKey:PLEASE_GROWL_NEW];
-  [app_defaults setObject:@"1" forKey:PLEASE_BIND_MEDIA];
-  [app_defaults setObject:@"0" forKey:PLEASE_CLOSE_DRAWER];
-  [app_defaults setObject:[NSNumber numberWithInt:PROXY_SYSTEM]
-                   forKey:ENABLED_PROXY];
-  [app_defaults setObject:@"0" forKey:PROXY_AUDIO];
-  [app_defaults setObject:[NSNumber numberWithInt:QUALITY_MED]
-                   forKey:DESIRED_QUALITY];
-  [app_defaults setObject:[NSNumber numberWithInt:DRAWER_STATIONS]
-                   forKey:OPEN_DRAWER];
-  [app_defaults setObject:[NSNumber numberWithInt:150]
-                   forKey:HIST_DRAWER_WIDTH];
-  [app_defaults setObject:[NSNumber numberWithInt:130] forKey:DRAWER_WIDTH];
+  NSDictionary *app_defaults = @{
+    PLEASE_SCROBBLE:            @"0",
+    ONLY_SCROBBLE_LIKED:        @"0",
+    PLEASE_GROWL:               @"1",
+    PLEASE_GROWL_PLAY:          @"1",
+    PLEASE_GROWL_NEW:           @"1",
+    PLEASE_BIND_MEDIA:          @"1",
+    PLEASE_CLOSE_DRAWER:        @"0",
+    ENABLED_PROXY:              @PROXY_SYSTEM,
+    PROXY_AUDIO:                @"0",
+    DESIRED_QUALITY:            @QUALITY_MED,
+    OPEN_DRAWER:                @DRAWER_STATIONS,
+    HIST_DRAWER_WIDTH:          @150,
+    DRAWER_WIDTH:               @130
+  };
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults registerDefaults:app_defaults];
@@ -268,8 +266,8 @@
 
 - (void) handlePandoraError: (NSNotification*) notification {
   NSDictionary *info = [notification userInfo];
-  NSString *err  = [info objectForKey:@"error"];
-  NSNumber *nscode = [info objectForKey:@"code"];
+  NSString *err      = info[@"error"];
+  NSNumber *nscode   = info[@"code"];
   NSLogd(@"error received %@", info);
   /* If this is a generic error (like a network error) it's possible to retry.
      Otherewise if it's a Pandora error (with a code listed) there's likely
@@ -292,7 +290,7 @@
           [pandora logoutNoNotify];
           [pandora authenticate:user
                        password:pass
-                        request:[info objectForKey:@"request"]];
+                        request:info[@"request"]];
         }
         return;
       }
@@ -320,7 +318,7 @@
     }
   }
 
-  lastRequest = [[notification userInfo] objectForKey:@"request"];
+  lastRequest = [notification userInfo][@"request"];
   [self setCurrentView:errorView];
   [errorLabel setStringValue:err];
   [window orderFront:nil];

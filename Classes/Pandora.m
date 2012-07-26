@@ -117,8 +117,8 @@ static NSString *hierrs[] = {
  */
 - (NSMutableDictionary*) defaultDictionary {
   NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  [d setObject:user_auth_token forKey:@"userAuthToken"];
-  [d setObject:[self syncTimeNum] forKey:@"syncTime"];
+  d[@"userAuthToken"] = user_auth_token;
+  d[@"syncTime"]      = [self syncTimeNum];
   return d;
 }
 
@@ -147,15 +147,15 @@ static NSString *hierrs[] = {
 - (Station*) parseStation: (NSDictionary*) s {
   Station *station = [[Station alloc] init];
 
-  [station setName:[s objectForKey:@"stationName"]];
-  [station setStationId:[s objectForKey:@"stationId"]];
-  [station setToken:[s objectForKey:@"stationToken"]];
-  [station setShared:[[s objectForKey:@"isShared"] boolValue]];
-  [station setAllowAddMusic:[[s objectForKey:@"allowAddMusic"] boolValue]];
-  [station setAllowRename:[[s objectForKey:@"allowRename"] boolValue]];
+  [station setName:           s[@"stationName"]];
+  [station setStationId:      s[@"stationId"]];
+  [station setToken:          s[@"stationToken"]];
+  [station setShared:        [s[@"isShared"] boolValue]];
+  [station setAllowAddMusic: [s[@"allowAddMusic"] boolValue]];
+  [station setAllowRename:   [s[@"allowRename"] boolValue]];
   [station setRadio:self];
 
-  if ([[s objectForKey:@"isQuickMix"] boolValue]) {
+  if ([s[@"isQuickMix"] boolValue]) {
     [station setName:@"QuickMix"];
   }
   return station;
@@ -182,11 +182,11 @@ static NSString *hierrs[] = {
   }
 
   NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  [d setObject: @"user"            forKey: @"loginType"];
-  [d setObject: user               forKey: @"username"];
-  [d setObject: pass               forKey: @"password"];
-  [d setObject: partner_auth_token forKey: @"partnerAuthToken"];
-  [d setObject: [self syncTimeNum] forKey: @"syncTime"];
+  d[@"loginType"]        = @"user";
+  d[@"username"]         = user;
+  d[@"password"]         = pass;
+  d[@"partnerAuthToken"] = partner_auth_token;
+  d[@"syncTime"]         = [self syncTimeNum];
 
   PandoraRequest *r = [[PandoraRequest alloc] init];
   [r setRequest: d];
@@ -194,9 +194,9 @@ static NSString *hierrs[] = {
   [r setPartnerId: partner_id];
   [r setAuthToken: partner_auth_token];
   [r setCallback: ^(NSDictionary* dict) {
-    NSDictionary *result = [dict objectForKey:@"result"];
-    user_auth_token = [result objectForKey:@"userAuthToken"];
-    user_id = [result objectForKey:@"userId"];
+    NSDictionary *result = dict[@"result"];
+    user_auth_token = result[@"userAuthToken"];
+    user_id = result[@"userId"];
 
     if (req == nil) {
       [self notify:@"hermes.authenticated" with:nil];
@@ -204,7 +204,7 @@ static NSString *hierrs[] = {
       NSLogd(@"Retrying request...");
       PandoraRequest *newreq = [self defaultRequest:[req method]];
       [newreq setRequest:[req request]];
-      [[newreq request] setObject:user_auth_token forKey:@"userAuthToken"];
+      [newreq request][@"userAuthToken"] = user_auth_token;
       [newreq setCallback:[req callback]];
       [newreq setTls:[req tls]];
       [newreq setEncrypted:[req encrypted]];
@@ -238,8 +238,8 @@ static NSString *hierrs[] = {
   [r setRequest:d];
   [r setTls:FALSE];
   [r setCallback: ^(NSDictionary* dict) {
-    NSDictionary *result = [dict objectForKey:@"result"];
-    for (NSDictionary *s in [result objectForKey:@"stations"]) {
+    NSDictionary *result = dict[@"result"];
+    for (NSDictionary *s in result[@"stations"]) {
       Station *station = [self parseStation:s];
       if (![stations containsObject:station]) {
         [stations addObject:station];
@@ -265,45 +265,44 @@ static NSString *hierrs[] = {
   NSLogd(@"Getting fragment for %@...", [station name]);
 
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:[station token] forKey:@"stationToken"];
-  [d setObject:@"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_128_MP3"
-        forKey:@"additionalAudioUrl"];
+  d[@"stationToken"] = [station token];
+  d[@"additionalAudioUrl"] = @"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_128_MP3";
 
   PandoraRequest *r = [self defaultRequest:@"station.getPlaylist"];
   [r setRequest:d];
   [r setCallback: ^(NSDictionary* dict) {
-    NSDictionary *result = [dict objectForKey:@"result"];
+    NSDictionary *result = dict[@"result"];
     NSMutableArray *songs = [NSMutableArray array];
 
-    for (NSDictionary *s in [result objectForKey:@"items"]) {
-      if ([s objectForKey:@"adToken"] != nil) continue; // Skip if this is an adToken
+    for (NSDictionary *s in result[@"items"]) {
+      if (s[@"adToken"] != nil) continue; // Skip if this is an adToken
 
       Song *song = [[Song alloc] init];
 
-      [song setArtist: [s objectForKey:@"artistName"]];
-      [song setTitle: [s objectForKey:@"songName"]];
-      [song setAlbum: [s objectForKey:@"albumName"]];
-      [song setArt: [s objectForKey:@"albumArtUrl"]];
-      [song setStationId: [s objectForKey:@"stationId"]];
-      [song setToken: [s objectForKey:@"trackToken"]];
-      [song setNrating: [s objectForKey:@"songRating"]];
-      [song setAlbumUrl: [s objectForKey:@"albumDetailUrl"]];
-      [song setArtistUrl: [s objectForKey:@"artistDetailUrl"]];
-      [song setTitleUrl: [s objectForKey:@"songDetailUrl"]];
+      [song setArtist: s[@"artistName"]];
+      [song setTitle: s[@"songName"]];
+      [song setAlbum: s[@"albumName"]];
+      [song setArt: s[@"albumArtUrl"]];
+      [song setStationId: s[@"stationId"]];
+      [song setToken: s[@"trackToken"]];
+      [song setNrating: s[@"songRating"]];
+      [song setAlbumUrl: s[@"albumDetailUrl"]];
+      [song setArtistUrl: s[@"artistDetailUrl"]];
+      [song setTitleUrl: s[@"songDetailUrl"]];
       [song setStation:station];
 
-      id _urls = [s objectForKey:@"additionalAudioUrl"];
+      id _urls = s[@"additionalAudioUrl"];
       if ([_urls isKindOfClass:[NSArray class]]) {
         NSArray *urls = _urls;
-        [song setLowUrl:[urls objectAtIndex:0]];
+        [song setLowUrl:urls[0]];
         if ([urls count] > 1) {
-          [song setMedUrl:[urls objectAtIndex:1]];
+          [song setMedUrl:urls[1]];
         } else {
           [song setMedUrl:[song lowUrl]];
           NSLog(@"bad medium format specified in request");
         }
         if ([urls count] > 2) {
-          [song setHighUrl:[urls objectAtIndex:2]];
+          [song setHighUrl:urls[2]];
         } else {
           [song setHighUrl:[song medUrl]];
           NSLog(@"bad high format specified in request");
@@ -321,7 +320,7 @@ static NSString *hierrs[] = {
     NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
                         [station token]];
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
-    [d setObject:songs forKey:@"songs"];
+    d[@"songs"] = songs;
     [self notify:name with:d];
   }];
 
@@ -339,21 +338,21 @@ static NSString *hierrs[] = {
 - (BOOL) partnerLogin: (SyncCallback) callback {
   start_time = [self time];
   NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  [d setObject:PARTNER_USERNAME forKey:@"username"];
-  [d setObject:PARTNER_PASSWORD forKey:@"password"];
-  [d setObject:PARTNER_DEVICEID forKey:@"deviceModel"];
-  [d setObject:PANDORA_API_VERSION forKey:@"version"];
-  [d setObject:[NSNumber numberWithBool:TRUE] forKey:@"includeUrls"];
+  d[@"username"] = PARTNER_USERNAME;
+  d[@"password"] = PARTNER_PASSWORD;
+  d[@"deviceModel"] = PARTNER_DEVICEID;
+  d[@"version"] = PANDORA_API_VERSION;
+  d[@"includeUrls"] = [NSNumber numberWithBool:TRUE];
 
   PandoraRequest *req = [[PandoraRequest alloc] init];
   [req setRequest: d];
   [req setMethod: @"auth.partnerLogin"];
   [req setEncrypted:FALSE];
   [req setCallback:^(NSDictionary* dict) {
-    NSDictionary *result = [dict objectForKey:@"result"];
-    partner_auth_token = [result objectForKey:@"partnerAuthToken"];
-    partner_id = [result objectForKey:@"partnerId"];
-    NSData *sync = PandoraDecrypt([result objectForKey:@"syncTime"]);
+    NSDictionary *result = dict[@"result"];
+    partner_auth_token = result[@"partnerAuthToken"];
+    partner_id = result[@"partnerId"];
+    NSData *sync = PandoraDecrypt(result[@"syncTime"]);
     const char *bytes = [sync bytes];
     sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
@@ -375,22 +374,22 @@ static NSString *hierrs[] = {
   NSLogd(@"Rating song '%@' as %d...", [song title], liked);
 
   if (liked == TRUE) {
-    [song setNrating:[NSNumber numberWithInt:1]];
+    [song setNrating:@1];
   } else {
-    [song setNrating:[NSNumber numberWithInt:-1]];
+    [song setNrating:@-1];
   }
 
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:[song token] forKey:@"trackToken"];
-  [d setObject:[NSNumber numberWithBool:liked] forKey:@"isPositive"];
-  [d setObject:[[song station] token] forKey:@"stationToken"];
+  d[@"trackToken"] = [song token];
+  d[@"isPositive"] = @(liked);
+  d[@"stationToken"] = [[song station] token];
 
   PandoraRequest *req = [self defaultRequest:@"station.addFeedback"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:song forKey:@"song"];
+    dict[@"song"] = song;
     [self notify:@"hermes.song-rated" with:dict];
   }];
   return [self sendAuthenticatedRequest:req];
@@ -409,14 +408,14 @@ static NSString *hierrs[] = {
   NSLogd(@"Getting tired of %@...", [song title]);
 
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:[song token] forKey:@"trackToken"];
+  d[@"trackToken"] = [song token];
 
   PandoraRequest *req = [self defaultRequest:@"user.sleepSong"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:song forKey:@"song"];
+    dict[@"song"] = song;
     [self notify:@"hermes.song-tired" with:dict];
   }];
 
@@ -438,13 +437,13 @@ static NSString *hierrs[] = {
   NSLogd(@"Searching for %@...", search);
 
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:search forKey:@"searchText"];
+  d[@"searchText"] = search;
 
   PandoraRequest *req = [self defaultRequest:@"music.search"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    NSDictionary *result = [d objectForKey:@"result"];
+    NSDictionary *result = d[@"result"];
     NSLogd(@"%@", result);
     NSMutableDictionary *map = [NSMutableDictionary dictionary];
 
@@ -452,23 +451,23 @@ static NSString *hierrs[] = {
     search_songs    = [NSMutableArray array];
     search_artists  = [NSMutableArray array];
 
-    [map setObject:search_songs forKey:@"Songs"];
-    [map setObject:search_artists forKey:@"Artists"];
+    map[@"Songs"] = search_songs;
+    map[@"Artists"] = search_artists;
 
-    for (NSDictionary *s in [result objectForKey:@"songs"]) {
+    for (NSDictionary *s in result[@"songs"]) {
       SearchResult *r = [[SearchResult alloc] init];
       NSString *name = [NSString stringWithFormat:@"%@ - %@",
-                          [s objectForKey:@"songName"],
-                          [s objectForKey:@"artistName"]];
+                          s[@"songName"],
+                          s[@"artistName"]];
       [r setName:name];
-      [r setValue:[s objectForKey:@"musicToken"]];
+      [r setValue:s[@"musicToken"]];
       [search_songs addObject:r];
     }
 
-    for (NSDictionary *a in [result objectForKey:@"artists"]) {
+    for (NSDictionary *a in result[@"artists"]) {
       SearchResult *r = [[SearchResult alloc] init];
-      [r setValue:[a objectForKey:@"musicToken"]];
-      [r setName:[a objectForKey:@"artistName"]];
+      [r setValue:a[@"musicToken"]];
+      [r setName:a[@"artistName"]];
       [search_artists addObject:r];
     }
 
@@ -492,16 +491,16 @@ static NSString *hierrs[] = {
  */
 - (BOOL) createStation: (NSString*)musicId {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:musicId forKey:@"musicToken"];
+  d[@"musicToken"] = musicId;
 
   PandoraRequest *req = [self defaultRequest:@"station.createStation"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    NSDictionary *result = [d objectForKey:@"result"];
+    NSDictionary *result = d[@"result"];
     Station *s = [self parseStation:result];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    [dict setObject:s forKey:@"station"];
+    dict[@"station"] = s;
     [stations addObject:s];
     [self notify:@"hermes.station-created" with:dict];
   }];
@@ -517,7 +516,7 @@ static NSString *hierrs[] = {
  */
 - (BOOL) removeStation: (NSString*)stationToken {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:stationToken forKey:@"stationToken"];
+  d[@"stationToken"] = stationToken;
 
   PandoraRequest *req = [self defaultRequest:@"station.deleteStation"];
   [req setRequest:d];
@@ -527,7 +526,7 @@ static NSString *hierrs[] = {
 
     /* Remove the station internally */
     for (i = 0; i < [stations count]; i++) {
-      if ([[[stations objectAtIndex:i] token] isEqual:stationToken]) {
+      if ([[stations[i] token] isEqual:stationToken]) {
         break;
       }
     }
@@ -554,8 +553,8 @@ static NSString *hierrs[] = {
  */
 - (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:stationToken forKey:@"stationToken"];
-  [d setObject:name forKey:@"stationName"];
+  d[@"stationToken"] = stationToken;
+  d[@"stationName"] = name;
 
   PandoraRequest *req = [self defaultRequest:@"station.renameStation"];
   [req setRequest:d];
@@ -596,39 +595,36 @@ static NSString *hierrs[] = {
  */
 - (BOOL) stationInfo:(Station *)station {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:[station token]forKey:@"stationToken"];
-  [d setObject:[NSNumber numberWithBool:TRUE]
-        forKey:@"includeExtendedAttributes"];
+  d[@"stationToken"] = [station token];
+  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
 
   PandoraRequest *req = [self defaultRequest:@"station.getStation"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
     NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    NSDictionary *result = [d objectForKey:@"result"];
+    NSDictionary *result = d[@"result"];
 
     /* General metadata */
-    [info setObject:[result objectForKey:@"stationName"] forKey:@"name"];
-    uint64_t created = [[[result objectForKey:@"dateCreated"]
-                          objectForKey:@"time"] longLongValue];
-    [info setObject:[NSDate dateWithTimeIntervalSince1970:created]
-             forKey:@"created"];
-    NSString *art = [result objectForKey:@"artUrl"];
-    if (art != nil) { [info setObject:art forKey:@"art"]; }
-    [info setObject:[result objectForKey:@"genre"] forKey:@"genres"];
-    [info setObject:[result objectForKey:@"stationDetailUrl"] forKey:@"url"];
+    info[@"name"] = result[@"stationName"];
+    uint64_t created = [result[@"dateCreated"][@"time"] longLongValue];
+    info[@"created"] = [NSDate dateWithTimeIntervalSince1970:created];
+    NSString *art = result[@"artUrl"];
+    if (art != nil) { info[@"art"] = art; }
+    info[@"genres"] = result[@"genre"];
+    info[@"url"] = result[@"stationDetailUrl"];
 
     /* Seeds */
     NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
-    NSDictionary *music = [result objectForKey:@"music"];
-    [seeds setObject:[music objectForKey:@"songs"] forKey:@"songs"];
-    [seeds setObject:[music objectForKey:@"artists"] forKey:@"artists"];
-    [info setObject:seeds forKey:@"seeds"];
+    NSDictionary *music = result[@"music"];
+    seeds[@"songs"] = music[@"songs"];
+    seeds[@"artists"] = music[@"artists"];
+    info[@"seeds"] = seeds;
 
     /* Feedback */
-    NSDictionary *feedback = [result objectForKey:@"feedback"];
-    [info setObject:[feedback objectForKey:@"thumbsUp"] forKey:@"likes"];
-    [info setObject:[feedback objectForKey:@"thumbsDown"] forKey:@"dislikes"];
+    NSDictionary *feedback = result[@"feedback"];
+    info[@"likes"] = feedback[@"thumbsUp"];
+    info[@"dislikes"] = feedback[@"thumbsDown"];
 
     [self notify:@"hermes.station-info" with:info];
   }];
@@ -645,7 +641,7 @@ static NSString *hierrs[] = {
  */
 - (BOOL) deleteFeedback: (NSString*)feedbackId {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:feedbackId forKey:@"feedbackId"];
+  d[@"feedbackId"] = feedbackId;
 
   PandoraRequest *req = [self defaultRequest:@"station.deleteFeedback"];
   [req setRequest:d];
@@ -671,14 +667,14 @@ static NSString *hierrs[] = {
  */
 - (BOOL) addSeed: (NSString*)token to:(Station*)station {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:token forKey:@"musicToken"];
-  [d setObject:[station token] forKey:@"stationToken"];
+  d[@"musicToken"] = token;
+  d[@"stationToken"] = [station token];
 
   PandoraRequest *req = [self defaultRequest:@"station.addMusic"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.seed-added" with:[d objectForKey:@"result"]];
+    [self notify:@"hermes.seed-added" with:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -694,7 +690,7 @@ static NSString *hierrs[] = {
  */
 - (BOOL) removeSeed: (NSString*)seedId {
   NSMutableDictionary *d = [self defaultDictionary];
-  [d setObject:seedId forKey:@"seedId"];
+  d[@"seedId"] = seedId;
 
   PandoraRequest *req = [self defaultRequest:@"station.deleteMusic"];
   [req setRequest:d];
@@ -720,7 +716,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.genre-stations" with:[d objectForKey:@"result"]];
+    [self notify:@"hermes.genre-stations" with:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }

@@ -23,7 +23,7 @@
 - (void) setPreferenceView:(NSView*) view as:(NSString*)name {
   NSView *container = [window contentView];
   if ([[container subviews] count] > 0) {
-    NSView *prev_view = [[container subviews] objectAtIndex:0];
+    NSView *prev_view = [container subviews][0];
     if (prev_view == view) {
       return;
     }

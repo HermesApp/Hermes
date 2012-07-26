@@ -24,6 +24,8 @@
  * Also begins fetching of session keys for the last.fm API
  */
 - (id) init {
+  if (!(self = [super init])) { return self; }
+
   engine = [[FMEngine alloc] init];
   parser = [[SBJsonParser alloc] init];
   sessionToken = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
@@ -80,8 +82,8 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
      * may need to be addressed manually, so do display a dialog here */
     if (error != nil) {
       [self error:[error localizedDescription]];
-    } else if (!handles && [object objectForKey:@"error"] != nil) {
-      [self error:[object objectForKey:@"message"]];
+    } else if (!handles && object[@"error"] != nil) {
+      [self error:object[@"message"]];
     } else {
       callback(object);
     }
@@ -103,7 +105,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @brief Callback for when a song is rated
  */
 - (void) songRated:(NSNotification*) not {
-  Song *song = [[not userInfo] objectForKey:@"song"];
+  Song *song = [not userInfo][@"song"];
   if (song) {
     [self setPreference:song loved:([[song nrating] intValue] == 1)];
   }
@@ -148,16 +150,15 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   }
 
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+  dictionary[@"sk"] = sessionToken;
+  dictionary[@"api_key"] = _LASTFM_API_KEY_;
+  dictionary[@"track"] = [song title];
+  dictionary[@"artist"] = [song artist];
+  dictionary[@"album"] = [song album];
+  dictionary[@"chosenByUser"] = @"0";
 
-  [dictionary setObject:sessionToken      forKey:@"sk"];
-  [dictionary setObject:_LASTFM_API_KEY_  forKey:@"api_key"];
-  [dictionary setObject:[song title]      forKey:@"track"];
-  [dictionary setObject:[song artist]     forKey:@"artist"];
-  [dictionary setObject:[song album]      forKey:@"album"];
-  [dictionary setObject:@"0"              forKey:@"chosenByUser"];
-
-  NSNumber *time = [NSNumber numberWithInt:[[NSDate date] timeIntervalSince1970]];
-  [dictionary setObject:time forKey:@"timestamp"];
+  NSNumber *time = @([[NSDate date] timeIntervalSince1970]);
+  dictionary[@"timestamp"] = time;
 
   /* Relevant API documentation at
    *  - http://www.last.fm/api/show/track.scrobble
@@ -191,10 +192,10 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
 
-  [dictionary setObject:sessionToken      forKey:@"sk"];
-  [dictionary setObject:_LASTFM_API_KEY_  forKey:@"api_key"];
-  [dictionary setObject:[song title]      forKey:@"track"];
-  [dictionary setObject:[song artist]     forKey:@"artist"];
+  dictionary[@"sk"] = sessionToken;
+  dictionary[@"api_key"] = _LASTFM_API_KEY_;
+  dictionary[@"track"] = [song title];
+  dictionary[@"artist"] = [song artist];
 
   /* Relevant API documentation at http://www.last.fm/api/show/track.love */
   [engine performMethod:(loved ? @"track.love" : @"track.unlove")
@@ -258,11 +259,11 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) fetchAuthToken {
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
+  dict[@"api_key"] = _LASTFM_API_KEY_;
 
   /* More info at http://www.last.fm/api/show/auth.getToken */
   ScrobblerCallback cb = ^(NSDictionary *object) {
-    authToken = [object objectForKey:@"token"];
+    authToken = object[@"token"];
 
     if (authToken == nil || [@"" isEqual:authToken]) {
       authToken = nil;
@@ -295,25 +296,25 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   }
   NSLogd(@"Fetching session token for last.fm...");
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  [dict setObject:_LASTFM_API_KEY_ forKey:@"api_key"];
-  [dict setObject:authToken forKey:@"token"];
+  dict[@"api_key"] = _LASTFM_API_KEY_;
+  dict[@"token"] = authToken;
 
   /* More info at http://www.last.fm/api/show/auth.getSession */
   ScrobblerCallback cb = ^(NSDictionary *object) {
-    if ([object objectForKey:@"error"] != nil) {
-      NSNumber *code = [object objectForKey:@"error"];
+    if (object[@"error"] != nil) {
+      NSNumber *code = object[@"error"];
 
       if ([code intValue] == 14) {
         [self needAuthorization];
       } else {
-        [self error:[object objectForKey:@"message"]];
+        [self error:object[@"message"]];
       }
       sessionToken = nil;
       return;
     }
 
-    NSDictionary *session = [object objectForKey:@"session"];
-    sessionToken = [session objectForKey:@"key"];
+    NSDictionary *session = object[@"session"];
+    sessionToken = session[@"key"];
     if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
       [self error:@"Couldn't save session token to keychain!"];
     }

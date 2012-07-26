@@ -66,7 +66,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   for (NSString *header in headers) {
     CFHTTPMessageSetHeaderFieldValue(message,
                          (__bridge CFStringRef) header,
-                         (__bridge CFStringRef) [headers objectForKey:header]);
+                         (__bridge CFStringRef) headers[header]);
   }
 
   /* Also the http body */
@@ -80,14 +80,12 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   NSString *urlstring = [[request URL] absoluteString];
   if ([urlstring rangeOfString:@"https"].location == 0) {
     NSDictionary *settings =
-    [NSDictionary dictionaryWithObjectsAndKeys:
-     (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL, kCFStreamSSLLevel,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredCertificates,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsExpiredRoots,
-     [NSNumber numberWithBool:NO], kCFStreamSSLAllowsAnyRoot,
-     [NSNumber numberWithBool:YES], kCFStreamSSLValidatesCertificateChain,
-     [NSNull null], kCFStreamSSLPeerName,
-     nil];
+    @{(id)kCFStreamSSLLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
+     (id)kCFStreamSSLAllowsExpiredCertificates: @NO,
+     (id)kCFStreamSSLAllowsExpiredRoots: @NO,
+     (id)kCFStreamSSLAllowsAnyRoot: @NO,
+     (id)kCFStreamSSLValidatesCertificateChain: @YES,
+     (id)kCFStreamSSLPeerName: [NSNull null]};
 
     CFReadStreamSetProperty(c->stream, kCFStreamPropertySSLSettings,
                             (__bridge CFDictionaryRef) settings);
