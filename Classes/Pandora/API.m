@@ -88,9 +88,9 @@
     /* If we still don't have an error, look at the JSON for an error */
     NSString *err = e == nil ? nil : [e localizedDescription];
     if (dict != nil && err == nil) {
-      NSString *stat = [dict objectForKey:@"stat"];
+      NSString *stat = dict[@"stat"];
       if ([stat isEqualToString:@"fail"]) {
-        err = [dict objectForKey:@"message"];
+        err = dict[@"message"];
       }
     }
 
@@ -107,7 +107,7 @@
     [info setValue:request forKey:@"request"];
     [info setValue:err     forKey:@"error"];
     if (dict != nil) {
-      [info setValue:[dict objectForKey:@"code"] forKey:@"code"];
+      [info setValue:dict[@"code"] forKey:@"code"];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
                                                         object:self

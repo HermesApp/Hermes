@@ -80,7 +80,7 @@
   if (selection == NSNotFound) {
     return nil;
   }
-  return [songs objectAtIndex:selection];
+  return songs[selection];
 }
 
 - (Pandora*) pandora {
@@ -176,7 +176,7 @@
                                           encoding:NSUTF8StringEncoding];
       NSDictionary *object = [parser objectWithString:s error:&err];
       if (err == nil) {
-        NSString *url = [object objectForKey:@"url"];
+        NSString *url = object[@"url"];
         [spinner setHidden:YES];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
         return;

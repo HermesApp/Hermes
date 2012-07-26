@@ -79,7 +79,7 @@
 }
 
 - (void) songsLoaded: (NSNotification*)not {
-  NSArray *more = [[not userInfo] objectForKey:@"songs"];
+  NSArray *more = [not userInfo][@"songs"];
 
   if (more != nil) {
     [songs addObjectsFromArray: more];
@@ -253,7 +253,7 @@
     return;
   }
 
-  playing = [songs objectAtIndex:0];
+  playing = songs[0];
   [songs removeObjectAtIndex:0];
 
   [self setAudioStream];

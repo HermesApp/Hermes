@@ -17,14 +17,14 @@ int savedVolume = 0;
 @implementation PlayCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-  return [NSNumber numberWithBool:[playback play]];
+  return @([playback play]);
 }
 @end
 
 @implementation PauseCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [[NSApp delegate] playback];
-  return [NSNumber numberWithBool:[playback pause]];
+  return @([playback pause]);
 }
 @end
 
@@ -112,7 +112,7 @@ int savedVolume = 0;
 
 - (NSNumber*) volume {
   PlaybackController *playback = [[NSApp delegate] playback];
-  return [NSNumber numberWithInt:[playback getIntVolume]];
+  return @([playback getIntVolume]);
 }
 
 - (void) setVolume: (NSNumber*) vol {

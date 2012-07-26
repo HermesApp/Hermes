@@ -29,17 +29,17 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   NSMutableURLRequest *request;
   NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithDictionary:params];
 
-  [tempDict setObject:method forKey:@"method"];
+  tempDict[@"method"] = method;
   if(useSig == TRUE) {
     dataSig = [self generateSignatureFromDictionary:tempDict];
 
-    [tempDict setObject:dataSig forKey:@"api_sig"];
+    tempDict[@"api_sig"] = dataSig;
     NSLogd(@"scrobble with signature: %@", tempDict);
   }
 
   #ifdef _USE_JSON_
   if(![httpMethod isEqualToString:@"POST"]) {
-    [tempDict setObject:@"json" forKey:@"format"];
+    tempDict[@"format"] = @"json";
   }
   #endif
 
@@ -71,7 +71,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(NSString *key in aMutableArray) {
-    NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
+    NSString *val = [NSString stringWithFormat:@"%@", dict[key]];
     [rawBody appendString:[NSString stringWithFormat:@"&%@=%@", key, [val urlEncoded]]];
   }
 
@@ -86,8 +86,8 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(unsigned int i = 0; i < [aMutableArray count]; i++) {
-    NSString *key = [aMutableArray objectAtIndex:i];
-    NSString *val = [NSString stringWithFormat:@"%@", [dict objectForKey:key]];
+    NSString *key = aMutableArray[i];
+    NSString *val = [NSString stringWithFormat:@"%@", dict[key]];
 
     if(i == 0) {
       [rawURL appendString:[NSString stringWithFormat:@"?%@=%@", key, [val urlEncoded]]];
@@ -108,7 +108,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
   [aMutableArray sortUsingFunction:sortAlpha context:NULL];
 
   for(NSString *key in aMutableArray) {
-    [rawSignature appendString:[NSString stringWithFormat:@"%@%@", key, [dict objectForKey:key]]];
+    [rawSignature appendString:[NSString stringWithFormat:@"%@%@", key, dict[key]]];
   }
 
   [rawSignature appendString:_LASTFM_SECRETK_];

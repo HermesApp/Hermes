@@ -43,7 +43,7 @@
     NSUInteger idx;
     while ((idx = [queue indexOfObject:url]) != NSNotFound) {
       [queue removeObjectAtIndex:idx];
-      ImageCallback cb = [cbqueue objectAtIndex:idx];
+      ImageCallback cb = cbqueue[idx];
       cb(d);
       [cbqueue removeObjectAtIndex:idx];
     }
@@ -56,8 +56,8 @@
 
 - (void) tryFetch {
   if ([queue count] == 0) return;
-  NSString *url = [queue objectAtIndex:0];
-  ImageCallback cb = [cbqueue objectAtIndex:0];
+  NSString *url = queue[0];
+  ImageCallback cb = cbqueue[0];
   [queue removeObjectAtIndex:0];
   [cbqueue removeObjectAtIndex:0];
   [self fetch:url cb:cb];

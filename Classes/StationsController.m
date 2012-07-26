@@ -65,7 +65,7 @@
     return nil;
   }
 
-  return [[[self pandora] stations] objectAtIndex:row];
+  return [[self pandora] stations][row];
 }
 
 - (void) showDrawer {
@@ -92,7 +92,7 @@
   Station *cur;
   NSArray *arr = [[self pandora] stations];
   for (i = 0; i < [arr count]; i++) {
-    cur = [arr objectAtIndex:i];
+    cur = arr[i];
 
     if ([[station stationId] isEqual: [cur stationId]]) {
       return i;
@@ -178,7 +178,7 @@
 
   NSArray *st = [[self pandora] stations];
   if ((NSUInteger) rowIndex >= [st count]) { return nil; }
-  Station *s = [st objectAtIndex: rowIndex];
+  Station *s = st[rowIndex];
   if ([[aTableColumn identifier] isEqual:@"image"]) {
     if ([s isEqual:[self playingStation]]) {
       return [NSImage imageNamed:@"volume_up"];
@@ -194,23 +194,23 @@
 - (id)outlineView:(NSOutlineView*)oview child:(NSInteger)index ofItem:(id)item {
   if (oview == results) {
     if (item == nil) {
-      return [[lastResults allKeys] objectAtIndex:index];
+      return [lastResults allKeys][index];
     }
 
-    return [[lastResults objectForKey:item] objectAtIndex:index];
+    return lastResults[item][index];
   }
 
   if (item == nil) {
-    return [genreResults objectAtIndex:index];
+    return genreResults[index];
   }
-  return [[item objectForKey:@"stations"] objectAtIndex:index];
+  return item[@"stations"][index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
   if (outlineView == results) {
-    return [lastResults objectForKey:item] != nil;
+    return lastResults[item] != nil;
   } else {
-    return [item objectForKey:@"categoryName"] != nil;
+    return item[@"categoryName"] != nil;
   }
 }
 
@@ -220,13 +220,13 @@
       return [[lastResults allKeys] count];
     }
 
-    return [[lastResults objectForKey:item] count];
+    return [lastResults[item] count];
   }
 
   if (item == nil) {
     return [genreResults count];
   }
-  return [[item objectForKey:@"stations"] count];
+  return [item[@"stations"] count];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView
@@ -239,15 +239,15 @@
     return [s name];
   }
 
-  NSString *str = [item objectForKey:@"categoryName"];
+  NSString *str = item[@"categoryName"];
   if (str != nil) return str;
-  return [item objectForKey:@"stationName"];
+  return item[@"stationName"];
 }
 
 /* ============================ Other callbacks */
 
 - (void) stationCreated: (NSNotification*) not {
-  Station *s = [[not userInfo] objectForKey:@"station"];
+  Station *s = [not userInfo][@"station"];
   [[NSApp delegate] closeNewStationSheet];
 
   [searchSpinner setHidden:YES];
@@ -291,7 +291,7 @@
   [results reloadData];
 
   for (NSString *string in [lastResults allKeys]) {
-    if ([[lastResults objectForKey:string] count] > 0) {
+    if ([lastResults[string] count] > 0) {
       [results expandItem:string];
     } else {
       [results collapseItem:string];
@@ -300,7 +300,7 @@
 }
 
 - (void) genreStationsLoaded: (NSNotification*) not {
-  genreResults = [[not userInfo] objectForKey:@"categories"];
+  genreResults = [not userInfo][@"categories"];
   [genres reloadData];
   [genreSpinner stopAnimation:nil];
   [genreSpinner setHidden:YES];
@@ -337,7 +337,7 @@
 /* Callback for when the add station button is hit */
 - (IBAction)addStation: (id)sender {
   [search setStringValue:@""];
-  lastResults = [NSDictionary dictionary];
+  lastResults = @{};
   [results reloadData];
   [[NSApp delegate] showNewStationSheet];
   [search becomeFirstResponder];
@@ -381,7 +381,7 @@
 /* Callback for creating a station by genre */
 - (IBAction) createStationGenre:(id)sender {
   id item = [genres itemAtRow:[genres selectedRow]];
-  NSString *token = [item objectForKey:@"stationToken"];
+  NSString *token = item[@"stationToken"];
   if (token == nil) return;
 
   [genreSpinner setHidden:NO];

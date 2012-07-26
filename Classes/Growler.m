@@ -41,7 +41,7 @@
                                  iconData:[image TIFFRepresentation]
                                  priority:0
                                  isSticky:NO
-                             clickContext:[NSNumber numberWithBool:YES]
+                             clickContext:@YES
                                identifier:@"Hermes"];
 }
 
@@ -50,18 +50,16 @@
  ******************************************************************************/
 
 - (NSDictionary*) registrationDictionaryForGrowl {
-  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  NSMutableArray *notifications = [NSMutableArray array];
-  [notifications addObject:@"hermes-song"];
-  [notifications addObject:@"hermes-play"];
-  [dict setObject:notifications forKey:GROWL_NOTIFICATIONS_ALL];
-  [dict setObject:notifications forKey:GROWL_NOTIFICATIONS_DEFAULT];
-
-  NSMutableDictionary *human_names = [NSMutableDictionary dictionary];
-  [human_names setObject:@"hermes-song" forKey:@"New Songs"];
-  [human_names setObject:@"hermes-play" forKey:@"Play/pause Events"];
-  [dict setObject:human_names forKey:GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES];
-  return dict;
+  NSArray *notifications = @[@"hermes-song", @"hermes-play"];
+  NSDictionary *human_names = @{
+    @"hermes-song": @"New Songs",
+    @"hermes-play": @"Play/pause Events"
+  };
+  return @{
+    GROWL_NOTIFICATIONS_ALL:                  notifications,
+    GROWL_NOTIFICATIONS_DEFAULT:              notifications,
+    GROWL_NOTIFICATIONS_HUMAN_READABLE_NAMES: human_names
+  };
 }
 
 - (void) growlNotificationWasClicked:(id)clickContext {

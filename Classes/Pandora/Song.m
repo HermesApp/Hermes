@@ -38,7 +38,7 @@
   NSData *data = PandoraDecrypt([url substringFromIndex: index]);
   strncpy(buf, [data bytes], sizeof(buf) - 1);
   buf[sizeof(buf) - 1] = 0;
-  NSString *suff = [NSString stringWithCString:buf encoding:NSASCIIStringEncoding];
+  NSString *suff = @(buf);
   NSLogd(@"%@", pref);
 
   return [pref stringByAppendingString:suff];
@@ -65,7 +65,7 @@
 - (void) encodeWithCoder: (NSCoder *)coder {
   NSDictionary *info = [self toDictionary];
   for(id key in info) {
-    [coder encodeObject:[info objectForKey:key] forKey:key];
+    [coder encodeObject:info[key] forKey:key];
   }
 }
 

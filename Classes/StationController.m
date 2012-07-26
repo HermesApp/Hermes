@@ -91,7 +91,7 @@
   [progress setHidden:TRUE];
   [progress stopAnimation:nil];
 
-  station_url = [info objectForKey:@"url"];
+  station_url = info[@"url"];
   if ([cur_station allowRename]) {
     [stationName setEnabled:TRUE];
     [stationName setToolTip:@"Change the station's name"];
@@ -99,15 +99,15 @@
     [stationName setEnabled:FALSE];
     [stationName setToolTip:@"Not allowed to change the station's name"];
   }
-  [stationName setStringValue:[info objectForKey:@"name"]];
-  NSArray *genres = [info objectForKey:@"genres"];
+  [stationName setStringValue:info[@"name"]];
+  NSArray *genres = info[@"genres"];
   [stationGenres setStringValue:[genres componentsJoinedByString:@", "]];
   [stationCreated setStringValue:
-    [NSDateFormatter localizedStringFromDate:[info objectForKey:@"created"]
+    [NSDateFormatter localizedStringFromDate:info[@"created"]
                                    dateStyle:NSDateFormatterShortStyle
                                    timeStyle:NSDateFormatterNoStyle]];
-  if ([info objectForKey:@"art"] != nil) {
-    [[ImageLoader loader] loadImageURL:[info objectForKey:@"art"]
+  if (info[@"art"] != nil) {
+    [[ImageLoader loader] loadImageURL:info[@"art"]
                               callback:^(NSData* data) {
       NSImage *image = [[NSImage alloc] initWithData:data];
       if (image == nil) {
@@ -119,10 +119,10 @@
     [art setImage:[NSImage imageNamed:@"missing-album"]];
   }
 
-  alikes = [info objectForKey:@"likes"];
-  adislikes = [info objectForKey:@"dislikes"];
+  alikes = info[@"likes"];
+  adislikes = info[@"dislikes"];
   [deleteFeedback setEnabled:TRUE];
-  seeds = [info objectForKey:@"seeds"];
+  seeds = info[@"seeds"];
   if ([cur_station allowAddMusic]) {
     [seedAdd setEnabled:TRUE];
     [seedDel setEnabled:TRUE];
@@ -171,7 +171,7 @@
   [self hideSpinner];
   [seedsResults reloadData];
   for (NSString *string in [lastResults allKeys]) {
-    if ([[lastResults objectForKey:string] count] > 0) {
+    if ([lastResults[string] count] > 0) {
       [seedsResults expandItem:string];
     } else {
       [seedsResults collapseItem:string];
@@ -202,10 +202,10 @@
   [self hideSpinner];
   NSDictionary *seed = [not userInfo];
   NSMutableArray *container;
-  if ([seed objectForKey:@"songName"] == nil) {
-    container = [seeds objectForKey:@"artists"];
+  if (seed[@"songName"] == nil) {
+    container = seeds[@"artists"];
   } else {
-    container = [seeds objectForKey:@"songs"];
+    container = seeds[@"songs"];
   }
   [container addObject:seed];
   [seedsCurrent reloadData];
@@ -225,7 +225,7 @@
       return;
     }
     NSDictionary *d = item;
-    [pandora removeSeed:[d objectForKey:@"seedId"]];
+    [pandora removeSeed:d[@"seedId"]];
     deleted++;
   }];
 
@@ -294,8 +294,8 @@
   Pandora *pandora = [[NSApp delegate] pandora];
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
-    NSDictionary *song = [feed objectAtIndex:idx];
-    [pandora deleteFeedback:[song objectForKey:@"feedbackId"]];
+    NSDictionary *song = feed[idx];
+    [pandora deleteFeedback:song[@"feedbackId"]];
   }];
 
   NSMutableArray *arr = [NSMutableArray array];
@@ -331,10 +331,10 @@
   NSArray *arr = aTableView == likes ? alikes : adislikes;
 
   if ((NSUInteger) rowIndex >= [arr count]) { return nil; }
-  NSDictionary *d = [arr objectAtIndex: rowIndex];
+  NSDictionary *d = arr[rowIndex];
   return [NSString stringWithFormat:@"%@ - %@",
-                    [d objectForKey:@"songName"],
-                    [d objectForKey:@"artistName"]];
+                    d[@"songName"],
+                    d[@"artistName"]];
 }
 
 - (void)tableViewSelectionIsChanging:(NSNotification *)aNotification {
@@ -349,14 +349,14 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
   NSDictionary *d = outlineView == seedsCurrent ? seeds : lastResults;
   if (item == nil) {
-    return [[d allKeys] objectAtIndex:index];
+    return [d allKeys][index];
   }
-  return [[d objectForKey:item] objectAtIndex:index];
+  return d[item][index];
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
   NSDictionary *d = outlineView == seedsCurrent ? seeds : lastResults;
-  return [d objectForKey:item] != nil;
+  return d[item] != nil;
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
@@ -364,7 +364,7 @@
   if (item == nil) {
     return [[d allKeys] count];
   }
-  return [[d objectForKey:item] count];
+  return [d[item] count];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView
@@ -379,8 +379,8 @@
   }
 
   NSDictionary *i = item;
-  NSString *artist = [i objectForKey:@"artistName"];
-  NSString *song   = [i objectForKey:@"songName"];
+  NSString *artist = i[@"artistName"];
+  NSString *song   = i[@"songName"];
   if (song == nil) {
     return artist;
   }
