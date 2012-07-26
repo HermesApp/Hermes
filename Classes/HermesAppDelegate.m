@@ -394,11 +394,13 @@
 - (void) historyShow {
   [history showDrawer];
   [drawerToggle setImage:[NSImage imageNamed:@"radio"]];
+  [drawerToggle setToolTip: @"Show station list"];
 }
 
 - (void) stationsShow {
   [stations showDrawer];
   [drawerToggle setImage:[NSImage imageNamed:@"history"]];
+  [drawerToggle setToolTip: @"Show song history"];
 }
 
 - (IBAction) showHistoryDrawer:(id)sender {
