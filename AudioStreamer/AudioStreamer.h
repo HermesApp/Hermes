@@ -208,8 +208,8 @@ struct queued_packet;
    * structure */
   AudioQueueBufferRef *buffers;
   AudioStreamPacketDescription packetDescs[kAQMaxPacketDescs];
-  size_t packetsFilled;         /* number of valid entries in packetDescs */
-  size_t bytesFilled;           /* bytes in use in the pending buffer */
+  UInt32 packetsFilled;         /* number of valid entries in packetDescs */
+  UInt32 bytesFilled;           /* bytes in use in the pending buffer */
   unsigned int fillBufferIndex; /* index of the pending buffer */
   BOOL *inuse;                  /* which buffers have yet to be processed */
   UInt32 buffersUsed;           /* Number of buffers in use */

@@ -572,7 +572,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
      length and the seekByteOffset will be set to know what to send to the
      remote server */
   if (fileLength > 0 && seekByteOffset > 0) {
-   NSString *str = [NSString stringWithFormat:@"bytes=%ld-%ld",
+   NSString *str = [NSString stringWithFormat:@"bytes=%lld-%lld",
                                               seekByteOffset, fileLength - 1];
     CFHTTPMessageSetHeaderFieldValue(message,
                                      CFSTR("Range"),
@@ -763,10 +763,11 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
     }
 
     if (discontinuous) {
-      err = AudioFileStreamParseBytes(audioFileStream, length, bytes,
+      err = AudioFileStreamParseBytes(audioFileStream, (UInt32) length, bytes,
                                       kAudioFileStreamParseFlag_Discontinuity);
     } else {
-      err = AudioFileStreamParseBytes(audioFileStream, length, bytes, 0);
+      err = AudioFileStreamParseBytes(audioFileStream, (UInt32) length,
+                                      bytes, 0);
     }
     CHECK_ERR(err, AS_FILE_STREAM_PARSE_BYTES_FAILED);
   }
