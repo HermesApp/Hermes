@@ -157,7 +157,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   dictionary[@"album"] = [song album];
   dictionary[@"chosenByUser"] = @"0";
 
-  NSNumber *time = @([[NSDate date] timeIntervalSince1970]);
+  NSNumber *time = @((UInt64) [[NSDate date] timeIntervalSince1970]);
   dictionary[@"timestamp"] = time;
 
   /* Relevant API documentation at
