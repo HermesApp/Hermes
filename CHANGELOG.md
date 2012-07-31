@@ -1,11 +1,14 @@
-# Version 1.1.8 (unreleased)
+# Version 1.1.8 (7/30/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.7...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.7...v1.1.8)
 
 * [added] The internal timer to update the GUI is now paused when the
           application is not visible
 * [added] Respect permissions on pandora stations for liking/disliking songs,
           renaming stations, and adding seeds to stations
+* [added] Growl notifications now indicate whether a song is liked
+* [fixed] The tooltip on the station/history toolbar item now correctly reflects
+          the current state of the button
 
 # Version 1.1.7 (7/4/12)
 
