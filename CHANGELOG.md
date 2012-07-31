@@ -1,3 +1,10 @@
+# Version 1.1.9 (7/30/12)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.8...v1.1.9)
+
+* [fixed] Last.fm scrobbling time stamps are now correct again
+* [fixed] Fix a duplication of a UI item in preferences
+
 # Version 1.1.8 (7/30/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.7...v1.1.8)
