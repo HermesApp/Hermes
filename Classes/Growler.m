@@ -27,9 +27,12 @@
   }
 
   NSString *title = [song title];
-  NSString *description = [song artist];
-  description = [description stringByAppendingString:@"\n"];
-  description = [description stringByAppendingString:[song album]];
+  NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
+                                                     [song album]];
+  if ([[song nrating] intValue] == 1) {
+    description = [NSString stringWithFormat:@"%@\n%@",
+                                             @" - liked song -", description];
+  }
 
   /* To deliver the event that a notification was clicked, the click context
      must be serializable and all that whatnot. Right now, we don't need any
