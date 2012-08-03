@@ -1,3 +1,10 @@
+# Version 1.1.10 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.9...master)
+
+* [added] Ability to sort stations list by name or date of creation
+* [fixed] Reduced memory consumption over time
+
 # Version 1.1.9 (7/30/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.8...v1.1.9)
