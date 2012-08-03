@@ -11,6 +11,6 @@
 
 @interface Growler : NSObject<GrowlApplicationBridgeDelegate>
 
-- (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL) n;
+- (void) growl:(Song*)song withImage:(NSData*)image isNew:(BOOL) n;
 
 @end
