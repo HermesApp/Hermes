@@ -19,7 +19,7 @@
   return self;
 }
 
-- (void) growl:(Song*)song withImage:(NSImage*)image isNew:(BOOL)n {
+- (void) growl:(Song*)song withImage:(NSData*)image isNew:(BOOL)n {
   if (!PREF_KEY_BOOL(PLEASE_GROWL) ||
       (n && !PREF_KEY_BOOL(PLEASE_GROWL_NEW)) ||
       (!n && !PREF_KEY_BOOL(PLEASE_GROWL_PLAY))) {
@@ -41,7 +41,7 @@
   [GrowlApplicationBridge notifyWithTitle:title
                               description:description
                          notificationName:n ? @"hermes-song" : @"hermes-play"
-                                 iconData:[image TIFFRepresentation]
+                                 iconData:image
                                  priority:0
                                  isSticky:NO
                              clickContext:@YES

@@ -27,6 +27,7 @@
   NSTimer *progressUpdateTimer;
   BOOL scrobbleSent;
   NSString *lastImgSrc;
+  NSData *lastImg;
 }
 
 @property (readonly) Station *playing;

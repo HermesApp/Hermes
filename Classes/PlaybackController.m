@@ -247,7 +247,7 @@ BOOL playOnStart = YES;
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
       [art setImage: [NSImage imageNamed:@"missing-album"]];
-      [GROWLER growl:[playing playing] withImage:[art image] isNew:YES];
+      [GROWLER growl:[playing playing] withImage:nil isNew:YES];
       [artLoading setHidden:YES];
       [artLoading stopAnimation:nil];
     } else {
@@ -255,18 +255,19 @@ BOOL playOnStart = YES;
       [artLoading setHidden:NO];
       [art setImage:nil];
       lastImgSrc = [song art];
+      lastImg = nil;
       [[ImageLoader loader] loadImageURL:lastImgSrc
                                 callback:^(NSData *data) {
-        NSImage *image, *growlImage;
+        NSImage *image = nil;
+        lastImg = data;
         if (data == nil) {
           image = [NSImage imageNamed:@"missing-album"];
-          growlImage = [NSApp applicationIconImage];
         } else {
-          image = growlImage = [[NSImage alloc] initWithData:data];
+          image = [[NSImage alloc] initWithData:data];
         }
 
         if (![playing isPaused]) {
-          [GROWLER growl:[playing playing] withImage:growlImage isNew:YES];
+          [GROWLER growl:[playing playing] withImage:data isNew:YES];
         }
         [art setImage:image];
         [artLoading setHidden:YES];
@@ -328,7 +329,7 @@ BOOL playOnStart = YES;
     return NO;
   } else {
     [playing play];
-    [GROWLER growl:[playing playing] withImage:[art image] isNew:NO];
+    [GROWLER growl:[playing playing] withImage:lastImg isNew:NO];
     return YES;
   }
 }
