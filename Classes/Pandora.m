@@ -3,6 +3,7 @@
 #import "Pandora/Crypt.h"
 #import "Pandora/Song.h"
 #import "Pandora/Station.h"
+#import "PreferencesController.h"
 
 @implementation SearchResult
 
@@ -153,6 +154,7 @@ static NSString *hierrs[] = {
   [station setShared:        [s[@"isShared"] boolValue]];
   [station setAllowAddMusic: [s[@"allowAddMusic"] boolValue]];
   [station setAllowRename:   [s[@"allowRename"] boolValue]];
+  [station setCreated:       [s[@"dateCreated"][@"time"] integerValue]];
   [station setRadio:self];
 
   if ([s[@"isQuickMix"] boolValue]) {
@@ -719,6 +721,28 @@ static NSString *hierrs[] = {
     [self notify:@"hermes.genre-stations" with:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
+}
+
+- (void) applySort:(int)sort {
+  [stations sortUsingComparator:
+  ^NSComparisonResult (Station *s1, Station *s2) {
+    NSInteger factor = 1;
+    switch (sort) {
+      case SORT_NAME_ASC: return [[s1 name] caseInsensitiveCompare:[s2 name]];
+      case SORT_NAME_DSC: return -[[s1 name] caseInsensitiveCompare:[s2 name]];
+
+      case SORT_DATE_DSC:
+        factor = -1;
+      default:
+      case SORT_DATE_ASC:
+        if ([s1 created] < [s2 created]) {
+          return factor * NSOrderedAscending;
+        } else if ([s1 created] > [s2 created]) {
+          return factor * NSOrderedDescending;
+        }
+        return NSOrderedSame;
+    }
+  }];
 }
 
 @end

@@ -25,6 +25,9 @@
   NSDictionary *lastResults;
   NSArray *genreResults;
 
+  /* Sorting the station list */
+  IBOutlet NSSegmentedControl *sort;
+
   FileReader *reader;
 }
 

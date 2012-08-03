@@ -60,6 +60,8 @@ typedef void(^SyncCallback)(void);
 - (void) logout;
 - (void) logoutNoNotify;
 
+- (void) applySort:(int)sort;
+
 + (NSString*) errorString: (int) code;
 
 @end

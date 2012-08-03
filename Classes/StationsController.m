@@ -8,6 +8,9 @@
 #import "StationsController.h"
 #import "HermesAppDelegate.h"
 
+#define SORT_NAME 0
+#define SORT_DATE 1
+
 @implementation StationsController
 
 - (id) init {
@@ -269,8 +272,19 @@
   [stationsTable reloadData];
 }
 
+- (void) applySort {
+  Pandora *p = [self pandora];
+  Station *selected = [self selectedStation];
+  [p applySort:PREF_KEY_INT(SORT_STATIONS)];
+  if (selected != nil) {
+    [self selectStation:selected];
+  }
+  [stationsTable reloadData];
+}
+
 /* Called whenever stations finish loading from pandora */
 - (void) stationsLoaded: (NSNotification*) not {
+  [self applySort];
   [stationsTable reloadData];
 
   [stationsRefreshing setHidden:YES];
@@ -280,6 +294,19 @@
     [[NSApp delegate] setCurrentView:view];
   }
   [[NSApp delegate] handleDrawer];
+
+  switch (PREF_KEY_INT(SORT_STATIONS)) {
+    case SORT_NAME_ASC:
+    case SORT_NAME_DSC:
+      [sort setSelectedSegment:SORT_NAME];
+      break;
+
+    case SORT_DATE_ASC:
+    case SORT_DATE_DSC:
+    default:
+      [sort setSelectedSegment:SORT_DATE];
+      break;
+  }
 }
 
 /* Called whenever search results are received */
@@ -439,6 +466,22 @@
   if (s == nil || [[s name] isEqualToString: @"QuickMix"]) return;
   StationController *c = [(HermesAppDelegate*)[NSApp delegate] station];
   [c editStation:s];
+}
+
+- (IBAction) toggleSort:(id)sender {
+  int cur = PREF_KEY_INT(SORT_STATIONS);
+  switch ([sender selectedSegment]) {
+    case SORT_NAME:
+      PREF_KEY_SET_INT(SORT_STATIONS, cur == SORT_NAME_ASC ? SORT_NAME_DSC :
+                                                             SORT_NAME_ASC);
+      break;
+    case SORT_DATE:
+      PREF_KEY_SET_INT(SORT_STATIONS, cur == SORT_DATE_ASC ? SORT_DATE_DSC :
+                                                             SORT_DATE_ASC);
+      break;
+  }
+  [self applySort];
+  [stationsTable reloadData];
 }
 
 @end

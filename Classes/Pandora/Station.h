@@ -19,6 +19,7 @@
 @property NSString *name;
 @property NSString *token;
 @property NSString *stationId;
+@property UInt32 created;
 @property Song *playing;
 @property BOOL shared;
 @property BOOL allowRename;

@@ -24,6 +24,7 @@
 #define PROXY_SOCKS_PORT      @"socksProxyPort"
 #define PROXY_AUDIO           @"proxyAudio"
 #define OPEN_DRAWER           @"openDrawer"
+#define SORT_STATIONS         @"sortStations"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
@@ -31,6 +32,7 @@
 #define PREFERENCES              [NSUserDefaults standardUserDefaults]
 #define PREF_KEY_VALUE(x)        [PREFERENCES valueForKey:(x)]
 #define PREF_KEY_BOOL(x)         [PREFERENCES boolForKey:(x)]
+#define PREF_KEY_INT(x)          [PREFERENCES integerForKey:(x)]
 #define PREF_KEY_SET_BOOL(x, y)  [PREFERENCES setBool:y forKey:x]
 #define PREF_KEY_SET_INT(x, y)   [PREFERENCES setInteger:y forKey:x]
 
@@ -41,6 +43,11 @@
 #define PROXY_SYSTEM 0
 #define PROXY_HTTP   1
 #define PROXY_SOCKS  2
+
+#define SORT_DATE_ASC 0
+#define SORT_DATE_DSC 1
+#define SORT_NAME_ASC 2
+#define SORT_NAME_DSC 3
 
 @interface PreferencesController : NSObject <NSWindowDelegate> {
   IBOutlet NSToolbar *toolbar;

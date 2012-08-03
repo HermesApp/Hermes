@@ -29,6 +29,7 @@
     [self setName:[aDecoder decodeObjectForKey:@"name"]];
     [self setPlaying:[aDecoder decodeObjectForKey:@"playing"]];
     [self setVolume:[aDecoder decodeFloatForKey:@"volume"]];
+    [self setCreated:[aDecoder decodeInt32ForKey:@"created"]];
     lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
     for (Song *s in songs) {
@@ -48,6 +49,7 @@
   }
   [aCoder encodeFloat:seek forKey:@"lastKnownSeekTime"];
   [aCoder encodeFloat:volume forKey:@"volume"];
+  [aCoder encodeInt32:_created forKey:@"created"];
   [aCoder encodeObject:songs forKey:@"songs"];
 }
 
