@@ -12,7 +12,7 @@
 
   NSInteger tries;
   NSMutableArray *songs;
-  Pandora *radio;
+  __unsafe_unretained Pandora *radio;
   AudioStreamer *stream;
 }
 
