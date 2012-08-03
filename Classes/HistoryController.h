@@ -7,6 +7,7 @@
 
 @class FileReader;
 @class Song;
+@class Station;
 
 @interface HistoryController : NSObject {
   IBOutlet NSWindow *history;
@@ -30,6 +31,7 @@
 
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index;
 - (void) removeObjectFromSongsAtIndex:(NSUInteger)index;
+- (void) removeSongsForStation:(Station*) station;
 
 - (void) selectionChanged;
 - (IBAction) likeSelected:(id)sender;

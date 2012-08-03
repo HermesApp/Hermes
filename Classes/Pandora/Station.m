@@ -1,6 +1,7 @@
 #import <AudioStreamer/AudioStreamer.h>
 
 #import "HermesAppDelegate.h"
+#import "HistoryController.h"
 #import "Pandora/Station.h"
 #import "PreferencesController.h"
 #import "StationsController.h"
@@ -52,6 +53,7 @@
 
 - (void) dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [[[NSApp delegate] history] removeSongsForStation:self];
   [self stop];
 }
 
