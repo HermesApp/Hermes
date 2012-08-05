@@ -8,6 +8,11 @@
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
 
+  if (NSClassFromString(@"NSUserNotification") != nil) {
+    [notificationEnabled setTitle:@""];
+    [notificationType setHidden:NO];
+  }
+
   if ([last isEqual:@"playback"]) {
     [self setPreferenceView:playback as:@"playback"];
     [toolbar setSelectedItemIdentifier:@"playback"];

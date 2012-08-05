@@ -25,6 +25,7 @@
 #define PROXY_AUDIO           @"proxyAudio"
 #define OPEN_DRAWER           @"openDrawer"
 #define SORT_STATIONS         @"sortStations"
+#define GROWL_TYPE            @"notificationType"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
@@ -49,12 +50,18 @@
 #define SORT_NAME_ASC 2
 #define SORT_NAME_DSC 3
 
+#define GROWL_TYPE_GROWL 0
+#define GROWL_TYPE_OSX   1
+
 @interface PreferencesController : NSObject <NSWindowDelegate> {
   IBOutlet NSToolbar *toolbar;
   IBOutlet NSView *general;
   IBOutlet NSView *playback;
   IBOutlet NSView *network;
   IBOutlet NSWindow *window;
+
+  IBOutlet NSButton *notificationEnabled;
+  IBOutlet NSPopUpButton *notificationType;
 }
 
 /* Selecting views */
