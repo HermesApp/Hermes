@@ -16,6 +16,11 @@
 
 - (id) init {
   [GrowlApplicationBridge setGrowlDelegate:self];
+  if (NSClassFromString(@"NSUserNotificationCenter") != nil) {
+    NSUserNotificationCenter *center =
+        [NSUserNotificationCenter defaultUserNotificationCenter];
+    [center setDelegate:self];
+  }
   return self;
 }
 
@@ -29,6 +34,22 @@
   NSString *title = [song title];
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
+
+  if (NSClassFromString(@"NSUserNotification") != nil &&
+      PREF_KEY_INT(GROWL_TYPE) == GROWL_TYPE_OSX) {
+    //Class Center = NSClassFromString(@"NSUserNotificationCenter");
+    NSUserNotification *not = [[NSUserNotification alloc] init];
+    [not setTitle:title];
+    if ([[song nrating] intValue] == 1) {
+      [not setSubtitle:@"Liked song"];
+    }
+    [not setInformativeText:description];
+    NSUserNotificationCenter *center =
+        [NSUserNotificationCenter defaultUserNotificationCenter];
+    [center scheduleNotification:not];
+    return;
+  }
+
   if ([[song nrating] intValue] == 1) {
     description = [NSString stringWithFormat:@"%@\n%@",
                                              @" - liked song -", description];
@@ -68,6 +89,16 @@
 - (void) growlNotificationWasClicked:(id)clickContext {
   [[[NSApp delegate] window] orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
+}
+
+/******************************************************************************
+ * Implementation of NSUserNotificationCenterDelegate
+ ******************************************************************************/
+
+- (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
+     shouldPresentNotification:(NSUserNotification *)notification {
+  /* always show notifications, even if the application is active */
+  return YES;
 }
 
 @end

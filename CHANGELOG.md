@@ -3,7 +3,8 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.9...master)
 
 * [added] Ability to sort stations list by name or date of creation
-* [fixed] Reduced memory consumption over time
+* [added] Receive notifications through Growl or Mountain Lion's new
+          Notification Center
 
 # Version 1.1.9 (7/30/12)
 
