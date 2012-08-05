@@ -49,15 +49,6 @@
   [songs removeObjectAtIndex:index];
 }
 
-- (void) removeSongsForStation:(Station*)station {
-  for (uint32_t i = 0; i < [songs count]; i++) {
-    if ([songs[i] station] == station) {
-      [songs removeObjectAtIndex:i];
-      i--;
-    }
-  }
-}
-
 - (void) addSong:(Song *)song {
   if (songs == nil) {
     [self loadSavedSongs];

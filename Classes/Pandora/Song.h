@@ -16,7 +16,7 @@
 @property NSString *highUrl;
 @property NSString *medUrl;
 @property NSString *lowUrl;
-@property (unsafe_unretained) Station *station;
+@property Station *station;
 
 + (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;
