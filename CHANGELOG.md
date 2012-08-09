@@ -5,6 +5,7 @@
 * [added] Ability to sort stations list by name or date of creation
 * [added] Receive notifications through Growl or Mountain Lion's new
           Notification Center
+* [fixed] Reduced memory retained over time
 
 # Version 1.1.9 (7/30/12)
 
