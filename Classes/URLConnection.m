@@ -31,6 +31,9 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   conn->cb = nil;
   [conn->timeout invalidate];
   conn->timeout = nil;
+  CFReadStreamClose(conn->stream);
+  CFRelease(conn->stream);
+  conn->stream = nil;
 }
 
 - (void) dealloc {
