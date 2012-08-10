@@ -15,9 +15,14 @@
   /* Watch for error notifications */
   [[NSNotificationCenter defaultCenter]
     addObserver:self
-    selector:@selector(playbackStateChanged:)
-    name:ASStatusChangedNotification
-    object:nil];
+       selector:@selector(playbackStateChanged:)
+           name:ASStatusChangedNotification
+         object:nil];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(bitrateReady:)
+           name:ASBitrateReadyNotification
+         object:nil];
 
   return self;
 }
@@ -153,11 +158,19 @@
   volumeSet = [stream setVolume:volume];
 }
 
-- (void) seekToLastKnownTime {
+- (BOOL) seekToLastKnownTime {
+  if (lastKnownSeekTime == 0)
+    return YES;
+  NSLogd(@"attempting seek to: %g", lastKnownSeekTime);
+  if (![stream seekToTime:lastKnownSeekTime])
+    return NO;
   retrying = NO;
-  if (lastKnownSeekTime != 0) {
-    [stream seekToTime:lastKnownSeekTime];
-  }
+  lastKnownSeekTime = 0;
+  return YES;
+}
+
+- (void)bitrateReady: (NSNotification*)notification {
+  [self seekToLastKnownTime];
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
@@ -167,7 +180,6 @@
   }
 
   int code = [stream errorCode];
-  double bitrate;
   if (code != 0) {
     /* If we've hit an error, then we want to record out current progress into
        the song. Only do this if we're not in the process of retrying to
@@ -196,17 +208,6 @@
       NSLogd(@"Error on playback stream! count:%lu, Retrying...", tries);
       NSLogd(@"error: %@", [AudioStreamer stringForErrorCode:code]);
       [self retry:YES];
-    }
-
-  /* If we were already retrying things, then we'll get a notification as soon
-     as the stream has enough packets to calculate the bit rate. This means that
-     we can correctly seek into the song. After we seek, we've successfully
-     re-synced the stream with what it was before the error happened */
-  } else if ([stream isPlaying]) {
-    NSLogd(@"is playing now");
-    if (retrying && [stream calculatedBitRate:&bitrate]) {
-      NSLogd(@"succeeded a retry, seeking now");
-      [self seekToLastKnownTime];
     }
 
   /* When the stream has finished, move on to the next song */

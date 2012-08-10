@@ -69,6 +69,7 @@ typedef enum
 } AudioStreamerErrorCode;
 
 extern NSString * const ASStatusChangedNotification;
+extern NSString * const ASBitrateReadyNotification;
 
 struct queued_packet;
 
@@ -232,6 +233,7 @@ struct queued_packet;
   double lastProgress;       /* last calculated progress point */
   UInt64 processedPacketsCount;     /* bit rate calculation utility */
   UInt64 processedPacketsSizeTotal; /* helps calculate the bit rate */
+  bool   bitrateNotification;       /* notified that the bitrate is ready */
 }
 
 /** @name Creating an audio stream */
