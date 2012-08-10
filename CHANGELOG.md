@@ -1,6 +1,6 @@
-# Version 1.1.10 (unreleased)
+# Version 1.1.10 (8/10/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.9...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.9...v1.1.10)
 
 * [added] Ability to sort stations list by name or date of creation
 * [added] Receive notifications through Growl or Mountain Lion's new
