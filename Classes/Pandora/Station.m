@@ -12,18 +12,6 @@
 - (id) init {
   songs = [NSMutableArray arrayWithCapacity:10];
 
-  /* Watch for error notifications */
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-       selector:@selector(playbackStateChanged:)
-           name:ASStatusChangedNotification
-         object:nil];
-  [[NSNotificationCenter defaultCenter]
-    addObserver:self
-       selector:@selector(bitrateReady:)
-           name:ASBitrateReadyNotification
-         object:nil];
-
   return self;
 }
 
@@ -58,7 +46,6 @@
 }
 
 - (void) dealloc {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
   [self stop];
 }
 
@@ -116,6 +103,7 @@
 }
 
 - (void) setAudioStream {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSURL *url;
 
@@ -156,21 +144,29 @@
     }
   }
   volumeSet = [stream setVolume:volume];
-}
 
-- (BOOL) seekToLastKnownTime {
-  if (lastKnownSeekTime == 0)
-    return YES;
-  NSLogd(@"attempting seek to: %g", lastKnownSeekTime);
-  if (![stream seekToTime:lastKnownSeekTime])
-    return NO;
-  retrying = NO;
-  lastKnownSeekTime = 0;
-  return YES;
+  /* Watch for error notifications */
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(playbackStateChanged:)
+           name:ASStatusChangedNotification
+         object:stream];
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
+       selector:@selector(bitrateReady:)
+           name:ASBitrateReadyNotification
+         object:stream];
 }
 
 - (void)bitrateReady: (NSNotification*)notification {
-  [self seekToLastKnownTime];
+  if ([notification object] != stream) return;
+  if (lastKnownSeekTime == 0)
+    return;
+  NSLogd(@"attempting seek to: %g", lastKnownSeekTime);
+  if (![stream seekToTime:lastKnownSeekTime])
+    return;
+  retrying = NO;
+  lastKnownSeekTime = 0;
 }
 
 - (void)playbackStateChanged: (NSNotification *)aNotification {
@@ -313,6 +309,7 @@
   nexting = YES;
   [stream stop];
   stream  = nil;
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
   playing = nil;
 }
 
