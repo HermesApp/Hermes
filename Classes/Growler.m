@@ -101,4 +101,9 @@
   return YES;
 }
 
+- (void)userNotificationCenter:(NSUserNotificationCenter *)center
+       didActivateNotification:(NSUserNotification *)notification {
+  [[[NSApp delegate] window] orderFront:nil];
+}
+
 @end
