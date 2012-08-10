@@ -54,6 +54,7 @@ typedef struct queued_packet {
 } queued_packet_t;
 
 NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
+NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 
 @interface AudioStreamer ()
 
@@ -1110,6 +1111,13 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   /* global statistics */
   processedPacketsSizeTotal += packetSize;
   processedPacketsCount++;
+  if (processedPacketsCount > BitRateEstimationMinPackets &&
+      !bitrateNotification) {
+    bitrateNotification = true;
+    [[NSNotificationCenter defaultCenter]
+          postNotificationName:ASBitrateReadyNotification
+                        object:self];
+  }
 
   // copy data to the audio queue buffer
   AudioQueueBufferRef buf = buffers[fillBufferIndex];
