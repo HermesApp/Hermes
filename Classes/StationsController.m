@@ -64,7 +64,7 @@
 - (Station*) selectedStation {
   int row = [stationsTable selectedRow];
 
-  if (row < 0) {
+  if (row < 0 || (unsigned) row >= [[[self pandora] stations] count]) {
     return nil;
   }
 

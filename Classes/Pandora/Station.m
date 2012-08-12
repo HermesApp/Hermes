@@ -22,6 +22,10 @@
     [self setPlaying:[aDecoder decodeObjectForKey:@"playing"]];
     [self setVolume:[aDecoder decodeFloatForKey:@"volume"]];
     [self setCreated:[aDecoder decodeInt32ForKey:@"created"]];
+    [self setToken:[aDecoder decodeObjectForKey:@"token"]];
+    [self setShared:[aDecoder decodeBoolForKey:@"shared"]];
+    [self setAllowAddMusic:[aDecoder decodeBoolForKey:@"allowAddMusic"]];
+    [self setAllowRename:[aDecoder decodeBoolForKey:@"allowRename"]];
     lastKnownSeekTime = [aDecoder decodeFloatForKey:@"lastKnownSeekTime"];
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
     for (Song *s in songs) {
@@ -43,6 +47,10 @@
   [aCoder encodeFloat:volume forKey:@"volume"];
   [aCoder encodeInt32:_created forKey:@"created"];
   [aCoder encodeObject:songs forKey:@"songs"];
+  [aCoder encodeObject:token forKey:@"token"];
+  [aCoder encodeBool:shared forKey:@"shared"];
+  [aCoder encodeBool:allowAddMusic forKey:@"allowAddMusic"];
+  [aCoder encodeBool:allowRename forKey:@"allowRename"];
 }
 
 - (void) dealloc {
@@ -103,7 +111,12 @@
 }
 
 - (void) setAudioStream {
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  if (stream != nil) {
+    [[NSNotificationCenter defaultCenter]
+        removeObserver:self
+                  name:nil
+                object:stream];
+  }
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSURL *url;
 
@@ -308,8 +321,13 @@
 - (void) stop {
   nexting = YES;
   [stream stop];
-  stream  = nil;
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  if (stream != nil) {
+    [[NSNotificationCenter defaultCenter]
+        removeObserver:self
+                  name:nil
+                object:stream];
+  }
+  stream = nil;
   playing = nil;
 }
 
