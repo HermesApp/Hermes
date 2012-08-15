@@ -1,3 +1,9 @@
+# Version 1.1.11 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.10...v1.1.11)
+
+* [fixed] Resume in the middle of a song across application instances fixed
+
 # Version 1.1.10 (8/10/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.9...v1.1.10)
