@@ -95,7 +95,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) songPlayed:(NSNotification*) not {
   Station *station = [not object];
-  Song *playing = [station playing];
+  Song *playing = [station playingSong];
   if (playing != nil) {
     [self scrobble:playing state:NewSong];
   }

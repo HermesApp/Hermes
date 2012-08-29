@@ -93,6 +93,8 @@
 		FA94E6ED1368E5830063860C /* FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6E71368E5830063860C /* FMEngine.m */; };
 		FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6EB1368E5830063860C /* NSString+FMEngine.m */; };
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
+		FA99E25B15E4B7EA005AB6E6 /* ASPlaylist.h in Headers */ = {isa = PBXBuildFile; fileRef = FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */; };
+		FA99E25C15E4B7EA005AB6E6 /* ASPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
 		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
@@ -268,6 +270,8 @@
 		FA94E6EB1368E5830063860C /* NSString+FMEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+FMEngine.m"; sourceTree = "<group>"; };
 		FA94E6F61368E62C0063860C /* Scrobbler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scrobbler.h; sourceTree = "<group>"; };
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scrobbler.m; sourceTree = "<group>"; };
+		FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPlaylist.h; sourceTree = "<group>"; };
+		FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPlaylist.m; sourceTree = "<group>"; };
 		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_sparkle.sh; sourceTree = "<group>"; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
@@ -584,6 +588,8 @@
 			children = (
 				FACF0183149A713700D1FB73 /* AudioStreamer.h */,
 				FACF0184149A713700D1FB73 /* AudioStreamer.m */,
+				FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */,
+				FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */,
 			);
 			path = AudioStreamer;
 			sourceTree = "<group>";
@@ -647,6 +653,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9728D8F4158C3F5300C078A4 /* AudioStreamer.h in Headers */,
+				FA99E25B15E4B7EA005AB6E6 /* ASPlaylist.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -899,6 +906,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9728D8DB158C3EE800C078A4 /* AudioStreamer.m in Sources */,
+				FA99E25C15E4B7EA005AB6E6 /* ASPlaylist.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

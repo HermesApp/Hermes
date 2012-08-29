@@ -123,7 +123,7 @@
   if (lastPlayed == nil) {
     return NO;
   }
-  Station *last = nil;
+  __block Station *last = nil;
 
   for (Station *cur in [[self pandora] stations]) {
     if ([lastPlayed isEqual: [cur stationId]]) {
@@ -145,7 +145,8 @@
         if (err == nil) {
           Station *s = [NSKeyedUnarchiver unarchiveObjectWithFile:saved_state];
           if ([last isEqual:s]) {
-            [last copyFrom:s];
+            last = s;
+            [last setRadio:[self pandora]];
           }
         }
         [self selectStation: last];

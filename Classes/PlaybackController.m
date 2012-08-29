@@ -138,7 +138,7 @@ BOOL playOnStart = YES;
   [toolbar setVisible:NO];
   if (playing) {
     [playing stop];
-    [[ImageLoader loader] cancel:[[playing playing] art]];
+    [[ImageLoader loader] cancel:[[playing playingSong] art]];
   }
   playing = nil;
   lastImgSrc = nil;
@@ -182,7 +182,7 @@ BOOL playOnStart = YES;
   }
 
   /* If we're not doing anything, they're enabled */
-  if (playing == nil || [playing playing] == nil) return YES;
+  if (playing == nil || [playing playingSong] == nil) return YES;
 
   /* Can't like/dislike on shared stations */
   if ([playing shared]) {
@@ -196,7 +196,7 @@ BOOL playOnStart = YES;
 
   /* Finally it's based on ratings */
   if (theItem == dislike) return YES;
-  return [[[playing playing] nrating] intValue] == 0;
+  return [[[playing playingSong] nrating] intValue] == 0;
 }
 
 /* Called whenever the playing stream changes state */
@@ -231,7 +231,7 @@ BOOL playOnStart = YES;
      figuring out when a track should be scrobbled */
   if (!scrobbleSent && dur > 30 && (prog * 2 > dur || prog > 4 * 60)) {
     scrobbleSent = YES;
-    [SCROBBLER scrobble:[playing playing] state:FinalStatus];
+    [SCROBBLER scrobble:[playing playingSong] state:FinalStatus];
   }
 }
 
@@ -240,14 +240,14 @@ BOOL playOnStart = YES;
  * song is playing
  */
 - (void)songPlayed: (NSNotification *)aNotification {
-  Song *song = [playing playing];
+  Song *song = [playing playingSong];
   assert(song != nil);
 
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
       [art setImage: [NSImage imageNamed:@"missing-album"]];
-      [GROWLER growl:[playing playing] withImage:nil isNew:YES];
+      [GROWLER growl:song withImage:nil isNew:YES];
       [artLoading setHidden:YES];
       [artLoading stopAnimation:nil];
     } else {
@@ -267,7 +267,7 @@ BOOL playOnStart = YES;
         }
 
         if (![playing isPaused]) {
-          [GROWLER growl:[playing playing] withImage:data isNew:YES];
+          [GROWLER growl:song withImage:data isNew:YES];
         }
         [art setImage:image];
         [artLoading setHidden:YES];
@@ -304,7 +304,7 @@ BOOL playOnStart = YES;
   }
 
   [playing stop];
-  [[ImageLoader loader] cancel:[[playing playing] art]];
+  [[ImageLoader loader] cancel:[[playing playingSong] art]];
   [[NSApp delegate] setCurrentView:playbackView];
   [toolbar setVisible:YES];
 
@@ -329,7 +329,7 @@ BOOL playOnStart = YES;
     return NO;
   } else {
     [playing play];
-    [GROWLER growl:[playing playing] withImage:lastImg isNew:NO];
+    [GROWLER growl:[playing playingSong] withImage:lastImg isNew:NO];
     return YES;
   }
 }
@@ -356,8 +356,8 @@ BOOL playOnStart = YES;
 - (IBAction)next: (id) sender {
   [art setImage:nil];
   [self showSpinner];
-  if ([playing playing] != nil) {
-    [[ImageLoader loader] cancel:[[playing playing] art]];
+  if ([playing playingSong] != nil) {
+    [[ImageLoader loader] cancel:[[playing playingSong] art]];
   }
 
   [playing next];
@@ -365,7 +365,7 @@ BOOL playOnStart = YES;
 
 /* Like button was hit */
 - (IBAction)like: (id) sender {
-  Song *playingSong = [playing playing];
+  Song *playingSong = [playing playingSong];
   if (playingSong == nil) {
     return;
   }
@@ -378,7 +378,7 @@ BOOL playOnStart = YES;
 
 /* Dislike button was hit */
 - (IBAction)dislike: (id) sender {
-  Song *playingSong = [playing playing];
+  Song *playingSong = [playing playingSong];
   if (playingSong == nil) {
     return;
   }
@@ -394,11 +394,11 @@ BOOL playOnStart = YES;
 
 /* We are tired of the currently playing song, play another */
 - (IBAction)tired: (id) sender {
-  if (playing == nil || [playing playing] == nil) {
+  if (playing == nil || [playing playingSong] == nil) {
     return;
   }
 
-  [[self pandora] tiredOfSong:[playing playing]];
+  [[self pandora] tiredOfSong:[playing playingSong]];
   [self next:sender];
 }
 
@@ -407,8 +407,8 @@ BOOL playOnStart = YES;
   [self showSpinner];
   [[NSApp delegate] setCurrentView:playbackView];
 
-  if ([playing playing] != nil) {
-    [playing retry:NO];
+  if ([playing playingSong] != nil) {
+    [playing retry];
   } else {
     [playing play];
   }
@@ -416,31 +416,31 @@ BOOL playOnStart = YES;
 
 /* Go to the song URL */
 - (IBAction)songURL: (id) sender {
-  if ([playing playing] == nil) {
+  if ([playing playingSong] == nil) {
     return;
   }
 
-  NSURL *url = [NSURL URLWithString:[[playing playing] titleUrl]];
+  NSURL *url = [NSURL URLWithString:[[playing playingSong] titleUrl]];
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
 /* Go to the artist URL */
 - (IBAction)artistURL: (id) sender {
-  if ([playing playing] == nil) {
+  if ([playing playingSong] == nil) {
     return;
   }
 
-  NSURL *url = [NSURL URLWithString:[[playing playing] artistUrl]];
+  NSURL *url = [NSURL URLWithString:[[playing playingSong] artistUrl]];
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
 /* Go to the album URL */
 - (IBAction)albumURL: (id) sender {
-  if ([playing playing] == nil) {
+  if ([playing playingSong] == nil) {
     return;
   }
 
-  NSURL *url = [NSURL URLWithString:[[playing playing] albumUrl]];
+  NSURL *url = [NSURL URLWithString:[[playing playingSong] albumUrl]];
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
