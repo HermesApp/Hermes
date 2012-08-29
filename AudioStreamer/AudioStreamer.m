@@ -589,12 +589,13 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
      length and the seekByteOffset will be set to know what to send to the
      remote server */
   if (fileLength > 0 && seekByteOffset > 0) {
-   NSString *str = [NSString stringWithFormat:@"bytes=%lld-%lld",
-                                              seekByteOffset, fileLength - 1];
+    NSString *str = [NSString stringWithFormat:@"bytes=%lld-%lld",
+                                               seekByteOffset, fileLength - 1];
     CFHTTPMessageSetHeaderFieldValue(message,
                                      CFSTR("Range"),
                                      (__bridge CFStringRef) str);
     discontinuous = YES;
+    seekByteOffset = 0;
   }
 
   stream = CFReadStreamCreateForHTTPRequest(NULL, message);
@@ -1224,7 +1225,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   if (buffersUsed == 0 && queued_head == NULL && stream != nil &&
       CFReadStreamGetStatus(stream) == kCFStreamStatusAtEnd) {
     assert(!waitingOnBuffer);
-    [self setState:AS_DONE];
+    AudioQueueStop(audioQueue, false);
 
   /* Otherwise we just opened up a buffer so try to fill it with some cached
    * data if there is any available */
@@ -1253,6 +1254,14 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   if (state_ == AS_WAITING_FOR_QUEUE_TO_START) {
     [self setState:AS_PLAYING];
+  } else {
+    UInt32 running;
+    UInt32 output = sizeof(running);
+    err = AudioQueueGetProperty(audioQueue, kAudioQueueProperty_IsRunning,
+                                &running, &output);
+    if (!err && !running && seekByteOffset == 0) {
+      [self setState:AS_DONE];
+    }
   }
 }
 
