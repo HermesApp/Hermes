@@ -244,6 +244,22 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   return state_ == AS_DONE || state_ == AS_STOPPED;
 }
 
+- (AudioStreamerDoneReason)doneReason {
+  switch (state_) {
+    case AS_STOPPED:
+      return AS_DONE_STOPPED;
+    case AS_DONE:
+      if (errorCode) {
+        return AS_DONE_ERROR;
+      } else {
+        return AS_DONE_EOF;
+      }
+    default:
+      break;
+  }
+  return AS_NOT_DONE;
+}
+
 - (BOOL) start {
   if (stream != NULL) return NO;
   assert(audioQueue == NULL);
@@ -750,7 +766,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
   CFIndex length;
   int i;
   for (i = 0;
-       i < 3 && state_ != AS_STOPPED && CFReadStreamHasBytesAvailable(stream);
+       i < 3 && ![self isDone] && CFReadStreamHasBytesAvailable(stream);
        i++) {
     length = CFReadStreamRead(stream, bytes, sizeof(bytes));
 
@@ -1040,7 +1056,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
                numberBytes:(UInt32)inNumberBytes
              numberPackets:(UInt32)inNumberPackets
         packetDescriptions:(AudioStreamPacketDescription*)inPacketDescriptions {
-  if (state_ == AS_STOPPED) return;
+  if ([self isDone]) return;
   // we have successfully read the first packests from the audio stream, so
   // clear the "discontinuous" flag
   if (discontinuous) {
@@ -1142,7 +1158,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
  * This method is enqueued for delivery when an audio buffer is freed
  */
 - (void) enqueueCachedData {
-  if (state_ == AS_STOPPED) return;
+  if ([self isDone]) return;
   assert(!waitingOnBuffer);
   assert(!inuse[fillBufferIndex]);
   assert(stream != NULL);

@@ -105,7 +105,7 @@
   [like setEnabled:YES];
   [dislike setEnabled:NO];
   PlaybackController *playback = [[NSApp delegate] playback];
-  if ([[playback playing] playing] == s) {
+  if ([[playback playing] playingSong] == s) {
     [playback next:nil];
   }
 }

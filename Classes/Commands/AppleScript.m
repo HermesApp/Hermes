@@ -168,7 +168,7 @@ int savedVolume = 0;
 
 - (Song*) currentSong {
   PlaybackController *playback = [[NSApp delegate] playback];
-  return [[playback playing] playing];
+  return [[playback playing] playingSong];
 }
 
 @end

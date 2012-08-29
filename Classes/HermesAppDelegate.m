@@ -195,7 +195,7 @@
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
   NSMenu *menu = [[NSMenu alloc] init];
   NSMenuItem *menuItem;
-  Song *song = [[playback playing] playing];
+  Song *song = [[playback playing] playingSong];
   if (song != nil) {
     [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
     [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]
@@ -336,7 +336,7 @@
       [self showLoader];
     }
   } else if (lastStationErr != nil) {
-    [lastStationErr retry:NO];
+    [lastStationErr retry];
     [playback show];
     lastStationErr = nil;
   }

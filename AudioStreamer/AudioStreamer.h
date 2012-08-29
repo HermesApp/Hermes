@@ -68,6 +68,13 @@ typedef enum
   AS_TIMED_OUT
 } AudioStreamerErrorCode;
 
+typedef enum {
+  AS_DONE_STOPPED,
+  AS_DONE_ERROR,
+  AS_DONE_EOF,
+  AS_NOT_DONE
+} AudioStreamerDoneReason;
+
 extern NSString * const ASStatusChangedNotification;
 extern NSString * const ASBitrateReadyNotification;
 
@@ -462,6 +469,14 @@ struct queued_packet;
  * @return YES if the stream is done, or NO Otherwise
  */
 - (BOOL) isDone;
+
+/**
+ * When isDone returns true, this will return the reason that the stream has
+ * been flagged as being done.
+ *
+ * @return the reason for the stream being done, or that it's not done.
+ */
+- (AudioStreamerDoneReason) doneReason;
 
 /** @name Calculated properties and modifying the stream (all can fail) */
 
