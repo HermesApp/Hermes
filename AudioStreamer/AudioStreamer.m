@@ -89,7 +89,7 @@ NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 @synthesize timeoutInterval;
 
 /* AudioFileStream callback when properties are available */
-void MyPropertyListenerProc(void *inClientData,
+static void MyPropertyListenerProc(void *inClientData,
                             AudioFileStreamID inAudioFileStream,
                             AudioFileStreamPropertyID inPropertyID,
                             UInt32 *ioFlags) {
@@ -100,7 +100,7 @@ void MyPropertyListenerProc(void *inClientData,
 }
 
 /* AudioFileStream callback when packets are available */
-void MyPacketsProc(void *inClientData, UInt32 inNumberBytes, UInt32
+static void MyPacketsProc(void *inClientData, UInt32 inNumberBytes, UInt32
                    inNumberPackets, const void *inInputData,
                    AudioStreamPacketDescription  *inPacketDescriptions) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inClientData;
@@ -112,7 +112,7 @@ void MyPacketsProc(void *inClientData, UInt32 inNumberBytes, UInt32
 
 /* AudioQueue callback notifying that a buffer is done, invoked on AudioQueue's
  * own personal threads, not the main thread */
-void MyAudioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
+static void MyAudioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
                                 AudioQueueBufferRef inBuffer) {
   AudioStreamer* streamer = (__bridge AudioStreamer*)inClientData;
   [streamer handleBufferCompleteForQueue:inAQ buffer:inBuffer];
@@ -120,14 +120,14 @@ void MyAudioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
 
 /* AudioQueue callback that a property has changed, invoked on AudioQueue's own
  * personal threads like above */
-void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ,
+static void MyAudioQueueIsRunningCallback(void *inUserData, AudioQueueRef inAQ,
                                    AudioQueuePropertyID inID) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inUserData;
   [streamer handlePropertyChangeForQueue:inAQ propertyID:inID];
 }
 
 /* CFReadStream callback when an event has occurred */
-void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
+static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
                           void* inClientInfo) {
   AudioStreamer* streamer = (__bridge AudioStreamer *)inClientInfo;
   [streamer handleReadFromStream:aStream eventType:eventType];
@@ -793,7 +793,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 // enqueueBuffer
 //
 // Called from MyPacketsProc and connectionDidFinishLoading to pass filled audio
-// bufffers (filled by MyPacketsProc) to the AudioQueue for playback. This
+// buffers (filled by MyPacketsProc) to the AudioQueue for playback. This
 // function does not return until a buffer is idle for further filling or
 // the AudioQueue is stopped.
 //
@@ -921,7 +921,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 
   /* Some audio formats have a "magic cookie" which needs to be transferred from
      the file stream to the audio queue. If any of this fails it's "OK" because
-     the stream either doesn't have a magic or error will propogate later */
+     the stream either doesn't have a magic or error will propagate later */
 
   // get the cookie size
   UInt32 cookieSize;
@@ -1058,7 +1058,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
              numberPackets:(UInt32)inNumberPackets
         packetDescriptions:(AudioStreamPacketDescription*)inPacketDescriptions {
   if ([self isDone]) return;
-  // we have successfully read the first packests from the audio stream, so
+  // we have successfully read the first packets from the audio stream, so
   // clear the "discontinuous" flag
   if (discontinuous) {
     discontinuous = false;
@@ -1192,7 +1192,7 @@ void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType eventType,
 //
 // handleBufferCompleteForQueue:buffer:
 //
-// Handles the buffer completetion notification from the audio queue
+// Handles the buffer completion notification from the audio queue
 //
 // Parameters:
 //    inAQ - the queue
