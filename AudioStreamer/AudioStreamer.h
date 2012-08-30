@@ -227,7 +227,7 @@ struct queued_packet;
   struct queued_packet *queued_head;
   struct queued_packet *queued_tail;
 
-  /* Internal meatadata about errors and state */
+  /* Internal metadata about errors and state */
   AudioStreamerState state_;
   AudioStreamerErrorCode errorCode;
   NSError *networkError;
@@ -248,7 +248,7 @@ struct queued_packet;
 /**
  * Allocate a new audio stream with the specified url
  *
- * Thre created stream has not started playback. This gives an opportunity to
+ * The created stream has not started playback. This gives an opportunity to
  * configure the rest of the stream as necessary. To start playback, send the
  * stream an explicit 'start' message.
  *
@@ -356,7 +356,7 @@ struct queued_packet;
  * locally to finish off. The next song might still be in trouble, however...
  * With this turned on, memory usage will be higher because the entire stream
  * will be downloaded as fast as possible, and the bandwidth to the remote will
- * also be consumed. Depending on the situtation, this might not be that bad of
+ * also be consumed. Depending on the situation, this might not be that bad of
  * a problem.
  *
  * Default: NO
@@ -409,7 +409,7 @@ struct queued_packet;
 
 /**
  * Stop all streams, cleaning up resources and preventing all further events
- * from ocurring.
+ * from occurring.
  *
  * This method may be invoked at any time from any point of the audio stream as
  * a signal of error happening. This method sets the state to AS_STOPPED if it
@@ -483,7 +483,7 @@ struct queued_packet;
 /**
  * Seek to a specified time in the audio stream
  *
- * This can only happen once the bit rate of the stream is konwn because
+ * This can only happen once the bit rate of the stream is known because
  * otherwise the byte offset to the stream is not known. For this reason the
  * function can fail to actually seek.
  *
