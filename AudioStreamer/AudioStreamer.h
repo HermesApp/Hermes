@@ -237,6 +237,7 @@ struct queued_packet;
   bool discontinuous;        /* flag to indicate the middle of a stream */
   UInt64 seekByteOffset;     /* position with the file to seek */
   double seekTime;
+  bool seeking;              /* Are we currently in the process of seeking? */
   double lastProgress;       /* last calculated progress point */
   UInt64 processedPacketsCount;     /* bit rate calculation utility */
   UInt64 processedPacketsSizeTotal; /* helps calculate the bit rate */

@@ -342,6 +342,8 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   if (bitrate == 0.0 || fileLength <= 0) {
     return NO;
   }
+  assert(!seeking);
+  seeking = YES;
 
   //
   // Calculate the byte offset for seeking
@@ -384,12 +386,15 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   /* Stop audio for now */
   err = AudioQueueStop(audioQueue, true);
   if (err) {
+    seeking = NO;
     [self failWithErrorCode:AS_AUDIO_QUEUE_STOP_FAILED];
     return NO;
   }
 
   /* Open a new stream with a new offset */
-  return [self openReadStream];
+  BOOL ret = [self openReadStream];
+  seeking = NO;
+  return ret;
 }
 
 - (BOOL) progress:(double*)ret {
@@ -1259,7 +1264,7 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
     UInt32 output = sizeof(running);
     err = AudioQueueGetProperty(audioQueue, kAudioQueueProperty_IsRunning,
                                 &running, &output);
-    if (!err && !running && seekByteOffset == 0) {
+    if (!err && !running && !seeking) {
       [self setState:AS_DONE];
     }
   }
