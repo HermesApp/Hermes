@@ -195,4 +195,9 @@
            containerSpecifier:nil key:@"stations" index:index];
 }
 
+- (void) clearSongList {
+  [songs removeAllObjects];
+  [super clearSongList];
+}
+
 @end
