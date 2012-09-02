@@ -12,6 +12,7 @@ extern NSString * const ASNewSongPlaying;
 extern NSString * const ASNoSongsLeft;
 extern NSString * const ASRunningOutOfSongs;
 extern NSString * const ASCreatedNewStream;
+extern NSString * const ASStreamError;
 
 /**
  * The ASPlaylist class is intended to be a wrapper around the AudioStreamer

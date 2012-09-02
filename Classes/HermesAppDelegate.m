@@ -137,7 +137,7 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(handleStreamError:)
-    name:@"hermes.stream-error"
+    name:ASStreamError
     object:nil];
 
   [[NSNotificationCenter defaultCenter]

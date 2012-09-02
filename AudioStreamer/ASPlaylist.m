@@ -12,6 +12,7 @@ NSString * const ASCreatedNewStream  = @"ASCreatedNewStream";
 NSString * const ASNewSongPlaying    = @"ASNewSongPlaying";
 NSString * const ASNoSongsLeft       = @"ASNoSongsLeft";
 NSString * const ASRunningOutOfSongs = @"ASRunningOutOfSongs";
+NSString * const ASStreamError       = @"ASStreamError";
 
 @implementation ASPlaylist
 
@@ -102,7 +103,8 @@ NSString * const ASRunningOutOfSongs = @"ASRunningOutOfSongs";
        at least hope to regain our current place in the song */
     if (code == AS_NETWORK_CONNECTION_FAILED || code == AS_TIMED_OUT) {
       [[NSNotificationCenter defaultCenter]
-        postNotificationName:@"hermes.stream-error" object:self];
+            postNotificationName:ASStreamError
+                          object:self];
 
     /* Otherwise, this might be because our authentication token is invalid, but
        just in case, retry the current song automatically a few times before we
