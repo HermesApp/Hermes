@@ -120,7 +120,7 @@ NSString * const ASRunningOutOfSongs = @"ASRunningOutOfSongs";
 - (void) retry {
   if (tries > 2) {
     /* too many retries means just skip to the next song */
-    [urls removeAllObjects];
+    [self clearSongList];
     [self next];
     return;
   }
