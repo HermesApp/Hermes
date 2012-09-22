@@ -1,6 +1,6 @@
-# Version 1.1.11 (unreleased)
+# Version 1.1.11 (9/21/12)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.10...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.10...v1.1.11)
 
 * [fixed] Do not drop the last few seconds of audio periodically
 * [fixed] Resume in the middle of a song across application instances fixed
