@@ -245,15 +245,14 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
 }
 
 - (AudioStreamerDoneReason)doneReason {
+  if (errorCode) {
+    return AS_DONE_ERROR;
+  }
   switch (state_) {
     case AS_STOPPED:
       return AS_DONE_STOPPED;
     case AS_DONE:
-      if (errorCode) {
-        return AS_DONE_ERROR;
-      } else {
-        return AS_DONE_EOF;
-      }
+      return AS_DONE_EOF;
     default:
       break;
   }
@@ -663,7 +662,6 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   [self setState:AS_WAITING_FOR_DATA];
 
   if (!CFReadStreamOpen(stream)) {
-    CFRelease(stream);
     [self failWithErrorCode:AS_FILE_STREAM_OPEN_FAILED];
     return NO;
   }
@@ -717,9 +715,9 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
         if ([self enqueueBuffer] < 0) return;
       }
 
-      /* If we never received any packets, then we fail */
+      /* If we never received any packets, then we're done now */
       if (state_ == AS_WAITING_FOR_DATA) {
-        [self failWithErrorCode:AS_AUDIO_DATA_NOT_FOUND];
+        [self setState:AS_DONE];
       }
       return;
 
