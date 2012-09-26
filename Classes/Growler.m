@@ -32,6 +32,9 @@
   }
 
   NSString *title = [song title];
+  if ([[song nrating] intValue] == 1) {
+    title = [NSString stringWithFormat:@"❤ %@", title];
+  }
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
 
@@ -48,11 +51,6 @@
         [NSUserNotificationCenter defaultUserNotificationCenter];
     [center scheduleNotification:not];
     return;
-  }
-
-  if ([[song nrating] intValue] == 1) {
-    description = [NSString stringWithFormat:@"%@\n%@",
-                                             @" - liked song -", description];
   }
 
   /* To deliver the event that a notification was clicked, the click context
