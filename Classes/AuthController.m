@@ -15,11 +15,14 @@
   return self;
 }
 
-- (void) authenticationFailed: (NSNotification*) notification {
+- (void) authenticationFailed: (NSNotification*) notification
+                        error: (NSString*) err {
   [spinner setHidden:YES];
   [spinner stopAnimation:nil];
   [self show];
   [error setHidden:NO];
+  [errorText setHidden:NO];
+  [errorText setStringValue:err];
   if ([username stringValue] == nil || [[username stringValue] isEqual:@""]) {
     [username becomeFirstResponder];
   } else {
@@ -44,6 +47,7 @@
 /* Login button in sheet hit, should authenticate */
 - (IBAction) authenticate: (id) sender {
   [error setHidden: YES];
+  [errorText setHidden: YES];
   [spinner setHidden:NO];
   [spinner startAnimation: sender];
 

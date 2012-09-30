@@ -275,9 +275,13 @@
      nothing we can do about it */
   [errorButton setHidden:FALSE];
   lastRequest = nil;
+  int code = [nscode intValue];
+  NSString *other = [Pandora errorString:code];
+  if (other != nil) {
+    err = other;
+  }
 
   if (nscode != nil) {
-    int code = [nscode intValue];
     [errorButton setHidden:TRUE];
 
     switch (code) {
@@ -286,7 +290,7 @@
         NSString *pass = [self getCachedPassword];
         if (user == nil || pass == nil) {
           [[playback playing] pause];
-          [auth authenticationFailed:notification];
+          [auth authenticationFailed:notification error:err];
         } else {
           [pandora logoutNoNotify];
           [pandora authenticate:user
@@ -302,20 +306,15 @@
       case INVALID_USERNAME:
       case INVALID_PASSWORD:
         [[playback playing] pause];
-        [auth authenticationFailed:notification];
+        [auth authenticationFailed:notification error:err];
         return;
 
       case NO_SEEDS_LEFT:
         [station seedFailedDeletion:notification];
         return;
 
-      default: {
-        NSString *other = [Pandora errorString:code];
-        if (other != nil && other != NULL) {
-          err = other;
-        }
+      default:
         break;
-      }
     }
   }
 
