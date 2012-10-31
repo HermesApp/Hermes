@@ -69,6 +69,10 @@ NSString * const ASStreamError       = @"ASStreamError";
 - (void)bitrateReady: (NSNotification*)notification {
   NSAssert([notification object] == stream,
            @"Should only receive notifications for the current stream");
+  [[NSNotificationCenter defaultCenter]
+        postNotificationName:ASNewSongPlaying
+                      object:self
+                    userInfo:@{@"url": _playing}];
   if (lastKnownSeekTime == 0)
     return;
   if (![stream seekToTime:lastKnownSeekTime])
@@ -150,11 +154,6 @@ NSString * const ASStreamError       = @"ASStreamError";
   [self setAudioStream];
   tries = 0;
   [stream start];
-
-  [[NSNotificationCenter defaultCenter]
-        postNotificationName:ASNewSongPlaying
-                      object:self
-                    userInfo:@{@"url": _playing}];
 
   if ([urls count] < 2) {
     [[NSNotificationCenter defaultCenter]
