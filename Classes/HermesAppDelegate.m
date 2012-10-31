@@ -176,7 +176,9 @@
     OPEN_DRAWER:                @DRAWER_STATIONS,
     HIST_DRAWER_WIDTH:          @150,
     DRAWER_WIDTH:               @130,
-    GROWL_TYPE:                 @GROWL_TYPE_GROWL
+    GROWL_TYPE:                 @GROWL_TYPE_GROWL,
+    kMediaKeyUsingBundleIdentifiersDefaultsKey:
+        [SPMediaKeyTap defaultMediaKeyUserBundleIdentifiers]
   };
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
