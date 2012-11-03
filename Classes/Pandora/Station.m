@@ -56,6 +56,10 @@
     for (Song *s in songs) {
       [s setStation:self];
     }
+    if ([songs count] != [urls count]) {
+      [songs removeAllObjects];
+      [urls removeAllObjects];
+    }
   }
   return self;
 }
@@ -166,9 +170,11 @@
 }
 
 - (void) newSongPlaying:(NSNotification*) notification {
-  _playingSong = songs[0];
-  [songs removeObjectAtIndex:0];
-  assert([songs count] == [urls count]);
+  assert([songs count] > [urls count]);
+  while ([songs count] != [urls count]) {
+    _playingSong = songs[0];
+    [songs removeObjectAtIndex:0];
+  }
   [[NSNotificationCenter defaultCenter]
         postNotificationName:@"song.playing"
                       object:self
