@@ -1,3 +1,14 @@
+# Version 1.1.12 (11/11/12)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.11...v1.1.12)
+
+* [fixed] Fix a few crashes related to loading lists of songs saved from the
+          last session of Hermes
+* [fixed] Song notifications are now only displayed if the song is actually
+          playing
+* [added] Changed how liked songs are displayed in notifications, thanks to
+          @viveksjain
+
 # Version 1.1.11 (9/21/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.10...v1.1.11)
