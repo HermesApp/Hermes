@@ -58,10 +58,10 @@
   IBOutlet NSView *general;
   IBOutlet NSView *playback;
   IBOutlet NSView *network;
-  IBOutlet NSWindow *window;
 
   IBOutlet NSButton *notificationEnabled;
   IBOutlet NSPopUpButton *notificationType;
+  IBOutlet NSWindow *window;
 }
 
 /* Selecting views */
@@ -70,5 +70,6 @@
 - (IBAction) showNetwork: (id) sender;
 
 - (IBAction) bindMediaChanged: (id) sender;
+- (IBAction) show: (id) sender;
 
 @end

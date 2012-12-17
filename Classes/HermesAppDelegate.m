@@ -22,7 +22,7 @@
 @implementation HermesAppDelegate
 
 @synthesize stations, auth, playback, pandora, window, history, station,
-            growler, scrobbler, mediaKeyTap, networkManager;
+            growler, scrobbler, mediaKeyTap, networkManager, preferences;
 
 - (id) init {
   if ((self = [super init])) {
@@ -192,6 +192,8 @@
     [mediaKeyTap startWatchingMediaKeys];
   }
 #endif
+
+  [self setStatusBarMenu];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
@@ -475,6 +477,22 @@
       PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_STA);
       break;
   }
+}
+
+- (void) setStatusBarMenu {
+  statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+  [statusItem setMenu:statusBarMenu];
+  [statusItem setHighlightMode:YES];
+
+  NSImage *icon = [NSApp applicationIconImage];
+  NSSize size = {.width = 18, .height = 18};
+  [icon setSize:size];
+  [statusItem setImage:icon];
+}
+
+- (IBAction) activate:(id)sender {
+  [NSApp activateIgnoringOtherApps:YES];
+  [window makeKeyAndOrderFront:sender];
 }
 
 @end

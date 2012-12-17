@@ -17,6 +17,7 @@
 @class Scrobbler;
 @class SPMediaKeyTap;
 @class NetworkConnection;
+@class PreferencesController;
 
 @interface HermesAppDelegate : NSObject <NSApplicationDelegate> {
   /* Generic loading view */
@@ -32,6 +33,9 @@
 
   IBOutlet NSWindow *newStationSheet;
   IBOutlet NSToolbarItem *drawerToggle;
+  IBOutlet NSMenu *statusBarMenu;
+
+  NSStatusItem *statusItem;
 }
 
 @property (readonly) Pandora *pandora;
@@ -45,6 +49,7 @@
 @property (readonly) IBOutlet Scrobbler *scrobbler;
 @property (readonly) IBOutlet SPMediaKeyTap *mediaKeyTap;
 @property (readonly) IBOutlet NetworkConnection *networkManager;
+@property (readonly) IBOutlet PreferencesController *preferences;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
@@ -65,5 +70,6 @@
 - (IBAction) toggleDrawerVisible:(id)sender;
 - (IBAction) showStationsDrawer:(id)sender;
 - (IBAction) showHistoryDrawer:(id)sender;
+- (IBAction) activate:(id)sender;
 
 @end
