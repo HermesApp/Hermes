@@ -35,7 +35,10 @@
   IBOutlet NSToolbarItem *drawerToggle;
   IBOutlet NSMenu *statusBarMenu;
 
+  /* Status bar menu */
   NSStatusItem *statusItem;
+  IBOutlet NSMenuItem *currentSong;
+  IBOutlet NSMenuItem *currentArtist;
 }
 
 @property (readonly) Pandora *pandora;

@@ -129,22 +129,28 @@
   [NSApp activateIgnoringOtherApps:YES];
 
   [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(handlePandoraError:)
-    name:@"hermes.pandora-error"
-    object:[[NSApp delegate] pandora]];
+     addObserver:self
+        selector:@selector(handlePandoraError:)
+            name:@"hermes.pandora-error"
+          object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
-    addObserver:self
-    selector:@selector(handleStreamError:)
-    name:ASStreamError
-    object:nil];
+     addObserver:self
+        selector:@selector(handleStreamError:)
+            name:ASStreamError
+          object:nil];
 
   [[NSNotificationCenter defaultCenter]
-   addObserver:self
-   selector:@selector(handlePandoraLoggedOut:)
-   name:@"hermes.logged-out"
-   object:[[NSApp delegate] pandora]];
+     addObserver:self
+        selector:@selector(handlePandoraLoggedOut:)
+            name:@"hermes.logged-out"
+          object:[[NSApp delegate] pandora]];
+
+  [[NSNotificationCenter defaultCenter]
+     addObserver:self
+        selector:@selector(songPlayed:)
+            name:@"song.playing"
+          object:nil];
 
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
@@ -508,6 +514,18 @@
 - (IBAction) activate:(id)sender {
   [NSApp activateIgnoringOtherApps:YES];
   [window makeKeyAndOrderFront:sender];
+}
+
+- (void) songPlayed:(NSNotification*) not {
+  Station *s = [not object];
+  Song *playing = [s playingSong];
+  if (playing != nil) {
+    [currentSong setTitle:[playing title]];
+    [currentArtist setTitle:[playing artist]];
+  } else {
+    [currentSong setTitle:@"(song)"];
+    [currentArtist setTitle:@"(artist)"];
+  }
 }
 
 @end
