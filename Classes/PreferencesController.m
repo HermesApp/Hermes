@@ -6,8 +6,10 @@
 @implementation PreferencesController
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
-  NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
+  /* See HermesAppDelegate#updateStatusBarIcon */
+  [window setCanHide:NO];
 
+  NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
   if (NSClassFromString(@"NSUserNotification") != nil) {
     [notificationEnabled setTitle:@""];
     [notificationType setHidden:NO];

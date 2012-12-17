@@ -193,7 +193,7 @@
   }
 #endif
 
-  [self setStatusBarMenu];
+  [self updateStatusBarIcon:nil];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
@@ -479,8 +479,23 @@
   }
 }
 
-- (void) setStatusBarMenu {
-  statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+- (IBAction) updateStatusBarIcon:(id)sender {
+  /* When transforming to a UIElement application, all windows are hid. This
+     looks weird, and this prevents them from automatically hiding */
+  [window setCanHide:NO];
+
+  /* Transform the application appropriately */
+  ProcessSerialNumber psn = { 0, kCurrentProcess };
+  if (!PREF_KEY_BOOL(STATUS_BAR_ICON)) {
+    TransformProcessType(&psn, kProcessTransformToForegroundApplication);
+    statusItem = nil;
+    return;
+  }
+  TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+
+  /* If we have a status men item, then set it here */
+  statusItem = [[NSStatusBar systemStatusBar]
+                    statusItemWithLength:NSVariableStatusItemLength];
   [statusItem setMenu:statusBarMenu];
   [statusItem setHighlightMode:YES];
 

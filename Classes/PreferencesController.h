@@ -26,6 +26,7 @@
 #define OPEN_DRAWER           @"openDrawer"
 #define SORT_STATIONS         @"sortStations"
 #define GROWL_TYPE            @"notificationType"
+#define STATUS_BAR_ICON       @"statusBarIcon"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)

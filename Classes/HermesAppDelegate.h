@@ -71,5 +71,6 @@
 - (IBAction) showStationsDrawer:(id)sender;
 - (IBAction) showHistoryDrawer:(id)sender;
 - (IBAction) activate:(id)sender;
+- (IBAction) updateStatusBarIcon:(id)sender;
 
 @end
