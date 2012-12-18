@@ -152,6 +152,12 @@
             name:@"song.playing"
           object:nil];
 
+  [[NSNotificationCenter defaultCenter]
+     addObserver:self
+        selector:@selector(playbackStateChanged:)
+            name:ASStatusChangedNotification
+          object:nil];
+
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
@@ -525,6 +531,15 @@
   } else {
     [currentSong setTitle:@"(song)"];
     [currentArtist setTitle:@"(artist)"];
+  }
+}
+
+- (void) playbackStateChanged:(NSNotification*) not {
+  AudioStreamer *stream = [not object];
+  if ([stream isPlaying]) {
+    [playbackState setTitle:@"Pause"];
+  } else {
+    [playbackState setTitle:@"Play"];
   }
 }
 

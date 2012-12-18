@@ -39,6 +39,7 @@
   NSStatusItem *statusItem;
   IBOutlet NSMenuItem *currentSong;
   IBOutlet NSMenuItem *currentArtist;
+  IBOutlet NSMenuItem *playbackState;
 }
 
 @property (readonly) Pandora *pandora;
