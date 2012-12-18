@@ -1,3 +1,9 @@
+# Version 1.1.13 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...master)
+
+* [added] Option to have Hermes be purely a status-bar app (not in dock)
+
 # Version 1.1.12 (11/11/12)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.11...v1.1.12)
