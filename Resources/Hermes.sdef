@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
 <dictionary title="Hermes Terminology" xmlns:xi="http://www.w3.org/2003/XInclude">
-  <xi:include href="file:///System/Library/ScriptingDefinitions/CocoaStandard.sdef" xpointer="xpointer(/dictionary/suite)"/>
 
   <suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
     <enumeration name="player states" code="esta" description="Legal player states">

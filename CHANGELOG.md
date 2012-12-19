@@ -3,6 +3,8 @@
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...master)
 
 * [added] Option to have Hermes be purely a status-bar app (not in dock)
+* [fixed] Resolve a problem where the application could not be quit through
+          applescript
 
 # Version 1.1.12 (11/11/12)
 
