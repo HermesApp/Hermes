@@ -398,6 +398,35 @@ static NSString *hierrs[] = {
 }
 
 /**
+ * @brief Delete a rating for a song
+ *
+ * Fires the same event for deleteFeedback
+ *
+ * @param song the song to delete a user's rating for
+ */
+- (BOOL) deleteRating:(Station*)station song:(Song*)song {
+  NSLogd(@"Removing rating on '%@'", [song title]);
+  [song setNrating:@0];
+
+  NSMutableDictionary *d = [self defaultDictionary];
+  d[@"stationToken"] = [station token];
+  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
+
+  PandoraRequest *req = [self defaultRequest:@"station.getStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    for (NSDictionary* feed in d[@"result"][@"feedback"][@"thumbsUp"]) {
+      if ([feed[@"songName"] isEqualToString:[song title]]) {
+        [self deleteFeedback:feed[@"feedbackId"]];
+        break;
+      }
+    }
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
+/**
  * @brief Inform Pandora that the specified song shouldn't be played for awhile
  *
  * Fires the "hermes.song-tired" event with a dictionary with the key "song"
@@ -642,6 +671,7 @@ static NSString *hierrs[] = {
  * @param feedbackId the name of the feedback to delete
  */
 - (BOOL) deleteFeedback: (NSString*)feedbackId {
+  NSLogd(@"deleting feedback: '%@'", feedbackId);
   NSMutableDictionary *d = [self defaultDictionary];
   d[@"feedbackId"] = feedbackId;
 

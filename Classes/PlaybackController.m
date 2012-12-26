@@ -61,6 +61,12 @@ BOOL playOnStart = YES;
   [center
     addObserver:self
     selector:@selector(hideSpinner)
+    name:@"hermes.feedback-deleted"
+    object:[[NSApp delegate] pandora]];
+
+  [center
+    addObserver:self
+    selector:@selector(hideSpinner)
     name:@"hermes.song-tired"
     object:[[NSApp delegate] pandora]];
 
@@ -169,36 +175,6 @@ BOOL playOnStart = YES;
   return [NSKeyedArchiver archiveRootObject:[self playing] toFile:path];
 }
 
-/* If not implemented, disabled toolbar items suddenly get re-enabled? */
-- (BOOL)validateToolbarItem:(NSToolbarItem *)theItem {
-  /* most items are always enabled */
-  if (theItem != like && theItem != dislike) return YES;
-
-  /* Always fix the tooltip, just in case */
-  if (theItem == like) {
-    [theItem setToolTip:@"Like the current song"];
-  } else {
-    [theItem setToolTip:@"Dislike and skip the current song"];
-  }
-
-  /* If we're not doing anything, they're enabled */
-  if (playing == nil || [playing playingSong] == nil) return YES;
-
-  /* Can't like/dislike on shared stations */
-  if ([playing shared]) {
-    if (theItem == like) {
-      [theItem setToolTip:@"Can't like songs on a shared station"];
-    } else {
-      [theItem setToolTip:@"Can't dislike songs on a shared station"];
-    }
-    return NO;
-  }
-
-  /* Finally it's based on ratings */
-  if (theItem == dislike) return YES;
-  return [[[playing playingSong] nrating] intValue] == 0;
-}
-
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   if ([playing isPlaying]) {
@@ -288,9 +264,9 @@ BOOL playOnStart = YES;
   scrobbleSent = NO;
 
   if ([[song nrating] intValue] == 1) {
-    [like setEnabled:NO];
+    [toolbar setSelectedItemIdentifier:@"like"];
   } else {
-    [like setEnabled:YES];
+    [toolbar setSelectedItemIdentifier:nil];
   }
 
   [[[NSApp delegate] history] addSong:song];
@@ -372,8 +348,12 @@ BOOL playOnStart = YES;
 
   [self showSpinner];
 
-  [[self pandora] rateSong:playingSong as:YES];
-  [like setEnabled:NO];
+  if ([[playingSong nrating] intValue] == 1) {
+    [[self pandora] deleteRating:playing song:playingSong];
+    [toolbar setSelectedItemIdentifier:nil];
+  } else {
+    [[self pandora] rateSong:playingSong as:YES];
+  }
 }
 
 /* Dislike button was hit */

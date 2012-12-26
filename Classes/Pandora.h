@@ -47,6 +47,7 @@ typedef void(^SyncCallback)(void);
 - (BOOL) getFragment: (Station*)station;
 - (BOOL) partnerLogin: (SyncCallback) cb;
 - (BOOL) rateSong:(Song*) song as:(BOOL) liked;
+- (BOOL) deleteRating:(Station*)station song:(Song*)song;
 - (BOOL) tiredOfSong: (Song*)song;
 - (BOOL) search: (NSString*) search;
 - (BOOL) createStation: (NSString*) musicId;
