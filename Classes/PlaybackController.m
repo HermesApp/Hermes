@@ -287,10 +287,10 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  if ([[song nrating] intValue] == 1) {
-    [like setEnabled:NO];
+  if ([[song nrating] intValue] == 1 || 1) {
+    [like setImage:[NSImage imageNamed:@"thumbup-selected"]];
   } else {
-    [like setEnabled:YES];
+    [like setImage:[NSImage imageNamed:@"thumbup"]];
   }
 
   [[[NSApp delegate] history] addSong:song];
@@ -373,7 +373,7 @@ BOOL playOnStart = YES;
   [self showSpinner];
 
   [[self pandora] rateSong:playingSong as:YES];
-  [like setEnabled:NO];
+  [like setImage:[NSImage imageNamed:@"thumbup-selected"]];
 }
 
 /* Dislike button was hit */

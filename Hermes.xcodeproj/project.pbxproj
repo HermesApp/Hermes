@@ -95,6 +95,7 @@
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
 		FA99E25B15E4B7EA005AB6E6 /* ASPlaylist.h in Headers */ = {isa = PBXBuildFile; fileRef = FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */; };
 		FA99E25C15E4B7EA005AB6E6 /* ASPlaylist.m in Sources */ = {isa = PBXBuildFile; fileRef = FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */; };
+		FA99ED1E168AC3120036D4C9 /* thumbup-selected.png in Resources */ = {isa = PBXBuildFile; fileRef = FA99ED1D168AC3120036D4C9 /* thumbup-selected.png */; };
 		FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */ = {isa = PBXBuildFile; fileRef = FAAB28CE1336FB0300FC04C4 /* pandora.icns */; };
 		FACFACD615673690008A2140 /* StationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FACFACD515673690008A2140 /* StationController.m */; };
 		FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAD42F8713678F7500E935CA /* Sparkle.framework */; };
@@ -272,6 +273,7 @@
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scrobbler.m; sourceTree = "<group>"; };
 		FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPlaylist.h; sourceTree = "<group>"; };
 		FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPlaylist.m; sourceTree = "<group>"; };
+		FA99ED1D168AC3120036D4C9 /* thumbup-selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbup-selected.png"; sourceTree = "<group>"; };
 		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_sparkle.sh; sourceTree = "<group>"; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
@@ -597,6 +599,7 @@
 		FAEFFBFF132D620B007DC6FB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				FA99ED1D168AC3120036D4C9 /* thumbup-selected.png */,
 				97E0DA34159EDF7C00BEA465 /* radio.png */,
 				97177199159EB0E200EE3355 /* music-note.png */,
 				97177193159EAA7D00EE3355 /* cd.png */,
@@ -814,6 +817,7 @@
 				97177194159EAA7D00EE3355 /* cd.png in Resources */,
 				9717719A159EB0E200EE3355 /* music-note.png in Resources */,
 				97E0DA35159EDF7C00BEA465 /* radio.png in Resources */,
+				FA99ED1E168AC3120036D4C9 /* thumbup-selected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
