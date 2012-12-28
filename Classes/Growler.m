@@ -33,7 +33,7 @@
 
   NSString *title = [song title];
   if ([[song nrating] intValue] == 1) {
-    title = [NSString stringWithFormat:@"❤ %@", title];
+	  title = [NSString stringWithFormat:@"%@ %@", NSAppKitVersionNumber >= NSAppKitVersionNumber10_7 ? @"👍" : @"❤", title];
   }
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
@@ -43,9 +43,6 @@
     //Class Center = NSClassFromString(@"NSUserNotificationCenter");
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
-    if ([[song nrating] intValue] == 1) {
-      [not setSubtitle:@"Liked song"];
-    }
     [not setInformativeText:description];
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];

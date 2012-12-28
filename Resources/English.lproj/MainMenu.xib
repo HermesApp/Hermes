@@ -2520,7 +2520,7 @@
 						<object class="NSTextFieldCell" key="NSCell" id="154816704">
 							<int key="NSCellFlags">67108864</int>
 							<int key="NSCellFlags2">272629760</int>
-							<string key="NSContents">Multiline Label</string>
+							<string key="NSContents"/>
 							<object class="NSFont" key="NSSupport" id="537422330">
 								<string key="NSName">LucidaGrande</string>
 								<double key="NSSize">13</double>
