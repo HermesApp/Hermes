@@ -53,13 +53,11 @@
     [songs addObjectsFromArray:[aDecoder decodeObjectForKey:@"songs"]];
     [urls addObject:[aDecoder decodeObjectForKey:@"playingURL"]];
     [urls addObjectsFromArray:[aDecoder decodeObjectForKey:@"urls"]];
-    for (Song *s in songs) {
-      [s setStation:self];
-    }
     if ([songs count] != [urls count]) {
       [songs removeAllObjects];
       [urls removeAllObjects];
     }
+    [Station addStation:self];
   }
   return self;
 }
@@ -204,6 +202,27 @@
 - (void) clearSongList {
   [songs removeAllObjects];
   [super clearSongList];
+}
+
+static NSMutableDictionary *stations = nil;
+
++ (Station*) stationForToken:(NSString*)stationId{
+  if (stations == nil)
+    return nil;
+  return stations[stationId];
+}
+
++ (void) addStation:(Station*) s {
+  if (stations == nil) {
+    stations = [NSMutableDictionary dictionary];
+  }
+  stations[[s stationId]] = s;
+}
+
++ (void) removeStation:(Station*) s {
+  if (stations == nil)
+    return;
+  [stations removeObjectForKey:[s stationId]];
 }
 
 @end

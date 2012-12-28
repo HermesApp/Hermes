@@ -5,7 +5,7 @@
 @implementation Song
 
 @synthesize artist, title, album, highUrl, stationId, nrating,
-  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl, station;
+  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl;
 
 - (id) initWithCoder: (NSCoder *)coder {
   if ((self = [super init])) {
@@ -80,6 +80,10 @@
 
 - (BOOL) isEqual:(id)object {
   return [token isEqual:[object token]];
+}
+
+- (Station*) station {
+  return [Station stationForToken:[self stationId]];
 }
 
 @end

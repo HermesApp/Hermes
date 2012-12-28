@@ -89,24 +89,44 @@
 
 - (void) selectionChanged {
   Song* s = [self selectedItem];
-  [like setEnabled:NO];
-  [dislike setEnabled:NO];
   if (s == nil) return;
   if ([[s station] shared]) return;
 
-  [like setEnabled:[[s nrating] intValue] != 1];
-  [dislike setEnabled:[[s nrating] intValue] != -1];
+  if ([[s nrating] intValue] == 1) {
+    [like setState:NSOnState];
+  } else {
+    [like setState:NSOffState];
+  }
+  if ([[s nrating] intValue] == -1) {
+    [dislike setState:NSOnState];
+  } else {
+    [dislike setState:NSOffState];
+  }
 }
 
 - (IBAction) dislikeSelected:(id)sender {
   Song* s = [self selectedItem];
   if (s == nil) return;
-  [[self pandora] rateSong:s as:NO];
-  [like setEnabled:YES];
-  [dislike setEnabled:NO];
-  PlaybackController *playback = [[NSApp delegate] playback];
-  if ([[playback playing] playingSong] == s) {
-    [playback next:nil];
+  if ([dislike state] == NSOnState) {
+    [[self pandora] rateSong:s as:NO];
+    [like setState:NSOffState];
+    PlaybackController *playback = [[NSApp delegate] playback];
+    if ([[playback playing] playingSong] == s) {
+      [playback next:nil];
+    }
+  } else {
+    [[self pandora] deleteRating:s];
+  }
+}
+
+- (IBAction) likeSelected:(id)sender {
+  Song* s = [self selectedItem];
+  if (s == nil) return;
+  if ([like state] == NSOnState) {
+    [[self pandora] rateSong:s as:YES];
+    [dislike setState:NSOffState];
+  } else {
+    [[self pandora] deleteRating:s];
   }
 }
 
@@ -129,14 +149,6 @@
   if (s == nil) return;
   NSURL *url = [NSURL URLWithString:[s albumUrl]];
   [[NSWorkspace sharedWorkspace] openURL:url];
-}
-
-- (IBAction) likeSelected:(id)sender {
-  Song* s = [self selectedItem];
-  if (s == nil) return;
-  [[self pandora] rateSong:s as:YES];
-  [like setEnabled:NO];
-  [dislike setEnabled:YES];
 }
 
 - (NSSize) drawerWillResizeContents:(NSDrawer*) drawer toSize:(NSSize) size {

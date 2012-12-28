@@ -16,10 +16,10 @@
 @property NSString *highUrl;
 @property NSString *medUrl;
 @property NSString *lowUrl;
-@property Station *station;
 
 + (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;
 - (BOOL) isEqual:(id)other;
+- (Station*) station;
 
 @end

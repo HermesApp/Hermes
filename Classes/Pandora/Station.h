@@ -22,4 +22,8 @@
 - (void) setRadio:(Pandora*)radio;
 - (NSString*) streamNetworkError;
 
++ (Station*) stationForToken:(NSString*)token;
++ (void) addStation:(Station*)s;
++ (void) removeStation:(Station*)s;
+
 @end

@@ -90,6 +90,8 @@ static NSString *hierrs[] = {
 
 - (void) logout {
   [self logoutNoNotify];
+  for (Station *s in stations)
+    [Station removeStation:s];
   [stations removeAllObjects];
   [self notify: @"hermes.logged-out" with:nil];
 }
@@ -245,6 +247,7 @@ static NSString *hierrs[] = {
       Station *station = [self parseStation:s];
       if (![stations containsObject:station]) {
         [stations addObject:station];
+        [Station addStation:station];
       }
     };
 
@@ -291,7 +294,6 @@ static NSString *hierrs[] = {
       [song setAlbumUrl: s[@"albumDetailUrl"]];
       [song setArtistUrl: s[@"artistDetailUrl"]];
       [song setTitleUrl: s[@"songDetailUrl"]];
-      [song setStation:station];
 
       id _urls = s[@"additionalAudioUrl"];
       if ([_urls isKindOfClass:[NSArray class]]) {
@@ -404,12 +406,12 @@ static NSString *hierrs[] = {
  *
  * @param song the song to delete a user's rating for
  */
-- (BOOL) deleteRating:(Station*)station song:(Song*)song {
+- (BOOL) deleteRating:(Song*)song {
   NSLogd(@"Removing rating on '%@'", [song title]);
   [song setNrating:@0];
 
   NSMutableDictionary *d = [self defaultDictionary];
-  d[@"stationToken"] = [station token];
+  d[@"stationToken"] = [[song station] token];
   d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
 
   PandoraRequest *req = [self defaultRequest:@"station.getStation"];
@@ -533,6 +535,7 @@ static NSString *hierrs[] = {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"station"] = s;
     [stations addObject:s];
+    [Station addStation:s];
     [self notify:@"hermes.station-created" with:dict];
   }];
   return [self sendAuthenticatedRequest:req];
@@ -565,6 +568,7 @@ static NSString *hierrs[] = {
     if ([stations count] == i) {
       NSLogd(@"Deleted unknown station?!");
     } else {
+      [Station removeStation:stations[i]];
       [stations removeObjectAtIndex:i];
     }
 

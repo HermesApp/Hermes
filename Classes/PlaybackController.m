@@ -349,7 +349,7 @@ BOOL playOnStart = YES;
   [self showSpinner];
 
   if ([[playingSong nrating] intValue] == 1) {
-    [[self pandora] deleteRating:playing song:playingSong];
+    [[self pandora] deleteRating:playingSong];
     [toolbar setSelectedItemIdentifier:nil];
   } else {
     [[self pandora] rateSong:playingSong as:YES];
