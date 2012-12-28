@@ -2,7 +2,12 @@
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...master)
 
+* [added] On 10.7+, use a thumbs-up emoji, thanks to @kirbylover4000
 * [added] Option to have Hermes be purely a status-bar app (not in dock)
+* [added] Thumbs up/down are now selectable buttons (which means they can be
+          de-selected to remove feedback)
+* [fixed] Don't show extra labels on the auth view by default, thanks to
+          @kirbylover4000
 * [fixed] Resolve a problem where the application could not be quit through
           applescript
 
