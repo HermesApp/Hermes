@@ -206,6 +206,7 @@
 #endif
 
   [self updateStatusBarIcon:nil];
+  [self updateAlwaysOnTop:nil];
 }
 
 - (NSMenu *)applicationDockMenu:(NSApplication *)sender {
@@ -515,6 +516,14 @@
   NSSize size = {.width = 18, .height = 18};
   [icon setSize:size];
   [statusItem setImage:icon];
+}
+
+- (IBAction) updateAlwaysOnTop:(id)sender {
+  if (PREF_KEY_BOOL(ALWAYS_ON_TOP)) {
+    [[self window] setLevel:NSFloatingWindowLevel];
+  } else {
+    [[self window] setLevel:NSNormalWindowLevel];
+  }
 }
 
 - (IBAction) activate:(id)sender {

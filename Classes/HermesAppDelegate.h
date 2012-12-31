@@ -76,5 +76,6 @@
 - (IBAction) showHistoryDrawer:(id)sender;
 - (IBAction) activate:(id)sender;
 - (IBAction) updateStatusBarIcon:(id)sender;
+- (IBAction) updateAlwaysOnTop:(id)sender;
 
 @end
