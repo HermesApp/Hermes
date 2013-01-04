@@ -30,6 +30,7 @@
   IBOutlet NSButton *errorButton;
   PandoraRequest *lastRequest;
   Station *lastStationErr;
+  NSTimer *autoRetry;
 
   IBOutlet NSWindow *newStationSheet;
   IBOutlet NSToolbarItem *drawerToggle;

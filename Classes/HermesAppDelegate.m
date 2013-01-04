@@ -339,9 +339,17 @@
   [self setCurrentView:errorView];
   [errorLabel setStringValue:err];
   [window orderFront:nil];
+  [autoRetry invalidate];
+  autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
+                                               target:self
+                                             selector:@selector(retry:)
+                                             userInfo:nil
+                                              repeats:NO];
 }
 
 - (void) retry:(id)sender {
+  [autoRetry invalidate];
+  autoRetry = nil;
   if (lastRequest != nil) {
     [pandora sendRequest:lastRequest];
     lastRequest = nil;
