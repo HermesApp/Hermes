@@ -1,11 +1,15 @@
-# Version 1.1.13 (unreleased)
+# Version 1.1.13 (1/4/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...v1.1.13)
 
 * [added] On 10.7+, use a thumbs-up emoji, thanks to @kirbylover4000
 * [added] Option to have Hermes be purely a status-bar app (not in dock)
 * [added] Thumbs up/down are now selectable buttons (which means they can be
           de-selected to remove feedback)
+* [added] There is now an option to have Hermes always be on top of all other
+          windows
+* [added] Hermes automatically retries failed requests in addition to showing an
+          error screen
 * [fixed] Don't show extra labels on the auth view by default, thanks to
           @kirbylover4000
 * [fixed] Resolve a problem where the application could not be quit through
