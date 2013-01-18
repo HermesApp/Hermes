@@ -49,6 +49,6 @@
 	<key>SUShowReleaseNotes</key>
 	<true/>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>Hermes</string>
 </dict>
 </plist>
