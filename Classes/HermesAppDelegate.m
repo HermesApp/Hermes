@@ -513,17 +513,36 @@
     return;
   }
   TransformProcessType(&psn, kProcessTransformToUIElementApplication);
-
-  /* If we have a status men item, then set it here */
+  
+  /* If we have a status menu item, then set it here */
   statusItem = [[NSStatusBar systemStatusBar]
                     statusItemWithLength:NSVariableStatusItemLength];
   [statusItem setMenu:statusBarMenu];
   [statusItem setHighlightMode:YES];
 
   NSImage *icon = [NSApp applicationIconImage];
+  if (!PREF_KEY_BOOL(STATUS_BAR_ICON_COLOR)) {
+      NSString *fileName = [[NSBundle mainBundle] pathForImageResource:@"pandora-black"];
+      icon = [[NSImage alloc] initByReferencingFile:fileName];
+  }
+    
   NSSize size = {.width = 18, .height = 18};
   [icon setSize:size];
   [statusItem setImage:icon];
+}
+
+- (IBAction) updateStatusBarIconColor:(id)sender {
+    /* If we have a status menu item, then set it here */
+    
+    NSImage *icon = [NSApp applicationIconImage];
+    if (!PREF_KEY_BOOL(STATUS_BAR_ICON_COLOR)) {
+        NSString *fileName = [[NSBundle mainBundle] pathForImageResource:@"pandora-black"];
+        icon = [[NSImage alloc] initByReferencingFile:fileName];
+    }
+    
+    NSSize size = {.width = 18, .height = 18};
+    [icon setSize:size];
+    [statusItem setImage:icon];
 }
 
 - (IBAction) updateAlwaysOnTop:(id)sender {
