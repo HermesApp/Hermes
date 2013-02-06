@@ -27,6 +27,7 @@
 #define SORT_STATIONS         @"sortStations"
 #define GROWL_TYPE            @"notificationType"
 #define STATUS_BAR_ICON       @"statusBarIcon"
+#define STATUS_BAR_ICON_COLOR @"statusBarIconColor"
 #define ALWAYS_ON_TOP         @"alwaysOnTop"
 
 /* If observing a value, then the method which is implemented is:
