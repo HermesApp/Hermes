@@ -1,3 +1,11 @@
+# Version 1.1.14 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.13...master)
+
+* [added] Added the option of using a black/white status bar icon instead of one
+          which has color, thanks to @bradmkjr
+* [fixed] Be sure a blank process name doesn't show up in the Activity Monitor
+
 # Version 1.1.13 (1/4/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.12...v1.1.13)
