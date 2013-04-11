@@ -501,17 +501,19 @@
 }
 
 - (IBAction) updateStatusBarIcon:(id)sender {
-  /* When transforming to a UIElement application, all windows are hid. This
-     looks weird, and this prevents them from automatically hiding */
-  [window setCanHide:NO];
-
   /* Transform the application appropriately */
   ProcessSerialNumber psn = { 0, kCurrentProcess };
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON)) {
+    [window setCanHide:YES];
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     statusItem = nil;
     return;
   }
+
+  /* When transforming to a UIElement application, all windows are hid. This
+     looks weird, and this prevents them from automatically hiding */
+  [window setCanHide:NO];
+
   TransformProcessType(&psn, kProcessTransformToUIElementApplication);
 
   /* If we have a status menu item, then set it here */
