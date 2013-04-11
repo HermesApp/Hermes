@@ -5,6 +5,7 @@
 * [added] Added the option of using a black/white status bar icon instead of one
           which has color, thanks to @bradmkjr
 * [fixed] Be sure a blank process name doesn't show up in the Activity Monitor
+* [fixed] The ⌘H shortcut now works again
 
 # Version 1.1.13 (1/4/13)
 
