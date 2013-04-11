@@ -9,7 +9,7 @@ VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CF
 INT_VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleVersion)
 
 ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
-DOWNLOAD_URL="https://github.com/downloads/alexcrichton/hermes/$ARCHIVE_FILENAME"
+DOWNLOAD_URL="https://s3.amazonaws.com/alexcrichton-hermes/$ARCHIVE_FILENAME"
 RELEASENOTES_URL="http://alexcrichton.com/hermes/changelog.html"
 KEYCHAIN_PRIVKEY_NAME="Hermes Sparkle Private Key"
 

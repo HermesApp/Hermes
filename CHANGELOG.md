@@ -1,6 +1,6 @@
-# Version 1.1.14 (unreleased)
+# Version 1.1.14 (4/10/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.13...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.13...v1.1.14)
 
 * [added] Added the option of using a black/white status bar icon instead of one
           which has color, thanks to @bradmkjr
