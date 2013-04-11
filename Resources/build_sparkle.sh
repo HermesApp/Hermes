@@ -56,4 +56,4 @@ if [ -d $hermes_pages ]; then
   set +x
 fi
 
-cp $ARCHIVE_FILENAME $HOME/Desktop
+s3cmd put --acl-public $ARCHIVE_FILENAME s3://alexcrichton-hermes/$ARCHIVE_FILENAME
