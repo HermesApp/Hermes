@@ -264,7 +264,7 @@ BOOL playOnStart = YES;
   scrobbleSent = NO;
 
   if ([[song nrating] intValue] == 1) {
-    [toolbar setSelectedItemIdentifier:@"like"];
+    [toolbar setSelectedItemIdentifier:[like itemIdentifier]];
   } else {
     [toolbar setSelectedItemIdentifier:nil];
   }
@@ -319,6 +319,42 @@ BOOL playOnStart = YES;
   }
 }
 
+- (void) rate:(Song *)song as:(BOOL)liked {
+  if (!song) return;
+  int rating = liked ? 1 : -1;
+
+  // Should we delete the rating?
+  if ([[song nrating] intValue] == rating) {
+    rating = 0;
+  }
+
+  [self showSpinner];
+  BOOL songIsPlaying = [playing playingSong] == song;
+
+  if (rating == -1) {
+    [[self pandora] rateSong:song as:NO];
+    if (songIsPlaying) {
+      [self next:nil];
+    }
+  }
+  else if (rating == 0) {
+    [[self pandora] deleteRating:song];
+    if (songIsPlaying) {
+      [toolbar setSelectedItemIdentifier:nil];
+    }
+  }
+  else if (rating == 1) {
+    [[self pandora] rateSong:song as:YES];
+    if (songIsPlaying) {
+      [toolbar setSelectedItemIdentifier:[like itemIdentifier]];
+    }
+  }
+
+  if ([[[NSApp delegate] history] selectedItem] == song) {
+    [[[NSApp delegate] history] updateUI];
+  }
+}
+
 /* Toggle between playing and pausing */
 - (IBAction)playpause: (id) sender {
   if ([playing isPaused]) {
@@ -341,35 +377,20 @@ BOOL playOnStart = YES;
 
 /* Like button was hit */
 - (IBAction)like: (id) sender {
-  Song *playingSong = [playing playingSong];
-  if (playingSong == nil) {
-    return;
-  }
-
-  [self showSpinner];
-
-  if ([[playingSong nrating] intValue] == 1) {
-    [[self pandora] deleteRating:playingSong];
-    [toolbar setSelectedItemIdentifier:nil];
-  } else {
-    [[self pandora] rateSong:playingSong as:YES];
-  }
+  Song *song = [playing playingSong];
+  if (!song) return;
+  [self rate:song as:YES];
 }
 
 /* Dislike button was hit */
 - (IBAction)dislike: (id) sender {
-  Song *playingSong = [playing playingSong];
-  if (playingSong == nil) {
-    return;
-  }
+  Song *song = [playing playingSong];
+  if (!song) return;
 
-  [self showSpinner];
-
-  [[self pandora] rateSong:playingSong as:NO];
   /* Remaining songs in the queue are probably related to this one. If we
      dislike this one, remove all related songs to grab another set */
   [playing clearSongList];
-  [self next:sender];
+  [self rate:song as:NO];
 }
 
 /* We are tired of the currently playing song, play another */

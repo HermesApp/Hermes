@@ -24,7 +24,7 @@
   [view setSelected:selected];
   [view setNeedsDisplay:YES];
   HistoryController *hc = [[self collectionView] delegate];
-  [hc selectionChanged];
+  [hc updateUI];
 }
 
 - (void) updateUI {
