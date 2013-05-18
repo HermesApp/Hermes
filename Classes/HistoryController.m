@@ -89,10 +89,11 @@
 
 - (void) updateUI {
   Song *song = [self selectedItem];
-  if (!song) return;
-  if ([[song station] shared]) return;
-
-  int rating = [[song nrating] intValue];
+  int rating = 0;
+  if (song && ![[song station] shared]) {
+    rating = [[song nrating] intValue];
+  }
+  
   if (rating == -1) {
     [like setState:NSOffState];
     [dislike setState:NSOnState];
