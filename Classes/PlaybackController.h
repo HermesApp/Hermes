@@ -3,6 +3,8 @@
 #import "Pandora/Station.h"
 #import "Scrobbler.h"
 
+@class Song;
+
 @interface PlaybackController : NSObject {
   IBOutlet NSProgressIndicator *songLoadingProgress;
 
@@ -47,6 +49,8 @@
 - (BOOL) pause;
 - (void) setIntVolume: (int) volume;
 - (int) getIntVolume;
+
+- (void) rate:(Song *)song as:(BOOL)liked;
 
 - (IBAction)playpause: (id) sender;
 - (IBAction)next: (id) sender;

@@ -418,10 +418,12 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    for (NSDictionary* feed in d[@"result"][@"feedback"][@"thumbsUp"]) {
-      if ([feed[@"songName"] isEqualToString:[song title]]) {
-        [self deleteFeedback:feed[@"feedbackId"]];
-        break;
+    for (NSString *thumb in @[@"thumbsUp", @"thumbsDown"]) {
+      for (NSDictionary* feed in d[@"result"][@"feedback"][thumb]) {
+        if ([feed[@"songName"] isEqualToString:[song title]]) {
+          [self deleteFeedback:feed[@"feedbackId"]];
+          break;
+        }
       }
     }
   }];

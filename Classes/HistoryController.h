@@ -31,7 +31,9 @@
 - (void) insertObject:(Song *)s inSongsAtIndex:(NSUInteger)index;
 - (void) removeObjectFromSongsAtIndex:(NSUInteger)index;
 
-- (void) selectionChanged;
+- (Song*) selectedItem;
+- (void) updateUI;
+
 - (IBAction) likeSelected:(id)sender;
 - (IBAction) dislikeSelected:(id)sender;
 - (IBAction) gotoArtist:(id)sender;
