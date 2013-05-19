@@ -87,47 +87,37 @@
   return [[NSApp delegate] pandora];
 }
 
-- (void) selectionChanged {
-  Song* s = [self selectedItem];
-  if (s == nil) return;
-  if ([[s station] shared]) return;
-
-  if ([[s nrating] intValue] == 1) {
-    [like setState:NSOnState];
-  } else {
-    [like setState:NSOffState];
+- (void) updateUI {
+  Song *song = [self selectedItem];
+  int rating = 0;
+  if (song && ![[song station] shared]) {
+    rating = [[song nrating] intValue];
   }
-  if ([[s nrating] intValue] == -1) {
+  
+  if (rating == -1) {
+    [like setState:NSOffState];
     [dislike setState:NSOnState];
-  } else {
+  }
+  else if (rating == 0) {
+    [like setState:NSOffState];
+    [dislike setState:NSOffState];
+  }
+  else if (rating == 1) {
+    [like setState:NSOnState];
     [dislike setState:NSOffState];
   }
 }
 
 - (IBAction) dislikeSelected:(id)sender {
-  Song* s = [self selectedItem];
-  if (s == nil) return;
-  if ([dislike state] == NSOnState) {
-    [[self pandora] rateSong:s as:NO];
-    [like setState:NSOffState];
-    PlaybackController *playback = [[NSApp delegate] playback];
-    if ([[playback playing] playingSong] == s) {
-      [playback next:nil];
-    }
-  } else {
-    [[self pandora] deleteRating:s];
-  }
+  Song* song = [self selectedItem];
+  if (!song) return;
+  [[[NSApp delegate] playback] rate:song as:NO];
 }
 
 - (IBAction) likeSelected:(id)sender {
-  Song* s = [self selectedItem];
-  if (s == nil) return;
-  if ([like state] == NSOnState) {
-    [[self pandora] rateSong:s as:YES];
-    [dislike setState:NSOffState];
-  } else {
-    [[self pandora] deleteRating:s];
-  }
+  Song* song = [self selectedItem];
+  if (!song) return;
+  [[[NSApp delegate] playback] rate:song as:YES];
 }
 
 - (IBAction)gotoSong:(id)sender {
