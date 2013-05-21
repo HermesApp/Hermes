@@ -13,6 +13,10 @@
   IBOutlet NSCollectionView *collection;
   FileReader *reader;
 
+  IBOutlet NSButton *pandoraSong;
+  IBOutlet NSButton *pandoraArtist;
+  IBOutlet NSButton *pandoraAlbum;
+  IBOutlet NSButton *lyrics;
   IBOutlet NSButton *like;
   IBOutlet NSButton *dislike;
   IBOutlet NSDrawer *drawer;
