@@ -320,7 +320,7 @@ BOOL playOnStart = YES;
 }
 
 - (void) rate:(Song *)song as:(BOOL)liked {
-  if (!song) return;
+  if (!song || [[song station] shared]) return;
   int rating = liked ? 1 : -1;
 
   // Should we delete the rating?
@@ -464,4 +464,10 @@ BOOL playOnStart = YES;
   }
 }
 
+-(BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
+  if (toolbarItem == like || toolbarItem == dislike) {
+    return [playing playingSong] && ![playing shared];
+  }
+  return YES;
+}
 @end

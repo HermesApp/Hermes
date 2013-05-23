@@ -87,13 +87,29 @@
   return [[NSApp delegate] pandora];
 }
 
+- (void) setEnabledState:(BOOL)enabled allowRating:(BOOL)ratingEnabled {
+  [pandoraSong setEnabled:enabled];
+  [pandoraArtist setEnabled:enabled];
+  [pandoraAlbum setEnabled:enabled];
+  [lyrics setEnabled:enabled];
+  [like setEnabled:ratingEnabled];
+  [dislike setEnabled:ratingEnabled];
+}
+
 - (void) updateUI {
   Song *song = [self selectedItem];
   int rating = 0;
-  if (song && ![[song station] shared]) {
+  if (song && [[song station] shared]) {
+    [self setEnabledState:YES allowRating:NO];
+  }
+  else if (song) {
+    [self setEnabledState:YES allowRating:YES];
     rating = [[song nrating] intValue];
   }
-  
+  else {
+    [self setEnabledState:NO allowRating:NO];
+  }
+
   if (rating == -1) {
     [like setState:NSOffState];
     [dislike setState:NSOnState];
