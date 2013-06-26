@@ -13,6 +13,7 @@ NSString * const ASNewSongPlaying    = @"ASNewSongPlaying";
 NSString * const ASNoSongsLeft       = @"ASNoSongsLeft";
 NSString * const ASRunningOutOfSongs = @"ASRunningOutOfSongs";
 NSString * const ASStreamError       = @"ASStreamError";
+NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 
 @implementation ASPlaylist
 
@@ -154,6 +155,9 @@ NSString * const ASStreamError       = @"ASStreamError";
   [self setAudioStream];
   tries = 0;
   [stream start];
+  [[NSNotificationCenter defaultCenter]
+        postNotificationName:ASAttemptingNewSong
+                      object:self];
 
   if ([urls count] < 2) {
     [[NSNotificationCenter defaultCenter]

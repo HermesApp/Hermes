@@ -35,6 +35,12 @@
              name:ASNewSongPlaying
            object:self];
 
+  [[NSNotificationCenter defaultCenter]
+      addObserver:self
+         selector:@selector(attemptingNewSong:)
+             name:ASAttemptingNewSong
+           object:self];
+
   return self;
 }
 
@@ -88,6 +94,11 @@
 
 - (BOOL) isEqual:(id)object {
   return [_stationId isEqual:[object stationId]];
+}
+
+- (void) attemptingNewSong:(NSNotification*) notification {
+    _playingSong = songs[0];
+    [songs removeObjectAtIndex:0];
 }
 
 - (void) fetchMoreSongs:(NSNotification*) notification {
@@ -168,11 +179,7 @@
 }
 
 - (void) newSongPlaying:(NSNotification*) notification {
-  assert([songs count] > [urls count]);
-  while ([songs count] != [urls count]) {
-    _playingSong = songs[0];
-    [songs removeObjectAtIndex:0];
-  }
+  assert([songs count] == [urls count]);
   [[NSNotificationCenter defaultCenter]
         postNotificationName:@"song.playing"
                       object:self
