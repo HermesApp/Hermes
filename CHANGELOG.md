@@ -1,10 +1,11 @@
-# Version 1.1.15 (unreleased)
+# Version 1.1.15 (6/26/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.14...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.14...v1.1.15)
 
 * [fixed] The nrating property for AppleScript has been fixed, thanks to @dlh
 * [fixed] The state of buttons in both the drawer and main playback view are now
           better synchronized with each other, thanks to @dlh
+* [fixed] Attempted to fix issues associated with a few assertions cropping up
 
 # Version 1.1.14 (4/10/13)
 
