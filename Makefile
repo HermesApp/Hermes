@@ -19,7 +19,7 @@ dbg: hermes
 	$(DEBUGGER) $(HERMES)
 
 archive:
-	$(XCB) $(COMMON_OPTS) -configuration Release -scheme 'Build sparkle metadata'
+	$(XCB) $(COMMON_OPTS) -configuration Release -target 'Build sparkle metadata'
 
 clean:
 	$(XCB) $(COMMON_OPTS) -scheme Hermes clean
