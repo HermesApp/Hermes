@@ -23,7 +23,7 @@ PUBDATE=$(LC_TIME=en_US date +"%a, %d %b %G %T %z")
 
 SIGNATURE=$(
 openssl dgst -sha1 -binary < "$ARCHIVE_FILENAME" \
-| openssl dgst -dss1 -sign < $HOME/Dropbox/misc/hermes.key \
+| openssl dgst -dss1 -sign $HOME/Dropbox/misc/hermes.key \
 | openssl enc -base64
 )
 
@@ -33,7 +33,7 @@ cat > versions.xml <<EOF
 <item>
 <title>Version $VERSION</title>
 <sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>
-<sparkle:minimumSystemVersion>10.6</sparkle:minimumSystemVersion>
+<sparkle:minimumSystemVersion>10.7</sparkle:minimumSystemVersion>
 <pubDate>$PUBDATE</pubDate>
 <enclosure
 url="$DOWNLOAD_URL"
