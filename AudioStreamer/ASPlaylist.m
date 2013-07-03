@@ -115,12 +115,12 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
        just in case, retry the current song automatically a few times before we
        finally give up and clear our cache of urls (see below) */
     } else {
-      [self retry];
+      [self performSelector:@selector(retry) withObject:nil afterDelay:0];
     }
 
   /* When the stream has finished, move on to the next song */
   } else if ([stream isDone]) {
-    if (!nexting) [self next];
+    [self next];
   }
 }
 
@@ -154,10 +154,10 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   [urls removeObjectAtIndex:0];
   [self setAudioStream];
   tries = 0;
-  [stream start];
   [[NSNotificationCenter defaultCenter]
         postNotificationName:ASAttemptingNewSong
                       object:self];
+  [stream start];
 
   if ([urls count] < 2) {
     [[NSNotificationCenter defaultCenter]
