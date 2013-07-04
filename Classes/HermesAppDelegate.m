@@ -340,11 +340,16 @@
   [errorLabel setStringValue:err];
   [window orderFront:nil];
   [autoRetry invalidate];
-  autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
-                                               target:self
-                                             selector:@selector(retry:)
-                                             userInfo:nil
-                                              repeats:NO];
+
+  // code 0 == internal error, and if we're getting a fragment then this means
+  // that we shouldn't retry because it's only going to keep failing
+  if (code != 0 && ![[lastRequest method] isEqual:@"station.getFragment"]) {
+      autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
+                                                   target:self
+                                                 selector:@selector(retry:)
+                                                 userInfo:nil
+                                                  repeats:NO];
+  }
 }
 
 - (void) retry:(id)sender {
