@@ -120,8 +120,10 @@ static NSString *hierrs[] = {
  */
 - (NSMutableDictionary*) defaultDictionary {
   NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  d[@"userAuthToken"] = user_auth_token;
-  d[@"syncTime"]      = [self syncTimeNum];
+  if (user_auth_token != nil) {
+    d[@"userAuthToken"] = user_auth_token;
+  }
+  d[@"syncTime"] = [self syncTimeNum];
   return d;
 }
 
@@ -209,6 +211,7 @@ static NSString *hierrs[] = {
       PandoraRequest *newreq = [self defaultRequest:[req method]];
       [newreq setRequest:[req request]];
       [newreq request][@"userAuthToken"] = user_auth_token;
+      [newreq request][@"syncTime"] = [self syncTimeNum];
       [newreq setCallback:[req callback]];
       [newreq setTls:[req tls]];
       [newreq setEncrypted:[req encrypted]];

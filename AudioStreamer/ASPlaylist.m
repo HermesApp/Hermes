@@ -120,7 +120,9 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 
   /* When the stream has finished, move on to the next song */
   } else if ([stream isDone]) {
-    [self next];
+    [self performSelectorOnMainThread:@selector(next)
+                           withObject:nil
+                        waitUntilDone:NO];
   }
 }
 
@@ -175,9 +177,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 - (BOOL) duration:(double*)ret { return [stream duration:ret]; }
 
 - (void) next {
-  if (nexting)
-    return;
-
+  assert(!nexting);
   nexting = YES;
   lastKnownSeekTime = 0;
   retrying = FALSE;
@@ -187,7 +187,6 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 }
 
 - (void) stop {
-  nexting = YES;
   [stream stop];
   if (stream != nil) {
     [[NSNotificationCenter defaultCenter]

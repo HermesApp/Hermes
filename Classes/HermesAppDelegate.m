@@ -302,6 +302,7 @@
     [errorButton setHidden:TRUE];
 
     switch (code) {
+      case INVALID_SYNC_TIME:
       case INVALID_AUTH_TOKEN: {
         NSString *user = [self getCachedUsername];
         NSString *pass = [self getCachedPassword];
@@ -343,7 +344,10 @@
 
   // code 0 == internal error, and if we're getting a fragment then this means
   // that we shouldn't retry because it's only going to keep failing
-  if (code != 0 && ![[lastRequest method] isEqual:@"station.getFragment"]) {
+  if (code != 0 &&
+      ![[lastRequest method] isEqual:@"station.getFragment"] &&
+      code != 1039) // rate limit
+  {
       autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
                                                    target:self
                                                  selector:@selector(retry:)
