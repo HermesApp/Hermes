@@ -83,7 +83,10 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
     if (error != nil) {
       [self error:[error localizedDescription]];
     } else if (!handles && object[@"error"] != nil) {
-      [self error:object[@"message"]];
+      /* Ignore temporary errors */
+      if ([object[@"error"] intValue] != 16) {
+        [self error:object[@"message"]];
+      }
     } else {
       callback(object);
     }
