@@ -1,3 +1,10 @@
+# Version 1.1.16 (7/30/13)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.15...v1.1.16)
+
+* [fixed] Increase stability when running for a long time
+* [fixed] Other various bug fixes
+
 # Version 1.1.15 (6/26/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.14...v1.1.15)
