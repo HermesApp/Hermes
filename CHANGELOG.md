@@ -1,3 +1,9 @@
+# Version 1.1.17 (7/30/13)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.16...v1.1.17)
+
+* [fixed] No longer crashes when switching stations
+
 # Version 1.1.16 (7/30/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.15...v1.1.16)
