@@ -90,7 +90,9 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
 
   int code = [stream errorCode];
-  if (code != 0) {
+  if (stopping) {
+    return;
+  } else if (code != 0) {
     /* If we've hit an error, then we want to record out current progress into
        the song. Only do this if we're not in the process of retrying to
        establish a connection, so that way we don't blow away the original
@@ -187,6 +189,8 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 }
 
 - (void) stop {
+  assert(!stopping);
+  stopping = YES;
   [stream stop];
   if (stream != nil) {
     [[NSNotificationCenter defaultCenter]
@@ -196,6 +200,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
   stream = nil;
   _playing = nil;
+  stopping = NO;
 }
 
 - (void) setVolume:(double)vol {

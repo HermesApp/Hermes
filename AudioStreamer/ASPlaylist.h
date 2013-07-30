@@ -24,6 +24,7 @@ extern NSString * const ASAttemptingNewSong;
 @interface ASPlaylist : NSObject {
   BOOL retrying;              /* Are we retrying the current url? */
   BOOL nexting;               /* Are we in the middle of nexting? */
+  BOOL stopping;              /* Are we in the middle of stopping? */
   BOOL volumeSet;             /* TRUE if the volume has been set on the stream */
   double lastKnownSeekTime;   /* time to seek to */
   double volume;              /* volume for all streams on this playlist */
