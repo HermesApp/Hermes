@@ -62,5 +62,7 @@
 - (IBAction)artistURL: (id)sender;
 - (IBAction)albumURL: (id)sender;
 - (IBAction)volumeChanged: (id)sender;
+- (IBAction)increaseVolume:(id)sender;
+- (IBAction)decreaseVolume:(id)sender;
 
 @end
