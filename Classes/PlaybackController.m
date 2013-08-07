@@ -18,6 +18,7 @@
 #import "PlaybackController.h"
 #import "Scrobbler.h"
 #import "StationsController.h"
+#import "PreferencesController.h"
 
 BOOL playOnStart = YES;
 
@@ -81,6 +82,17 @@ BOOL playOnStart = YES;
      selector:@selector(songPlayed:)
      name:@"song.playing"
      object:nil];
+  
+  // NSDistributedNotificationCenter is for interprocess communication.
+  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                      selector:@selector(pauseOnScreensaverStart:)
+                                                          name:@"com.apple.screensaver.didstart"
+                                                        object:nil];
+  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                      selector:@selector(playOnScreensaverStop:)
+                                                          name:@"com.apple.screensaver.didstop"
+                                                        object:nil];
+  
   return self;
 }
 
@@ -456,6 +468,27 @@ BOOL playOnStart = YES;
 
 - (int) getIntVolume {
   return [volume intValue];
+}
+
+- (void) pauseOnScreensaverStart:(NSNotification *)aNotification {
+  if (!PREF_KEY_BOOL(PAUSE_ON_SCREENSAVER_START)) {
+    return;
+  }
+  
+  if ([self pause]){
+    self.pausedByScreensaver = YES;
+  }
+}
+
+- (void) playOnScreensaverStop:(NSNotification *)aNotification {
+  if (!PREF_KEY_BOOL(PLAY_ON_SCREENSAVER_STOP)) {
+    return;
+  }
+
+  if (self.pausedByScreensaver) {
+    [self play];
+  }
+  self.pausedByScreensaver = NO;
 }
 
 - (IBAction) volumeChanged: (id) sender {
