@@ -465,11 +465,11 @@ BOOL playOnStart = YES;
 }
 
 - (IBAction)increaseVolume:(id)sender {
-    [self setIntVolume:[self getIntVolume] + 5];
+  [self setIntVolume:[self getIntVolume] + 5];
 }
 
 - (IBAction)decreaseVolume:(id)sender {
-    [self setIntVolume:[self getIntVolume] - 5];
+  [self setIntVolume:[self getIntVolume] - 5];
 }
 
 -(BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
