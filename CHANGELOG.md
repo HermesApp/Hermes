@@ -1,3 +1,11 @@
+# Version 1.1.18 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.17...master)
+
+* [added] Pause playback on screensaver start, optionally resume on stop, thanks
+          @winny-!
+* [added] New shortcuts for increasing/decreasing volume, thanks @winny-!
+
 # Version 1.1.17 (7/30/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.16...v1.1.17)
