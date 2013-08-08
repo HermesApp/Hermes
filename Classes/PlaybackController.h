@@ -33,6 +33,7 @@
 }
 
 @property (readonly) Station *playing;
+@property BOOL pausedByScreensaver;
 
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;
@@ -49,6 +50,8 @@
 - (BOOL) pause;
 - (void) setIntVolume: (int) volume;
 - (int) getIntVolume;
+- (void) pauseOnScreensaverStart: (NSNotification *) aNotification;
+- (void) playOnScreensaverStop: (NSNotification *) aNotification;
 
 - (void) rate:(Song *)song as:(BOOL)liked;
 
