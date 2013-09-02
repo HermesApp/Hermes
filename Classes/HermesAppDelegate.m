@@ -582,4 +582,20 @@
   }
 }
 
+#pragma mark QLPreviewPanelController
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
+  return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel {
+  panel.dataSource = playback;
+  panel.delegate = playback;
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
+  panel.dataSource = nil;
+  panel.delegate = nil;
+}
+
 @end
