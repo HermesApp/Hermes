@@ -34,24 +34,26 @@ BOOL playOnStart = YES;
   return playOnStart;
 }
 
-- (id) init {
-  if (!(self = [super init])) {
-    return self;
-  }
+- (void) awakeFromNib {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-  progressUpdateTimer = nil;
-
+  NSWindow *window = [[NSApp delegate] window];
   [center addObserver:self
-             selector:@selector(windowClosing)
+             selector:@selector(stopUpdatingProgress)
                  name:NSWindowWillCloseNotification
-               object:[[NSApp delegate] window]];
-
+               object:window];
   [center addObserver:self
-             selector:@selector(windowOpening)
-                 name:NSWindowDidBecomeKeyNotification
-               object:[[NSApp delegate] window]];
-  [self windowOpening];
+             selector:@selector(stopUpdatingProgress)
+                 name:NSApplicationDidHideNotification
+               object:NSApp];
+  [center addObserver:self
+             selector:@selector(startUpdatingProgress)
+                 name:NSWindowDidBecomeMainNotification
+               object:window];
+  [center addObserver:self
+             selector:@selector(startUpdatingProgress)
+                 name:NSApplicationDidUnhideNotification
+               object:NSApp];
 
   [center
     addObserver:self
@@ -92,20 +94,18 @@ BOOL playOnStart = YES;
                                                       selector:@selector(playOnScreensaverStop:)
                                                           name:@"com.apple.screensaver.didstop"
                                                         object:nil];
-  
-  return self;
 }
 
-/* Don't run the timer when the application is closed */
-- (void) windowClosing {
+/* Don't run the timer when playback is paused, the window is hidden, etc. */
+- (void) stopUpdatingProgress {
   [progressUpdateTimer invalidate];
   progressUpdateTimer = nil;
 }
 
-- (void) windowOpening {
+- (void) startUpdatingProgress {
   if (progressUpdateTimer != nil) return;
   progressUpdateTimer = [NSTimer
-    scheduledTimerWithTimeInterval:.3
+    scheduledTimerWithTimeInterval:1
     target:self
     selector:@selector(updateProgress:)
     userInfo:nil
