@@ -575,6 +575,7 @@
 - (void) playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
   if ([stream isPlaying]) {
+    [window setTitle:playback.playing.name];
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
