@@ -1,6 +1,6 @@
-# Version 1.1.18 (unreleased)
+# Version 1.1.18 (9/3/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.17...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.17...v1.1.18)
 
 * [added] Pause playback on screensaver start, optionally resume on stop, thanks
           @winny-!
