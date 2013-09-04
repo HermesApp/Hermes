@@ -5,6 +5,12 @@
 * [added] Pause playback on screensaver start, optionally resume on stop, thanks
           @winny-!
 * [added] New shortcuts for increasing/decreasing volume, thanks @winny-!
+* [added] The window title is now the station title, thanks @nriley!
+* [added] The progress bar is no longer animated and fits the theme better,
+          thanks @nriley!
+* [added] The album art is now clickable to zoom it and get a nicer preview,
+          thanks @nriley!
+* [fixed] Now runs on 10.6 again, thanks @nriley!
 
 # Version 1.1.17 (7/30/13)
 
