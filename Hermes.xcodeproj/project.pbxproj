@@ -62,6 +62,7 @@
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		BCCDC93416C09607000E052D /* pandora-black.icns in Resources */ = {isa = PBXBuildFile; fileRef = BCCDC93316C09607000E052D /* pandora-black.icns */; };
+		E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E195ABA817D4636B00FE518C /* Quartz.framework */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
@@ -196,6 +197,7 @@
 		97539FAC158442A500D1E65C /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
 		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		BCCDC93316C09607000E052D /* pandora-black.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "pandora-black.icns"; sourceTree = "<group>"; };
+		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */,
 				9728D8E1158C3F0800C078A4 /* AudioStreamer.framework in Frameworks */,
 				9728D8E0158C3F0500C078A4 /* SBJson.framework in Frameworks */,
 				971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */,
@@ -361,6 +364,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E195ABA817D4636B00FE518C /* Quartz.framework */,
 				9728D8F5158C400F00C078A4 /* CoreServices.framework */,
 				9728D877158C3D1F00C078A4 /* Cocoa.framework */,
 				9728D8A5158C3E7C00C078A4 /* AudioToolbox.framework */,
