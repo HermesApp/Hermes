@@ -1,11 +1,12 @@
 #import <Cocoa/Cocoa.h>
+#import <Quartz/Quartz.h>
 
 #import "Pandora/Station.h"
 #import "Scrobbler.h"
 
 @class Song;
 
-@interface PlaybackController : NSObject {
+@interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem> {
   IBOutlet NSProgressIndicator *songLoadingProgress;
 
   IBOutlet NSView *playbackView;
@@ -14,8 +15,8 @@
   IBOutlet NSTextField *artistLabel;
   IBOutlet NSTextField *songLabel;
   IBOutlet NSTextField *progressLabel;
-  IBOutlet NSProgressIndicator *playbackProgress;
-  IBOutlet NSImageView *art;
+  IBOutlet NSLevelIndicator *playbackProgress;
+  IBOutlet NSButton *art;
   IBOutlet NSProgressIndicator *artLoading;
   IBOutlet NSTextField *albumLabel;
 
@@ -67,5 +68,6 @@
 - (IBAction)volumeChanged: (id)sender;
 - (IBAction)increaseVolume:(id)sender;
 - (IBAction)decreaseVolume:(id)sender;
+- (IBAction)quickLookArt:(id)sender;
 
 @end

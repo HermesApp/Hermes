@@ -575,10 +575,27 @@
 - (void) playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
   if ([stream isPlaying]) {
+    [window setTitle:playback.playing.name];
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
   }
+}
+
+#pragma mark QLPreviewPanelController
+
+- (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
+  return YES;
+}
+
+- (void)beginPreviewPanelControl:(QLPreviewPanel *)panel {
+  panel.dataSource = playback;
+  panel.delegate = playback;
+}
+
+- (void)endPreviewPanelControl:(QLPreviewPanel *)panel {
+  panel.dataSource = nil;
+  panel.delegate = nil;
 }
 
 @end

@@ -34,24 +34,26 @@ BOOL playOnStart = YES;
   return playOnStart;
 }
 
-- (id) init {
-  if (!(self = [super init])) {
-    return self;
-  }
+- (void) awakeFromNib {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-  progressUpdateTimer = nil;
-
+  NSWindow *window = [[NSApp delegate] window];
   [center addObserver:self
-             selector:@selector(windowClosing)
+             selector:@selector(stopUpdatingProgress)
                  name:NSWindowWillCloseNotification
-               object:[[NSApp delegate] window]];
-
+               object:window];
   [center addObserver:self
-             selector:@selector(windowOpening)
-                 name:NSWindowDidBecomeKeyNotification
-               object:[[NSApp delegate] window]];
-  [self windowOpening];
+             selector:@selector(stopUpdatingProgress)
+                 name:NSApplicationDidHideNotification
+               object:NSApp];
+  [center addObserver:self
+             selector:@selector(startUpdatingProgress)
+                 name:NSWindowDidBecomeMainNotification
+               object:window];
+  [center addObserver:self
+             selector:@selector(startUpdatingProgress)
+                 name:NSApplicationDidUnhideNotification
+               object:NSApp];
 
   [center
     addObserver:self
@@ -92,20 +94,18 @@ BOOL playOnStart = YES;
                                                       selector:@selector(playOnScreensaverStop:)
                                                           name:@"com.apple.screensaver.didstop"
                                                         object:nil];
-  
-  return self;
 }
 
-/* Don't run the timer when the application is closed */
-- (void) windowClosing {
+/* Don't run the timer when playback is paused, the window is hidden, etc. */
+- (void) stopUpdatingProgress {
   [progressUpdateTimer invalidate];
   progressUpdateTimer = nil;
 }
 
-- (void) windowOpening {
+- (void) startUpdatingProgress {
   if (progressUpdateTimer != nil) return;
   progressUpdateTimer = [NSTimer
-    scheduledTimerWithTimeInterval:.3
+    scheduledTimerWithTimeInterval:1
     target:self
     selector:@selector(updateProgress:)
     userInfo:nil
@@ -191,12 +191,12 @@ BOOL playOnStart = YES;
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   if ([playing isPlaying]) {
     NSLogd(@"Stream playing now...");
-    [playbackProgress startAnimation:nil];
     [playpause setImage:[NSImage imageNamed:@"pause"]];
+    [self startUpdatingProgress];
   } else if ([playing isPaused]) {
     NSLogd(@"Stream paused now...");
     [playpause setImage:[NSImage imageNamed:@"play"]];
-    [playbackProgress stopAnimation:nil];
+    [self stopUpdatingProgress];
   }
 }
 
@@ -223,6 +223,22 @@ BOOL playOnStart = YES;
   }
 }
 
+- (void)updateQuickLookPreviewWithArt:(BOOL)hasArt {
+  [art setEnabled:hasArt];
+
+  if (![QLPreviewPanel sharedPreviewPanelExists])
+    return;
+
+  QLPreviewPanel *previewPanel = [QLPreviewPanel sharedPreviewPanel];
+  if (previewPanel.currentController != [NSApp delegate])
+    return;
+
+  if (hasArt)
+    [previewPanel refreshCurrentPreviewItem];
+  else
+    [previewPanel reloadData];
+}
+
 /*
  * Called whenever a song starts playing, updates all fields to reflect that the
  * song is playing
@@ -238,6 +254,7 @@ BOOL playOnStart = YES;
       [GROWLER growl:song withImage:nil isNew:YES];
       [artLoading setHidden:YES];
       [artLoading stopAnimation:nil];
+      [self updateQuickLookPreviewWithArt:NO];
     } else {
       [artLoading startAnimation:nil];
       [artLoading setHidden:NO];
@@ -260,6 +277,7 @@ BOOL playOnStart = YES;
         [art setImage:image];
         [artLoading setHidden:YES];
         [artLoading stopAnimation:nil];
+        [self updateQuickLookPreviewWithArt:data != nil];
       }];
     }
   } else {
@@ -505,10 +523,72 @@ BOOL playOnStart = YES;
   [self setIntVolume:[self getIntVolume] - 5];
 }
 
+- (IBAction)quickLookArt:(id)sender {
+  QLPreviewPanel *previewPanel = [QLPreviewPanel sharedPreviewPanel];
+  if ([previewPanel isVisible])
+    [previewPanel orderOut:nil];
+  else
+    [previewPanel makeKeyAndOrderFront:nil];
+}
+
 -(BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
   if (toolbarItem == like || toolbarItem == dislike) {
     return [playing playingSong] && ![playing shared];
   }
   return YES;
 }
+
+#pragma mark QLPreviewPanelDataSource
+
+- (NSInteger)numberOfPreviewItemsInPreviewPanel:(QLPreviewPanel *)panel {
+  Song *song = [playing playingSong];
+  if (song == nil)
+    return 0;
+
+  if ([song art] == nil || [[song art] isEqual: @""])
+    return 0;
+
+  return 1;
+}
+
+- (id <QLPreviewItem>)previewPanel:(QLPreviewPanel *)panel previewItemAtIndex:(NSInteger)index {
+  return self;
+}
+
+#pragma mark QLPreviewItem
+
+- (NSURL *)previewItemURL {
+  NSURL *artFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"Hermes Album Art.tiff"]];
+  [[[art image] TIFFRepresentation] writeToURL:artFileURL atomically:YES];
+
+  return artFileURL;
+}
+
+- (NSString *)previewItemTitle {
+  return [[playing playingSong] album];
+}
+
+#pragma mark QLPreviewPanelDelegate
+
+- (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item {
+  NSRect frame = [art frame];
+  frame.origin = [[[NSApp delegate] window] convertBaseToScreen:frame.origin];
+
+  frame = NSInsetRect(frame, 1, 1); // image doesn't extend into the button border
+
+  NSImage *image = [art image];
+  NSSize imageSize = [image size]; // correct for aspect ratio
+  if (imageSize.width > imageSize.height)
+    frame = NSInsetRect(frame, 0, ((imageSize.width - imageSize.height) / imageSize.height) / 2. * frame.size.height);
+  else if (imageSize.height > imageSize.width)
+    frame = NSInsetRect(frame, ((imageSize.height - imageSize.width) / imageSize.width) / 2. * frame.size.width, 0);
+
+  return frame;
+}
+
+- (NSImage *)previewPanel:(QLPreviewPanel *)panel transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect {
+
+  return [art image];
+}
+
 @end
