@@ -1,6 +1,6 @@
-# Version 1.1.19 (unreleased)
+# Version 1.1.19 (9/4/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.18...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.18...v1.1.19)
 
 * [fixed] Actually fixed for 10.6 (retargeting AudioStreamer as well as SBJson),
           thanks again to @nriley
