@@ -50,5 +50,7 @@
 	<true/>
 	<key>CFBundleDisplayName</key>
 	<string>Hermes</string>
+        <key>NSSupportsAutomaticGraphicsSwitching</key>
+        <true/>
 </dict>
 </plist>
