@@ -1,3 +1,9 @@
+# Version 1.1.20 (unreleased)
+
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.19...master)
+
+* [fixed] Don't switch to the discrete graphics card (#144), thanks to @nriley
+
 # Version 1.1.19 (9/4/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.18...v1.1.19)
