@@ -35,6 +35,7 @@
 - (void) hideDrawer;
 - (void) show;
 - (void) reset;
+- (void) focus;
 
 // Buttons at bottom of drawer
 - (IBAction)deleteSelected: (id)sender;

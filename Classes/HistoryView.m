@@ -11,10 +11,30 @@
 
 @synthesize selected;
 
+- (void)setTextColor:(NSColor *)color {
+  for (NSView *view in [self subviews]) {
+    if ([view respondsToSelector:@selector(setTextColor:)]) {
+      [(id)view setTextColor:color];
+    }
+  }
+}
+
 - (void)drawRect:(NSRect)dirtyRect {
+  // Don't allow partial redraws (e.g. when switching drawer): it produces artifacts
+  if (!NSEqualPoints(dirtyRect.origin, NSZeroPoint)) {
+    [self setNeedsDisplay:YES];
+  }
   if (selected) {
-    [[NSColor selectedControlColor] set];
+    if ([[self window] firstResponder] != [self superview]) {
+      [[NSColor secondarySelectedControlColor] set];
+      [self setTextColor:[NSColor controlTextColor]];
+    } else {
+      [[NSColor alternateSelectedControlColor] set];
+      [self setTextColor:[NSColor alternateSelectedControlTextColor]];
+    }
     NSRectFill([self bounds]);
+  } else {
+    [self setTextColor:[NSColor controlTextColor]];
   }
 }
 
