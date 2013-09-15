@@ -170,10 +170,15 @@
   s.width = [defaults integerForKey:HIST_DRAWER_WIDTH];
   [drawer open];
   [drawer setContentSize:s];
+  [self focus];
 }
 
 - (void) hideDrawer {
   [drawer close];
+}
+
+- (void) focus {
+  [[drawer parentWindow] makeFirstResponder:collection];
 }
 
 - (IBAction) showLyrics:(id)sender {

@@ -438,14 +438,20 @@
 }
 
 - (IBAction) showHistoryDrawer:(id)sender {
-  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_HISTORY) return;
+  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_HISTORY) {
+    [history focus];
+    return;
+  }
   [self historyShow];
   [stations hideDrawer];
   PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_HISTORY);
 }
 
 - (IBAction) showStationsDrawer:(id)sender {
-  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_STATIONS) return;
+  if ([PREF_KEY_VALUE(OPEN_DRAWER) intValue] == DRAWER_STATIONS) {
+    [stations focus];
+    return;
+  }
   [history hideDrawer];
   [self stationsShow];
   PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_STATIONS);

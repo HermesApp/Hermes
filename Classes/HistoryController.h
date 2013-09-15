@@ -9,7 +9,6 @@
 @class Song;
 
 @interface HistoryController : NSObject {
-  IBOutlet NSWindow *history;
   IBOutlet NSCollectionView *collection;
   FileReader *reader;
 
@@ -28,6 +27,7 @@
 
 - (void) showDrawer;
 - (void) hideDrawer;
+- (void) focus;
 
 - (void) addSong: (Song*) song;
 - (BOOL) saveSongs;
