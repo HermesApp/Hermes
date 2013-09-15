@@ -170,6 +170,8 @@
   s.width = [defaults integerForKey:HIST_DRAWER_WIDTH];
   [drawer open];
   [drawer setContentSize:s];
+  [collection setMaxItemSize:NSMakeSize(227, 40)];
+  [collection setMinItemSize:NSMakeSize(40, 40)];
   [self focus];
 }
 
