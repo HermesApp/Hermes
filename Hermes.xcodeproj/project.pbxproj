@@ -63,6 +63,7 @@
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		BCCDC93416C09607000E052D /* pandora-black.icns in Resources */ = {isa = PBXBuildFile; fileRef = BCCDC93316C09607000E052D /* pandora-black.icns */; };
 		E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E195ABA817D4636B00FE518C /* Quartz.framework */; };
+		E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0A73917E5630100429DE0 /* StationsTableView.m */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
@@ -198,6 +199,8 @@
 		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		BCCDC93316C09607000E052D /* pandora-black.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "pandora-black.icns"; sourceTree = "<group>"; };
 		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationsTableView.h; sourceTree = "<group>"; };
+		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationsTableView.m; sourceTree = "<group>"; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
 				FA2A3F75132BF97E0089AECC /* StationsController.h */,
 				FA2A3F76132BF97E0089AECC /* StationsController.m */,
+				E1D0A73817E5630100429DE0 /* StationsTableView.h */,
+				E1D0A73917E5630100429DE0 /* StationsTableView.m */,
 				FACFACD415673690008A2140 /* StationController.h */,
 				FACFACD515673690008A2140 /* StationController.m */,
 				97177196159EAF6F00EE3355 /* HistoryView.h */,
@@ -881,6 +886,7 @@
 				971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */,
 				97177198159EAF6F00EE3355 /* HistoryView.m in Sources */,
 				9717719D159EBBBF00EE3355 /* FileReader.m in Sources */,
+				E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

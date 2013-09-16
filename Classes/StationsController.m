@@ -78,6 +78,7 @@
   s.width = [defaults integerForKey:DRAWER_WIDTH];
   [stations open];
   [stations setContentSize:s];
+  [self focus];
 }
 
 - (void) hideDrawer {
@@ -88,6 +89,10 @@
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
+}
+
+- (void) focus {
+  [[stations parentWindow] makeFirstResponder:stationsTable];
 }
 
 - (int) stationIndex:(Station *)station {
