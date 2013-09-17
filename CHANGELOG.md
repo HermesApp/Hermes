@@ -1,7 +1,12 @@
-# Version 1.1.20 (unreleased)
+# Version 1.1.20 (9/16/13)
 
-[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.19...master)
+[Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.19...v1.1.20)
 
+This release entirely brought to you through the fantastic contributions of
+@nriley.
+
+* [added] Various improvements to managing the drawer of songs/stations, thanks
+          @nriley!
 * [fixed] Don't switch to the discrete graphics card (#144), thanks to @nriley
 
 # Version 1.1.19 (9/4/13)
