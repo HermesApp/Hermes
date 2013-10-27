@@ -119,6 +119,12 @@
   }
 }
 
+- (void)applicationWillFinishLaunching:(NSNotification *)notification {
+  // Must do this before the app is activated, or the menu bar doesn't draw.
+  // <http://stackoverflow.com/questions/7596643/>
+  [self updateStatusBarIcon:nil];
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
   if ([window respondsToSelector:@selector(setRestorable:)]) {
     [window setRestorable:YES];
@@ -205,7 +211,6 @@
   }
 #endif
 
-  [self updateStatusBarIcon:nil];
   [self updateAlwaysOnTop:nil];
 }
 
