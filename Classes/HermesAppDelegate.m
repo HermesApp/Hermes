@@ -593,6 +593,34 @@
   }
 }
 
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  SEL action = [menuItem action];
+
+  if (action == @selector(showHistoryDrawer:) || action == @selector(showStationsDrawer:) || action == @selector(toggleDrawerVisible:)) {
+    NSInteger openDrawer = [PREF_KEY_VALUE(OPEN_DRAWER) integerValue];
+    NSCellStateValue state = NSOffState;
+    if (action == @selector(showHistoryDrawer:)) {
+      if (openDrawer == DRAWER_NONE_HIST)
+        state = NSMixedState;
+      else if (openDrawer == DRAWER_HISTORY)
+        state = NSOnState;
+    } else if (action == @selector(showStationsDrawer:)) {
+      if (openDrawer == DRAWER_NONE_STA)
+        state = NSMixedState;
+      else if (openDrawer == DRAWER_STATIONS)
+        state = NSOnState;
+    } else {
+      if (openDrawer == DRAWER_HISTORY || openDrawer == DRAWER_STATIONS)
+        [menuItem setTitle:@"Hide Drawer"];
+      else
+        [menuItem setTitle:@"Show Drawer"];
+    }
+    [menuItem setState:state];
+  }
+
+  return YES;
+}
+
 #pragma mark QLPreviewPanelController
 
 - (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
