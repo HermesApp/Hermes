@@ -531,6 +531,33 @@ BOOL playOnStart = YES;
     [previewPanel makeKeyAndOrderFront:nil];
 }
 
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  SEL action = [menuItem action];
+
+  if (action == @selector(playpause:)) {
+    [menuItem setTitle:[playing isPaused] ? @"Play" : @"Pause"];
+  }
+
+  if (action == @selector(like:) || action == @selector(dislike:)) {
+    Song *song = [playing playingSong];
+    if (song && ![playing shared]) {
+      NSInteger rating = [[song nrating] integerValue];
+      if (action == @selector(like:)) {
+        [menuItem setState:rating == 1 ? NSOnState : NSOffState];
+        return (rating != 1);
+      } else {
+        [menuItem setState:rating == -1 ? NSOnState : NSOffState];
+        return (rating != -1);
+      }
+    } else {
+      [menuItem setState:NSOffState];
+      return NO;
+    }
+  }
+
+  return YES;
+}
+
 -(BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
   if (toolbarItem == like || toolbarItem == dislike) {
     return [playing playingSong] && ![playing shared];
