@@ -31,6 +31,8 @@
 #define ALWAYS_ON_TOP              @"alwaysOnTop"
 #define PAUSE_ON_SCREENSAVER_START @"pauseOnScreensaverStart"
 #define PLAY_ON_SCREENSAVER_STOP   @"playOnScreensaverStop"
+#define PAUSE_ON_SCREEN_LOCK       @"pauseOnScreenLock"
+#define PLAY_ON_SCREEN_UNLOCK      @"playOnScreenUnlock"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)
