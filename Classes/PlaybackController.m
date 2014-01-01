@@ -94,6 +94,14 @@ BOOL playOnStart = YES;
                                                       selector:@selector(playOnScreensaverStop:)
                                                           name:@"com.apple.screensaver.didstop"
                                                         object:nil];
+  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                      selector:@selector(pauseOnScreenLock:)
+                                                          name:@"com.apple.screenIsLocked"
+                                                        object:nil];
+  [[NSDistributedNotificationCenter defaultCenter] addObserver:self
+                                                      selector:@selector(playOnScreenUnlock:)
+                                                          name:@"com.apple.screenIsUnlocked"
+                                                        object:nil];
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */
@@ -507,6 +515,27 @@ BOOL playOnStart = YES;
     [self play];
   }
   self.pausedByScreensaver = NO;
+}
+
+- (void) pauseOnScreenLock:(NSNotification *)aNotification {
+  if (!PREF_KEY_BOOL(PAUSE_ON_SCREEN_LOCK)) {
+    return;
+  }
+  
+  if ([self pause]){
+    self.pausedByScreenLock = YES;
+  }
+}
+
+- (void) playOnScreenUnlock:(NSNotification *)aNotification {
+  if (!PREF_KEY_BOOL(PLAY_ON_SCREEN_UNLOCK)) {
+    return;
+  }
+  
+  if (self.pausedByScreenLock) {
+    [self play];
+  }
+  self.pausedByScreenLock = NO;
 }
 
 - (IBAction) volumeChanged: (id) sender {
