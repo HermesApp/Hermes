@@ -16,8 +16,6 @@
 - (void)keyDown:(NSEvent *)theEvent {
   if ([[theEvent characters] isEqualToString:@"\r"]) {
     [playButton performClick:self];
-  } else if ([[theEvent characters] isEqualToString:@" "]) {
-    [[[NSApp delegate] playback] playpause:nil];
   } else {
     [super keyDown:theEvent];
   }
