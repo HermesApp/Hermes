@@ -24,3 +24,5 @@ archive:
 clean:
 	$(XCB) $(COMMON_OPTS) -scheme Hermes clean
 	rm -rf build
+
+.PHONY: all hermes run dbg archive clean
