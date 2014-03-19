@@ -131,6 +131,20 @@ int savedVolume = 0;
   return PlaybackStatePlaying;
 }
 
+- (NSNumber *) playbackPosition {
+  double progress;
+  PlaybackController *playback = [[NSApp delegate] playback];
+  [[playback playing] progress:&progress];
+  return @(progress);
+}
+
+- (NSNumber *) currentSongDuration {
+  double duration;
+  PlaybackController *playback = [[NSApp delegate] playback];
+  [[playback playing] duration:&duration];
+  return @(duration);
+}
+
 - (void) setPlaybackState: (int) state {
   PlaybackController *playback = [[NSApp delegate] playback];
   switch (state) {

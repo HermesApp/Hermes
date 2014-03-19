@@ -20,6 +20,14 @@
       <property name="playback state" code="psta" description="Current playback state" type="player states">
         <cocoa key="playbackState"/>
       </property>
+      
+      <property name="playback position" code="ppos" description="Current playback position in seconds" type="real">
+        <cocoa key="playbackPosition"/>
+      </property>
+      
+      <property name="current song duration" code="pdur" description="Current song's duration (length) in seconds" type="real">
+        <cocoa key="currentSongDuration"/>
+      </property>
 
       <property name="current station" code="pstn" description="Current station" type="station">
         <cocoa key="currentStation"/>

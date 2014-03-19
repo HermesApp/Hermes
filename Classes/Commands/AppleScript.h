@@ -31,6 +31,8 @@ typedef enum {
 - (NSNumber*) volume;
 - (void) setVolume: (NSNumber*) volume;
 - (int) playbackState;
+- (NSNumber*) playbackPosition;
+- (NSNumber*) currentSongDuration;
 - (Station*) currentStation;
 - (void) setCurrentStation: (Station*) station;
 - (void) setPlaybackState: (int) state;
