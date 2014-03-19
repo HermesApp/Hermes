@@ -8,14 +8,17 @@
 
 #import "StationsTableView.h"
 #import "StationsController.h"
+#import "HermesAppDelegate.h"
+#import "PlaybackController.h"
 
 @implementation StationsTableView
 
 - (void)keyDown:(NSEvent *)theEvent {
-  if ([[theEvent characters] isEqualToString:@"\r"])
+  if ([[theEvent characters] isEqualToString:@"\r"]) {
     [playButton performClick:self];
-  else
+  } else {
     [super keyDown:theEvent];
+  }
 }
 
 @end

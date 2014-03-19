@@ -199,6 +199,15 @@
   return [s name];
 }
 
+/* ============================ NSTableViewDelegate protocol */
+- (BOOL)tableView:(NSTableView *)tableView shouldTypeSelectForEvent:(NSEvent *)event withCurrentSearchString:(NSString *)searchString NS_AVAILABLE_MAC(10_5) {
+  if (searchString == nil && [[event characters] isEqualToString:@" "]) {
+    [[[NSApp delegate] playback] playpause:nil];
+  }
+  
+  return YES;
+}
+
 /* ============================ NSOutlineViewDataSource protocol */
 - (id)outlineView:(NSOutlineView*)oview child:(NSInteger)index ofItem:(id)item {
   if (oview == results) {

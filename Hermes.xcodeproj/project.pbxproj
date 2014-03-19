@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -170,6 +171,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCollectionView.h; sourceTree = "<group>"; };
+		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCollectionView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97177193159EAA7D00EE3355 /* cd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cd.png; sourceTree = "<group>"; };
@@ -506,6 +509,8 @@
 		FA0E5568147855AB00C36794 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				44619491187407A300482DC4 /* HistoryCollectionView.h */,
+				44619492187407A300482DC4 /* HistoryCollectionView.m */,
 				FAEFFAAF132CB173007DC6FB /* AuthController.h */,
 				FAEFFAB0132CB173007DC6FB /* AuthController.m */,
 				FA229D6614429F68008AB9FE /* HistoryController.h */,
@@ -875,6 +880,7 @@
 				FA94E6ED1368E5830063860C /* FMEngine.m in Sources */,
 				FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */,
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
+				44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */,
 				FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */,
 				FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */,
 				FA229D6814429F69008AB9FE /* HistoryController.m in Sources */,
