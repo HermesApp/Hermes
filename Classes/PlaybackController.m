@@ -8,7 +8,6 @@
  * to these actions as well
  */
 
-#import <AudioStreamer/AudioStreamer.h>
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "Growler.h"

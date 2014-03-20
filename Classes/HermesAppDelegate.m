@@ -5,7 +5,6 @@
  * Contains startup routines, and other interfaces with the OS
  */
 
-#import <AudioStreamer/AudioStreamer.h>
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "AuthController.h"

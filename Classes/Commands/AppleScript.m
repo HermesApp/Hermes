@@ -5,8 +5,6 @@
 //  Created by Alex Crichton on 11/19/11.
 //
 
-#import <AudioStreamer/AudioStreamer.h>
-
 #import "AppleScript.h"
 #import "HermesAppDelegate.h"
 #import "PlaybackController.h"
