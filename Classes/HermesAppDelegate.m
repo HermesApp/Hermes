@@ -399,7 +399,6 @@
 + (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
                               state:(NSCoder *)state
                   completionHandler:(void (^)(NSWindow *, NSError *))done {
-  [PlaybackController setPlayOnStart:NO];
   done(nil, nil);
   return YES;
 }

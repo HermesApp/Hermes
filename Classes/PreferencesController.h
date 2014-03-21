@@ -33,6 +33,7 @@
 #define PLAY_ON_SCREENSAVER_STOP   @"playOnScreensaverStop"
 #define PAUSE_ON_SCREEN_LOCK       @"pauseOnScreenLock"
 #define PLAY_ON_SCREEN_UNLOCK      @"playOnScreenUnlock"
+#define START_HERMES_PAUSED        @"startHermesPaused"
 
 /* If observing a value, then the method which is implemented is:
    observeValueForKeyPath:(NSString*) ofObject:(id) change:(NSDictionary*)

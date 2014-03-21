@@ -19,19 +19,9 @@
 #import "StationsController.h"
 #import "PreferencesController.h"
 
-BOOL playOnStart = YES;
-
 @implementation PlaybackController
 
-@synthesize playing;
-
-+ (void) setPlayOnStart: (BOOL)play {
-  playOnStart = play;
-}
-
-+ (BOOL) playOnStart {
-  return playOnStart;
-}
+@synthesize playing, playOnStart;
 
 - (void) awakeFromNib {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -101,6 +91,8 @@ BOOL playOnStart = YES;
                                                       selector:@selector(playOnScreenUnlock:)
                                                           name:@"com.apple.screenIsUnlocked"
                                                         object:nil];
+
+  playOnStart = PREF_KEY_BOOL(START_HERMES_PAUSED);
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */

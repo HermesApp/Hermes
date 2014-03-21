@@ -36,9 +36,7 @@
 @property (readonly) Station *playing;
 @property BOOL pausedByScreensaver;
 @property BOOL pausedByScreenLock;
-
-+ (void) setPlayOnStart: (BOOL)play;
-+ (BOOL) playOnStart;
+@property BOOL playOnStart;
 
 //- (void) applicationOpened;
 
