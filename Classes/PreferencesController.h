@@ -69,6 +69,8 @@
   IBOutlet NSButton *notificationEnabled;
   IBOutlet NSPopUpButton *notificationType;
   IBOutlet NSWindow *window;
+
+  NSArray *itemIdentifiers;
 }
 
 /* Selecting views */

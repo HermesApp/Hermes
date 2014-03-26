@@ -15,15 +15,19 @@
     [notificationType setHidden:NO];
   }
 
+  if (itemIdentifiers == nil) {
+    itemIdentifiers = [[toolbar items] valueForKey:@"itemIdentifier"];
+  }
+
   if ([last isEqual:@"playback"]) {
-    [self setPreferenceView:playback as:@"playback"];
     [toolbar setSelectedItemIdentifier:@"playback"];
+    [self setPreferenceView:playback as:@"playback"];
   } else if ([last isEqual:@"network"]) {
-    [self setPreferenceView:network as:@"network"];
     [toolbar setSelectedItemIdentifier:@"network"];
+    [self setPreferenceView:network as:@"network"];
   } else {
-    [self setPreferenceView:general as:@"general"];
     [toolbar setSelectedItemIdentifier:@"general"];
+    [self setPreferenceView:general as:@"general"];
   }
 }
 
@@ -34,16 +38,29 @@
     if (prev_view == view) {
       return;
     }
-    [container replaceSubview:prev_view with:view];
-  } else {
-    [container addSubview:view];
+    [prev_view removeFromSuperviewWithoutNeedingDisplay];
   }
 
-  NSRect frame = [view frame];
-  NSRect superFrame = [container frame];
-  frame.size.width = NSWidth(superFrame);
-  frame.size.height = NSHeight(superFrame);
+  NSRect frame = [view bounds];
+  frame.origin.y = NSHeight([container frame]) - NSHeight([view bounds]);
   [view setFrame:frame];
+  [view setAutoresizingMask:NSViewMinYMargin | NSViewWidthSizable];
+  [container addSubview:view];
+  [window setInitialFirstResponder:view];
+
+  NSRect windowFrame = [window frame];
+  NSRect contentRect = [window contentRectForFrameRect:windowFrame];
+  windowFrame.size.height = NSHeight(frame) + NSHeight(windowFrame) - NSHeight(contentRect);
+  windowFrame.size.width = NSWidth(frame);
+  windowFrame.origin.y = NSMaxY([window frame]) - NSHeight(windowFrame);
+  [window setFrame:windowFrame display:YES animate:YES];
+
+  NSUInteger toolbarItemIndex = [itemIdentifiers indexOfObject:name];
+  NSString *title = @"Preferences";
+  if (toolbarItemIndex != NSNotFound) {
+    title = [[toolbar items][toolbarItemIndex] label];
+  }
+  [window setTitle:title];
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults setObject:name forKey:LAST_PREF_PANE];
