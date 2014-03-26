@@ -526,14 +526,32 @@
     [window setCanHide:YES];
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     statusItem = nil;
+
+    if (sender != nil) {
+      /* If we're not executing at process launch, then the menu bar will be shown
+         but be unusable until we switch to another application and back to Hermes */
+      [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:@"com.apple.dock"
+                                                           options:NSWorkspaceLaunchDefault
+                                    additionalEventParamDescriptor:nil
+                                                  launchIdentifier:nil];
+      [NSApp activateIgnoringOtherApps:YES];
+    }
     return;
   }
 
-  /* When transforming to a UIElement application, all windows are hid. This
-     looks weird, and this prevents them from automatically hiding */
-  [window setCanHide:NO];
+  if (sender != nil) {
+    /* If we're not executing at process launch, then the menu bar will remain visible
+       but unusable; hide/show Hermes to fix it, but stop the window from hiding with it */
+    [window setCanHide:NO];
 
-  TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+    /* Causes underlying window to activate briefly, but no other solution I could find */
+    [NSApp hide:nil];
+    dispatch_async(dispatch_get_current_queue(), ^{
+      TransformProcessType(&psn, kProcessTransformToUIElementApplication);
+      [NSApp activateIgnoringOtherApps:YES];
+      [[NSApp mainWindow] makeKeyAndOrderFront:nil]; // restores mouse cursor
+    });
+  }
 
   /* If we have a status menu item, then set it here */
   statusItem = [[NSStatusBar systemStatusBar]
