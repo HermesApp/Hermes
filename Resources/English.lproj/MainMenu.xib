@@ -2195,6 +2195,7 @@
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<string key="NSFrameAutosaveName">Hermes Preferences</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 			<object class="NSCustomObject" id="976324537">
@@ -10493,8 +10494,8 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 				<string key="-3.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1000.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1001.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<boolean value="NO" key="1112.IBNSWindowAutoPositionCentersHorizontal"/>
-				<boolean value="NO" key="1112.IBNSWindowAutoPositionCentersVertical"/>
+				<boolean value="YES" key="1112.IBNSWindowAutoPositionCentersHorizontal"/>
+				<boolean value="YES" key="1112.IBNSWindowAutoPositionCentersVertical"/>
 				<string key="1112.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1112.IBWindowTemplateEditedContentRect">{{627, 366}, {220, 74}}</string>
 				<boolean value="NO" key="1112.NSWindowTemplate.visibleAtLaunch"/>
