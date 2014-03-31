@@ -294,8 +294,11 @@ BOOL playOnStart = YES;
   [[NSApp delegate] setCurrentView:playbackView];
 
   [songLabel setStringValue: [song title]];
+  [songLabel setToolTip:[song title]];
   [artistLabel setStringValue: [song artist]];
+  [artistLabel setToolTip:[song artist]];
   [albumLabel setStringValue:[song album]];
+  [albumLabel setToolTip:[song album]];
   [playbackProgress setDoubleValue: 0];
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
