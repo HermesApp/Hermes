@@ -25,6 +25,10 @@
 }
 
 - (void) growl:(Song*)song withImage:(NSData*)image isNew:(BOOL)n {
+  // Unconditionally remove all notifications from notification center to behave like iTunes
+  // notifications and does not fill the notification center with old song details.
+  [[NSUserNotificationCenter defaultUserNotificationCenter] removeAllDeliveredNotifications];
+
   if (!PREF_KEY_BOOL(PLEASE_GROWL) ||
       (n && !PREF_KEY_BOOL(PLEASE_GROWL_NEW)) ||
       (!n && !PREF_KEY_BOOL(PLEASE_GROWL_PLAY))) {
