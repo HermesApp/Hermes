@@ -137,10 +137,12 @@ BOOL playOnStart = YES;
       return;
 
     case NX_KEYTYPE_FAST:
+    case NX_KEYTYPE_NEXT:
       [self next:nil];
       return;
 
     case NX_KEYTYPE_REWIND:
+    case NX_KEYTYPE_PREVIOUS:
       [NSApp activateIgnoringOtherApps:NO];
       return;
   }
