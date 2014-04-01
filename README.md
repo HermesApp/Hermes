@@ -11,7 +11,7 @@ ways you can develop against Hermes if you really want to.
 1. `NSDistributedNotificationCenter` - Every time a new song plays, a
    notification is posted with the name `hermes.song` under the object `hermes`
    with `userInfo` as a dictionary representing the song being played. See
-   [Song.m](https://github.com/alexcrichton/hermes/blob/master/Classes/Pandora/Song.m#L40)
+   [Song.m](https://github.com/alexcrichton/hermes/blob/master/Classes/Pandora/Song.m#L47)
    for the keys available to you.
 
 2. AppleScript - here's an example script:
@@ -66,6 +66,10 @@ ways you can develop against Hermes if you really want to.
 
         # Build with the 'Release' configuration instead of 'Debug'
         make CONFIGURATION=Release [run|dbg]
+
+   Please note that Media Key shortcuts
+   [will not work](https://github.com/nevyn/SPMediaKeyTap/blob/master/SPMediaKeyTap.m#L108)
+   if compiled with `CONFIGURATION=Debug` (the default).
 
 ## License
 
