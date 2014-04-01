@@ -1,3 +1,25 @@
+# Version 1.2.0 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.1.20...master)
+
+* [fixed] Always menubar on startup, thanks @nriley!
+* [fixed] Several improvements to the menubar including reclaiming ⌘M for
+          minimize, show liked status (#146), rename ambiguious menu items.
+          Thanks @nriley!
+* [added] Pause on Screen lock (Try Control-Shift-Power) (#154), thanks @Elemecca!
+* [fixed] Spacebar always pauses even when drawer visible except when searching
+          for a station (#150), thanks @winny-!
+* [added] AppleScript variables to get current playback progress
+          `playback position` and song length `current song duration`
+          (#157) Thanks @winny-!
+* [fixed] Preferences window now resizes to fit contents, shows current section
+          title, cleaner layout. Thanks @nriley!
+* [fixed] Do not show menubar when Hermes is a status bar item and expose
+          functionality in status bar item dropdown menu (#134), thanks @nriley!
+* [added] Show tooltips for now playing title, artist, and album. Thanks @nriley!
+* [fixed] Only show display current song in Notification Center. Thanks @winny-!
+* [fixed] Support PC media keys (#122). Thanks winny-!
+
 # Version 1.1.20 (9/16/13)
 
 [Full changelog](https://github.com/alexcrichton/hermes/compare/v1.1.19...v1.1.20)
