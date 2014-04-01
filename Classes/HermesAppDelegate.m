@@ -429,6 +429,22 @@
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=58H9GQKN28GNL"]];
 }
 
+- (IBAction)changelog:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes/blob/master/CHANGELOG.md"]];
+}
+
+- (IBAction) hermesOnGitHub:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes"]];
+}
+
+- (IBAction) reportAnIssue:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/HermesApp/Hermes/issues"]];
+}
+
+- (IBAction)hermesHomepage:(id)sender {
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://alexcrichton.com/hermes/"]];
+}
+
 - (void) historyShow {
   [history showDrawer];
   [drawerToggle setImage:[NSImage imageNamed:@"radio"]];

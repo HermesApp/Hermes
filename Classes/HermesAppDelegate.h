@@ -70,6 +70,10 @@
 - (void) handleDrawer;
 
 - (IBAction) donate:(id)sender;
+- (IBAction) changelog:(id)sender;
+- (IBAction) hermesOnGitHub:(id)sender;
+- (IBAction) reportAnIssue:(id)sender;
+- (IBAction) hermesHomepage:(id)sender;
 - (IBAction) retry:(id)sender;
 - (IBAction) toggleDrawerContent:(id)sender;
 - (IBAction) toggleDrawerVisible:(id)sender;
