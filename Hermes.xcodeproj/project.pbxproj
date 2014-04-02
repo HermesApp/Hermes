@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		44310F8B18EB87AB0095359D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 44310F8A18EB87AB0095359D /* Credits.rtf */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -93,7 +94,6 @@
 		FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7FD1E313325F6600DF66EB /* volume_up.png */; };
 		FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */ = {isa = PBXBuildFile; fileRef = FA85E6CD1333B257005C96B8 /* volume_down.icns */; };
 		FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */; };
-		FA949679133AF3AD007B6F36 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = FA949678133AF3AD007B6F36 /* Credits.html */; };
 		FA94E6ED1368E5830063860C /* FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6E71368E5830063860C /* FMEngine.m */; };
 		FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6EB1368E5830063860C /* NSString+FMEngine.m */; };
 		FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA94E6F71368E62C0063860C /* Scrobbler.m */; };
@@ -171,6 +171,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		44310F8A18EB87AB0095359D /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCollectionView.h; sourceTree = "<group>"; };
 		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCollectionView.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
@@ -273,7 +274,6 @@
 		FA7BF0311331832E00E26ADA /* zzs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zzs.png; sourceTree = "<group>"; };
 		FA7FD1E313325F6600DF66EB /* volume_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_up.png; sourceTree = "<group>"; };
 		FA85E6CD1333B257005C96B8 /* volume_down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = volume_down.icns; sourceTree = "<group>"; };
-		FA949678133AF3AD007B6F36 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Credits.html; sourceTree = "<group>"; };
 		FA94E6E61368E5830063860C /* FMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMEngine.h; sourceTree = "<group>"; };
 		FA94E6E71368E5830063860C /* FMEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMEngine.m; sourceTree = "<group>"; };
 		FA94E6EA1368E5830063860C /* NSString+FMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+FMEngine.h"; sourceTree = "<group>"; };
@@ -440,7 +440,6 @@
 				BCCDC93316C09607000E052D /* pandora-black.icns */,
 				FAA313F813C98D9F00314C73 /* build_sparkle.sh */,
 				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
-				FA949678133AF3AD007B6F36 /* Credits.html */,
 				FAD42FA3136790DE00E935CA /* dsa_pub.pem */,
 				8D1107310486CEB800E47090 /* Hermes-Info.plist */,
 				FAEFFBFF132D620B007DC6FB /* Icons */,
@@ -449,6 +448,7 @@
 				FAAB28CE1336FB0300FC04C4 /* pandora.icns */,
 				FA24435F136B3D6C00E126D3 /* README.md */,
 				FA0E555914784A3000C36794 /* Hermes.sdef */,
+				44310F8A18EB87AB0095359D /* Credits.rtf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -823,13 +823,13 @@
 				FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */,
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
-				FA949679133AF3AD007B6F36 /* Credits.html in Resources */,
 				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
 				FA229D6514429E48008AB9FE /* history.png in Resources */,
 				FA04AE9C14438F1000819310 /* thumbdown.png in Resources */,
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
 				FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */,
 				FA570770156D700900AD5E66 /* action.png in Resources */,
+				44310F8B18EB87AB0095359D /* Credits.rtf in Resources */,
 				97177194159EAA7D00EE3355 /* cd.png in Resources */,
 				9717719A159EB0E200EE3355 /* music-note.png in Resources */,
 				97E0DA35159EDF7C00BEA465 /* radio.png in Resources */,
