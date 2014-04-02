@@ -35,7 +35,7 @@
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>HermesApp</string>
 	<key>OSAScriptingDefinition</key>
 	<string>Hermes.sdef</string>
 	<key>SUAllowsAutomaticUpdates</key>

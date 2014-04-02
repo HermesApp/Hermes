@@ -64,6 +64,7 @@
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		BCCDC93416C09607000E052D /* pandora-black.icns in Resources */ = {isa = PBXBuildFile; fileRef = BCCDC93316C09607000E052D /* pandora-black.icns */; };
+		E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */ = {isa = PBXBuildFile; fileRef = E124109918EBAF6F007AF091 /* HermesApp.m */; };
 		E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E195ABA817D4636B00FE518C /* Quartz.framework */; };
 		E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0A73917E5630100429DE0 /* StationsTableView.m */; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
@@ -202,6 +203,8 @@
 		97539FAC158442A500D1E65C /* URLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLConnection.m; sourceTree = "<group>"; };
 		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		BCCDC93316C09607000E052D /* pandora-black.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "pandora-black.icns"; sourceTree = "<group>"; };
+		E124109818EBAF6F007AF091 /* HermesApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HermesApp.h; sourceTree = "<group>"; };
+		E124109918EBAF6F007AF091 /* HermesApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HermesApp.m; sourceTree = "<group>"; };
 		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationsTableView.h; sourceTree = "<group>"; };
 		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationsTableView.m; sourceTree = "<group>"; };
@@ -361,6 +364,8 @@
 				FA2A3F90132BF9F50089AECC /* Pandora */,
 				256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */,
+				E124109818EBAF6F007AF091 /* HermesApp.h */,
+				E124109918EBAF6F007AF091 /* HermesApp.m */,
 				9717719B159EBBBF00EE3355 /* FileReader.h */,
 				9717719C159EBBBF00EE3355 /* FileReader.m */,
 			);
@@ -882,6 +887,7 @@
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
 				44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */,
 				FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */,
+				E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */,
 				FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */,
 				FA229D6814429F69008AB9FE /* HistoryController.m in Sources */,
 				FA04AE96144365D900819310 /* HistoryItem.m in Sources */,
