@@ -442,7 +442,7 @@
 }
 
 - (IBAction)hermesHomepage:(id)sender {
-  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://alexcrichton.com/hermes/"]];
+  [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://hermesapp.org/"]];
 }
 
 - (void) historyShow {
