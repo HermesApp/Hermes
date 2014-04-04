@@ -1,6 +1,6 @@
-# Version 1.2.0 (unreleased)
+# Version 1.2.0 (4/4/14)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.1.20...master)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.1.20...v1.2.0)
 
 * [fixed] Always display the menubar on startup, thanks @nriley!
 * [fixed] Several improvements to the menubar including reclaiming ⌘M for
@@ -20,10 +20,10 @@
 * [fixed] Only show display current song in Notification Center. Thanks @winny-!
 * [fixed] Support PC media keys (#122). Thanks winny-!
 * [fixed] The "Help" dropdown now has functionality. (Reported by @nriley)
-          Thanks @winny-!
+          Thanks @winny- & @nriley!
 * [fixed] Show authors and contributors in the "About" window. Also show links
           from the previously mentioned "Help" dropdown menu. (Reported by
-          @nriley) Thanks @winny-!
+          @nriley) Thanks @winny- & @nriley!
 
 # Version 1.1.20 (9/16/13)
 
