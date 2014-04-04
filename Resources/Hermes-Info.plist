@@ -46,7 +46,7 @@ and Winston Weinert</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://alexcrichton.com/hermes/versions.xml</string>
+	<string>http://hermesapp.org/versions.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUShowReleaseNotes</key>
