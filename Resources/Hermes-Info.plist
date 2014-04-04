@@ -31,7 +31,10 @@
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>© Alex Crichton 2013</string>
+	<string>© 2014
+Alex Crichton,
+Nicholas Riley,
+and Winston Weinert</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
@@ -50,7 +53,7 @@
 	<true/>
 	<key>CFBundleDisplayName</key>
 	<string>Hermes</string>
-        <key>NSSupportsAutomaticGraphicsSwitching</key>
-        <true/>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
 </dict>
 </plist>
