@@ -10,7 +10,7 @@
 #import <Security/Security.h>
 
 BOOL KeychainSetItem(NSString* username, NSString* password) {
-  SecKeychainItemRef item;
+  SecKeychainItemRef item = nil;
   OSStatus result = SecKeychainFindGenericPassword(
     NULL,
     strlen(KEYCHAIN_SERVICE_NAME),
@@ -24,7 +24,6 @@ BOOL KeychainSetItem(NSString* username, NSString* password) {
   if (result == noErr) {
     result = SecKeychainItemModifyContent(item, NULL, [password length],
                                           [password UTF8String]);
-    return result == noErr;
   } else {
     result = SecKeychainAddGenericPassword(
       NULL,
@@ -35,13 +34,16 @@ BOOL KeychainSetItem(NSString* username, NSString* password) {
       [password length],
       [password UTF8String],
       NULL);
-
-    return result == noErr;
   }
+
+  if (item) {
+    CFRelease(item);
+  }
+  return result == noErr;
 }
 
 NSString *KeychainGetPassword(NSString* username) {
-  void *password = NULL;
+  void *passwordData = NULL;
   UInt32 length;
   OSStatus result = SecKeychainFindGenericPassword(
     NULL,
@@ -50,17 +52,17 @@ NSString *KeychainGetPassword(NSString* username) {
     [username length],
     [username UTF8String],
     &length,
-    &password,
+    &passwordData,
     NULL);
 
   if (result != noErr) {
     return nil;
   }
   
-  NSString *ret = [[NSString alloc] initWithBytes:password
+  NSString *password = [[NSString alloc] initWithBytes:passwordData
                                            length:length
                                          encoding:NSUTF8StringEncoding];
-  SecKeychainItemFreeContent(NULL, password);
+  SecKeychainItemFreeContent(NULL, passwordData);
 
-  return ret;
+  return password;
 }
