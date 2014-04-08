@@ -690,7 +690,7 @@
 			buildConfigurationList = FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build sparkle metadata" */;
 			buildPhases = (
 			);
-			buildToolPath = Resources/build_sparkle.sh;
+			buildToolPath = Scripts/build_sparkle.sh;
 			buildWorkingDirectory = "";
 			dependencies = (
 				FAA313F713C98C9A00314C73 /* PBXTargetDependency */,
