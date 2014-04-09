@@ -13,7 +13,7 @@ ways you can develop against Hermes if you really want to.
 1. `NSDistributedNotificationCenter` - Every time a new song plays, a
    notification is posted with the name `hermes.song` under the object `hermes`
    with `userInfo` as a dictionary representing the song being played. See
-   [Song.m](https://github.com/alexcrichton/hermes/blob/master/Classes/Pandora/Song.m#L47)
+   [Song.m](https://github.com/HermesApp/Hermes/blob/master/Sources/Pandora/Song.m#L47)
    for the keys available to you.
 
 2. AppleScript - here's an example script:
