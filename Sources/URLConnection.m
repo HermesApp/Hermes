@@ -132,6 +132,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 
   CFReadStreamClose(stream);
   CFRelease(stream);
+  // FIXME: Most definitely a cause of "Internal Pandora Error".
   NSError *error = [NSError errorWithDomain:@"Connection timeout."
                                        code:0
                                    userInfo:nil];
