@@ -6,7 +6,7 @@
  * Currently the encryption algorithm used is Blowfish in ECB mode.
  */
 
-#include "blowfish.h"
+#include "blowfish/blowfish.h"
 
 #import "Crypt.h"
 #import "Pandora.h"
