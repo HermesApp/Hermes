@@ -285,7 +285,7 @@
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Scrobbler.m; sourceTree = "<group>"; };
 		FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPlaylist.h; sourceTree = "<group>"; };
 		FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPlaylist.m; sourceTree = "<group>"; };
-		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build_sparkle.sh; sourceTree = "<group>"; };
+		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = build_sparkle.sh; path = Scripts/build_sparkle.sh; sourceTree = SOURCE_ROOT; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
@@ -360,7 +360,6 @@
 				FA0E5569147855DD00C36794 /* Models */,
 				FA0E5568147855AB00C36794 /* Controllers */,
 				FA0E55671478559200C36794 /* Integration */,
-				FA0E55661478557900C36794 /* External */,
 				FA2A3F90132BF9F50089AECC /* Pandora */,
 				256AC3D80F4B6AC300CF3369 /* HermesAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* HermesAppDelegate.m */,
@@ -416,12 +415,11 @@
 		29B97314FDCFA39411CA2CEA /* Pithos */ = {
 			isa = PBXGroup;
 			children = (
-				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
+				4436BF6B18F4DBE600DDD578 /* ImportedSources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				FACF0180149A713700D1FB73 /* AudioStreamer */,
-				FA37A0BA15146ACE007F2605 /* SBJson */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -467,6 +465,27 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
+		4436BF6B18F4DBE600DDD578 /* ImportedSources */ = {
+			isa = PBXGroup;
+			children = (
+				4436BF6C18F4DC1F00DDD578 /* blowfish */,
+				FA37A0BA15146ACE007F2605 /* SBJson */,
+				FA94E6E31368E5830063860C /* FMEngine */,
+				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
+			);
+			name = ImportedSources;
+			sourceTree = "<group>";
+		};
+		4436BF6C18F4DC1F00DDD578 /* blowfish */ = {
+			isa = PBXGroup;
+			children = (
+				FA454683156604D100EE98C7 /* blowfish.c */,
+				FA454684156604D100EE98C7 /* blowfish.h */,
+			);
+			name = blowfish;
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		9728D887158C3D3100C078A4 /* SPMediaKeyTap */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,16 +504,6 @@
 				9728D88D158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.m */,
 			);
 			path = SPInvocationGrabbing;
-			sourceTree = "<group>";
-		};
-		FA0E55661478557900C36794 /* External */ = {
-			isa = PBXGroup;
-			children = (
-				FA454683156604D100EE98C7 /* blowfish.c */,
-				FA454684156604D100EE98C7 /* blowfish.h */,
-				FA94E6E31368E5830063860C /* FMEngine */,
-			);
-			name = External;
 			sourceTree = "<group>";
 		};
 		FA0E55671478559200C36794 /* Integration */ = {
@@ -607,7 +616,7 @@
 				FA94E6EB1368E5830063860C /* NSString+FMEngine.m */,
 			);
 			name = FMEngine;
-			path = ../ImportedSources/FMEngine;
+			path = ImportedSources/FMEngine;
 			sourceTree = "<group>";
 		};
 		FACF0180149A713700D1FB73 /* AudioStreamer */ = {
