@@ -8,13 +8,13 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "AuthController.h"
-#import "Growler.h"
+#import "Integration/Growler.h"
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
-#import "Keychain.h"
+#import "Integration/Keychain.h"
 #import "PlaybackController.h"
 #import "PreferencesController.h"
-#import "Scrobbler.h"
+#import "Integration/Scrobbler.h"
 #import "StationController.h"
 #import "StationsController.h"
 

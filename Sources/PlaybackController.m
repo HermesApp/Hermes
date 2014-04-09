@@ -10,12 +10,12 @@
 
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
-#import "Growler.h"
+#import "Integration/Growler.h"
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "ImageLoader.h"
 #import "PlaybackController.h"
-#import "Scrobbler.h"
+#import "Integration/Scrobbler.h"
 #import "StationsController.h"
 #import "PreferencesController.h"
 

@@ -2,7 +2,7 @@
 #import <Quartz/Quartz.h>
 
 #import "Pandora/Station.h"
-#import "Scrobbler.h"
+#import "Integration/Scrobbler.h"
 
 @class Song;
 
