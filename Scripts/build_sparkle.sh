@@ -1,35 +1,64 @@
 #!/bin/bash
 
-set -o errexit
+# Exit on error
+set -e
+# Error on unbound variable access
+set -u
 
-[ "$ACTION" = "clean" ] && exit 0
-[ "$CONFIGURATION" = "Release" ] || { echo Distribution target requires "'Release'" build style; false; }
+information() {
+    tput setaf 2
+    printf '>>> INFO:  '
+    tput sgr0
+    printf '%s\n' "$*"
+}
 
-VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleShortVersionString)
-INT_VERSION=$(defaults read "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info" CFBundleVersion)
+error() {
+    tput setaf 1
+    printf '>>> ERROR: '
+    tput sgr0
+    printf '%s\n' "$*"
+    exit 1
+}
 
-ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
-DOWNLOAD_URL="https://s3.amazonaws.com/alexcrichton-hermes/$ARCHIVE_FILENAME"
-RELEASENOTES_URL="http://hermesapp.org/changelog.html"
-KEYCHAIN_PRIVKEY_NAME="Hermes Sparkle Private Key"
+# Ensure build target is called correctly.
+check_environment() {
+    if [ "$ACTION" = "clean" ]; then
+        exit 0
+    fi
+    if [ "$CONFIGURATION" != "Release" ]; then
+        error Distribution target requires "'Release'" build style
+    fi
+}
 
-WD=$PWD
-cd "$BUILT_PRODUCTS_DIR"
-rm -f "$PROJECT_NAME"*.zip
-ditto -ck --keepParent "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app" "$ARCHIVE_FILENAME"
+build_archive() {
+    information "Building archive ($ARCHIVE_FILENAME)"
+    cd "$BUILT_PRODUCTS_DIR"
+    rm -f "$PROJECT_NAME"*.zip
+    ditto -ck --keepParent "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app" "$ARCHIVE_FILENAME"
+    SIZE=$(stat -f %z "$ARCHIVE_FILENAME")
+    PUBDATE=$(LC_TIME=en_US date +"%a, %d %b %G %T %z")
+}
 
-SIZE=$(stat -f %z "$ARCHIVE_FILENAME")
-PUBDATE=$(LC_TIME=en_US date +"%a, %d %b %G %T %z")
+# This also verifies the signature.
+sign_and_verify() {
+    information "Signing for Sparkle distribution"
+    cd "$BUILT_PRODUCTS_DIR"
+    SIGNATURE=$("$SCRIPTS_DIR/sign_sparkle_release.sh" "$HOME/Documents/hermes.key" "$ARCHIVE_FILENAME")
+    if [ "$SIGNATURE" = '' ]; then
+        error 'Signing failed. Aborting.'
+    fi
+    if ! "$SCRIPTS_DIR/verify_sparkle_signature.sh" "$PROJECT_DIR/Resources/dsa_pub.pem" \
+        "$SIGNATURE" "$ARCHIVE_FILENAME" >/dev/null
+        then
 
-SIGNATURE=$(
-openssl dgst -sha1 -binary < "$ARCHIVE_FILENAME" \
-| openssl dgst -dss1 -sign $HOME/Dropbox/misc/hermes.key \
-| openssl enc -base64
-)
+        error 'Sparkle DSA signature verification FAILED. Aborting.'
+    fi
+}
 
-[ "$SIGNATURE" != "" ] || { echo Unable to load signing private key with name "'$KEYCHAIN_PRIVKEY_NAME'" from keychain; false; }
-
-cat > versions.xml <<EOF
+build_versions_fragment() {
+    information 'Building versions.xml fragment'
+    cd "$BUILT_PRODUCTS_DIR"
+    cat > versions.xml <<EOF
 <item>
 <title>Version $VERSION</title>
 <sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>
@@ -45,15 +74,55 @@ sparkle:dsaSignature="$SIGNATURE"
 />
 </item>
 EOF
+}
 
-hermes_pages=$(dirname $SOURCE_ROOT)/hermes-pages
-if [ -d $hermes_pages ]; then
-  set -x
-  ruby $hermes_pages/_config/release.rb \
-    $VERSION \
-    "`pwd`/versions.xml" \
-    "$PROJECT_DIR/CHANGELOG.md"
-  set +x
-fi
+update_website() {
+    information "Updating website in $HERMES_PAGES"
+    cd "$BUILT_PRODUCTS_DIR"
+    # Log the command
+    set -x
+    ruby $HERMES_PAGES/_config/release.rb \
+        "$VERSION" \
+        "$PWD/versions.xml" \
+        "$PROJECT_DIR/CHANGELOG.md"
+    # Stop logging
+    set +x
+}
 
-s3cmd put --acl-public $ARCHIVE_FILENAME s3://alexcrichton-hermes/$ARCHIVE_FILENAME
+upload_release() {
+    information "Uploading $ARCHIVE_FILENAME to $DOWNLOAD_URL"
+    cd "$BUILT_PRODUCTS_DIR"
+
+    s3cmd put --acl-public "$ARCHIVE_FILENAME" "s3://alexcrichton-hermes/$ARCHIVE_FILENAME"
+}
+
+########################################
+# Set up environment.
+#
+# Do not run the above shell functions
+# until next comment.
+########################################
+
+check_environment
+
+SCRIPTS_DIR="$PROJECT_DIR/Scripts"
+APPLICATION="$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app"
+
+INFO_PLIST="$APPLICATION/Contents/Info.plist"
+VERSION=$(defaults read "$INFO_PLIST" CFBundleShortVersionString)
+INT_VERSION=$(defaults read "$INFO_PLIST" CFBundleVersion)
+ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
+
+HERMES_PAGES="$(dirname $SOURCE_ROOT)/hermes-pages"
+DOWNLOAD_URL="https://s3.amazonaws.com/alexcrichton-hermes/$ARCHIVE_FILENAME"
+RELEASENOTES_URL="http://hermesapp.org/changelog.html"
+
+########################################
+# Execute the script
+########################################
+
+build_archive
+sign_and_verify
+build_versions_fragment
+update_website
+upload_release
