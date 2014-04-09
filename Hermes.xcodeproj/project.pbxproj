@@ -350,9 +350,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				256AC3F00F4B6AF500CF3369 /* Hermes_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				FACF0180149A713700D1FB73 /* AudioStreamer */,
 				971CC3981585DA11004D75BA /* NetworkConnection.h */,
 				971CC3991585DA11004D75BA /* NetworkConnection.m */,
 				97539FAB158442A500D1E65C /* URLConnection.h */,
@@ -368,7 +371,7 @@
 				9717719B159EBBBF00EE3355 /* FileReader.h */,
 				9717719C159EBBBF00EE3355 /* FileReader.m */,
 			);
-			path = Classes;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
@@ -416,10 +419,8 @@
 			isa = PBXGroup;
 			children = (
 				4436BF6B18F4DBE600DDD578 /* ImportedSources */,
-				29B97315FDCFA39411CA2CEA /* Other Sources */,
-				080E96DDFE201D6D7F000001 /* Classes */,
+				080E96DDFE201D6D7F000001 /* Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				FACF0180149A713700D1FB73 /* AudioStreamer */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -427,15 +428,6 @@
 			name = Pithos;
 			sourceTree = "<group>";
 			tabWidth = 2;
-		};
-		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
-			isa = PBXGroup;
-			children = (
-				256AC3F00F4B6AF500CF3369 /* Hermes_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
-			);
-			name = "Other Sources";
-			sourceTree = "<group>";
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
@@ -1151,10 +1143,10 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Frameworks\"",
 				);
-				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+				GCC_PREFIX_HEADER = Sources/Hermes_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Classes\"",
+					"\"$(SRCROOT)/Sources\"",
 					"\"$(SRCROOT)/ImportedSources\"",
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
@@ -1185,10 +1177,10 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/Frameworks\"",
 				);
-				GCC_PREFIX_HEADER = Hermes_Prefix.pch;
+				GCC_PREFIX_HEADER = Sources/Hermes_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/Classes\"",
+					"\"$(SRCROOT)/Sources\"",
 					"\"$(SRCROOT)/ImportedSources\"",
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
