@@ -5,8 +5,9 @@ Requirements
 ------------
 
 - The DSA private key to generate a signature. This signature is used by
-  Sparkle to prove the integrety and authenticity of the release archive (zip
-  file).
+  Sparkle to prove the integrity and authenticity of the release archive (zip
+  file). The DSA private key should be accessible (can be a symlink) as
+  `~/Documents/hermes.key`.
 - S3 credentials to upload the release archive to Alex's S3 bucket.
 - Copies of HermesApp/Hermes (the app repo) and the
   HermesApp/HermesApp.github.io (the GitHub pages repo) in the **same**
@@ -20,12 +21,12 @@ The Process
        (`CFBundleShortVersionString`).
     2. Increment "Bundle version" (`CFBundleVersion`).
 
-2. Edit `Hermes/CHANGELOG.md` ensuring all significant improvments are noted,
+2. Edit `Hermes/CHANGELOG.md` ensuring all significant improvements are noted,
    and change the link to "Full Changelog" to the differences between last
    release and the release that is about to be pushed to GitHub.
 
 3. Test everything, ensuring it's all working as expected. Once satisfied,
-   commit the changes made in the last two steps. Once commited, tag the
+   commit the changes made in the last two steps. Once committed, tag the
    commit with the release version. For example:
 ```
 git tag v1.2.0 750f2de
