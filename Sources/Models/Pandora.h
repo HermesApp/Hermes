@@ -1,7 +1,13 @@
+@class SBJsonParser;
+@class SBJsonWriter;
 @class Station;
 
-#import "Pandora/API.h"
 #import "Pandora/Song.h"
+
+
+#define PANDORA_API_HOST @"tuner.pandora.com"
+#define PANDORA_API_PATH @"/services/json/"
+#define PANDORA_API_VERSION @"5"
 
 #define PARTNER_USERNAME @"iphone"
 #define PARTNER_PASSWORD @"P2E4FC0EAD3*878N92B2CDp34I0B1@388137C"
@@ -17,6 +23,27 @@
 #define NO_SEEDS_LEFT         1032
 
 typedef void(^SyncCallback)(void);
+typedef void(^PandoraCallback)(NSDictionary*);
+
+
+@interface PandoraRequest : NSObject
+
+/* URL parameters */
+@property NSString *method;
+@property NSString *authToken;
+@property NSString *partnerId;
+@property NSString *userId;
+
+/* JSON data */
+@property NSMutableDictionary *request;
+@property NSMutableData *response;
+
+/* Internal metadata */
+@property (copy) PandoraCallback callback;
+@property BOOL tls;
+@property BOOL encrypted;
+
+@end
 
 /* Wrapper for search results */
 @interface SearchResult : NSObject
@@ -26,8 +53,9 @@ typedef void(^SyncCallback)(void);
 
 @end
 
+
 /* Implementation of Pandora's API */
-@interface Pandora : API {
+@interface Pandora : NSObject {
   NSMutableArray *stations;
   int retries;
 
@@ -37,6 +65,10 @@ typedef void(^SyncCallback)(void);
   NSString *user_id;
   uint64_t sync_time;
   uint64_t start_time;
+  int64_t syncOffset;
+  
+  SBJsonParser *json_parser;
+  SBJsonWriter *json_writer;
 }
 
 @property (readonly) NSArray* stations;
@@ -66,4 +98,8 @@ typedef void(^SyncCallback)(void);
 
 + (NSString*) errorString: (int) code;
 
+- (int64_t) time;
+- (BOOL) sendRequest: (PandoraRequest*) request;
+
 @end
+

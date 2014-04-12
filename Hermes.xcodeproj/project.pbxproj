@@ -90,7 +90,6 @@
 		FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E801D1438E50C00D01FB5 /* Growler.m */; };
 		FA6E801F1438E96F00D01FB5 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; };
-		FA6FE347132FF5AA00D1FF1C /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6FE346132FF5AA00D1FF1C /* API.m */; };
 		FA7BF0321331832E00E26ADA /* zzs.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7BF0311331832E00E26ADA /* zzs.png */; };
 		FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */ = {isa = PBXBuildFile; fileRef = FA7FD1E313325F6600DF66EB /* volume_up.png */; };
 		FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */ = {isa = PBXBuildFile; fileRef = FA85E6CD1333B257005C96B8 /* volume_down.icns */; };
@@ -272,8 +271,6 @@
 		FA6E801A1438E4B700D01FB5 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		FA6E801C1438E50C00D01FB5 /* Growler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Growler.h; path = Integration/Growler.h; sourceTree = "<group>"; };
 		FA6E801D1438E50C00D01FB5 /* Growler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Growler.m; path = Integration/Growler.m; sourceTree = "<group>"; };
-		FA6FE345132FF5AA00D1FF1C /* API.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = API.h; sourceTree = "<group>"; };
-		FA6FE346132FF5AA00D1FF1C /* API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = API.m; sourceTree = "<group>"; };
 		FA7BF0311331832E00E26ADA /* zzs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zzs.png; sourceTree = "<group>"; };
 		FA7FD1E313325F6600DF66EB /* volume_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = volume_up.png; sourceTree = "<group>"; };
 		FA85E6CD1333B257005C96B8 /* volume_down.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = volume_down.icns; sourceTree = "<group>"; };
@@ -560,8 +557,6 @@
 				FA2A3F95132BF9F50089AECC /* Song.m */,
 				FA2A3F96132BF9F50089AECC /* Station.h */,
 				FA2A3F97132BF9F50089AECC /* Station.m */,
-				FA6FE345132FF5AA00D1FF1C /* API.h */,
-				FA6FE346132FF5AA00D1FF1C /* API.m */,
 			);
 			path = Pandora;
 			sourceTree = "<group>";
@@ -883,7 +878,6 @@
 				FA1063BE132C6A8A00D6DE42 /* Keychain.m in Sources */,
 				FAEFFAB1132CB173007DC6FB /* AuthController.m in Sources */,
 				FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */,
-				FA6FE347132FF5AA00D1FF1C /* API.m in Sources */,
 				FA560C511331701E00215F71 /* ImageLoader.m in Sources */,
 				FA85E72E13347A64005C96B8 /* HermesAppDelegate.m in Sources */,
 				FA94E6ED1368E5830063860C /* FMEngine.m in Sources */,
