@@ -227,8 +227,8 @@
 		FA24435F136B3D6C00E126D3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		FA2A3F75132BF97E0089AECC /* StationsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationsController.h; path = Controllers/StationsController.h; sourceTree = "<group>"; };
 		FA2A3F76132BF97E0089AECC /* StationsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationsController.m; path = Controllers/StationsController.m; sourceTree = "<group>"; };
-		FA2A3F77132BF97E0089AECC /* Pandora.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Pandora.h; path = Models/Pandora.h; sourceTree = "<group>"; };
-		FA2A3F78132BF97E0089AECC /* Pandora.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Pandora.m; path = Models/Pandora.m; sourceTree = "<group>"; };
+		FA2A3F77132BF97E0089AECC /* Pandora.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pandora.h; sourceTree = "<group>"; };
+		FA2A3F78132BF97E0089AECC /* Pandora.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pandora.m; sourceTree = "<group>"; };
 		FA2A3F91132BF9F50089AECC /* Crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypt.h; sourceTree = "<group>"; };
 		FA2A3F92132BF9F50089AECC /* Crypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Crypt.m; sourceTree = "<group>"; };
 		FA2A3F94132BF9F50089AECC /* Song.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Song.h; sourceTree = "<group>"; };
@@ -542,8 +542,6 @@
 				FA04AE95144365D900819310 /* HistoryItem.m */,
 				FA560C4F1331701E00215F71 /* ImageLoader.h */,
 				FA560C501331701E00215F71 /* ImageLoader.m */,
-				FA2A3F77132BF97E0089AECC /* Pandora.h */,
-				FA2A3F78132BF97E0089AECC /* Pandora.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -551,6 +549,8 @@
 		FA2A3F90132BF9F50089AECC /* Pandora */ = {
 			isa = PBXGroup;
 			children = (
+				FA2A3F77132BF97E0089AECC /* Pandora.h */,
+				FA2A3F78132BF97E0089AECC /* Pandora.m */,
 				FA2A3F91132BF9F50089AECC /* Crypt.h */,
 				FA2A3F92132BF9F50089AECC /* Crypt.m */,
 				FA2A3F94132BF9F50089AECC /* Song.h */,
