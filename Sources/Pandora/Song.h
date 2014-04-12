@@ -17,7 +17,6 @@
 @property NSString *medUrl;
 @property NSString *lowUrl;
 
-+ (NSString*) decryptURL: (NSString*) url;
 - (NSDictionary*) toDictionary;
 - (BOOL) isEqual:(id)other;
 - (Station*) station;

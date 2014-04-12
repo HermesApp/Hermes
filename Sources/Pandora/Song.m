@@ -26,24 +26,6 @@
   return self;
 }
 
-/**
- * Decrypts the URL received from Pandora
- */
-+ (NSString*) decryptURL: (NSString*) url {
-  /* Last 16 bytes of the URL are encrypted */
-  char buf[17];
-  int index = [url length] - 48;
-
-  NSString *pref = [url substringToIndex: index];
-  NSData *data = PandoraDecrypt([url substringFromIndex: index]);
-  strncpy(buf, [data bytes], sizeof(buf) - 1);
-  buf[sizeof(buf) - 1] = 0;
-  NSString *suff = @(buf);
-  NSLogd(@"%@", pref);
-
-  return [pref stringByAppendingString:suff];
-}
-
 - (NSDictionary*) toDictionary {
   NSMutableDictionary *info = [NSMutableDictionary dictionary];
   [info setValue: artist forKey:@"artist"];
