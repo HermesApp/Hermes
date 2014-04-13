@@ -31,7 +31,6 @@
 #define PARTNER_ENCRYPT  @"6#26FRL$ZWD"
 #define PANDORA_API_HOST @"tuner.pandora.com"
 #elif defined(PANDORA_DESKTOP_CLIENT)
-// FIXME: Results in "An unexpected error occurred"
 // ================
 // Desktop client
 // ================
