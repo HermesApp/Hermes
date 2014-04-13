@@ -188,10 +188,10 @@
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     id item = [seedsResults itemAtRow:idx];
-    if (![item isKindOfClass:[SearchResult class]]) {
+    if (![item isKindOfClass:[PandoraSearchResult class]]) {
       return;
     }
-    SearchResult *d = item;
+    PandoraSearchResult *d = item;
     [pandora addSeed:[d value] to:cur_station];
     [self showSpinner];
   }];
@@ -374,7 +374,7 @@
   }
 
   if (outlineView == seedsResults) {
-    SearchResult *result = item;
+    PandoraSearchResult *result = item;
     return [result name];
   }
 

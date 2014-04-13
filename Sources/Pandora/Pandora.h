@@ -46,7 +46,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 @end
 
 /* Wrapper for search results */
-@interface SearchResult : NSObject
+@interface PandoraSearchResult : NSObject
 
 @property NSString *name;
 @property NSString *value;

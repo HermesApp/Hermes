@@ -407,12 +407,12 @@
   [errorIndicator setHidden:YES];
   id item = [results itemAtRow:[results selectedRow]];
 
-  if (![item isKindOfClass:[SearchResult class]]) {
+  if (![item isKindOfClass:[PandoraSearchResult class]]) {
     [errorIndicator setHidden:NO];
     return;
   }
 
-  SearchResult *result = item;
+  PandoraSearchResult *result = item;
 
   [searchSpinner setHidden:NO];
   [searchSpinner startAnimation:nil];

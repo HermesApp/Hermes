@@ -19,7 +19,7 @@
 #import "URLConnection.h"
 
 
-@implementation SearchResult
+@implementation PandoraSearchResult
 
 @end
 
@@ -522,7 +522,7 @@ static NSString *hierrs[] = {
     map[@"Artists"] = search_artists;
 
     for (NSDictionary *s in result[@"songs"]) {
-      SearchResult *r = [[SearchResult alloc] init];
+      PandoraSearchResult *r = [[PandoraSearchResult alloc] init];
       NSString *name = [NSString stringWithFormat:@"%@ - %@",
                           s[@"songName"],
                           s[@"artistName"]];
@@ -532,7 +532,7 @@ static NSString *hierrs[] = {
     }
 
     for (NSDictionary *a in result[@"artists"]) {
-      SearchResult *r = [[SearchResult alloc] init];
+      PandoraSearchResult *r = [[PandoraSearchResult alloc] init];
       [r setValue:a[@"musicToken"]];
       [r setName:a[@"artistName"]];
       [search_artists addObject:r];
