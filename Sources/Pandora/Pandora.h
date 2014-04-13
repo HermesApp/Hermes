@@ -5,15 +5,45 @@
 #import "Pandora/Song.h"
 
 
-#define PANDORA_API_HOST @"tuner.pandora.com"
 #define PANDORA_API_PATH @"/services/json/"
 #define PANDORA_API_VERSION @"5"
 
+#define PANDORA_ANDROID_CLIENT
+
+#if defined(PANDORA_IPHONE_CLIENT)
+// ================
+// iPhone client
+// ================
 #define PARTNER_USERNAME @"iphone"
 #define PARTNER_PASSWORD @"P2E4FC0EAD3*878N92B2CDp34I0B1@388137C"
 #define PARTNER_DEVICEID @"IP01"
-#define PARTNER_DECRYPT  "20zE1E47BE57$51"
-#define PARTNER_ENCRYPT  "721^26xE22776"
+#define PARTNER_DECRYPT  @"20zE1E47BE57$51"
+#define PARTNER_ENCRYPT  @"721^26xE22776"
+#define PANDORA_API_HOST @"tuner.pandora.com"
+#elif defined(PANDORA_ANDROID_CLIENT)
+// ================
+// Android client
+// ================
+#define PARTNER_USERNAME @"android"
+#define PARTNER_PASSWORD @"AC7IBG09A3DTSYM4R41UJWL07VLN8JI7"
+#define PARTNER_DEVICEID @"android-generic"
+#define PARTNER_DECRYPT  @"R=U!LH$O2B#"
+#define PARTNER_ENCRYPT  @"6#26FRL$ZWD"
+#define PANDORA_API_HOST @"tuner.pandora.com"
+#elif defined(PANDORA_DESKTOP_CLIENT)
+// FIXME: Results in "An unexpected error occurred"
+// ================
+// Desktop client
+// ================
+#define PARTNER_USERNAME @"pandora one"
+#define PARTNER_PASSWORD @"TVCKIBGS9AO9TSYLNNFUML0743LH82D"
+#define PARTNER_DEVICEID @"D01"
+#define PARTNER_DECRYPT  @"U#IO$RZPAB%VX2"
+#define PARTNER_ENCRYPT  @"2%3WCL*JU$MP]4"
+#define PANDORA_API_HOST @"internal-tuner.pandora.com"
+#else
+#error Must compile with PANDORA_IPHONE_CLIENT, PANDORA_ANDROID_CLIENT, or PANDORA_DESKTOP_CLIENT.
+#endif
 
 #define INVALID_SYNC_TIME     13
 #define INVALID_AUTH_TOKEN    1001
