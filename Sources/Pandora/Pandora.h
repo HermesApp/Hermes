@@ -73,6 +73,9 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 @property (readonly) NSArray* stations;
 
+- (NSData *)decryptString:(NSString *)data;
+- (NSData *)encryptData:(NSData *)data;
+
 - (BOOL) authenticate:(NSString*)user
              password:(NSString*)password
               request:(PandoraRequest*)req;

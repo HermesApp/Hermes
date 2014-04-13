@@ -39,13 +39,14 @@ static void appendHex(unsigned char byte, void *_data) {
  *               hex encoded
  * @return the decrypted data
  */
-NSData* PandoraDecrypt(NSString* string) {
+NSData* PandoraDecryptString(NSString* string, NSString *decryptionKey) {
   struct blf_ecb_ctx ctx;
   NSMutableData *mut = [[NSMutableData alloc] init];
-
-  Blowfish_ecb_start(&ctx, FALSE, (unsigned char*) PARTNER_DECRYPT,
-                     sizeof(PARTNER_DECRYPT) - 1, appendByte,
-                     (__bridge void*) mut);
+  const char *key = decryptionKey.UTF8String;
+  
+  Blowfish_ecb_start(&ctx, FALSE, (unsigned char *) key,
+                     sizeof(key) - 1, appendByte,
+                     (__bridge void *) mut);
 
   const char *bytes = [string cStringUsingEncoding:NSASCIIStringEncoding];
   int len = [string lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
@@ -64,12 +65,13 @@ NSData* PandoraDecrypt(NSString* string) {
  * @param data the data to encrypt
  * @return the encrypted data, hex encoded
  */
-NSData* PandoraEncrypt(NSData* data) {
+NSData* PandoraEncryptData(NSData* data, NSString *encryptionKey) {
   struct blf_ecb_ctx ctx;
   NSMutableData *mut = [[NSMutableData alloc] init];
+  const char *key = encryptionKey.UTF8String;
 
-  Blowfish_ecb_start(&ctx, TRUE, (unsigned char*) PARTNER_ENCRYPT,
-                     sizeof(PARTNER_ENCRYPT) - 1, appendHex,
+  Blowfish_ecb_start(&ctx, TRUE, (unsigned char*) key,
+                     sizeof(key) - 1, appendHex,
                      (__bridge void*) mut);
 
   const char *bytes = [data bytes];

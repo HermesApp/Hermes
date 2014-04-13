@@ -102,6 +102,14 @@ static NSString *hierrs[] = {
   return nil;
 }
 
+- (NSData *)encryptData:(NSData *)data {
+  return PandoraEncryptData(data, PARTNER_ENCRYPT);
+}
+
+- (NSData *)decryptString:(NSString *)data {
+  return PandoraDecryptString(data, PARTNER_DECRYPT);
+}
+
 - (id) init {
   if ((self = [super init])) {
     stations = [[NSMutableArray alloc] init];
@@ -388,7 +396,7 @@ static NSString *hierrs[] = {
     NSDictionary *result = dict[@"result"];
     partner_auth_token = result[@"partnerAuthToken"];
     partner_id = result[@"partnerId"];
-    NSData *sync = PandoraDecrypt(result[@"syncTime"]);
+    NSData *sync = [self decryptString:result[@"syncTime"]];
     const char *bytes = [sync bytes];
     sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
@@ -847,7 +855,7 @@ static NSString *hierrs[] = {
   
   /* Create the body */
   NSData *data = [json_writer dataWithObject: [request request]];
-  if ([request encrypted]) { data = PandoraEncrypt(data); }
+  if ([request encrypted]) { data = [self encryptData:data]; }
   [nsrequest setHTTPBody: data];
   
   /* Create the connection with necessary callback for when done */
