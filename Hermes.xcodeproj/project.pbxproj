@@ -683,10 +683,10 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
-		FAA313F013C98A7300314C73 /* Build sparkle metadata */ = {
+		FAA313F013C98A7300314C73 /* Build Sparkle metadata */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build sparkle metadata" */;
+			buildConfigurationList = FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build Sparkle metadata" */;
 			buildPhases = (
 			);
 			buildToolPath = Scripts/build_sparkle.sh;
@@ -694,7 +694,7 @@
 			dependencies = (
 				FAA313F713C98C9A00314C73 /* PBXTargetDependency */,
 			);
-			name = "Build sparkle metadata";
+			name = "Build Sparkle metadata";
 			passBuildSettingsInEnvironment = 1;
 			productName = "Build sparkle metadata";
 		};
@@ -802,10 +802,10 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Hermes */,
-				FAA313F013C98A7300314C73 /* Build sparkle metadata */,
-				9728D875158C3D1F00C078A4 /* SPMediaKeyTap */,
-				9728D8AB158C3EA200C078A4 /* SBJson */,
 				9728D8BF158C3EA900C078A4 /* AudioStreamer */,
+				9728D8AB158C3EA200C078A4 /* SBJson */,
+				9728D875158C3D1F00C078A4 /* SPMediaKeyTap */,
+				FAA313F013C98A7300314C73 /* Build Sparkle metadata */,
 			);
 		};
 /* End PBXProject section */
@@ -1145,11 +1145,8 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				PBXBuildsContinueAfterErrors = 0;
 				PRODUCT_NAME = Hermes;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = macosx;
-				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -1179,11 +1176,8 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				PBXBuildsContinueAfterErrors = 0;
 				PRODUCT_NAME = Hermes;
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = macosx;
-				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -1202,23 +1196,14 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
-				OTHER_LDFLAGS = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				WARNING_CFLAGS = "-Wall";
@@ -1234,22 +1219,13 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_ENABLE_TRIGRAPHS = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
-				GCC_WARN_UNDECLARED_SELECTOR = NO;
-				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "";
-				LLVM_LTO = NO;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "";
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				WARNING_CFLAGS = "-Wall";
@@ -1259,43 +1235,12 @@
 		FAA313F213C98A7300314C73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUGGING_SYMBOLS = YES;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		FAA313F313C98A7300314C73 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6.8;
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -1347,7 +1292,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build sparkle metadata" */ = {
+		FAA313F113C98A7300314C73 /* Build configuration list for PBXLegacyTarget "Build Sparkle metadata" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FAA313F213C98A7300314C73 /* Debug */,

@@ -10,7 +10,7 @@ COMMON_OPTS    = -project Hermes.xcodeproj SYMROOT=build
 all: hermes
 
 hermes:
-	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes
+	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -target Hermes
 
 run: hermes
 	$(HERMES)
@@ -19,10 +19,10 @@ dbg: hermes
 	$(DEBUGGER) $(HERMES)
 
 archive:
-	$(XCB) $(COMMON_OPTS) -configuration Release -target 'Build sparkle metadata'
+	$(XCB) $(COMMON_OPTS) -configuration Release -target 'Build Sparkle metadata'
 
 clean:
-	$(XCB) $(COMMON_OPTS) -scheme Hermes clean
+	$(XCB) $(COMMON_OPTS) -target Hermes clean
 	rm -rf build
 
 .PHONY: all hermes run dbg archive clean
