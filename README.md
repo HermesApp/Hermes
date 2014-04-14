@@ -54,11 +54,11 @@ ways you can develop against Hermes if you really want to.
 
 ### Want something new/fixed?
 
-1. [Open a ticket](https://github.com/alexcrichton/hermes/issues)! I'll get
-   around to it soon, especially if it sounds appealing to me. I take all
+1. [Open a ticket](https://github.com/HermesApp/Hermes/issues)! We'll get
+   around to it soon, especially if it sounds appealing to us. We take all
    suggestions/feedback!
 
-2. Take a stab at it yourself if you're brave. Just send me a pull request if
+2. Take a stab at it yourself if you're brave. Just send us a pull request if
    you've got something fixed. Here's some common things to do at the command
    line:
 
@@ -76,4 +76,4 @@ ways you can develop against Hermes if you really want to.
 ## License
 
 Code is available under the [MIT
-License](https://github.com/alexcrichton/hermes/blob/master/LICENSE).
+License](https://github.com/HermesApp/Hermes/blob/master/LICENSE).
