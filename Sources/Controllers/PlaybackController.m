@@ -543,7 +543,7 @@ BOOL playOnStart = YES;
 }
 
 - (IBAction) volumeChanged: (id) sender {
-  if (playing && [playing isPlaying]) {
+  if (playing) {
     [self setIntVolume:[volume intValue]];
   }
 }
