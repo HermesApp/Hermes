@@ -6,11 +6,25 @@
 @implementation AuthController
 
 - (id) init {
-  [[NSNotificationCenter defaultCenter]
+  NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+
+  [notificationCenter
     addObserver:self
     selector:@selector(authenticationSucceeded:)
     name:@"hermes.authenticated"
     object:[[NSApp delegate] pandora]];
+
+  [notificationCenter
+   addObserver:self
+   selector:@selector(controlTextDidChange:)
+   name:NSControlTextDidChangeNotification
+   object:username];
+
+  [notificationCenter
+   addObserver:self
+   selector:@selector(controlTextDidChange:)
+   name:NSControlTextDidChangeNotification
+   object:password];
 
   return self;
 }
@@ -28,7 +42,7 @@
   } else {
     [password becomeFirstResponder];
   }
-  [login setEnabled:YES];
+  [self controlTextDidChange:nil];
 }
 
 - (void) authenticationSucceeded: (NSNotification*) notification {
@@ -61,7 +75,8 @@
 - (void) show {
   [[NSApp delegate] setCurrentView:view];
   [username becomeFirstResponder];
-  [login setEnabled:YES];
+
+  [self controlTextDidChange:nil];
 }
 
 /* Log out the current session */
@@ -69,6 +84,23 @@
   [password setStringValue:@""];
   HermesAppDelegate *delegate = [NSApp delegate];
   [[delegate pandora] logout];
+}
+
+- (void)controlTextDidChange:(NSNotification *)obj {
+  [login setEnabled:
+   [spinner isHidden] &&
+   ![[username stringValue] isEqualToString:@""] &&
+   ![[password stringValue] isEqualToString:@""]];
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  HermesAppDelegate *delegate = [NSApp delegate];
+
+  if (![[delegate pandora] authenticated]) {
+    return NO;
+  }
+
+  return YES;
 }
 
 @end
