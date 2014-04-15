@@ -187,8 +187,6 @@
 		971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMediaKeyTap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9728D877158C3D1F00C078A4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		9728D88C158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SPInvocationGrabbing.h"; sourceTree = "<group>"; };
-		9728D88D158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SPInvocationGrabbing.m"; sourceTree = "<group>"; };
 		9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
 		9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; };
 		9728D89C158C3E3C00C078A4 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -480,20 +478,10 @@
 			children = (
 				9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */,
 				9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */,
-				9728D888158C3D3100C078A4 /* SPInvocationGrabbing */,
 			);
 			name = SPMediaKeyTap;
 			path = ImportedSources/SPMediaKeyTap;
 			sourceTree = SOURCE_ROOT;
-		};
-		9728D888158C3D3100C078A4 /* SPInvocationGrabbing */ = {
-			isa = PBXGroup;
-			children = (
-				9728D88C158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.h */,
-				9728D88D158C3D3100C078A4 /* NSObject+SPInvocationGrabbing.m */,
-			);
-			path = SPInvocationGrabbing;
-			sourceTree = "<group>";
 		};
 		FA0E55671478559200C36794 /* Integration */ = {
 			isa = PBXGroup;
