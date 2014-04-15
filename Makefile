@@ -1,7 +1,7 @@
 XCB           = xcodebuild
 CONFIGURATION = Debug
 HERMES        = ./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
-DEBUGGER      = gdb
+DEBUGGER      = lldb
 
 # For some reason the project's SYMROOT setting is ignored when we specify an
 # explicit -project option. The -project option is required when using xctool.
