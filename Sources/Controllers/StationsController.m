@@ -51,6 +51,14 @@
   return self;
 }
 
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  if (![[self pandora] authenticated]) {
+    return NO;
+  }
+
+  return YES;
+}
+
 /* ============================ Miscellaneous helpers */
 
 - (Pandora*) pandora {

@@ -565,6 +565,10 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  if (![[self pandora] authenticated]) {
+    return NO;
+  }
+
   SEL action = [menuItem action];
 
   if (action == @selector(playpause:)) {
@@ -591,7 +595,11 @@ BOOL playOnStart = YES;
   return YES;
 }
 
--(BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
+- (BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
+  if (![[self pandora] authenticated]) {
+    return NO;
+  }
+
   if (toolbarItem == like || toolbarItem == dislike) {
     return [playing playingSong] && ![playing shared];
   }

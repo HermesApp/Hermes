@@ -130,6 +130,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 + (NSString*) errorString: (int) code;
 
+- (BOOL) authenticated;
 - (int64_t) time;
 - (BOOL) sendRequest: (PandoraRequest*) request;
 
