@@ -28,13 +28,13 @@ The Process
 3. Test everything, ensuring it's all working as expected. Once satisfied,
    commit the changes made in the last two steps. Once committed, tag the
    commit with the release version. For example:
-```
-git tag v1.2.0 750f2de
-```
+
+        git tag v1.2.0 750f2de
+
 
 4. Compile, archive, and upload the new version:
 
-    make CONFIGURATION=Release archive
+        make CONFIGURATION=Release archive
 
 5. Ensure the GitHub pages repository was edited correctly:
     1. Inspect `hermes-pages/_data/urls.yml` ensuring the URL for key
@@ -43,10 +43,10 @@ git tag v1.2.0 750f2de
     3. Make sure `hermes-pages/CHANGELOG.md` looks like `Hermes/CHANGELOG.md`.
 
 6. Push `hermes-pages` to GitHub:
-```
-cd hermes-pages
-git push origin master
-```
+
+        cd hermes-pages
+        git push origin master
+
 
 7. Try updating from an old version of Hermes. From textual menus:
    **Hermes → Check for Updates**; or from the statusbar icon: click on the
