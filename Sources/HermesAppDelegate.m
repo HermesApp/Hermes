@@ -170,7 +170,8 @@
 
   NSString *savedUsername = [self getCachedUsername];
   NSString *savedPassword = [self getCachedPassword];
-  if (savedPassword == nil || savedUsername == nil) {
+  if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
+      savedUsername == nil || [savedUsername isEqualToString:@""]) {
     [auth show];
   } else {
     [self showLoader];
