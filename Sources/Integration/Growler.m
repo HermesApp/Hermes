@@ -48,6 +48,9 @@
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
     [not setInformativeText:description];
+    if([not respondsToSelector:@selector(setContentImage:)]) {
+      not.contentImage = [[NSImage alloc] initWithData:image];
+    }
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
     [center scheduleNotification:not];
