@@ -4,6 +4,8 @@
 #import "StationsController.h"
 #import "Notifications.h"
 
+#define ROUGH_EMAIL_REGEX @"[^\\s@]+@[^\\s@]+\\.[^\\s@]+"
+
 @implementation AuthController
 
 - (id) init {
@@ -88,9 +90,11 @@
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj {
+  NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", ROUGH_EMAIL_REGEX];
+  
   [login setEnabled:
    [spinner isHidden] &&
-   ![[username stringValue] isEqualToString:@""] &&
+   [emailTest evaluateWithObject:[username stringValue]] &&
    ![[password stringValue] isEqualToString:@""]];
 }
 
