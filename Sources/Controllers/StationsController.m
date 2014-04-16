@@ -41,7 +41,7 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRemoved:)
-    name:PandoraDidRemoveStationNotification
+    name:PandoraDidDeleteStationNotification
     object:[[NSApp delegate] pandora]];
   [[NSNotificationCenter defaultCenter]
     addObserver:self

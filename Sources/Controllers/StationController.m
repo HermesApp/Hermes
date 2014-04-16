@@ -46,7 +46,7 @@
                object:pandora];
   [center addObserver:self
              selector:@selector(seedDeleted:)
-                 name:PandoraDidRemoveSeedNotification
+                 name:PandoraDidDeleteSeedNotification
                object:pandora];
   return [super init];
 }

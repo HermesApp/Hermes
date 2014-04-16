@@ -616,7 +616,7 @@ static NSString *hierrs[] = {
       [stations removeObjectAtIndex:i];
     }
 
-    [self notify:PandoraDidRemoveStationNotification with:nil];
+    [self notify:PandoraDidDeleteStationNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -776,7 +776,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidRemoveSeedNotification with:nil];
+    [self notify:PandoraDidDeleteSeedNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
