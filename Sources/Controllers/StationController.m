@@ -7,6 +7,7 @@
 #import "ImageLoader.h"
 #import "Pandora/Station.h"
 #import "StationController.h"
+#import "Notifications.h"
 
 @implementation StationController
 
@@ -25,27 +26,27 @@
   Pandora *pandora = [[NSApp delegate] pandora];
   [center addObserver:self
              selector:@selector(stationInfo:)
-                 name:@"hermes.station-info"
+                 name:PandoraDidLoadStationInfoNotification
                object:nil];
   [center addObserver:self
              selector:@selector(hideSpinner)
-                 name:@"hermes.station-renamed"
+                 name:PandoraDidRenameStationNotification
                object:pandora];
   [center addObserver:self
              selector:@selector(hideSpinner)
-                 name:@"hermes.feedback-deleted"
+                 name:PandoraDidDeleteFeedbackNotification
                object:pandora];
   [center addObserver:self
              selector:@selector(searchCompleted:)
-                 name:@"hermes.search-results"
+                 name:PandoraDidLoadSearchResultsNotification
                object:pandora];
   [center addObserver:self
              selector:@selector(seedAdded:)
-                 name:@"hermes.seed-added"
+                 name:PandoraDidAddSeedNotification
                object:pandora];
   [center addObserver:self
              selector:@selector(seedDeleted:)
-                 name:@"hermes.seed-removed"
+                 name:PandoraDidRemoveSeedNotification
                object:pandora];
   return [super init];
 }

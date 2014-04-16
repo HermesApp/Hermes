@@ -16,6 +16,7 @@
 #import "PreferencesController.h"
 #import "StationsController.h"
 #import "URLConnection.h"
+#import "Notifications.h"
 
 #define HISTORY_LIMIT 20
 
@@ -57,7 +58,7 @@
   [self insertObject:song inSongsAtIndex:0];
 
   [[NSDistributedNotificationCenter defaultCenter]
-    postNotificationName:@"hermes.song"
+    postNotificationName:HistoryControllerDidPlaySongDistributedNotification
                   object:@"hermes"
                 userInfo:[song toDictionary]];
 

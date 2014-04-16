@@ -2,6 +2,7 @@
 #import "HermesAppDelegate.h"
 #import "PlaybackController.h"
 #import "StationsController.h"
+#import "Notifications.h"
 
 @implementation AuthController
 
@@ -11,7 +12,7 @@
   [notificationCenter
     addObserver:self
     selector:@selector(authenticationSucceeded:)
-    name:@"hermes.authenticated"
+    name:PandoraDidAuthenticateNotification
     object:[[NSApp delegate] pandora]];
 
   [notificationCenter

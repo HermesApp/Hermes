@@ -17,6 +17,7 @@
 #import "PreferencesController.h"
 #import <SBJson/SBJson.h>
 #import "URLConnection.h"
+#import "Notifications.h"
 
 
 @implementation PandoraSearchResult
@@ -130,7 +131,7 @@ static NSString *hierrs[] = {
   for (Station *s in stations)
     [Station removeStation:s];
   [stations removeAllObjects];
-  [self notify: @"hermes.logged-out" with:nil];
+  [self notify:PandoraDidLogOutNotification with:nil];
 }
 
 - (void) logoutNoNotify {
@@ -242,7 +243,7 @@ static NSString *hierrs[] = {
     user_id = result[@"userId"];
 
     if (req == nil) {
-      [self notify:@"hermes.authenticated" with:nil];
+      [self notify:PandoraDidAuthenticateNotification with:nil];
     } else {
       NSLogd(@"Retrying request...");
       PandoraRequest *newreq = [self defaultRequest:[req method]];
@@ -291,7 +292,7 @@ static NSString *hierrs[] = {
       }
     };
 
-    [self notify:@"hermes.stations" with:nil];
+    [self notify:PandoraDidLoadStationsNotification with:nil];
   }];
 
   return [self sendAuthenticatedRequest:r];
@@ -306,6 +307,7 @@ static NSString *hierrs[] = {
  *
  * @param station the station to fetch more songs for
  */
+// FIXME: Should post a standard notification, not per-invocation choice.
 - (BOOL) getFragment: (Station*) station {
   NSLogd(@"Getting fragment for %@...", [station name]);
 
@@ -434,7 +436,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"song"] = song;
-    [self notify:@"hermes.song-rated" with:dict];
+    [self notify:PandoraDidRateSongNotification with:dict];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -491,7 +493,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"song"] = song;
-    [self notify:@"hermes.song-tired" with:dict];
+    [self notify:PandoraDidTireSongNotification with:dict];
   }];
 
   return [self sendAuthenticatedRequest:req];
@@ -546,7 +548,7 @@ static NSString *hierrs[] = {
       [search_artists addObject:r];
     }
 
-    [self notify:@"hermes.search-results" with:map];
+    [self notify:PandoraDidLoadSearchResultsNotification with:map];
   }];
 
   return [self sendAuthenticatedRequest:req];
@@ -578,7 +580,7 @@ static NSString *hierrs[] = {
     dict[@"station"] = s;
     [stations addObject:s];
     [Station addStation:s];
-    [self notify:@"hermes.station-created" with:dict];
+    [self notify:PandoraDidCreateStationNotification with:dict];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -614,7 +616,7 @@ static NSString *hierrs[] = {
       [stations removeObjectAtIndex:i];
     }
 
-    [self notify:@"hermes.station-removed" with:nil];
+    [self notify:PandoraDidRemoveStationNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -637,7 +639,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.station-renamed" with:nil];
+    [self notify:PandoraDidRenameStationNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -703,7 +705,7 @@ static NSString *hierrs[] = {
     info[@"likes"] = feedback[@"thumbsUp"];
     info[@"dislikes"] = feedback[@"thumbsDown"];
 
-    [self notify:@"hermes.station-info" with:info];
+    [self notify:PandoraDidLoadStationInfoNotification with:info];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -725,7 +727,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.feedback-deleted" with:nil];
+    [self notify:PandoraDidDeleteFeedbackNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -752,7 +754,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.seed-added" with:d[@"result"]];
+    [self notify:PandoraDidAddSeedNotification with:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -774,7 +776,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.seed-removed" with:nil];
+    [self notify:PandoraDidRemoveSeedNotification with:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -794,7 +796,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:@"hermes.genre-stations" with:d[@"result"]];
+    [self notify:PandoraDidLoadGenreStationsNotification with:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -893,7 +895,7 @@ static NSString *hierrs[] = {
                       if (dict != nil) {
                         [info setValue:dict[@"code"] forKey:@"code"];
                       }
-                      [[NSNotificationCenter defaultCenter] postNotificationName:@"hermes.pandora-error"
+                      [[NSNotificationCenter defaultCenter] postNotificationName:PandoraDidErrorNotification
                                                                           object:self
                                                                         userInfo:info];
                     }];

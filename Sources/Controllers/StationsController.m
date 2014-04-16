@@ -7,6 +7,7 @@
 #import "StationController.h"
 #import "StationsController.h"
 #import "HermesAppDelegate.h"
+#import "Notifications.h"
 
 #define SORT_NAME 0
 #define SORT_DATE 1
@@ -17,35 +18,35 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationsLoaded:)
-    name:@"hermes.stations"
+    name:PandoraDidLoadStationsNotification
     object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(searchResultsLoaded:)
-    name:@"hermes.search-results"
+    name:PandoraDidLoadSearchResultsNotification
     object:[[NSApp delegate] pandora]];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(genreStationsLoaded:)
-    name:@"hermes.genre-stations"
+    name:PandoraDidLoadGenreStationsNotification
     object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationCreated:)
-    name:@"hermes.station-created"
+    name:PandoraDidCreateStationNotification
     object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRemoved:)
-    name:@"hermes.station-removed"
+    name:PandoraDidRemoveStationNotification
     object:[[NSApp delegate] pandora]];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRenamed:)
-    name:@"hermes.station-renamed"
+    name:PandoraDidDeleteFeedbackNotification
     object:[[NSApp delegate] pandora]];
 
   return self;

@@ -2,6 +2,7 @@
 #import "Pandora/Station.h"
 #import "PreferencesController.h"
 #import "StationsController.h"
+#import "Notifications.h"
 
 @implementation Station
 
@@ -179,7 +180,7 @@
 - (void) newSongPlaying:(NSNotification*) notification {
   assert([songs count] == [urls count]);
   [[NSNotificationCenter defaultCenter]
-        postNotificationName:@"song.playing"
+        postNotificationName:StationDidPlaySongNotification
                       object:self
                     userInfo:nil];
 }

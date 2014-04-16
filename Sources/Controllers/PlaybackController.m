@@ -18,6 +18,7 @@
 #import "Integration/Scrobbler.h"
 #import "StationsController.h"
 #import "PreferencesController.h"
+#import "Notifications.h"
 
 BOOL playOnStart = YES;
 
@@ -57,19 +58,19 @@ BOOL playOnStart = YES;
   [center
     addObserver:self
     selector:@selector(hideSpinner)
-    name:@"hermes.song-rated"
+    name:PandoraDidRateSongNotification
     object:[[NSApp delegate] pandora]];
 
   [center
     addObserver:self
     selector:@selector(hideSpinner)
-    name:@"hermes.feedback-deleted"
+    name:PandoraDidDeleteFeedbackNotification
     object:[[NSApp delegate] pandora]];
 
   [center
     addObserver:self
     selector:@selector(hideSpinner)
-    name:@"hermes.song-tired"
+    name:PandoraDidTireSongNotification
     object:[[NSApp delegate] pandora]];
 
   [center
@@ -81,25 +82,25 @@ BOOL playOnStart = YES;
   [center
      addObserver:self
      selector:@selector(songPlayed:)
-     name:@"song.playing"
+     name:StationDidPlaySongNotification
      object:nil];
   
   // NSDistributedNotificationCenter is for interprocess communication.
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(pauseOnScreensaverStart:)
-                                                          name:@"com.apple.screensaver.didstart"
+                                                          name:AppleScreensaverDidStartDistributedNotification
                                                         object:nil];
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(playOnScreensaverStop:)
-                                                          name:@"com.apple.screensaver.didstop"
+                                                          name:AppleScreensaverDidStopDistributedNotification
                                                         object:nil];
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(pauseOnScreenLock:)
-                                                          name:@"com.apple.screenIsLocked"
+                                                          name:AppleScreenIsLockedDistributedNotification
                                                         object:nil];
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(playOnScreenUnlock:)
-                                                          name:@"com.apple.screenIsUnlocked"
+                                                          name:AppleScreenIsUnlockedDistributedNotification
                                                         object:nil];
 }
 

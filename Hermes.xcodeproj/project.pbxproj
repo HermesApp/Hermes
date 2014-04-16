@@ -10,6 +10,7 @@
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		44310F8B18EB87AB0095359D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 44310F8A18EB87AB0095359D /* Credits.rtf */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
+		44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DFC8DF18FDFCBC007422DC /* Notifications.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -174,6 +175,8 @@
 		44310F8A18EB87AB0095359D /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryCollectionView.h; path = Controllers/HistoryCollectionView.h; sourceTree = "<group>"; };
 		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryCollectionView.m; path = Controllers/HistoryCollectionView.m; sourceTree = "<group>"; };
+		44DFC8DE18FDFCBC007422DC /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
+		44DFC8DF18FDFCBC007422DC /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97177193159EAA7D00EE3355 /* cd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cd.png; sourceTree = "<group>"; };
@@ -365,6 +368,8 @@
 				E124109918EBAF6F007AF091 /* HermesApp.m */,
 				9717719B159EBBBF00EE3355 /* FileReader.h */,
 				9717719C159EBBBF00EE3355 /* FileReader.m */,
+				44DFC8DE18FDFCBC007422DC /* Notifications.h */,
+				44DFC8DF18FDFCBC007422DC /* Notifications.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -873,6 +878,7 @@
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
 				44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */,
 				FA2442BB136B18DC00E126D3 /* PreferencesController.m in Sources */,
+				44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */,
 				E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */,
 				FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */,
 				FA229D6814429F69008AB9FE /* HistoryController.m in Sources */,

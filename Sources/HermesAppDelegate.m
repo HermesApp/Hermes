@@ -17,6 +17,7 @@
 #import "Integration/Scrobbler.h"
 #import "StationController.h"
 #import "StationsController.h"
+#import "Notifications.h"
 
 @implementation HermesAppDelegate
 
@@ -136,7 +137,7 @@
   [[NSNotificationCenter defaultCenter]
      addObserver:self
         selector:@selector(handlePandoraError:)
-            name:@"hermes.pandora-error"
+            name:PandoraDidErrorNotification
           object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
@@ -148,13 +149,13 @@
   [[NSNotificationCenter defaultCenter]
      addObserver:self
         selector:@selector(handlePandoraLoggedOut:)
-            name:@"hermes.logged-out"
+            name:PandoraDidLogOutNotification
           object:[[NSApp delegate] pandora]];
 
   [[NSNotificationCenter defaultCenter]
      addObserver:self
         selector:@selector(songPlayed:)
-            name:@"song.playing"
+            name:StationDidPlaySongNotification
           object:nil];
 
   [[NSNotificationCenter defaultCenter]

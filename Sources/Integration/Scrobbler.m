@@ -13,6 +13,7 @@
 #import "PreferencesController.h"
 #import "Scrobbler.h"
 #import "Pandora/Station.h"
+#import "Notifications.h"
 
 #define LASTFM_KEYCHAIN_ITEM @"hermes-lastfm-sk"
 
@@ -36,12 +37,12 @@
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(songPlayed:)
-           name:@"song.playing"
+           name:StationDidPlaySongNotification
          object:nil];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
        selector:@selector(songRated:)
-           name:@"hermes.song-rated"
+           name:PandoraDidRateSongNotification
          object:nil];
   return self;
 }
