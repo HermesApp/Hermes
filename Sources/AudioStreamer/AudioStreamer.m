@@ -448,7 +448,7 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   return YES;
 }
 
-/* Internal Functions ======================================================= */
+#pragma mark - Private
 
 //
 // failWithErrorCode:

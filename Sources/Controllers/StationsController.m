@@ -60,7 +60,7 @@
   return YES;
 }
 
-/* ============================ Miscellaneous helpers */
+#pragma mark - Miscellaneous helpers
 
 - (Pandora*) pandora {
   return [[NSApp delegate] pandora];
@@ -176,7 +176,7 @@
   return YES;
 }
 
-/* ============================ NSDrawerDelegate protocol */
+#pragma mark - NSDrawerDelegate
 
 - (NSSize) drawerWillResizeContents:(NSDrawer*) drawer toSize:(NSSize) size {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -184,7 +184,7 @@
   return size;
 }
 
-/* ============================ NSTableViewDataSource protocol */
+#pragma mark - NSTableViewDataSource protocol
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
   return [[[self pandora] stations] count];
@@ -208,7 +208,8 @@
   return [s name];
 }
 
-/* ============================ NSTableViewDelegate protocol */
+#pragma mark - NSTableViewDelegate protocol
+
 - (BOOL)tableView:(NSTableView *)tableView shouldTypeSelectForEvent:(NSEvent *)event withCurrentSearchString:(NSString *)searchString NS_AVAILABLE_MAC(10_5) {
   if (searchString == nil && [[event characters] isEqualToString:@" "]) {
     [[[NSApp delegate] playback] playpause:nil];
@@ -217,7 +218,8 @@
   return YES;
 }
 
-/* ============================ NSOutlineViewDataSource protocol */
+#pragma mark -  NSOutlineViewDataSource protocol
+
 - (id)outlineView:(NSOutlineView*)oview child:(NSInteger)index ofItem:(id)item {
   if (oview == results) {
     if (item == nil) {
@@ -271,7 +273,7 @@
   return item[@"stationName"];
 }
 
-/* ============================ Other callbacks */
+#pragma mark - Other callbacks
 
 - (void) stationCreated: (NSNotification*) not {
   Station *s = [not userInfo][@"station"];
@@ -357,7 +359,7 @@
   [genreSpinner setHidden:YES];
 }
 
-/* ============================ Callbacks for IBActions and such */
+#pragma mark - Callbacks for IBActions and such
 
 /* Called after the user has authenticated */
 - (void) show {

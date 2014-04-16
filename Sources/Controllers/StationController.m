@@ -159,7 +159,7 @@
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
-/* ============================ Searching for a seed */
+#pragma mark - Search for a seed
 
 - (IBAction) searchSeeds:(id)sender {
   Pandora *pandora = [[NSApp delegate] pandora];
@@ -180,7 +180,7 @@
   }
 }
 
-/* ============================ Adding a seed */
+#pragma mark - Adding a seed
 
 - (IBAction) addSeed:(id)sender {
   NSIndexSet *set = [seedsResults selectedRowIndexes];
@@ -212,7 +212,7 @@
   [seedsCurrent reloadData];
 }
 
-/* ============================ Deleting a seed */
+#pragma mark - Delete a seed
 
 - (IBAction) deleteSeed:(id)sender {
   NSIndexSet *set = [seedsCurrent selectedRowIndexes];
@@ -286,7 +286,7 @@
   [deleteFeedback setEnabled:TRUE];
 }
 
-/* ============================ Deleting feedback */
+#pragma mark - Delete feedback
 
 - (NSArray*) delfeed:(NSArray*)feed table:(NSTableView*)view {
   NSIndexSet *set = [view selectedRowIndexes];
@@ -315,7 +315,7 @@
   [dislikes deselectAll:nil];
 }
 
-/* ============================ NSTableViewDataSource protocol */
+#pragma mark - NSTableViewDataSource
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {
   if (aTableView == likes) {
@@ -346,7 +346,7 @@
   }
 }
 
-/* ============================ NSOutlineViewDataSource protocol */
+#pragma mark - NSOutlineViewDataSource
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
   NSDictionary *d = outlineView == seedsCurrent ? seeds : lastResults;
   if (item == nil) {
