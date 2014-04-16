@@ -1,21 +1,24 @@
-#!/bin/bash
+# releaselib.sh
+#
+# Tools used to archive and release Hermes.
 
-# Exit on error
-set -e
-# Error on unbound variable access
-set -u
+mytput() {
+    if tput colors >/dev/null 2>&1 && [ "$(tput colors)" -ge 8 ]; then
+        tput "$@"
+    fi
+}
 
 information() {
-    tput setaf 2
+    mytput setaf 2
     printf '>>> INFO:  '
-    tput sgr0
+    mytput sgr0
     printf '%s\n' "$*"
 }
 
 error() {
-    tput setaf 1
+    mytput setaf 1
     printf '>>> ERROR: '
-    tput sgr0
+    mytput sgr0
     printf '%s\n' "$*"
     exit 1
 }
@@ -46,7 +49,7 @@ set_environment() {
 }
 
 build_archive() {
-    information "Building archive ($ARCHIVE_FILENAME)"
+    information "Building archive $BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME"
     cd "$BUILT_PRODUCTS_DIR"
     rm -f "$PROJECT_NAME"*.zip
     ditto -ck --keepParent "$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app" "$ARCHIVE_FILENAME"
@@ -110,23 +113,3 @@ upload_release() {
 
     s3cmd put --acl-public "$ARCHIVE_FILENAME" "s3://alexcrichton-hermes/$ARCHIVE_FILENAME"
 }
-
-########################################
-# Set up environment.
-#
-# Do not run the above shell functions
-# until next comment.
-########################################
-
-check_environment
-set_environment
-
-########################################
-# Execute the script
-########################################
-
-build_archive
-sign_and_verify
-build_versions_fragment
-update_website
-upload_release
