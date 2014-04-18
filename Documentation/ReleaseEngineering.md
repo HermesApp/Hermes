@@ -32,9 +32,9 @@ The Process
         git tag v1.2.0 750f2de
 
 
-4. Compile, archive, and upload the new version:
+4. Compile, archive, upload the new version, and edit the `hermes-pages` site:
 
-        make CONFIGURATION=Release archive
+        make upload-release
 
 5. Ensure the GitHub pages repository was edited correctly:
     1. Inspect `hermes-pages/_data/urls.yml` ensuring the URL for key
