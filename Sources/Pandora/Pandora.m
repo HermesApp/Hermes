@@ -18,6 +18,7 @@
 #import <SBJson/SBJson.h>
 #import "URLConnection.h"
 #import "Notifications.h"
+#import "PandoraDevice.h"
 
 
 @implementation PandoraSearchResult
@@ -104,11 +105,18 @@ static NSString *hierrs[] = {
 }
 
 - (NSData *)encryptData:(NSData *)data {
-  return PandoraEncryptData(data, PARTNER_ENCRYPT);
+  return PandoraEncryptData(data, self.device[kPandoraDeviceEncrypt]);
 }
 
 - (NSData *)decryptString:(NSString *)data {
-  return PandoraDecryptString(data, PARTNER_DECRYPT);
+  return PandoraDecryptString(data, self.device[kPandoraDeviceDecrypt]);
+}
+
+- (id)initWithPandoraDevice:(NSDictionary *)device {
+  if (self = [self init]) {
+    self.device = device;
+  }
+  return self;
 }
 
 - (id) init {
@@ -117,6 +125,7 @@ static NSString *hierrs[] = {
     retries  = 0;
     json_parser = [[SBJsonParser alloc] init];
     json_writer = [[SBJsonWriter alloc] init];
+    self.device = [PandoraDevice android];
   }
   return self;
 }
@@ -384,9 +393,9 @@ static NSString *hierrs[] = {
 - (BOOL) partnerLogin: (SyncCallback) callback {
   start_time = [self time];
   NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  d[@"username"] = PARTNER_USERNAME;
-  d[@"password"] = PARTNER_PASSWORD;
-  d[@"deviceModel"] = PARTNER_DEVICEID;
+  d[@"username"] = self.device[kPandoraDeviceUsername];
+  d[@"password"] = self.device[kPandoraDevicePassword];
+  d[@"deviceModel"] = self.device[kPandoraDeviceDeviceID];
   d[@"version"] = PANDORA_API_VERSION;
   d[@"includeUrls"] = [NSNumber numberWithBool:TRUE];
 
@@ -842,9 +851,10 @@ static NSString *hierrs[] = {
  */
 - (BOOL) sendRequest: (PandoraRequest*) request {
   NSString *url  = [NSString stringWithFormat:
-                    @"http%s://" PANDORA_API_HOST PANDORA_API_PATH
+                    @"http%s://%@" PANDORA_API_PATH
                     @"?method=%@&partner_id=%@&auth_token=%@&user_id=%@",
                     [request tls] ? "s" : "",
+                    self.device[kPandoraDeviceAPIHost],
                     [request method], [request partnerId],
                     [[request authToken] urlEncoded], [request userId]];
   NSLogd(@"%@", url);
