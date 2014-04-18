@@ -5,6 +5,12 @@ Hermes
 
 A [Pandora](http://www.pandora.com) client for OS X.
 
+### Download Hermes
+
+Visit the official website [hermesapp.org](http://hermesapp.org/) and click download.
+
+If you wish to compile Hermes, continue reading.
+
 ### Develop against Hermes
 
 Thanks to the suggestions by [blalor](https://github.com/blalor), there's a few
@@ -13,7 +19,7 @@ ways you can develop against Hermes if you really want to.
 1. `NSDistributedNotificationCenter` - Every time a new song plays, a
    notification is posted with the name `hermes.song` under the object `hermes`
    with `userInfo` as a dictionary representing the song being played. See
-   [Song.m](https://github.com/HermesApp/Hermes/blob/master/Sources/Pandora/Song.m#L47)
+   [Song.m](https://github.com/HermesApp/Hermes/blob/master/Sources/Pandora/Song.m#L29)
    for the keys available to you.
 
 2. AppleScript - here's an example script:
