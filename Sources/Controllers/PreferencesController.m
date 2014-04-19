@@ -88,7 +88,6 @@
 }
 
 - (IBAction) show: (id) sender {
-  [NSApp activateIgnoringOtherApps:YES];
   [window makeKeyAndOrderFront:sender];
 }
 
