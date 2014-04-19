@@ -17,21 +17,21 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
 
 @implementation ASPlaylist
 
-- (id) init {
+- (id)init {
   if (!(self = [super init])) return nil;
   urls = [NSMutableArray arrayWithCapacity:10];
   return self;
 }
 
-- (void) dealloc {
+- (void)dealloc {
   [self stop];
 }
 
-- (void) clearSongList {
+- (void)clearSongList {
   [urls removeAllObjects];
 }
 
-- (void) addSong:(NSURL*)url play:(BOOL)play {
+- (void)addSong:(NSURL *)url play:(BOOL)play {
   [urls addObject:url];
 
   if (play && ![stream isPlaying]) {
@@ -39,7 +39,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
 }
 
-- (void) setAudioStream {
+- (void)setAudioStream {
   if (stream != nil) {
     [[NSNotificationCenter defaultCenter]
         removeObserver:self
