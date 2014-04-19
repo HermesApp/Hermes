@@ -293,7 +293,6 @@
 		FA94E6F71368E62C0063860C /* Scrobbler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Scrobbler.m; path = Integration/Scrobbler.m; sourceTree = "<group>"; };
 		FA99E25915E4B7EA005AB6E6 /* ASPlaylist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASPlaylist.h; sourceTree = "<group>"; };
 		FA99E25A15E4B7EA005AB6E6 /* ASPlaylist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASPlaylist.m; sourceTree = "<group>"; };
-		FAA313F813C98D9F00314C73 /* build_sparkle.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = build_sparkle.sh; path = Scripts/build_sparkle.sh; sourceTree = SOURCE_ROOT; };
 		FAAB28CE1336FB0300FC04C4 /* pandora.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = pandora.icns; sourceTree = "<group>"; };
 		FACF0183149A713700D1FB73 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		FACF0184149A713700D1FB73 /* AudioStreamer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 			isa = PBXGroup;
 			children = (
 				BCCDC93316C09607000E052D /* pandora-black.icns */,
-				FAA313F813C98D9F00314C73 /* build_sparkle.sh */,
 				FA24435E136B3D6C00E126D3 /* CHANGELOG.md */,
 				FAD42FA3136790DE00E935CA /* dsa_pub.pem */,
 				8D1107310486CEB800E47090 /* Hermes-Info.plist */,
