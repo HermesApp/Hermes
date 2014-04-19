@@ -128,7 +128,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
 }
 
-- (void) retry {
+- (void)retry {
   if (tries > 2) {
     /* too many retries means just skip to the next song */
     [self clearSongList];
@@ -141,7 +141,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   [stream start];
 }
 
-- (void) play {
+- (void)play {
   if (stream) {
     [stream play];
     return;
@@ -170,15 +170,35 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
 }
 
-- (void) pause { [stream pause]; }
-- (BOOL) isPaused { return [stream isPaused]; }
-- (BOOL) isPlaying { return [stream isPlaying]; }
-- (BOOL) isIdle { return [stream isDone]; }
-- (BOOL) isError { return [stream errorCode] != AS_NO_ERROR; }
-- (BOOL) progress:(double*)ret { return [stream progress:ret]; }
-- (BOOL) duration:(double*)ret { return [stream duration:ret]; }
+- (void)pause {
+  [stream pause];
+}
 
-- (void) next {
+- (BOOL)isPaused {
+  return [stream isPaused];
+}
+
+- (BOOL)isPlaying {
+  return [stream isPlaying];
+}
+
+- (BOOL)isIdle {
+  return [stream isDone];
+}
+
+- (BOOL)isError {
+  return [stream errorCode] != AS_NO_ERROR;
+}
+
+- (BOOL)progress:(double *)ret {
+  return [stream progress:ret];
+}
+
+- (BOOL)duration:(double *)ret {
+  return [stream duration:ret];
+}
+
+- (void)next {
   assert(!nexting);
   nexting = YES;
   lastKnownSeekTime = 0;
@@ -188,7 +208,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   nexting = NO;
 }
 
-- (void) stop {
+- (void)stop {
   assert(!stopping);
   stopping = YES;
   [stream stop];
@@ -203,7 +223,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   stopping = NO;
 }
 
-- (void) setVolume:(double)vol {
+- (void)setVolume:(double)vol {
   volumeSet = [stream setVolume:vol];
   self->volume = vol;
 }

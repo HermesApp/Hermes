@@ -78,8 +78,8 @@ extern NSString * const ASAttemptingNewSong;
 - (BOOL) isIdle;
 - (BOOL) isError;
 - (void) setVolume:(double)volume;
-- (BOOL) duration:(double*)ret;
-- (BOOL) progress:(double*)ret;
+- (BOOL) duration:(double *)ret;
+- (BOOL) progress:(double *)ret;
 
 /** @name Miscellaneous */
 
