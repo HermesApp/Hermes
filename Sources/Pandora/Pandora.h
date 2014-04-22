@@ -98,7 +98,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 #pragma mark - Error handling
 
-+ (NSString*) errorString: (int) code;
++ (NSString*) stringForErrorCode: (int) code;
 
 #pragma mark - Crypto
 

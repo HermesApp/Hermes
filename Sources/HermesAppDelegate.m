@@ -299,7 +299,7 @@
   [errorButton setHidden:FALSE];
   lastRequest = nil;
   int code = [nscode intValue];
-  NSString *other = [Pandora errorString:code];
+  NSString *other = [Pandora stringForErrorCode:code];
   if (other != nil) {
     err = other;
   }

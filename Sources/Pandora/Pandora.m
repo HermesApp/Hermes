@@ -180,7 +180,7 @@ static NSString *hierrs[] = {
 
 #pragma mark - Error handling
 
-+ (NSString*) errorString: (int) code {
++ (NSString*) stringForErrorCode: (int) code {
   if (code < 16) {
     return lowerrs[code];
   } else if (code >= 1000 && code <= 1037) {
