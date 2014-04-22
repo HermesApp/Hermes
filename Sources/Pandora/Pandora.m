@@ -119,6 +119,12 @@ static NSString *hierrs[] = {
 @interface Pandora ()
 
 /**
+ * Convenience method to send a notification from self.
+ *
+ */
+- (void) sendNotification:(NSString*)notificationName withUserInfo:(NSDictionary*)userInfo;
+
+/**
  * @brief Parse the dictionary provided to create a station
  *
  * @param s the dictionary describing the station
@@ -172,10 +178,10 @@ static NSString *hierrs[] = {
   return self;
 }
 
-- (void) notify: (NSString*)msg with:(NSDictionary*)obj {
-  [[NSNotificationCenter defaultCenter] postNotificationName:msg
+- (void) sendNotification: (NSString*)notificationName withUserInfo:(NSDictionary*)userInfo {
+  [[NSNotificationCenter defaultCenter] postNotificationName:notificationName
                                                       object:self
-                                                    userInfo:obj];
+                                                    userInfo:userInfo];
 }
 
 #pragma mark - Error handling
@@ -228,7 +234,7 @@ static NSString *hierrs[] = {
     user_id = result[@"userId"];
     
     if (req == nil) {
-      [self notify:PandoraDidAuthenticateNotification with:nil];
+      [self sendNotification:PandoraDidAuthenticateNotification withUserInfo:nil];
     } else {
       NSLogd(@"Retrying request...");
       PandoraRequest *newreq = [req copy];
@@ -273,7 +279,7 @@ static NSString *hierrs[] = {
   for (Station *s in stations)
     [Station removeStation:s];
   [stations removeAllObjects];
-  [self notify:PandoraDidLogOutNotification with:nil];
+  [self sendNotification:PandoraDidLogOutNotification withUserInfo:nil];
 }
 
 - (void) logoutNoNotify {
@@ -304,7 +310,7 @@ static NSString *hierrs[] = {
     dict[@"station"] = s;
     [stations addObject:s];
     [Station addStation:s];
-    [self notify:PandoraDidCreateStationNotification with:dict];
+    [self sendNotification:PandoraDidCreateStationNotification withUserInfo:dict];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -333,7 +339,7 @@ static NSString *hierrs[] = {
       [stations removeObjectAtIndex:i];
     }
     
-    [self notify:PandoraDidDeleteStationNotification with:nil];
+    [self sendNotification:PandoraDidDeleteStationNotification withUserInfo:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -347,7 +353,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidRenameStationNotification with:nil];
+    [self sendNotification:PandoraDidRenameStationNotification withUserInfo:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -372,7 +378,7 @@ static NSString *hierrs[] = {
       }
     };
     
-    [self notify:PandoraDidLoadStationsNotification with:nil];
+    [self sendNotification:PandoraDidLoadStationsNotification withUserInfo:nil];
   }];
   
   return [self sendAuthenticatedRequest:r];
@@ -456,7 +462,7 @@ static NSString *hierrs[] = {
                       [station token]];
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     d[@"songs"] = songs;
-    [self notify:name with:d];
+    [self sendNotification:name withUserInfo:d];
   }];
   
   return [self sendAuthenticatedRequest:r];
@@ -469,7 +475,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidLoadGenreStationsNotification with:d[@"result"]];
+    [self sendNotification:PandoraDidLoadGenreStationsNotification withUserInfo:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -507,7 +513,7 @@ static NSString *hierrs[] = {
     info[@"likes"] = feedback[@"thumbsUp"];
     info[@"dislikes"] = feedback[@"thumbsDown"];
     
-    [self notify:PandoraDidLoadStationInfoNotification with:info];
+    [self sendNotification:PandoraDidLoadStationInfoNotification withUserInfo:info];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -523,7 +529,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidDeleteFeedbackNotification with:nil];
+    [self sendNotification:PandoraDidDeleteFeedbackNotification withUserInfo:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -537,7 +543,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidAddSeedNotification with:d[@"result"]];
+    [self sendNotification:PandoraDidAddSeedNotification withUserInfo:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -550,7 +556,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidDeleteSeedNotification with:nil];
+    [self sendNotification:PandoraDidDeleteSeedNotification withUserInfo:nil];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -601,7 +607,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"song"] = song;
-    [self notify:PandoraDidRateSongNotification with:dict];
+    [self sendNotification:PandoraDidRateSongNotification withUserInfo:dict];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -642,7 +648,7 @@ static NSString *hierrs[] = {
   [req setCallback:^(NSDictionary* _) {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"song"] = song;
-    [self notify:PandoraDidTireSongNotification with:dict];
+    [self sendNotification:PandoraDidTireSongNotification withUserInfo:dict];
   }];
   
   return [self sendAuthenticatedRequest:req];
@@ -698,7 +704,7 @@ static NSString *hierrs[] = {
       [search_artists addObject:r];
     }
 
-    [self notify:PandoraDidLoadSearchResultsNotification with:map];
+    [self sendNotification:PandoraDidLoadSearchResultsNotification withUserInfo:map];
   }];
 
   return [self sendAuthenticatedRequest:req];
