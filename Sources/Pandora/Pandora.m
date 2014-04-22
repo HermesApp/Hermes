@@ -210,29 +210,7 @@ static NSString *hierrs[] = {
 - (BOOL) authenticate:(NSString*)user
              password:(NSString*)pass
               request:(PandoraRequest*)req {
-  if (partner_id == nil) {
-    return [self partnerLogin: ^() {
-      [self authenticate:user password:pass request:req];
-    }];
-  }
-  
-  NSMutableDictionary *loginDictionary = [NSMutableDictionary dictionary];
-  loginDictionary[@"loginType"]        = @"user";
-  loginDictionary[@"username"]         = user;
-  loginDictionary[@"password"]         = pass;
-  loginDictionary[@"partnerAuthToken"] = partner_auth_token;
-  loginDictionary[@"syncTime"]         = [self syncTimeNum];
-  
-  PandoraRequest *loginRequest = [[PandoraRequest alloc] init];
-  [loginRequest setRequest:loginDictionary];
-  [loginRequest setMethod:@"auth.userLogin"];
-  [loginRequest setPartnerId:partner_id];
-  [loginRequest setAuthToken:partner_auth_token];
   PandoraCallback loginCallback = ^(NSDictionary *dict){
-    NSDictionary *result = dict[@"result"];
-    user_auth_token = result[@"userAuthToken"];
-    user_id = result[@"userId"];
-    
     if (req == nil) {
       [self sendNotification:PandoraDidAuthenticateNotification withUserInfo:nil];
     } else {
@@ -245,6 +223,57 @@ static NSString *hierrs[] = {
       [self sendRequest:newreq];
     }
   };
+
+  return [self userLogin:user password:pass callback:loginCallback];
+}
+
+- (BOOL)userLogin:(NSString *)username password:(NSString *)password callback:(PandoraCallback)callback {
+  if (partner_id == nil) {
+    // Get partner ID then reinvoke this method
+    NSLogd(@"Getting parner ID...");
+    return [self partnerLogin:^() {
+      [self userLogin:username password:password callback:callback];
+    }];
+  }
+  
+  NSMutableDictionary *loginDictionary = [NSMutableDictionary dictionary];
+  loginDictionary[@"loginType"]        = @"user";
+  loginDictionary[@"username"]         = username;
+  loginDictionary[@"password"]         = password;
+  loginDictionary[@"partnerAuthToken"] = partner_auth_token;
+  loginDictionary[@"syncTime"]         = [self syncTimeNum];
+  
+  PandoraRequest *loginRequest = [[PandoraRequest alloc] init];
+  [loginRequest setRequest:loginDictionary];
+  [loginRequest setMethod:@"auth.userLogin"];
+  [loginRequest setPartnerId:partner_id];
+  [loginRequest setAuthToken:partner_auth_token];
+  
+  PandoraCallback loginCallback = ^(NSDictionary *respDict) {
+    NSDictionary *result = respDict[@"result"];
+    user_auth_token = result[@"userAuthToken"];
+    user_id = result[@"userId"];
+    if (!self.cachedSubscriberStatus) {
+      NSLogd(@"Getting subscriber status...");
+      // Get subscriber status then reinvoke this method
+      [self fetchSubscriberStatus:^(NSDictionary *subDict) {
+        self.cachedSubscriberStatus = subDict[@"result"][@"isSubscriber"];
+        [self userLogin:username password:password callback:callback];
+      }];
+      return;
+    } else if (self.cachedSubscriberStatus.boolValue &&
+               ! [self.device[kPandoraDeviceUsername] isEqualToString:@"pandora one"]) {
+      NSLogd(@"Subscriber detected, re-logging-in");
+      // Change our device to the desktop client, logout, then reinvoke this method
+      self.device = [PandoraDevice desktop];
+      [self logoutNoNotify];
+      [self userLogin:username password:password callback:callback];
+      return;
+    }
+    NSLogd(@"Logged in.");
+    callback(respDict);
+  };
+  
   [loginRequest setCallback:loginCallback];
   return [self sendRequest:loginRequest];
 }
@@ -274,6 +303,19 @@ static NSString *hierrs[] = {
   return [self sendRequest:req];
 }
 
+- (BOOL)fetchSubscriberStatus:(PandoraCallback)callback {
+  assert(user_id != nil);
+  
+  PandoraRequest *request = [self defaultRequestWithMethod:@"user.canSubscribe"];
+  request.callback = ^(NSDictionary *respDict) {
+    self.cachedSubscriberStatus = (NSNumber *)respDict[@"result"][@"isSubscriber"];
+    NSLogd(@"Subscriber status: %@", self.cachedSubscriberStatus);
+    callback(respDict);
+  };
+  request.request = [self defaultRequestDictionary];
+  return [self sendRequest:request];
+}
+
 - (void) logout {
   [self logoutNoNotify];
   for (Station *s in stations)
@@ -288,10 +330,11 @@ static NSString *hierrs[] = {
   partner_id = nil;
   user_id = nil;
   sync_time = start_time = 0;
+  self.cachedSubscriberStatus = nil;
 }
 
 - (BOOL) isAuthenticated {
-  return user_auth_token != nil;
+  return user_auth_token != nil && self.cachedSubscriberStatus;
 }
 
 #pragma mark - Station Manipulation

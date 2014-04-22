@@ -92,7 +92,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 @property (readonly) NSArray* stations;
 @property (strong) NSDictionary *device;
-@property BOOL subscriber;
+@property NSNumber *cachedSubscriberStatus;
 
 - (id)initWithPandoraDevice:(NSDictionary *)device;
 
