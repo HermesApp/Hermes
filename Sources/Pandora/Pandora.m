@@ -160,13 +160,6 @@ static NSString *hierrs[] = {
 
 @synthesize stations;
 
-- (id)initWithPandoraDevice:(NSDictionary *)device {
-  if (self = [self init]) {
-    self.device = device;
-  }
-  return self;
-}
-
 - (id) init {
   if ((self = [super init])) {
     stations = [[NSMutableArray alloc] init];
@@ -257,7 +250,13 @@ static NSString *hierrs[] = {
       NSLogd(@"Getting subscriber status...");
       // Get subscriber status then reinvoke this method
       [self fetchSubscriberStatus:^(NSDictionary *subDict) {
-        self.cachedSubscriberStatus = subDict[@"result"][@"isSubscriber"];
+        NSNumber *subscriberStatus = subDict[@"result"][@"isSubscriber"];
+          if (subscriberStatus == nil) {
+              NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
+              self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
+          } else {
+              self.cachedSubscriberStatus = subscriberStatus;
+          }
         [self userLogin:username password:password callback:callback];
       }];
       return;
@@ -322,6 +321,9 @@ static NSString *hierrs[] = {
     [Station removeStation:s];
   [stations removeAllObjects];
   [self sendNotification:PandoraDidLogOutNotification withUserInfo:nil];
+  // Always assume non-subscriber until API says otherwise.
+  self.cachedSubscriberStatus = nil;
+  self.device = [PandoraDevice android];
 }
 
 - (void) logoutNoNotify {
@@ -330,7 +332,6 @@ static NSString *hierrs[] = {
   partner_id = nil;
   user_id = nil;
   sync_time = start_time = 0;
-  self.cachedSubscriberStatus = nil;
 }
 
 - (BOOL) isAuthenticated {

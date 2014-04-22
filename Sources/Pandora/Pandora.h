@@ -94,8 +94,6 @@ typedef void(^PandoraCallback)(NSDictionary*);
 @property (strong) NSDictionary *device;
 @property NSNumber *cachedSubscriberStatus;
 
-- (id)initWithPandoraDevice:(NSDictionary *)device;
-
 #pragma mark - Error handling
 
 + (NSString*) stringForErrorCode: (int) code;
