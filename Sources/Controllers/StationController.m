@@ -64,7 +64,7 @@
   [art setImage:nil];
   [progress setHidden:FALSE];
   [progress startAnimation:nil];
-  [[[NSApp delegate] pandora] stationInfo: station];
+  [[[NSApp delegate] pandora] fetchStationInfo: station];
   cur_station = station;
   station_url = nil;
 
@@ -193,7 +193,7 @@
       return;
     }
     PandoraSearchResult *d = item;
-    [pandora addSeed:[d value] to:cur_station];
+    [pandora addSeed:[d value] toStation:cur_station];
     [self showSpinner];
   }];
   [seedsResults deselectAll:nil];

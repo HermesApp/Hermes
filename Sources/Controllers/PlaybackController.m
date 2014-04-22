@@ -566,7 +566,7 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-  if (![[self pandora] authenticated]) {
+  if (![[self pandora] isAuthenticated]) {
     return NO;
   }
 
@@ -597,7 +597,7 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
-  if (![[self pandora] authenticated]) {
+  if (![[self pandora] isAuthenticated]) {
     return NO;
   }
 

@@ -53,7 +53,7 @@
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-  if (![[self pandora] authenticated]) {
+  if (![[self pandora] isAuthenticated]) {
     return NO;
   }
 
@@ -298,10 +298,10 @@
   [stationsTable reloadData];
 }
 
-- (void) applySort {
+- (void) sortStations {
   Pandora *p = [self pandora];
   Station *selected = [self selectedStation];
-  [p applySort:PREF_KEY_INT(SORT_STATIONS)];
+  [p sortStations:PREF_KEY_INT(SORT_STATIONS)];
   if (selected != nil) {
     [self selectStation:selected];
   }
@@ -310,7 +310,7 @@
 
 /* Called whenever stations finish loading from pandora */
 - (void) stationsLoaded: (NSNotification*) not {
-  [self applySort];
+  [self sortStations];
   [stationsTable reloadData];
 
   [stationsRefreshing setHidden:YES];
@@ -394,7 +394,7 @@
   [results reloadData];
   [[NSApp delegate] showNewStationSheet];
   [search becomeFirstResponder];
-  [[self pandora] genreStations];
+  [[self pandora] fetchGenreStations];
   [genreSpinner startAnimation:nil];
   [genreSpinner setHidden:NO];
 }
@@ -506,7 +506,7 @@
                                                              SORT_DATE_ASC);
       break;
   }
-  [self applySort];
+  [self sortStations];
   [stationsTable reloadData];
 }
 

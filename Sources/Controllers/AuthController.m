@@ -101,7 +101,7 @@
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
   HermesAppDelegate *delegate = [NSApp delegate];
 
-  if (![[delegate pandora] authenticated]) {
+  if (![[delegate pandora] isAuthenticated]) {
     return NO;
   }
 

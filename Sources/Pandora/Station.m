@@ -102,7 +102,7 @@
 
 - (void) fetchMoreSongs:(NSNotification*) notification {
   shouldPlaySongOnFetch = YES;
-  [radio getFragment:self];
+  [radio fetchPlaylistForStation:self];
 }
 
 - (void) setRadio:(Pandora *)pandora {

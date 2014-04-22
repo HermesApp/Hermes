@@ -20,11 +20,7 @@
 #import "Notifications.h"
 #import "PandoraDevice.h"
 
-
-@implementation PandoraSearchResult
-
-@end
-
+#pragma mark Error Codes
 
 static NSString *lowerrs[] = {
   [0] = @"Internal Pandora error",
@@ -77,6 +73,13 @@ static NSString *hierrs[] = {
   [37] = @"User already used trial"
 };
 
+#pragma mark - PandoraSearchResult
+
+@implementation PandoraSearchResult
+
+@end
+
+#pragma mark - PandoraRequest
 
 @implementation PandoraRequest
 
@@ -90,27 +93,45 @@ static NSString *hierrs[] = {
 
 @end
 
+#pragma mark - Pandora
+
+@interface Pandora ()
+
+/**
+ * @brief Parse the dictionary provided to create a station
+ *
+ * @param s the dictionary describing the station
+ * @return the station object
+ */
+- (Station*) parseStationFromDictionary: (NSDictionary*) s;
+
+/**
+ * @brief Create the default request, with appropriate fields set based on the
+ *        current state of authentication
+ *
+ * @param method the method name for the request to be for
+ * @return the PandoraRequest object to further add callbacks to
+ */
+- (PandoraRequest*) defaultRequestWithMethod: (NSString*) method;
+
+/**
+ * @brief Creates a dictionary which contains the default keys necessary for
+ *        most requests
+ *
+ * Currently fills in the "userAuthToken" and "syncTime" fields
+ */
+- (NSMutableDictionary*) defaultRequestDictionary;
+
+/**
+ * Gets the current UNIX time
+ */
+- (int64_t) time;
+
+@end
 
 @implementation Pandora
 
 @synthesize stations;
-
-+ (NSString*) errorString: (int) code {
-  if (code < 16) {
-    return lowerrs[code];
-  } else if (code >= 1000 && code <= 1037) {
-    return hierrs[code - 1000];
-  }
-  return nil;
-}
-
-- (NSData *)encryptData:(NSData *)data {
-  return PandoraEncryptData(data, self.device[kPandoraDeviceEncrypt]);
-}
-
-- (NSData *)decryptString:(NSString *)data {
-  return PandoraDecryptString(data, self.device[kPandoraDeviceDecrypt]);
-}
 
 - (id)initWithPandoraDevice:(NSDictionary *)device {
   if (self = [self init]) {
@@ -131,8 +152,101 @@ static NSString *hierrs[] = {
 }
 
 - (void) notify: (NSString*)msg with:(NSDictionary*)obj {
-  [[NSNotificationCenter defaultCenter] postNotificationName:msg object:self
-      userInfo:obj];
+  [[NSNotificationCenter defaultCenter] postNotificationName:msg
+                                                      object:self
+                                                    userInfo:obj];
+}
+
+#pragma mark - Error handling
+
++ (NSString*) errorString: (int) code {
+  if (code < 16) {
+    return lowerrs[code];
+  } else if (code >= 1000 && code <= 1037) {
+    return hierrs[code - 1000];
+  }
+  return nil;
+}
+
+#pragma mark - Crypto
+
+- (NSData *)encryptData:(NSData *)data {
+  return PandoraEncryptData(data, self.device[kPandoraDeviceEncrypt]);
+}
+
+- (NSData *)decryptString:(NSString *)string {
+  return PandoraDecryptString(string, self.device[kPandoraDeviceDecrypt]);
+}
+
+#pragma mark - Authentication
+
+- (BOOL) authenticate:(NSString*)user
+             password:(NSString*)pass
+              request:(PandoraRequest*)req {
+  if (partner_id == nil) {
+    return [self partnerLogin: ^() {
+      [self authenticate:user password:pass request:req];
+    }];
+  }
+  
+  NSMutableDictionary *loginDictionary = [NSMutableDictionary dictionary];
+  loginDictionary[@"loginType"]        = @"user";
+  loginDictionary[@"username"]         = user;
+  loginDictionary[@"password"]         = pass;
+  loginDictionary[@"partnerAuthToken"] = partner_auth_token;
+  loginDictionary[@"syncTime"]         = [self syncTimeNum];
+  
+  PandoraRequest *loginRequest = [[PandoraRequest alloc] init];
+  [loginRequest setRequest:loginDictionary];
+  [loginRequest setMethod:@"auth.userLogin"];
+  [loginRequest setPartnerId:partner_id];
+  [loginRequest setAuthToken:partner_auth_token];
+  PandoraCallback loginCallback = ^(NSDictionary *dict){
+    NSDictionary *result = dict[@"result"];
+    user_auth_token = result[@"userAuthToken"];
+    user_id = result[@"userId"];
+    
+    if (req == nil) {
+      [self notify:PandoraDidAuthenticateNotification with:nil];
+    } else {
+      NSLogd(@"Retrying request...");
+      PandoraRequest *newreq = [self defaultRequestWithMethod:[req method]];
+      [newreq setRequest:[req request]];
+      [newreq request][@"userAuthToken"] = user_auth_token;
+      [newreq request][@"syncTime"] = [self syncTimeNum];
+      [newreq setCallback:[req callback]];
+      [newreq setTls:[req tls]];
+      [newreq setEncrypted:[req encrypted]];
+      [self sendRequest:newreq];
+    }
+  };
+  [loginRequest setCallback:loginCallback];
+  return [self sendRequest:loginRequest];
+}
+
+- (BOOL) partnerLogin: (SyncCallback) callback {
+  start_time = [self time];
+  NSMutableDictionary *d = [NSMutableDictionary dictionary];
+  d[@"username"] = self.device[kPandoraDeviceUsername];
+  d[@"password"] = self.device[kPandoraDevicePassword];
+  d[@"deviceModel"] = self.device[kPandoraDeviceDeviceID];
+  d[@"version"] = PANDORA_API_VERSION;
+  d[@"includeUrls"] = [NSNumber numberWithBool:TRUE];
+  
+  PandoraRequest *req = [[PandoraRequest alloc] init];
+  [req setRequest: d];
+  [req setMethod: @"auth.partnerLogin"];
+  [req setEncrypted:FALSE];
+  [req setCallback:^(NSDictionary* dict) {
+    NSDictionary *result = dict[@"result"];
+    partner_auth_token = result[@"partnerAuthToken"];
+    partner_id = result[@"partnerId"];
+    NSData *sync = [self decryptString:result[@"syncTime"]];
+    const char *bytes = [sync bytes];
+    sync_time = strtoul(bytes + 4, NULL, 10);
+    callback();
+  }];
+  return [self sendRequest:req];
 }
 
 - (void) logout {
@@ -151,54 +265,103 @@ static NSString *hierrs[] = {
   sync_time = start_time = 0;
 }
 
-- (BOOL) authenticated {
+- (BOOL) isAuthenticated {
   return user_auth_token != nil;
 }
 
-- (NSNumber*) syncTimeNum {
-  return [NSNumber numberWithLongLong: sync_time + ([self time] - start_time)];
+#pragma mark - Station Manipulation
+
+- (BOOL) createStation: (NSString*)musicId {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"musicToken"] = musicId;
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.createStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    NSDictionary *result = d[@"result"];
+    Station *s = [self parseStationFromDictionary:result];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    dict[@"station"] = s;
+    [stations addObject:s];
+    [Station addStation:s];
+    [self notify:PandoraDidCreateStationNotification with:dict];
+  }];
+  return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Creates a dictionary which contains the default keys necessary for
- *        most requests
- *
- * Currently fills in the "userAuthToken" and "syncTime" fields
- */
-- (NSMutableDictionary*) defaultDictionary {
-  NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  if (user_auth_token != nil) {
-    d[@"userAuthToken"] = user_auth_token;
-  }
-  d[@"syncTime"] = [self syncTimeNum];
-  return d;
+- (BOOL) removeStation: (NSString*)stationToken {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"stationToken"] = stationToken;
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.deleteStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    unsigned int i;
+    
+    /* Remove the station internally */
+    for (i = 0; i < [stations count]; i++) {
+      if ([[stations[i] token] isEqual:stationToken]) {
+        break;
+      }
+    }
+    
+    if ([stations count] == i) {
+      NSLogd(@"Deleted unknown station?!");
+    } else {
+      [Station removeStation:stations[i]];
+      [stations removeObjectAtIndex:i];
+    }
+    
+    [self notify:PandoraDidDeleteStationNotification with:nil];
+  }];
+  return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Create the default request, with appropriate fields set based on the
- *        current state of authentication
- *
- * @param method the method name for the request to be for
- * @return the PandoraRequest object to further add callbacks to
- */
-- (PandoraRequest*) defaultRequest: (NSString*) method {
-  PandoraRequest *req = [[PandoraRequest alloc] init];
-  [req setUserId:user_id];
-  [req setAuthToken:user_auth_token];
-  [req setMethod:method];
-  [req setPartnerId:partner_id];
-  return req;
+- (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"stationToken"] = stationToken;
+  d[@"stationName"] = name;
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.renameStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:PandoraDidRenameStationNotification with:nil];
+  }];
+  return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Parse the dictionary provided to create a station
- *
- * @param s the dictionary describing the station
- * @return the station object
- */
-- (Station*) parseStation: (NSDictionary*) s {
+#pragma mark Fetch & parse station information from API
+
+- (BOOL) fetchStations {
+  NSLogd(@"Fetching stations...");
+  
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  
+  PandoraRequest *r = [self defaultRequestWithMethod:@"user.getStationList"];
+  [r setRequest:d];
+  [r setTls:FALSE];
+  [r setCallback: ^(NSDictionary* dict) {
+    NSDictionary *result = dict[@"result"];
+    for (NSDictionary *s in result[@"stations"]) {
+      Station *station = [self parseStationFromDictionary:s];
+      if (![stations containsObject:station]) {
+        [stations addObject:station];
+        [Station addStation:station];
+      }
+    };
+    
+    [self notify:PandoraDidLoadStationsNotification with:nil];
+  }];
+  
+  return [self sendAuthenticatedRequest:r];
+}
+
+- (Station*) parseStationFromDictionary: (NSDictionary*) s {
   Station *station = [[Station alloc] init];
-
+  
   [station setName:           s[@"stationName"]];
   [station setStationId:      s[@"stationId"]];
   [station setToken:          s[@"stationToken"]];
@@ -207,134 +370,32 @@ static NSString *hierrs[] = {
   [station setAllowRename:   [s[@"allowRename"] boolValue]];
   [station setCreated:       [s[@"dateCreated"][@"time"] integerValue]];
   [station setRadio:self];
-
+  
   if ([s[@"isQuickMix"] boolValue]) {
     [station setName:@"QuickMix"];
   }
   return station;
 }
 
-/**
- * @brief Authenticates with Pandora
- *
- * When completed, fires the "hermes.authenticated" event so long as the
- * provided request to retry is nil.
- *
- * @param user the username to log in with
- * @param pass the password to log in with
- * @param req an optional request which will be retried once the authentication
- *        has completed
- */
-- (BOOL) authenticate:(NSString*)user
-             password:(NSString*)pass
-              request:(PandoraRequest*)req {
-  if (partner_id == nil) {
-    return [self partnerLogin: ^() {
-      [self authenticate:user password:pass request:req];
-    }];
-  }
-
-  NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  d[@"loginType"]        = @"user";
-  d[@"username"]         = user;
-  d[@"password"]         = pass;
-  d[@"partnerAuthToken"] = partner_auth_token;
-  d[@"syncTime"]         = [self syncTimeNum];
-
-  PandoraRequest *r = [[PandoraRequest alloc] init];
-  [r setRequest: d];
-  [r setMethod: @"auth.userLogin"];
-  [r setPartnerId: partner_id];
-  [r setAuthToken: partner_auth_token];
-  [r setCallback: ^(NSDictionary* dict) {
-    NSDictionary *result = dict[@"result"];
-    user_auth_token = result[@"userAuthToken"];
-    user_id = result[@"userId"];
-
-    if (req == nil) {
-      [self notify:PandoraDidAuthenticateNotification with:nil];
-    } else {
-      NSLogd(@"Retrying request...");
-      PandoraRequest *newreq = [self defaultRequest:[req method]];
-      [newreq setRequest:[req request]];
-      [newreq request][@"userAuthToken"] = user_auth_token;
-      [newreq request][@"syncTime"] = [self syncTimeNum];
-      [newreq setCallback:[req callback]];
-      [newreq setTls:[req tls]];
-      [newreq setEncrypted:[req encrypted]];
-      [self sendRequest:newreq];
-    }
-  }];
-  return [self sendRequest:r];
-}
-
-- (BOOL) sendAuthenticatedRequest: (PandoraRequest*) req {
-  if ([self authenticated]) {
-    return [self sendRequest:req];
-  }
-  NSString *user = [[NSApp delegate] getCachedUsername];
-  NSString *pass = [[NSApp delegate] getCachedPassword];
-  return [self authenticate:user password:pass request:req];
-}
-
-/**
- * @brief Fetches a list of stations for the logged in user
- *
- * Fires the "hermes.stations" event with no extra information. All of the
- * stations found are stored internally in this Pandora object.
- */
-- (BOOL) fetchStations {
-  NSLogd(@"Fetching stations...");
-
-  NSMutableDictionary *d = [self defaultDictionary];
-
-  PandoraRequest *r = [self defaultRequest:@"user.getStationList"];
-  [r setRequest:d];
-  [r setTls:FALSE];
-  [r setCallback: ^(NSDictionary* dict) {
-    NSDictionary *result = dict[@"result"];
-    for (NSDictionary *s in result[@"stations"]) {
-      Station *station = [self parseStation:s];
-      if (![stations containsObject:station]) {
-        [stations addObject:station];
-        [Station addStation:station];
-      }
-    };
-
-    [self notify:PandoraDidLoadStationsNotification with:nil];
-  }];
-
-  return [self sendAuthenticatedRequest:r];
-}
-
-/**
- * @brief Get a small list of songs for a station
- *
- * Fires the "hermes.fragment-fetched.XX" where XX is replaced by the station
- * token. The userInfo for the notification has one key, "songs", which contains
- * an array of Song objects describing the next songs for the station
- *
- * @param station the station to fetch more songs for
- */
 // FIXME: Should post a standard notification, not per-invocation choice.
-- (BOOL) getFragment: (Station*) station {
+- (BOOL) fetchPlaylistForStation: (Station*) station {
   NSLogd(@"Getting fragment for %@...", [station name]);
-
-  NSMutableDictionary *d = [self defaultDictionary];
+  
+  NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [station token];
   d[@"additionalAudioUrl"] = @"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_128_MP3";
-
-  PandoraRequest *r = [self defaultRequest:@"station.getPlaylist"];
+  
+  PandoraRequest *r = [self defaultRequestWithMethod:@"station.getPlaylist"];
   [r setRequest:d];
   [r setCallback: ^(NSDictionary* dict) {
     NSDictionary *result = dict[@"result"];
     NSMutableArray *songs = [NSMutableArray array];
-
+    
     for (NSDictionary *s in result[@"items"]) {
       if (s[@"adToken"] != nil) continue; // Skip if this is an adToken
-
+      
       Song *song = [[Song alloc] init];
-
+      
       [song setArtist: s[@"artistName"]];
       [song setTitle: s[@"songName"]];
       [song setAlbum: s[@"albumName"]];
@@ -345,101 +406,177 @@ static NSString *hierrs[] = {
       [song setAlbumUrl: s[@"albumDetailUrl"]];
       [song setArtistUrl: s[@"artistDetailUrl"]];
       [song setTitleUrl: s[@"songDetailUrl"]];
-
-      id _urls = s[@"additionalAudioUrl"];
-      if ([_urls isKindOfClass:[NSArray class]]) {
-        NSArray *urls = _urls;
-        [song setLowUrl:urls[0]];
-        if ([urls count] > 1) {
-          [song setMedUrl:urls[1]];
+      
+      id urls = s[@"additionalAudioUrl"];
+      if ([urls isKindOfClass:[NSArray class]]) {
+        NSArray *urlArray = urls;
+        [song setLowUrl:urlArray[0]];
+        if ([urlArray count] > 1) {
+          [song setMedUrl:urlArray[1]];
         } else {
           [song setMedUrl:[song lowUrl]];
           NSLog(@"bad medium format specified in request");
         }
-        if ([urls count] > 2) {
-          [song setHighUrl:urls[2]];
+        if ([urlArray count] > 2) {
+          [song setHighUrl:urlArray[2]];
         } else {
           [song setHighUrl:[song medUrl]];
           NSLog(@"bad high format specified in request");
         }
       } else {
         NSLog(@"all bad formats in request?");
-        [song setLowUrl:_urls];
-        [song setMedUrl:_urls];
-        [song setHighUrl:_urls];
+        [song setLowUrl:urls];
+        [song setMedUrl:urls];
+        [song setHighUrl:urls];
       }
-
+      
       [songs addObject: song];
     };
-
+    
     NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
-                        [station token]];
+                      [station token]];
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     d[@"songs"] = songs;
     [self notify:name with:d];
   }];
-
+  
   return [self sendAuthenticatedRequest:r];
 }
 
-/**
- * @brief Log in the "partner" with Pandora
- *
- * Retrieves the sync time and the partner auth token.
- *
- * @param callback a callback to be invoked once the synchronization and login
- *        is done
- */
-- (BOOL) partnerLogin: (SyncCallback) callback {
-  start_time = [self time];
-  NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  d[@"username"] = self.device[kPandoraDeviceUsername];
-  d[@"password"] = self.device[kPandoraDevicePassword];
-  d[@"deviceModel"] = self.device[kPandoraDeviceDeviceID];
-  d[@"version"] = PANDORA_API_VERSION;
-  d[@"includeUrls"] = [NSNumber numberWithBool:TRUE];
-
-  PandoraRequest *req = [[PandoraRequest alloc] init];
-  [req setRequest: d];
-  [req setMethod: @"auth.partnerLogin"];
-  [req setEncrypted:FALSE];
-  [req setCallback:^(NSDictionary* dict) {
-    NSDictionary *result = dict[@"result"];
-    partner_auth_token = result[@"partnerAuthToken"];
-    partner_id = result[@"partnerId"];
-    NSData *sync = [self decryptString:result[@"syncTime"]];
-    const char *bytes = [sync bytes];
-    sync_time = strtoul(bytes + 4, NULL, 10);
-    callback();
+- (BOOL) fetchGenreStations {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.getGenreStations"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:PandoraDidLoadGenreStationsNotification with:d[@"result"]];
   }];
-  return [self sendRequest:req];
+  return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @param Rate a Song
- *
- * Fires the "hermes.song-rated" event when done. The userInfo for the event is
- * a dictionary with one key, "song", the same one as provided to this method
- *
- * @param song the song to add a rating for
- * @param liked the rating to give the song, TRUE for liked or FALSE for
- *        disliked
- */
+- (BOOL) fetchStationInfo:(Station *)station {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"stationToken"] = [station token];
+  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    NSDictionary *result = d[@"result"];
+    
+    /* General metadata */
+    info[@"name"] = result[@"stationName"];
+    uint64_t created = [result[@"dateCreated"][@"time"] longLongValue];
+    info[@"created"] = [NSDate dateWithTimeIntervalSince1970:created];
+    NSString *art = result[@"artUrl"];
+    if (art != nil) { info[@"art"] = art; }
+    info[@"genres"] = result[@"genre"];
+    info[@"url"] = result[@"stationDetailUrl"];
+    
+    /* Seeds */
+    NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
+    NSDictionary *music = result[@"music"];
+    seeds[@"songs"] = music[@"songs"];
+    seeds[@"artists"] = music[@"artists"];
+    info[@"seeds"] = seeds;
+    
+    /* Feedback */
+    NSDictionary *feedback = result[@"feedback"];
+    info[@"likes"] = feedback[@"thumbsUp"];
+    info[@"dislikes"] = feedback[@"thumbsDown"];
+    
+    [self notify:PandoraDidLoadStationInfoNotification with:info];
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
+#pragma mark Seed & Feedback Management (see also Song Manipulation)
+
+- (BOOL) deleteFeedback: (NSString*)feedbackId {
+  NSLogd(@"deleting feedback: '%@'", feedbackId);
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"feedbackId"] = feedbackId;
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.deleteFeedback"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:PandoraDidDeleteFeedbackNotification with:nil];
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
+- (BOOL) addSeed: (NSString*)token toStation:(Station*)station {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"musicToken"] = token;
+  d[@"stationToken"] = [station token];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.addMusic"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:PandoraDidAddSeedNotification with:d[@"result"]];
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
+- (BOOL) removeSeed: (NSString*)seedId {
+  NSMutableDictionary *d = [self defaultRequestDictionary];
+  d[@"seedId"] = seedId;
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.deleteMusic"];
+  [req setRequest:d];
+  [req setTls:FALSE];
+  [req setCallback:^(NSDictionary* d) {
+    [self notify:PandoraDidDeleteSeedNotification with:nil];
+  }];
+  return [self sendAuthenticatedRequest:req];
+}
+
+#pragma mark Sort stations in UI
+
+- (void) sortStations:(int)sort {
+  [stations sortUsingComparator:
+   ^NSComparisonResult (Station *s1, Station *s2) {
+     NSInteger factor = 1;
+     switch (sort) {
+       case SORT_NAME_ASC: return [[s1 name] caseInsensitiveCompare:[s2 name]];
+       case SORT_NAME_DSC: return -[[s1 name] caseInsensitiveCompare:[s2 name]];
+         
+       case SORT_DATE_DSC:
+         factor = -1;
+       default:
+       case SORT_DATE_ASC:
+         if ([s1 created] < [s2 created]) {
+           return factor * NSOrderedAscending;
+         } else if ([s1 created] > [s2 created]) {
+           return factor * NSOrderedDescending;
+         }
+         return NSOrderedSame;
+     }
+   }];
+}
+
+#pragma mark - Song Manipulation
+
 - (BOOL) rateSong:(Song*) song as:(BOOL) liked {
   NSLogd(@"Rating song '%@' as %d...", [song title], liked);
-
+  
   if (liked == TRUE) {
     [song setNrating:@1];
   } else {
     [song setNrating:@-1];
   }
-
-  NSMutableDictionary *d = [self defaultDictionary];
+  
+  NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"trackToken"] = [song token];
   d[@"isPositive"] = @(liked);
   d[@"stationToken"] = [[song station] token];
-
-  PandoraRequest *req = [self defaultRequest:@"station.addFeedback"];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.addFeedback"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* _) {
@@ -450,22 +587,15 @@ static NSString *hierrs[] = {
   return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Delete a rating for a song
- *
- * Fires the same event for deleteFeedback
- *
- * @param song the song to delete a user's rating for
- */
 - (BOOL) deleteRating:(Song*)song {
   NSLogd(@"Removing rating on '%@'", [song title]);
   [song setNrating:@0];
-
-  NSMutableDictionary *d = [self defaultDictionary];
+  
+  NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [[song station] token];
   d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
-
-  PandoraRequest *req = [self defaultRequest:@"station.getStation"];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
@@ -481,22 +611,13 @@ static NSString *hierrs[] = {
   return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Inform Pandora that the specified song shouldn't be played for awhile
- *
- * Fires the "hermes.song-tired" event with a dictionary with the key "song"
- * when the event is done. The song of the event is the same one as provided
- * here.
- *
- * @param song the song to tell Pandora not to play for awhile
- */
 - (BOOL) tiredOfSong: (Song*) song {
   NSLogd(@"Getting tired of %@...", [song title]);
-
-  NSMutableDictionary *d = [self defaultDictionary];
+  
+  NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"trackToken"] = [song token];
-
-  PandoraRequest *req = [self defaultRequest:@"user.sleepSong"];
+  
+  PandoraRequest *req = [self defaultRequestWithMethod:@"user.sleepSong"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* _) {
@@ -504,28 +625,29 @@ static NSString *hierrs[] = {
     dict[@"song"] = song;
     [self notify:PandoraDidTireSongNotification with:dict];
   }];
-
+  
   return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Searches for Songs
- *
- * Fires the "hermes.search-results" event when done with a dictionary of the
- * following keys:
- *
- *    - Songs: a list of SearchResult objects, one for each song found
- *    - Artists: a list of SearchResult objects, one for each artist found
- *
- * @param search the query string to send to Pandora
- */
+#pragma mark - syncTime
+
+- (NSNumber*) syncTimeNum {
+  return [NSNumber numberWithLongLong: sync_time + ([self time] - start_time)];
+}
+
+- (int64_t) time {
+  return [[NSDate date] timeIntervalSince1970];
+}
+
+#pragma mark - Search for music
+
 - (BOOL) search: (NSString*) search {
   NSLogd(@"Searching for %@...", search);
 
-  NSMutableDictionary *d = [self defaultDictionary];
+  NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"searchText"] = search;
 
-  PandoraRequest *req = [self defaultRequest:@"music.search"];
+  PandoraRequest *req = [self defaultRequestWithMethod:@"music.search"];
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
@@ -563,292 +685,36 @@ static NSString *hierrs[] = {
   return [self sendAuthenticatedRequest:req];
 }
 
-/**
- * @brief Create a new station
- *
- * A new station can only be created after a search has been made to retrieve
- * some sort of identifier for either an artist or a song. The artist/station
- * provided is the initial seed for the station.
- *
- * Fires the "hermes.station-created" event when done with some userInfo that
- * has one key, "station" which is the station that was created.
- *
- * @param musicId the identifier of the song/artist to create the station for
- */
-- (BOOL) createStation: (NSString*)musicId {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"musicToken"] = musicId;
+#pragma mark - Prepare and Send Requests
 
-  PandoraRequest *req = [self defaultRequest:@"station.createStation"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    NSDictionary *result = d[@"result"];
-    Station *s = [self parseStation:result];
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    dict[@"station"] = s;
-    [stations addObject:s];
-    [Station addStation:s];
-    [self notify:PandoraDidCreateStationNotification with:dict];
-  }];
-  return [self sendAuthenticatedRequest:req];
+- (NSMutableDictionary*) defaultRequestDictionary {
+  NSMutableDictionary *d = [NSMutableDictionary dictionary];
+  if (user_auth_token != nil) {
+    d[@"userAuthToken"] = user_auth_token;
+  }
+  d[@"syncTime"] = [self syncTimeNum];
+  return d;
 }
 
-/**
- * @brief Remove a station from a users's account
- *
- * Fires the "hermes.station-removed" event when done, with no extra information
- *
- * @param stationToken the token of the station to remove
- */
-- (BOOL) removeStation: (NSString*)stationToken {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"stationToken"] = stationToken;
-
-  PandoraRequest *req = [self defaultRequest:@"station.deleteStation"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    unsigned int i;
-
-    /* Remove the station internally */
-    for (i = 0; i < [stations count]; i++) {
-      if ([[stations[i] token] isEqual:stationToken]) {
-        break;
-      }
-    }
-
-    if ([stations count] == i) {
-      NSLogd(@"Deleted unknown station?!");
-    } else {
-      [Station removeStation:stations[i]];
-      [stations removeObjectAtIndex:i];
-    }
-
-    [self notify:PandoraDidDeleteStationNotification with:nil];
-  }];
-  return [self sendAuthenticatedRequest:req];
+- (PandoraRequest*) defaultRequestWithMethod: (NSString*) method {
+  PandoraRequest *req = [[PandoraRequest alloc] init];
+  [req setUserId:user_id];
+  [req setAuthToken:user_auth_token];
+  [req setMethod:method];
+  [req setPartnerId:partner_id];
+  return req;
 }
 
-/**
- * @brief Rename a station to have a different name
- *
- * Fires the "hermes.station-renamed" event with no extra information when done.
- *
- * @param stationToken the token of the station retrieved previously which is
- *                     to be renamed
- * @param to the new name of the station
- */
-- (BOOL) renameStation: (NSString*)stationToken to:(NSString*)name {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"stationToken"] = stationToken;
-  d[@"stationName"] = name;
-
-  PandoraRequest *req = [self defaultRequest:@"station.renameStation"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidRenameStationNotification with:nil];
-  }];
-  return [self sendAuthenticatedRequest:req];
+- (BOOL) sendAuthenticatedRequest: (PandoraRequest*) req {
+  if ([self isAuthenticated]) {
+    return [self sendRequest:req];
+  }
+  NSString *user = [[NSApp delegate] getCachedUsername];
+  NSString *pass = [[NSApp delegate] getCachedPassword];
+  return [self authenticate:user password:pass request:req];
 }
 
-/**
- * @brief Fetch extra information about a station
- *
- * Returned information includes data about likes, dislikes, seeds, etc.
- * The "hermes.station-info" event is broadcasted with a user info that has the
- * requested information in the userInfo:
- *
- *    - name, NSString
- *    - created, NSDate
- *    - genres, NSArray of NSString
- *    - art, NSString (url), not present if there's no art
- *    - url, NSString link to the pandora station
- *    - seeds
- *      - artists, NSArray of
- *        - FIGURE THIS OUT
- *        - artistName
- *        - seedId
- *      - songs, NSArray of
- *        - songName
- *        - artistName
- *        - seedId
- *    - likes/dislikes (two keys, same contents)
- *      - feedbackId
- *      - songName
- *      - artistName
- *
- * @param station the station to fetch information for
- */
-- (BOOL) stationInfo:(Station *)station {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"stationToken"] = [station token];
-  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
 
-  PandoraRequest *req = [self defaultRequest:@"station.getStation"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    NSMutableDictionary *info = [NSMutableDictionary dictionary];
-    NSDictionary *result = d[@"result"];
-
-    /* General metadata */
-    info[@"name"] = result[@"stationName"];
-    uint64_t created = [result[@"dateCreated"][@"time"] longLongValue];
-    info[@"created"] = [NSDate dateWithTimeIntervalSince1970:created];
-    NSString *art = result[@"artUrl"];
-    if (art != nil) { info[@"art"] = art; }
-    info[@"genres"] = result[@"genre"];
-    info[@"url"] = result[@"stationDetailUrl"];
-
-    /* Seeds */
-    NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
-    NSDictionary *music = result[@"music"];
-    seeds[@"songs"] = music[@"songs"];
-    seeds[@"artists"] = music[@"artists"];
-    info[@"seeds"] = seeds;
-
-    /* Feedback */
-    NSDictionary *feedback = result[@"feedback"];
-    info[@"likes"] = feedback[@"thumbsUp"];
-    info[@"dislikes"] = feedback[@"thumbsDown"];
-
-    [self notify:PandoraDidLoadStationInfoNotification with:info];
-  }];
-  return [self sendAuthenticatedRequest:req];
-}
-
-/**
- * @brief Delete the feedback for a station
- *
- * The event fired is the "hermes.feedback-deleted" event with no extra
- * information provided.
- *
- * @param feedbackId the name of the feedback to delete
- */
-- (BOOL) deleteFeedback: (NSString*)feedbackId {
-  NSLogd(@"deleting feedback: '%@'", feedbackId);
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"feedbackId"] = feedbackId;
-
-  PandoraRequest *req = [self defaultRequest:@"station.deleteFeedback"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidDeleteFeedbackNotification with:nil];
-  }];
-  return [self sendAuthenticatedRequest:req];
-}
-
-/**
- * @brief Add a seed to a station
- *
- * The seed must have been previously found via searching Pandora. This fires
- * the "hermes.seed-added" event with the following dictionary keys:
- *
- *    - seedId (NSString, identifier for the seed)
- *    - artistName (NSString, always present)
- *    - songName (NSString, present if the seed was a song)
- *
- * @param token the token of the seed to add
- * @param station the station to add the seed to
- */
-- (BOOL) addSeed: (NSString*)token to:(Station*)station {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"musicToken"] = token;
-  d[@"stationToken"] = [station token];
-
-  PandoraRequest *req = [self defaultRequest:@"station.addMusic"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidAddSeedNotification with:d[@"result"]];
-  }];
-  return [self sendAuthenticatedRequest:req];
-}
-
-/**
- * @brief Remove a seed from a station
- *
- * The seed string is found by retrieving the detailed information for a
- * station. The "hermes.seed-removed" event is fired when done with no extra
- * information.
- *
- * @param seedId the identifier of the seed to be removed
- */
-- (BOOL) removeSeed: (NSString*)seedId {
-  NSMutableDictionary *d = [self defaultDictionary];
-  d[@"seedId"] = seedId;
-
-  PandoraRequest *req = [self defaultRequest:@"station.deleteMusic"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidDeleteSeedNotification with:nil];
-  }];
-  return [self sendAuthenticatedRequest:req];
-}
-
-/**
- * @brief Fetch the "genre stations" from pandora
- *
- * Pandora provides some pre-defined genre stations available to create a
- * station from, and this provides the API to fetch those. The
- * "hermes.genre-stations" event is fired when done with the extra information
- * of the response from Pandora.
- */
-- (BOOL) genreStations {
-  NSMutableDictionary *d = [self defaultDictionary];
-
-  PandoraRequest *req = [self defaultRequest:@"station.getGenreStations"];
-  [req setRequest:d];
-  [req setTls:FALSE];
-  [req setCallback:^(NSDictionary* d) {
-    [self notify:PandoraDidLoadGenreStationsNotification with:d[@"result"]];
-  }];
-  return [self sendAuthenticatedRequest:req];
-}
-
-- (void) applySort:(int)sort {
-  [stations sortUsingComparator:
-  ^NSComparisonResult (Station *s1, Station *s2) {
-    NSInteger factor = 1;
-    switch (sort) {
-      case SORT_NAME_ASC: return [[s1 name] caseInsensitiveCompare:[s2 name]];
-      case SORT_NAME_DSC: return -[[s1 name] caseInsensitiveCompare:[s2 name]];
-
-      case SORT_DATE_DSC:
-        factor = -1;
-      default:
-      case SORT_DATE_ASC:
-        if ([s1 created] < [s2 created]) {
-          return factor * NSOrderedAscending;
-        } else if ([s1 created] > [s2 created]) {
-          return factor * NSOrderedDescending;
-        }
-        return NSOrderedSame;
-    }
-  }];
-}
-
-/**
- * Gets the current UNIX time
- */
-- (int64_t) time {
-  return [[NSDate date] timeIntervalSince1970];
-}
-
-/**
- * @brief Send a request to Pandora
- *
- * All requests are performed asynchronously, so the callback listed in the
- * specified request will be invoked when the request completes.
- *
- * @param request the request to send. All information must be filled out
- *        beforehand which is related to this request
- * @return YES if the request went through, or NO otherwise.
- */
 - (BOOL) sendRequest: (PandoraRequest*) request {
   NSString *url  = [NSString stringWithFormat:
                     @"http%s://%@" PANDORA_API_PATH
