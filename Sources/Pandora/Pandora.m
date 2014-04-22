@@ -91,6 +91,27 @@ static NSString *hierrs[] = {
   return self;
 }
 
+#pragma mark - NSCopying
+
+- (id)copyWithZone:(NSZone *)zone {
+  PandoraRequest *newRequest = [[PandoraRequest alloc] init];
+  
+  if (newRequest) {
+    newRequest.method = self.method;
+    newRequest.authToken = self.authToken;
+    newRequest.partnerId = self.partnerId;
+    newRequest.userId = self.userId;
+    
+    newRequest.request = self.request;
+    newRequest.response = self.response;
+    
+    newRequest.callback = self.callback;
+    newRequest.tls = self.tls;
+    newRequest.encrypted = self.encrypted;
+  }
+  return newRequest;
+}
+
 @end
 
 #pragma mark - Pandora
@@ -210,13 +231,11 @@ static NSString *hierrs[] = {
       [self notify:PandoraDidAuthenticateNotification with:nil];
     } else {
       NSLogd(@"Retrying request...");
-      PandoraRequest *newreq = [self defaultRequestWithMethod:[req method]];
-      [newreq setRequest:[req request]];
+      PandoraRequest *newreq = [req copy];
+      
+      // Update request with the new user auth token & up-to-date sync time
       [newreq request][@"userAuthToken"] = user_auth_token;
       [newreq request][@"syncTime"] = [self syncTimeNum];
-      [newreq setCallback:[req callback]];
-      [newreq setTls:[req tls]];
-      [newreq setEncrypted:[req encrypted]];
       [self sendRequest:newreq];
     }
   };

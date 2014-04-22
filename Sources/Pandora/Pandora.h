@@ -35,7 +35,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 /**
  * Pandora request
  */
-@interface PandoraRequest : NSObject
+@interface PandoraRequest : NSObject <NSCopying>
 
 #pragma mark URL parameters
 /**
