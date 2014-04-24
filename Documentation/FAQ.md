@@ -20,7 +20,7 @@ The following shell script should do all the above:
 rm -rf ~/Library/Application\ Support/Hermes
 rm -f ~/Library/Preferences/com.alexcrichton.Hermes.plist
 rm -rf ~/Library/Caches/com.alexcrichton.Hermes
-while [ $? -eq 0 ]; then security delete-generic-password -l Hermes >/dev/null 2>&1; done
+while [ $? -eq 0 ]; do security delete-generic-password -l Hermes >/dev/null 2>&1; done
 ```
 
 If you had to use these steps, chances are there is a bug that should be reported.
