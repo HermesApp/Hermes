@@ -113,11 +113,12 @@ BOOL playOnStart = YES;
 - (void) startUpdatingProgress {
   if (progressUpdateTimer != nil) return;
   progressUpdateTimer = [NSTimer
-    scheduledTimerWithTimeInterval:1
+    timerWithTimeInterval:1
     target:self
     selector:@selector(updateProgress:)
     userInfo:nil
     repeats:YES];
+  [[NSRunLoop currentRunLoop] addTimer:progressUpdateTimer forMode:NSRunLoopCommonModes];
 }
 
 /* see https://github.com/nevyn/SPMediaKeyTap */
