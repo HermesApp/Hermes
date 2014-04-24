@@ -223,7 +223,7 @@ static NSString *hierrs[] = {
 - (BOOL)userLogin:(NSString *)username password:(NSString *)password callback:(PandoraCallback)callback {
   if (partner_id == nil) {
     // Get partner ID then reinvoke this method
-    NSLogd(@"Getting parner ID...");
+    NSLogd(@"Getting partner ID...");
     return [self partnerLogin:^() {
       [self userLogin:username password:password callback:callback];
     }];
@@ -247,8 +247,8 @@ static NSString *hierrs[] = {
     user_auth_token = result[@"userAuthToken"];
     user_id = result[@"userId"];
     if (!self.cachedSubscriberStatus) {
-      NSLogd(@"Getting subscriber status...");
       // Get subscriber status then reinvoke this method
+      NSLogd(@"Getting subscriber status...");
       [self fetchSubscriberStatus:^(NSDictionary *subDict) {
         NSNumber *subscriberStatus = subDict[@"result"][@"isSubscriber"];
           if (subscriberStatus == nil) {
@@ -262,14 +262,14 @@ static NSString *hierrs[] = {
       return;
     } else if (self.cachedSubscriberStatus.boolValue &&
                ! [self.device[kPandoraDeviceUsername] isEqualToString:@"pandora one"]) {
-      NSLogd(@"Subscriber detected, re-logging-in");
       // Change our device to the desktop client, logout, then reinvoke this method
+      NSLogd(@"Subscriber detected, re-logging-in...");
       self.device = [PandoraDevice desktop];
       [self logoutNoNotify];
       [self userLogin:username password:password callback:callback];
       return;
     }
-    NSLogd(@"Logged in.");
+    NSLogd(@"Logged in as %@.", username);
     callback(respDict);
   };
   
