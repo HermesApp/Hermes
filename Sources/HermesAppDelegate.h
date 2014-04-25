@@ -55,6 +55,7 @@
 @property (readonly) IBOutlet SPMediaKeyTap *mediaKeyTap;
 @property (readonly) IBOutlet NetworkConnection *networkManager;
 @property (readonly) IBOutlet PreferencesController *preferences;
+@property (readonly) BOOL debugMode;
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;

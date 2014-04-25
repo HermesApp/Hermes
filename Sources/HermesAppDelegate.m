@@ -126,6 +126,13 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+  NSUInteger flags = ([NSEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask);
+  BOOL isOptionPressed = (flags == NSAlternateKeyMask);
+  
+  if (isOptionPressed) {
+    _debugMode = YES;
+  }
+  
   if ([window respondsToSelector:@selector(setRestorable:)]) {
     [window setRestorable:YES];
   }
