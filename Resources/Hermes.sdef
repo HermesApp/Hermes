@@ -2,7 +2,7 @@
 <!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
 <dictionary title="Hermes Terminology" xmlns:xi="http://www.w3.org/2003/XInclude">
 
-  <suite name="Hermes Suite" code="HeRM" description="Hermes specific classes.">
+  <suite name="Hermes Suite" code="HeRM" description="Hermes specific classes and commands.">
     <enumeration name="player states" code="esta" description="Legal player states">
       <enumerator name="stopped" code="stop" description="Player is stopped"/>
       <enumerator name="playing" code="play" description="Player is playing"/>
@@ -10,91 +10,82 @@
     </enumeration>
 
     <!-- Properties available -->
-    <class name="application" code="capp" description="The Pandora Player">
+    <class name="application" code="capp" description="The Pandora player.">
       <cocoa class="NSApplication"/>
       <element type="station" access="r"/>
-      <property name="current volume" code="cvol" description="Current volume of playback on an integer scale from 0 to 100" type="integer">
+      <property name="playback volume" code="cvol" description="The current playback volume (0–100)." type="integer">
         <cocoa key="volume"/>
       </property>
-
-      <property name="playback state" code="psta" description="Current playback state" type="player states">
-        <cocoa key="playbackState"/>
-      </property>
-      
-      <property name="playback position" code="ppos" description="Current playback position in seconds" type="real">
-        <cocoa key="playbackPosition"/>
-      </property>
-      
-      <property name="current song duration" code="pdur" description="Current song's duration (length) in seconds" type="real">
-        <cocoa key="currentSongDuration"/>
-      </property>
-
-      <property name="current station" code="pstn" description="Current station" type="station">
-        <cocoa key="currentStation"/>
-      </property>
-
-      <property name="current song" code="psng" description="Current song" type="song">
-        <cocoa key="currentSong"/>
-      </property>
+      <property name="playback state" code="psta" description="The current playback state." type="player states"/>
+      <property name="playback position" code="ppos" description="The current song’s playback position, in seconds." type="real"  access="r"/>
+      <property name="current song duration" code="pdur" description="The duration (length) of the current song, in seconds." type="real"  access="r"/>
+      <property name="current station" code="pstn" description="The currently selected Pandora station." type="station"/>
+      <property name="current song" code="psng" description="The currently playing (or paused) Pandora song (WARNING: This is an invalid reference in current versions of Hermes; you must access the current song’s properties individually or as a group directly instead.)" type="song" access="r"/>
     </class>
     
-    <class name="song" code="ctra" description="A Pandora Song">
+    <class name="song" code="ctra" description="A Pandora song (track).">
       <cocoa class="Song"/>
-      <property name="title" code="ptit" description="Title of the song" type="text" access="r"/>
-      <property name="artist" code="part" description="Artist of the song" type="text" access="r"/>
-      <property name="album" code="palb" description="Album of the song" type="text" access="r"/>
-      <property name="art" code="paRT" description="URL for the album cover" type="text" access="r"/>
-      <property name="nrating" code="prat" description="rating for the song" type="integer" access="r"/>
-      <property name="albumUrl" code="alur" description="URL for the album" type="text" access="r"/>
-      <property name="artistUrl" code="arur" description="URL for the artist" type="text" access="r"/>
-      <property name="titleUrl" code="tiur" description="URL for the title" type="text" access="r"/>
+      <property name="title" code="ptit" description="The song’s title." type="text" access="r"/>
+      <property name="artist" code="part" description="The song’s artist." type="text" access="r"/>
+      <property name="album" code="palb" description="The song’s album." type="text" access="r"/>
+      <property name="artwork URL" code="paRT" description="An image URL for the album’s cover artwork." type="text" access="r">
+        <cocoa key="art"/>
+      </property>
+      <property name="rating" code="prat" description="The song’s numeric rating." type="integer" access="r">
+        <cocoa key="nrating"/>
+      </property>
+      <property name="album URL" code="alur" description="A Pandora URL for more information on the album." type="text" access="r"/>
+      <property name="artist URL" code="arur" description="A Pandora URL for more information on the artist." type="text" access="r"/>
+      <property name="track URL" code="tiur" description="A Pandora URL for more information on the track." type="text" access="r">
+        <cocoa key="titleUrl"/>
+      </property>
     </class>
 
-    <class name="station" code="csta" description="A Pandora Station">
+    <class name="station" code="csta" description="A Pandora station.">
       <cocoa class="Station"/>
-      <property name="name" code="pnam" description="Name of station" type="text" access="r"/>
-      <property name="stationId" code="pid " description="stationId for Station" type="text" access="r"/>
+      <property name="name" code="pnam" description="The station’s name." type="text" access="r"/>
+      <property name="station ID" code="pid " description="The station’s ID." type="text" access="r"/>
     </class>
 
     <!-- Playback commands -->
-    <command name="playpause" code="HeRMplpa" description="toggle the playing/paused state of the current song">
+    <command name="playpause" code="HeRMplpa" description="Play the current song if it is paused; pause the current song if it is playing.">
       <cocoa class="PlayPauseCommand"/>
     </command>
-    <command name="pause" code="HeRMpauU" description="pause the currently playing song">
+    <command name="pause" code="HeRMpauU" description="Pause the currently playing song.">
       <cocoa class="PauseCommand"/>
     </command>
-    <command name="play" code="HeRMplaL" description="resume playing the last song">
+    <command name="play" code="HeRMplaL" description="Resume playing the current song.">
       <cocoa class="PlayCommand"/>
     </command>
-    <command name="next song" code="HeRMskip" description="advance to the next track">
+    <command name="next song" code="HeRMskip" description="Skip to the next song on the current station.">
       <cocoa class="SkipCommand"/>
     </command>
 
     <!-- Pandora feedback commands -->
-    <command name="thumbs up" code="HeRMthup" description="set rating to &quot;like&quot;">
+    <command name="thumbs up" code="HeRMthup" description="Tell Pandora you like the current song.">
       <cocoa class="ThumbsUpCommand"/>
     </command>
-    <command name="thumbs down" code="HeRMthdn" description="set rating to &quot;dislike&quot;">
+    <command name="thumbs down" code="HeRMthdn" description="Tell Pandora you don’t like the current song.">
       <cocoa class="ThumbsDownCommand"/>
     </command>
-    <command name="tired of song" code="HeRMtire" description="tells Pandora that you're tired of the current song">
+    <command name="tired of song" code="HeRMtire" description="Tell Pandora you’re tired of the current song.">
       <cocoa class="TiredCommand"/>
     </command>
 
     <!-- Volume commands -->
-    <command name="raise volume" code="HeRMvolu" description="raise volume">
+    <command name="increase volume" code="HeRMvolu" description="Increase the playback volume.">
       <cocoa class="RaiseVolumeCommand"/>
     </command>
-    <command name="lower volume" code="HeRMvold" description="lower volume">
+    <command name="decrease volume" code="HeRMvold" description="Decrease the playback volume.">
       <cocoa class="LowerVolumeCommand"/>
     </command>
-    <command name="full volume" code="HeRMvolf" description="set volume to full">
+    <command name="maximize volume" code="HeRMvolf" description="Set the playback volume to its maximum level.">
       <cocoa class="FullVolumeCommand"/>
     </command>
-    <command name="mute" code="HeRMmute" description="Mutes volume, saving the current level if 'unmute' is later used">
+    <command name="mute" code="HeRMmute" description="Mutes playback, saving the current volume level.">
       <cocoa class="MuteCommand"/>
     </command>
-    <command name="unmute" code="HeRMumut" description="Unmutes the volume to the previously saved state from 'mute'">
+    <command name="unmute" code="HeRMumut" description="Restores the volume to the level prior to muting.">
       <cocoa class="UnmuteCommand"/>
     </command>
   </suite>
