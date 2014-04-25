@@ -28,7 +28,7 @@
 @interface HermesAppDelegate ()
 
 @property (readonly) NSString *hermesLogFile;
-@property (readonly, nonatomic) NSFileHandle *hermesLogFileHandle;
+@property (readonly, nonatomic) FILE *hermesLogFileHandle;
 
 @end
 
@@ -704,10 +704,9 @@
   strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S-%z", localNow, NULL);
   
   _hermesLogFile = [[NSString stringWithFormat:HERMES_LOG_PATH "HermesLog_%s.log", currentDateTime] stringByStandardizingPath];
-  @synchronized(self.hermesLogFileHandle) {
-    [[NSFileManager defaultManager] createFileAtPath:self.hermesLogFile contents:nil attributes:nil];
-    _hermesLogFileHandle = [NSFileHandle fileHandleForWritingAtPath:self.hermesLogFile];
-    [self.hermesLogFileHandle seekToEndOfFile];
+  @synchronized(self) {
+    _hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");
+    setbuf(self.hermesLogFileHandle, NULL);
   }
   return YES;
 }
@@ -719,10 +718,9 @@
 #endif
 
   if (self.debugMode) {
-    @synchronized(self.hermesLogFileHandle) {
+    @synchronized(self) {
       HMSAssert(self.hermesLogFileHandle);
-      [self.hermesLogFileHandle writeData:[[message stringByAppendingString:@"\n" ]
-                                           dataUsingEncoding:NSUTF8StringEncoding]];
+      fprintf(self.hermesLogFileHandle, "%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
     }
   }
 }
