@@ -85,4 +85,6 @@
 - (IBAction) updateStatusBarIconColor:(id)sender;
 - (IBAction) updateAlwaysOnTop:(id)sender;
 
+- (void)logMessage:(NSString *)message;
+
 @end

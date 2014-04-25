@@ -27,6 +27,7 @@
 - (id) init {
   if ((self = [super init])) {
     pandora = [[Pandora alloc] init];
+    _debugMode = NO;
   }
   return self;
 }
@@ -130,6 +131,7 @@
   BOOL isOptionPressed = (flags == NSAlternateKeyMask);
   
   if (isOptionPressed) {
+    NSLog(@"Starting in debug mode.");
     _debugMode = YES;
   }
   
@@ -661,6 +663,18 @@
   }
 
   return YES;
+}
+
+- (void)logMessage:(NSString *)message {
+  if (
+#if DEBUG
+      1
+#else
+      self.debugMode
+#endif
+      ) {
+    NSLog(@"%@", message);
+  }
 }
 
 #pragma mark QLPreviewPanelController
