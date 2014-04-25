@@ -698,31 +698,30 @@
   time_t now;
   struct tm *localNow;
   char currentDateTime[CURRENTTIMEBYTES];
-
+  
   time(&now);
   localNow = localtime(&now);
-  strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S-%z", localNow, NULL);
+  strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S_%z", localNow, NULL);
   
   _hermesLogFile = [[NSString stringWithFormat:HERMES_LOG_PATH "HermesLog_%s.log", currentDateTime] stringByStandardizingPath];
-  @synchronized(self) {
+  static dispatch_once_t onceTokenForOpeningLogFile = 0;
+  dispatch_once(&onceTokenForOpeningLogFile, ^{
     _hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");
     setbuf(self.hermesLogFileHandle, NULL);
-  }
+  });
   return YES;
 }
 
 - (void)logMessage:(NSString *)message {
 #if DEBUG
-  // Keep old behavior of DEBUG mode.
-  NSLog(@"%@", message);
+    // Keep old behavior of DEBUG mode.
+    NSLog(@"%@", message);
 #endif
-
-  if (self.debugMode) {
-    @synchronized(self) {
-      HMSAssert(self.hermesLogFileHandle);
-      fprintf(self.hermesLogFileHandle, "%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
+    
+    if (self.debugMode) {
+        HMSAssert(self.hermesLogFileHandle);
+        fprintf(self.hermesLogFileHandle, "%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
     }
-  }
 }
 
 #pragma mark - QLPreviewPanelController
