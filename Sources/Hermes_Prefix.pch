@@ -12,5 +12,5 @@
       HMSLog(@"Assertion failure: %s in %s on line %s:%d. %@", #expression, __func__, __FILE__, __LINE__, [NSString stringWithFormat: @"" __VA_ARGS__]); \
       abort(); \
   } \
-} while (0);
+} while (0)
 #endif
