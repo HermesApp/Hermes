@@ -19,6 +19,19 @@
 #import "StationsController.h"
 #import "Notifications.h"
 
+// strftime_l()
+#include <time.h>
+#include <xlocale.h>
+
+#define HERMES_LOG_PATH @"~/Library/Logs/Hermes/"
+
+@interface HermesAppDelegate ()
+
+@property (readonly) NSString *hermesLogFile;
+@property (readonly, nonatomic) NSFileHandle *hermesLogFileHandle;
+
+@end
+
 @implementation HermesAppDelegate
 
 @synthesize stations, auth, playback, pandora, window, history, station,
@@ -130,9 +143,9 @@
   NSUInteger flags = ([NSEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask);
   BOOL isOptionPressed = (flags == NSAlternateKeyMask);
   
-  if (isOptionPressed) {
-    NSLog(@"Starting in debug mode.");
+  if (isOptionPressed && [self configureLogFile]) {
     _debugMode = YES;
+    HMSLog("Starting in debug mode. Log file: %@", self.hermesLogFile);
   }
   
   if ([window respondsToSelector:@selector(setRestorable:)]) {
@@ -665,19 +678,56 @@
   return YES;
 }
 
+#pragma mark - Logging facility
+
+- (BOOL)configureLogFile {
+  NSString *hermesStandardizedLogPath = [HERMES_LOG_PATH stringByStandardizingPath];
+  NSError *error = nil;
+  [[NSFileManager defaultManager] createDirectoryAtPath:hermesStandardizedLogPath
+                            withIntermediateDirectories:YES
+                                             attributes:nil
+                                                  error:&error];
+  if (error != nil) {
+    NSLog(@"Hermes: failed to create logging directory \"%@\". Logging is disabled.", hermesStandardizedLogPath);
+    return NO;
+  }
+  
+#define CURRENTTIMEBYTES 50
+  // Use unlocalized, fixed-format date functions as prescribed in
+  // "Data Formatting Guide" section "Consider Unix Functions for Fixed-Format, Unlocalized Dates"
+  time_t now;
+  struct tm *localNow;
+  char currentDateTime[CURRENTTIMEBYTES];
+
+  time(&now);
+  localNow = localtime(&now);
+  strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S-%z", localNow, NULL);
+  
+  _hermesLogFile = [[NSString stringWithFormat:HERMES_LOG_PATH "HermesLog_%s.log", currentDateTime] stringByStandardizingPath];
+  @synchronized(self.hermesLogFileHandle) {
+    [[NSFileManager defaultManager] createFileAtPath:self.hermesLogFile contents:nil attributes:nil];
+    _hermesLogFileHandle = [NSFileHandle fileHandleForWritingAtPath:self.hermesLogFile];
+    [self.hermesLogFileHandle seekToEndOfFile];
+  }
+  return YES;
+}
+
 - (void)logMessage:(NSString *)message {
-  if (
 #if DEBUG
-      1
-#else
-      self.debugMode
+  // Keep old behavior of DEBUG mode.
+  NSLog(@"%@", message);
 #endif
-      ) {
-    NSLog(@"%@", message);
+
+  if (self.debugMode) {
+    @synchronized(self.hermesLogFileHandle) {
+      HMSAssert(self.hermesLogFileHandle);
+      [self.hermesLogFileHandle writeData:[[message stringByAppendingString:@"\n" ]
+                                           dataUsingEncoding:NSUTF8StringEncoding]];
+    }
   }
 }
 
-#pragma mark QLPreviewPanelController
+#pragma mark - QLPreviewPanelController
 
 - (BOOL)acceptsPreviewPanelControl:(QLPreviewPanel *)panel {
   return YES;

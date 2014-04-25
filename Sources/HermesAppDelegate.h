@@ -85,6 +85,11 @@
 - (IBAction) updateStatusBarIconColor:(id)sender;
 - (IBAction) updateAlwaysOnTop:(id)sender;
 
+/**
+ * Log message to Hermes-specific logging facility.
+ *
+ * @param message the NSString to log
+ */
 - (void)logMessage:(NSString *)message;
 
 @end
