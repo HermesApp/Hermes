@@ -37,6 +37,8 @@
 @synthesize stations, auth, playback, pandora, window, history, station,
             growler, scrobbler, mediaKeyTap, networkManager, preferences;
 
+#pragma mark - NSObject
+
 - (id) init {
   if ((self = [super init])) {
     pandora = [[Pandora alloc] init];
@@ -44,6 +46,14 @@
   }
   return self;
 }
+
+- (void)dealloc {
+  if (self.hermesLogFileHandle) {
+    fclose(self.hermesLogFileHandle);
+  }
+}
+
+#pragma mark -
 
 - (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication
                     hasVisibleWindows:(BOOL)flag {
