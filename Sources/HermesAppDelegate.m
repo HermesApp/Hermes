@@ -729,8 +729,14 @@
 #endif
     
     if (self.debugMode) {
-        HMSAssert(self.hermesLogFileHandle);
+      if (self.hermesLogFileHandle) {
         fprintf(self.hermesLogFileHandle, "%s\n", [message cStringUsingEncoding:NSUTF8StringEncoding]);
+      } else {
+#ifndef DEBUG
+        // Fall back on NSLog if the log file did not open properly.
+        NSLog(@"%@", message);
+#endif
+      }
     }
 }
 
