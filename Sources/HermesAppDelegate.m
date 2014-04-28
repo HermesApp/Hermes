@@ -23,7 +23,7 @@
 #include <time.h>
 #include <xlocale.h>
 
-#define HERMES_LOG_PATH @"~/Library/Logs/Hermes/"
+#define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"
 
 @interface HermesAppDelegate ()
 
@@ -691,7 +691,7 @@
 #pragma mark - Logging facility
 
 - (BOOL)configureLogFile {
-  NSString *hermesStandardizedLogPath = [HERMES_LOG_PATH stringByStandardizingPath];
+  NSString *hermesStandardizedLogPath = [HERMES_LOG_DIRECTORY_PATH stringByStandardizingPath];
   NSError *error = nil;
   [[NSFileManager defaultManager] createDirectoryAtPath:hermesStandardizedLogPath
                             withIntermediateDirectories:YES
@@ -705,6 +705,7 @@
 #define CURRENTTIMEBYTES 50
   // Use unlocalized, fixed-format date functions as prescribed in
   // "Data Formatting Guide" section "Consider Unix Functions for Fixed-Format, Unlocalized Dates"
+  // https://developer.apple.com/library/ios/documentation/cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html
   time_t now;
   struct tm *localNow;
   char currentDateTime[CURRENTTIMEBYTES];
@@ -713,11 +714,11 @@
   localNow = localtime(&now);
   strftime_l(currentDateTime, CURRENTTIMEBYTES, "%Y-%m-%d_%H:%M:%S_%z", localNow, NULL);
   
-  _hermesLogFile = [[NSString stringWithFormat:HERMES_LOG_PATH "HermesLog_%s.log", currentDateTime] stringByStandardizingPath];
+  _hermesLogFile = [[NSString stringWithFormat:@"%@/HermesLog_%s.log", HERMES_LOG_DIRECTORY_PATH, currentDateTime] stringByStandardizingPath];
   static dispatch_once_t onceTokenForOpeningLogFile = 0;
   dispatch_once(&onceTokenForOpeningLogFile, ^{
     _hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");
-    setbuf(self.hermesLogFileHandle, NULL);
+    setvbuf(self.hermesLogFileHandle, NULL, _IOLBF, 0);
   });
   return YES;
 }
