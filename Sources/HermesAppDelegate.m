@@ -693,11 +693,11 @@
 - (BOOL)configureLogFile {
   NSString *hermesStandardizedLogPath = [HERMES_LOG_DIRECTORY_PATH stringByStandardizingPath];
   NSError *error = nil;
-  [[NSFileManager defaultManager] createDirectoryAtPath:hermesStandardizedLogPath
-                            withIntermediateDirectories:YES
-                                             attributes:nil
-                                                  error:&error];
-  if (error != nil) {
+  BOOL logPathCreated = [[NSFileManager defaultManager] createDirectoryAtPath:hermesStandardizedLogPath
+                                                  withIntermediateDirectories:YES
+                                                                   attributes:nil
+                                                                        error:&error];
+  if (!logPathCreated) {
     NSLog(@"Hermes: failed to create logging directory \"%@\". Logging is disabled.", hermesStandardizedLogPath);
     return NO;
   }
