@@ -24,6 +24,7 @@
 #include <xlocale.h>
 
 #define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"
+#define DEBUG_MODE_TITLE_PREFIX @"🐞 "
 
 @interface HermesAppDelegate ()
 
@@ -156,6 +157,7 @@
   if (isOptionPressed && [self configureLogFile]) {
     _debugMode = YES;
     HMSLog("Starting in debug mode. Log file: %@", self.hermesLogFile);
+    [window setTitle:[NSString stringWithFormat:@"%@Hermes", self.debugMode ? DEBUG_MODE_TITLE_PREFIX : @""]];
   }
   
   if ([window respondsToSelector:@selector(setRestorable:)]) {
@@ -653,7 +655,7 @@
 - (void) playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
   if ([stream isPlaying]) {
-    [window setTitle:playback.playing.name];
+    [window setTitle:[NSString stringWithFormat:@"%@%@", self.debugMode ? DEBUG_MODE_TITLE_PREFIX : @"", playback.playing.name]];
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
