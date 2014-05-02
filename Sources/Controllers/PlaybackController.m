@@ -583,11 +583,10 @@ BOOL playOnStart = YES;
       NSInteger rating = [[song nrating] integerValue];
       if (action == @selector(like:)) {
         [menuItem setState:rating == 1 ? NSOnState : NSOffState];
-        return (rating != 1);
       } else {
         [menuItem setState:rating == -1 ? NSOnState : NSOffState];
-        return (rating != -1);
       }
+      return YES;
     } else {
       [menuItem setState:NSOffState];
       return NO;
