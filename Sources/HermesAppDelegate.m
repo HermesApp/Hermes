@@ -277,13 +277,12 @@
                              action:@selector(next:)
                       keyEquivalent:@"n"];
   [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Like"
+                             action:@selector(like:)
+                      keyEquivalent:@"l"];
+  [menuItem setTarget:playback];
   if ([[song nrating] intValue] == 1) {
-    [menu addItemWithTitle:@"Liked" action:nil keyEquivalent:@""];
-  } else {
-    menuItem = [menu addItemWithTitle:@"Like"
-                               action:@selector(like:)
-                        keyEquivalent:@"l"];
-    [menuItem setTarget:playback];
+    menuItem.state = NSOnState;
   }
   menuItem = [menu addItemWithTitle:@"Dislike"
                              action:@selector(dislike:)
