@@ -1,3 +1,22 @@
+# Version 1.2.1 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.0...master)
+
+* [added by @winny-] Internal support to switch device partner logins. Currently uses
+          Android for regular Pandora users, and Pandora One Desktop for
+          Pandora One users.
+* [fixed by @winny-] Set volume even if paused (#169).
+* [fixed by @nriley, @winny-] Various UI improvements including sanity-checking login
+          credentials and adding transparency to music note icon.
+* [fixed by @nriley] Resolve issue with SPMediaKeyTap (media keys library) (#172).
+* [added by @winny-] Show album art in non-growl notifications on Mavericks.
+* [fixed by @winny-] Issue where non-growl notification clicked does not raise Hermes.
+* [added by @winny-] Optional debug logging to `~/Library/Logs/Hermes/` enabled at startup
+          — hold down Option (⌥) and look for ladybug emoji (🐞) in menubar.
+* [fixed by @nriley, @winny-] Do not disable Like/Dislike in Menubar and Dock menu,
+          instead simply show status using a checkmark — this way one may "undo" Like
+          or Dislike from any menu item.
+
 # Version 1.2.0 (4/4/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.1.20...v1.2.0)
