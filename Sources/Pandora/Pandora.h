@@ -61,7 +61,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 @property NSString *userId;
 
 #pragma mark JSON data
-@property NSMutableDictionary *request;
+@property NSDictionary *request;
 @property NSMutableData *response;
 
 #pragma mark Internal metadata
@@ -109,7 +109,9 @@ typedef void(^PandoraCallback)(NSDictionary*);
  * @brief Authenticates with Pandora
  *
  * When completed, fires the "hermes.authenticated" event so long as the
- * provided request to retry is nil.
+ * provided request to retry is nil. This method calls the
+ * "auth.partnerLogin", "auth.userLogin", and "user.canSubscribe" API
+ * methods indirectly.
  *
  * @param user the username to log in with
  * @param pass the password to log in with
@@ -128,7 +130,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
  * @param callback a callback to be invoked once the synchronization and login
  *        is done
  */
-- (BOOL) partnerLogin: (SyncCallback) cb;
+- (BOOL) doPartnerLogin: (SyncCallback) cb;
 
 - (void) logout;
 - (void) logoutNoNotify;

@@ -203,7 +203,8 @@ static NSString *hierrs[] = {
 - (BOOL) authenticate:(NSString*)user
              password:(NSString*)pass
               request:(PandoraRequest*)req {
-  PandoraCallback loginCallback = ^(NSDictionary *dict){
+  return [self doUserLogin:user password:pass callback:^(NSDictionary *dict) {
+    // Only send the PandoraDidAuthenticateNotification if there is no request to retry.
     if (req == nil) {
       [self sendNotification:PandoraDidAuthenticateNotification withUserInfo:nil];
     } else {
@@ -211,45 +212,42 @@ static NSString *hierrs[] = {
       PandoraRequest *newreq = [req copy];
       
       // Update request with the new user auth token & up-to-date sync time
-      [newreq request][@"userAuthToken"] = user_auth_token;
-      [newreq request][@"syncTime"] = [self syncTimeNum];
+      NSMutableDictionary *updatedRequest = [newreq.request mutableCopy];
+      updatedRequest[@"userAuthToken"] = user_auth_token;
+      updatedRequest[@"syncTime"] = [self syncTimeNum];
+      newreq.request = updatedRequest;
       [self sendRequest:newreq];
     }
-  };
-
-  return [self userLogin:user password:pass callback:loginCallback];
+  }];
 }
 
-- (BOOL)userLogin:(NSString *)username password:(NSString *)password callback:(PandoraCallback)callback {
+- (BOOL)doUserLogin:(NSString *)username password:(NSString *)password callback:(PandoraCallback)callback {
   if (partner_id == nil) {
-    // Get partner ID then reinvoke this method
-    NSLogd(@"Getting partner ID...");
-    return [self partnerLogin:^() {
-      [self userLogin:username password:password callback:callback];
+    // Get partner ID then reinvoke this method.
+    return [self doPartnerLogin:^() {
+      [self doUserLogin:username password:password callback:callback];
     }];
   }
-  
-  NSMutableDictionary *loginDictionary = [NSMutableDictionary dictionary];
-  loginDictionary[@"loginType"]        = @"user";
-  loginDictionary[@"username"]         = username;
-  loginDictionary[@"password"]         = password;
-  loginDictionary[@"partnerAuthToken"] = partner_auth_token;
-  loginDictionary[@"syncTime"]         = [self syncTimeNum];
-  
   PandoraRequest *loginRequest = [[PandoraRequest alloc] init];
-  [loginRequest setRequest:loginDictionary];
-  [loginRequest setMethod:@"auth.userLogin"];
-  [loginRequest setPartnerId:partner_id];
-  [loginRequest setAuthToken:partner_auth_token];
+  loginRequest.request   = @{
+                             @"loginType":        @"user",
+                             @"username":         username,
+                             @"password":         password,
+                             @"partnerAuthToken": partner_auth_token,
+                             @"syncTime":         [self syncTimeNum]
+                             };
+  loginRequest.method    = @"auth.userLogin";
+  loginRequest.partnerId = partner_id;
+  loginRequest.authToken = partner_auth_token;
   
   PandoraCallback loginCallback = ^(NSDictionary *respDict) {
     NSDictionary *result = respDict[@"result"];
     user_auth_token = result[@"userAuthToken"];
     user_id = result[@"userId"];
-    if (!self.cachedSubscriberStatus) {
+    if (self.cachedSubscriberStatus == nil) {
       // Get subscriber status then reinvoke this method
-      [self fetchSubscriberStatus:^(NSDictionary *respDict) {
-        [self userLogin:username password:password callback:callback];
+      [self checkSubscriberStatus:^(NSDictionary *respDict) {
+        [self doUserLogin:username password:password callback:callback];
       }];
       return;
     } else if (self.cachedSubscriberStatus.boolValue &&
@@ -258,7 +256,7 @@ static NSString *hierrs[] = {
       NSLogd(@"Subscriber detected, re-logging-in...");
       self.device = [PandoraDevice desktop];
       [self logoutNoNotify];
-      [self userLogin:username password:password callback:callback];
+      [self doUserLogin:username password:password callback:callback];
       return;
     }
     NSLogd(@"Logged in as %@.", username);
@@ -269,20 +267,21 @@ static NSString *hierrs[] = {
   return [self sendRequest:loginRequest];
 }
 
-- (BOOL) partnerLogin: (SyncCallback) callback {
+- (BOOL) doPartnerLogin: (SyncCallback) callback {
+  NSLogd(@"Getting partner ID...");
   start_time = [self time];
-  NSMutableDictionary *d = [NSMutableDictionary dictionary];
-  d[@"username"] = self.device[kPandoraDeviceUsername];
-  d[@"password"] = self.device[kPandoraDevicePassword];
-  d[@"deviceModel"] = self.device[kPandoraDeviceDeviceID];
-  d[@"version"] = PANDORA_API_VERSION;
-  d[@"includeUrls"] = [NSNumber numberWithBool:TRUE];
   
-  PandoraRequest *req = [[PandoraRequest alloc] init];
-  [req setRequest: d];
-  [req setMethod: @"auth.partnerLogin"];
-  [req setEncrypted:FALSE];
-  [req setCallback:^(NSDictionary* dict) {
+  PandoraRequest *request = [[PandoraRequest alloc] init];
+  request.request   = @{
+                        @"username":    self.device[kPandoraDeviceUsername],
+                        @"password":    self.device[kPandoraDevicePassword],
+                        @"deviceModel": self.device[kPandoraDeviceDeviceID],
+                        @"version":     PANDORA_API_VERSION,
+                        @"includeUrls": [NSNumber numberWithBool:TRUE]
+                        };
+  request.method    = @"auth.partnerLogin";
+  request.encrypted = FALSE;
+  request.callback  = ^(NSDictionary* dict) {
     NSDictionary *result = dict[@"result"];
     partner_auth_token = result[@"partnerAuthToken"];
     partner_id = result[@"partnerId"];
@@ -290,13 +289,13 @@ static NSString *hierrs[] = {
     const char *bytes = [sync bytes];
     sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
-  }];
-  return [self sendRequest:req];
+  };
+  return [self sendRequest:request];
 }
 
-- (BOOL)fetchSubscriberStatus:(PandoraCallback)callback {
+- (BOOL)checkSubscriberStatus:(PandoraCallback)callback {
   assert(user_id != nil);
-  NSLogd(@"Getting subscriber status...");
+  NSLogd(@"Checking subscriber status...");
   
   PandoraRequest *request = [self defaultRequestWithMethod:@"user.canSubscribe"];
   request.callback = ^(NSDictionary *respDict) {
