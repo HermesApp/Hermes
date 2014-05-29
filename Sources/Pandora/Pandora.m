@@ -248,20 +248,12 @@ static NSString *hierrs[] = {
     user_id = result[@"userId"];
     if (!self.cachedSubscriberStatus) {
       // Get subscriber status then reinvoke this method
-      NSLogd(@"Getting subscriber status...");
-      [self fetchSubscriberStatus:^(NSDictionary *subDict) {
-        NSNumber *subscriberStatus = subDict[@"result"][@"isSubscriber"];
-        if (subscriberStatus == nil) {
-          NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
-          self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
-        } else {
-          self.cachedSubscriberStatus = subscriberStatus;
-        }
+      [self fetchSubscriberStatus:^(NSDictionary *respDict) {
         [self userLogin:username password:password callback:callback];
       }];
       return;
     } else if (self.cachedSubscriberStatus.boolValue &&
-               ! [self.device[kPandoraDeviceUsername] isEqualToString:@"pandora one"]) {
+               ![self.device[kPandoraDeviceUsername] isEqualToString:@"pandora one"]) {
       // Change our device to the desktop client, logout, then reinvoke this method
       NSLogd(@"Subscriber detected, re-logging-in...");
       self.device = [PandoraDevice desktop];
@@ -304,10 +296,17 @@ static NSString *hierrs[] = {
 
 - (BOOL)fetchSubscriberStatus:(PandoraCallback)callback {
   assert(user_id != nil);
+  NSLogd(@"Getting subscriber status...");
   
   PandoraRequest *request = [self defaultRequestWithMethod:@"user.canSubscribe"];
   request.callback = ^(NSDictionary *respDict) {
-    self.cachedSubscriberStatus = (NSNumber *)respDict[@"result"][@"isSubscriber"];
+    NSNumber *subscriberStatus = respDict[@"result"][@"isSubscriber"];
+    if (subscriberStatus == nil) {
+      NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
+      self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
+    } else {
+      self.cachedSubscriberStatus = subscriberStatus;
+    }
     NSLogd(@"Subscriber status: %@", self.cachedSubscriberStatus);
     callback(respDict);
   };
