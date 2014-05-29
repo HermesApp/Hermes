@@ -91,6 +91,10 @@ static NSString *hierrs[] = {
   return self;
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ %p %@>", NSStringFromClass(self.class), self, self.method];
+}
+
 #pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
