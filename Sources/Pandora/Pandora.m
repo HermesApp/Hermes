@@ -91,7 +91,7 @@ static NSString *hierrs[] = {
   return self;
 }
 
-#pragma mark - NSCopying
+#pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone {
   PandoraRequest *newRequest = [[PandoraRequest alloc] init];
@@ -251,12 +251,12 @@ static NSString *hierrs[] = {
       NSLogd(@"Getting subscriber status...");
       [self fetchSubscriberStatus:^(NSDictionary *subDict) {
         NSNumber *subscriberStatus = subDict[@"result"][@"isSubscriber"];
-          if (subscriberStatus == nil) {
-              NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
-              self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
-          } else {
-              self.cachedSubscriberStatus = subscriberStatus;
-          }
+        if (subscriberStatus == nil) {
+          NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
+          self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
+        } else {
+          self.cachedSubscriberStatus = subscriberStatus;
+        }
         [self userLogin:username password:password callback:callback];
       }];
       return;
@@ -790,8 +790,10 @@ static NSString *hierrs[] = {
                     @"?method=%@&partner_id=%@&auth_token=%@&user_id=%@",
                     [request tls] ? "s" : "",
                     self.device[kPandoraDeviceAPIHost],
-                    [request method], [request partnerId],
-                    [[request authToken] urlEncoded], [request userId]];
+                    [request method],
+                    [request partnerId],
+                    [[request authToken] urlEncoded],
+                    [request userId]];
   NSLogd(@"%@", url);
   
   /* Prepare the request */
