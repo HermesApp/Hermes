@@ -1,6 +1,6 @@
-# Version 1.2.1 (unreleased)
+# Version 1.2.1 (5/29/14)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.0...master)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.1...v1.2.0)
 
 * [added by @winny-] Internal support to switch device partner logins. Currently uses
           Android for regular Pandora users, and Pandora One Desktop for
