@@ -211,11 +211,17 @@ static NSString *hierrs[] = {
       NSLogd(@"Retrying request...");
       PandoraRequest *newreq = [req copy];
       
-      // Update request with the new user auth token & up-to-date sync time
+      // Update the request dictionary with new User Auth Token & Sync Time
       NSMutableDictionary *updatedRequest = [newreq.request mutableCopy];
       updatedRequest[@"userAuthToken"] = user_auth_token;
       updatedRequest[@"syncTime"] = [self syncTimeNum];
       newreq.request = updatedRequest;
+
+      // Also update the properties on the request used to build the request URL
+      newreq.userId = user_id;
+      newreq.authToken = user_auth_token;
+      newreq.partnerId = partner_id;
+
       [self sendRequest:newreq];
     }
   }];
