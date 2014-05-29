@@ -42,11 +42,12 @@ The Process
     2. Ensure `hermes-pages/versions.xml` is valid XML.
     3. Make sure `hermes-pages/CHANGELOG.md` looks like `Hermes/CHANGELOG.md`.
 
-6. Push `hermes-pages` to GitHub:
+6. Commit changes in `hermes-pages` and push to GitHub:
 
         cd hermes-pages
+        git add .
+        git commit -m v1.2.0
         git push origin master
-
 
 7. Try updating from an old version of Hermes. From textual menus:
    **Hermes → Check for Updates**; or from the statusbar icon: click on the
@@ -54,3 +55,9 @@ The Process
    results in an error, open `~/Library/Logs/SparkleUpdateLog.log` and find
    out what went wrong. If necessary start over, preferrably removing the bad
    commit in `github-pages` with command `git reset --hard HEAD^`.
+
+8. Push *both* Hermes/HermesApp's master branch and the newly made git tag:
+
+        cd Hermes
+        git push origin master
+        git push origin v1.2.0
