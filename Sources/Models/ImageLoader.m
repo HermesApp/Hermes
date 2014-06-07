@@ -41,7 +41,7 @@
     /* If any pending requests are to this url, also satisfy them */
     NSUInteger idx;
     while ((idx = [queue indexOfObject:url]) != NSNotFound) {
-      NSLogd(@"cached: %@", url);
+      NSLogd(@"cached:   %@", url);
       [queue removeObjectAtIndex:idx];
       ImageCallback cb = cbqueue[idx];
       cb(d);
