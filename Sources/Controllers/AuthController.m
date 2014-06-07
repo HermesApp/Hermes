@@ -53,7 +53,7 @@
   [spinner stopAnimation:nil];
 
   if (![[username stringValue] isEqualToString:@""]) {
-    [[NSApp delegate] cacheAuth:[username stringValue] : [password stringValue]];
+    [[NSApp delegate] saveUsername:[username stringValue] password:[password stringValue]];
   }
 
   HermesAppDelegate *delegate = [NSApp delegate];

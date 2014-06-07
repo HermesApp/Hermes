@@ -83,7 +83,7 @@
   [loadingIcon startAnimation:nil];
 }
 
-- (void) cacheAuth: (NSString*) username : (NSString*) password {
+- (void) saveUsername: (NSString*) username password: (NSString*) password {
   [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
   KeychainSetItem(username, password);
 }
@@ -203,8 +203,8 @@
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
 
-  NSString *savedUsername = [self getCachedUsername];
-  NSString *savedPassword = [self getCachedPassword];
+  NSString *savedUsername = [self getSavedUsername];
+  NSString *savedPassword = [self getSavedPassword];
   if (savedPassword == nil || [savedPassword isEqualToString:@""] ||
       savedUsername == nil || [savedUsername isEqualToString:@""]) {
     [auth show];
@@ -291,12 +291,12 @@
   return menu;
 }
 
-- (NSString*) getCachedUsername {
+- (NSString*) getSavedUsername {
   return [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
 }
 
-- (NSString*) getCachedPassword {
-  return KeychainGetPassword([self getCachedUsername]);
+- (NSString*) getSavedPassword {
+  return KeychainGetPassword([self getSavedUsername]);
 }
 
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
@@ -343,8 +343,8 @@
     switch (code) {
       case INVALID_SYNC_TIME:
       case INVALID_AUTH_TOKEN: {
-        NSString *user = [self getCachedUsername];
-        NSString *pass = [self getCachedPassword];
+        NSString *user = [self getSavedUsername];
+        NSString *pass = [self getSavedPassword];
         if (user == nil || pass == nil) {
           [[playback playing] pause];
           [auth authenticationFailed:notification error:err];
@@ -425,7 +425,7 @@
   [history hideDrawer];
 
   /* Remove our credentials */
-  [self cacheAuth:@"" :@""];
+  [self saveUsername:@"" password:@""];
   [auth show];
 }
 

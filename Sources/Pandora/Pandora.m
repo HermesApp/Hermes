@@ -785,8 +785,8 @@ static NSString *hierrs[] = {
   if ([self isAuthenticated]) {
     return [self sendRequest:req];
   }
-  NSString *user = [[NSApp delegate] getCachedUsername];
-  NSString *pass = [[NSApp delegate] getCachedPassword];
+  NSString *user = [[NSApp delegate] getSavedUsername];
+  NSString *pass = [[NSApp delegate] getSavedPassword];
   return [self authenticate:user password:pass request:req];
 }
 

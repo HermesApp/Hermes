@@ -59,13 +59,13 @@
 
 - (void) closeNewStationSheet;
 - (void) showNewStationSheet;
-- (void) cacheAuth: (NSString*) username : (NSString*) password;
+- (void) saveUsername: (NSString*) username password: (NSString*) password;
 - (void) setCurrentView: (NSView*) view;
 - (void) showLoader;
 - (NSString*) stateDirectory: (NSString*) file;
 
-- (NSString*) getCachedUsername;
-- (NSString*) getCachedPassword;
+- (NSString*) getSavedUsername;
+- (NSString*) getSavedPassword;
 
 - (void) tryRetry;
 - (void) handleDrawer;
