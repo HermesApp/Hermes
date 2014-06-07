@@ -23,7 +23,6 @@
   if (cur != nil) {
     [queue addObject:url];
     [cbqueue addObject:cb];
-    NSLogd(@"queueing %@", url);
     return;
   }
 
@@ -31,10 +30,10 @@
 }
 
 - (void) fetch:(NSString*)url cb:(ImageCallback)cb {
-  NSLogd(@"fetching: %@", url);
   NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
   cur = [URLConnection connectionForRequest:req
                           completionHandler:^(NSData *d, NSError *error) {
+    NSLogd(@"fetching: %@", url);
     cb(d);
     cur = nil;
     curURL = nil;
@@ -42,6 +41,7 @@
     /* If any pending requests are to this url, also satisfy them */
     NSUInteger idx;
     while ((idx = [queue indexOfObject:url]) != NSNotFound) {
+      NSLogd(@"cached: %@", url);
       [queue removeObjectAtIndex:idx];
       ImageCallback cb = cbqueue[idx];
       cb(d);
