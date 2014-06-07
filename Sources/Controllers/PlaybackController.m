@@ -201,11 +201,11 @@ BOOL playOnStart = YES;
 /* Called whenever the playing stream changes state */
 - (void)playbackStateChanged: (NSNotification *)aNotification {
   if ([playing isPlaying]) {
-    NSLogd(@"Stream playing now...");
+    NSLogd(@"Stream playing: %@", playing.playingSong);
     [playpause setImage:[NSImage imageNamed:@"pause"]];
     [self startUpdatingProgress];
   } else if ([playing isPaused]) {
-    NSLogd(@"Stream paused now...");
+    NSLogd(@"Stream paused.");
     [playpause setImage:[NSImage imageNamed:@"play"]];
     [self stopUpdatingProgress];
   }

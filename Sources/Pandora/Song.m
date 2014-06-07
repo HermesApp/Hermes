@@ -7,6 +7,18 @@
 @synthesize artist, title, album, highUrl, stationId, nrating,
   albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl;
 
+#pragma mark - NSObject
+
+- (BOOL) isEqual:(id)object {
+  return [token isEqual:[object token]];
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"<%@ %p %@ - %@>", NSStringFromClass(self.class), self, self.artist, self.title];
+}
+
+#pragma mark - NSCoding
+
 - (id) initWithCoder: (NSCoder *)coder {
   if ((self = [super init])) {
     [self setArtist:[coder decodeObjectForKey:@"artist"]];
@@ -26,6 +38,15 @@
   return self;
 }
 
+- (void) encodeWithCoder: (NSCoder *)coder {
+  NSDictionary *info = [self toDictionary];
+  for(id key in info) {
+    [coder encodeObject:info[key] forKey:key];
+  }
+}
+
+#pragma mark - NSDistributedNotification user info
+
 - (NSDictionary*) toDictionary {
   NSMutableDictionary *info = [NSMutableDictionary dictionary];
   [info setValue: artist forKey:@"artist"];
@@ -44,12 +65,7 @@
   return info;
 }
 
-- (void) encodeWithCoder: (NSCoder *)coder {
-  NSDictionary *info = [self toDictionary];
-  for(id key in info) {
-    [coder encodeObject:info[key] forKey:key];
-  }
-}
+#pragma mark - Object Specifier
 
 - (NSScriptObjectSpecifier *) objectSpecifier {
   NSScriptClassDescription *containerClassDesc =
@@ -60,9 +76,7 @@
           containerSpecifier:nil key:@"songs" name:[self title]];
 }
 
-- (BOOL) isEqual:(id)object {
-  return [token isEqual:[object token]];
-}
+#pragma mark - Reference to station
 
 - (Station*) station {
   return [Station stationForToken:[self stationId]];
