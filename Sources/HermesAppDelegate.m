@@ -381,12 +381,10 @@
   [window orderFront:nil];
   [autoRetry invalidate];
 
-  // code 0 == internal error, and if we're getting a fragment then this means
-  // that we shouldn't retry because it's only going to keep failing
-  if (code != 0 &&
-      ![[lastRequest method] isEqual:@"station.getFragment"] &&
-      code != 1039) // rate limit
-  {
+  // From the Pandora API Wiki ( http://pan-do-ra-api.wikia.com/wiki/Json/5#Error_codes ):
+  // code 0 == INTERNAL, "It can denote that your account has been temporarily blocked due to having too frequent station.getPlaylist calls."
+  // code 1039 == PLAYLIST_EXCEEDED, "Returned on excessive calls to station.getPlaylist. Error self clears (probably 1 hour)."
+  if (code != 0 && code != 1039) {
       autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
                                                    target:self
                                                  selector:@selector(retry:)
