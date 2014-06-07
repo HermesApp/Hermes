@@ -305,8 +305,7 @@ static NSString *hierrs[] = {
 
 - (BOOL)checkSubscriberStatus:(PandoraCallback)callback {
   assert(user_id != nil);
-  NSLogd(@"Checking subscriber status...");
-  
+
   PandoraRequest *request = [self defaultRequestWithMethod:@"user.canSubscribe"];
   request.callback = ^(NSDictionary *respDict) {
     NSNumber *subscriberStatus = respDict[@"result"][@"isSubscriber"];
