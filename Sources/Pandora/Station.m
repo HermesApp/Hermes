@@ -125,25 +125,25 @@
 }
 
 - (void) songsLoaded: (NSNotification*)not {
-  NSLogd(@"songsLoaded");
   NSArray *more = [not userInfo][@"songs"];
+  NSMutableArray *qualities = [[NSMutableArray alloc] init];
   if (more == nil) return;
 
   for (Song *s in more) {
     NSURL *url = nil;
     switch (PREF_KEY_INT(DESIRED_QUALITY)) {
       case QUALITY_HIGH:
-        NSLogd(@"quality high");
+        [qualities addObject:@"high"];
         url = [NSURL URLWithString:[s highUrl]];
         break;
       case QUALITY_LOW:
-        NSLogd(@"quality low");
+        [qualities addObject:@"low"];
         url = [NSURL URLWithString:[s lowUrl]];
         break;
 
       case QUALITY_MED:
       default:
-        NSLogd(@"quality med");
+        [qualities addObject:@"med"];
         url = [NSURL URLWithString:[s medUrl]];
         break;
     }
@@ -154,6 +154,7 @@
     [self play];
   }
   shouldPlaySongOnFetch = NO;
+  NSLogd(@"Recieved %@ from %@ with qualities: %@", not.name, not.object, [qualities componentsJoinedByString:@" "]);
 }
 
 - (void) configureNewStream:(NSNotification*) notification {
