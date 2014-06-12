@@ -25,3 +25,17 @@ while [ $? -eq 0 ]; do security delete-generic-password -l Hermes >/dev/null 2>&
 
 If you had to use these steps, chances are there is a bug that should be reported.
 All bug reports are welcome on the [issue tracker](https://github.com/HermesApp/Hermes/issues).
+
+## Can I enable logging in Hermes?
+
+Logging is enabled at startup: hold down ⌥ (Option key) after launching Hermes.
+Look for the  (ladybug emoji) in the window title.
+
+Once you have logging enabled, open Console.app `/Applications/Utilities/Console.app` and navigate to the Hermes log folder:
+
+1. Under "FILES" on the sidebar,
+2. Expand `~/Library/Logs`
+3. Expand `Hermes`
+4. Click the latest log created by Hermes
+
+You can then copy the log text and send it in a bug report.
