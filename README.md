@@ -43,8 +43,8 @@ ways you can develop against Hermes if you really want to.
           unmute        -- unmutes the volume to the last state from mute
 
           -- integer 0 to 100 for the volume
-          get current volume
-          set current volume to 92
+          get playback volume
+          set playback volume to 92
 
           -- Working with the current station
           set stationName to the current station's name
