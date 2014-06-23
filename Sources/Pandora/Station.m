@@ -106,22 +106,21 @@
 }
 
 - (void) setRadio:(Pandora *)pandora {
-  if (radio != nil) {
-    [[NSNotificationCenter defaultCenter]
-        removeObserver:self
-                  name:nil
-                object:radio];
+  @synchronized(radio) {
+    if (radio != nil) {
+      [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                      name:nil
+                                                    object:radio];
+    }
+    radio = pandora;
+
+    NSString *n = [NSString stringWithFormat:@"hermes.fragment-fetched.%@", _token];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(songsLoaded:)
+                                                 name:n
+                                               object:pandora];
   }
-  radio = pandora;
-
-  NSString *n = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
-                                           _token];
-
-  [[NSNotificationCenter defaultCenter]
-      addObserver:self
-         selector:@selector(songsLoaded:)
-             name:n
-           object:pandora];
 }
 
 - (void) songsLoaded: (NSNotification*)not {
