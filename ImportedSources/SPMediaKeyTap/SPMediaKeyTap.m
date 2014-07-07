@@ -1,5 +1,6 @@
 // Copyright (c) 2010 Spotify AB
 #import "SPMediaKeyTap.h"
+#import "NSObject+SPInvocationGrabbing.h" // https://gist.github.com/511181, in submodule
 
 @interface SPMediaKeyTap ()
 -(BOOL)shouldInterceptMediaKeyEvents;
@@ -178,9 +179,10 @@ static CGEventRef tapEventCallback(CGEventTapProxy proxy, CGEventType type, CGEv
 		_shouldInterceptMediaKeyEvents = newSetting;
 	}
 	if(_tapThreadRL && oldSetting != newSetting) {
-		CFRunLoopPerformBlock(_tapThreadRL, kCFRunLoopCommonModes, ^{
-			[self pauseTapOnTapThread:newSetting];
-		});
+		id grab = [self grab];
+		[grab pauseTapOnTapThread:newSetting];
+		NSTimer *timer = [NSTimer timerWithTimeInterval:0 invocation:[grab invocation] repeats:NO];
+		CFRunLoopAddTimer(_tapThreadRL, (CFRunLoopTimerRef)timer, kCFRunLoopCommonModes);
 	}
 }
 

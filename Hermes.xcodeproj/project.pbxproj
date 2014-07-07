@@ -12,6 +12,8 @@
 		44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 44411DA6190166FB00EC4E05 /* PandoraDevice.m */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
 		44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DFC8DF18FDFCBC007422DC /* Notifications.m */; };
+		843B578B19660680000898F2 /* NSObject+SPInvocationGrabbing.h in Headers */ = {isa = PBXBuildFile; fileRef = 843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */; };
+		843B578C19660680000898F2 /* NSObject+SPInvocationGrabbing.m in Sources */ = {isa = PBXBuildFile; fileRef = 843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -187,6 +189,8 @@
 		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryCollectionView.m; path = Controllers/HistoryCollectionView.m; sourceTree = "<group>"; };
 		44DFC8DE18FDFCBC007422DC /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		44DFC8DF18FDFCBC007422DC /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
+		843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SPInvocationGrabbing.h"; sourceTree = "<group>"; };
+		843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SPInvocationGrabbing.m"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97177193159EAA7D00EE3355 /* cd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cd.png; sourceTree = "<group>"; };
@@ -489,6 +493,8 @@
 		9728D887158C3D3100C078A4 /* SPMediaKeyTap */ = {
 			isa = PBXGroup;
 			children = (
+				843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */,
+				843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */,
 				9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */,
 				9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */,
 			);
@@ -651,6 +657,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9728D89A158C3DA500C078A4 /* SPMediaKeyTap.h in Headers */,
+				843B578B19660680000898F2 /* NSObject+SPInvocationGrabbing.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -925,6 +932,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843B578C19660680000898F2 /* NSObject+SPInvocationGrabbing.m in Sources */,
 				9728D89B158C3DA500C078A4 /* SPMediaKeyTap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
