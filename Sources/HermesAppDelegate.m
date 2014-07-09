@@ -381,7 +381,7 @@
   [window orderFront:nil];
   [autoRetry invalidate];
 
-  // From the Pandora API Wiki ( http://pan-do-ra-api.wikia.com/wiki/Json/5#Error_codes ):
+  // From the unofficial Pandora API documentation ( http://6xq.net/playground/pandora-apidoc/json/errorcodes/ ):
   // code 0 == INTERNAL, "It can denote that your account has been temporarily blocked due to having too frequent station.getPlaylist calls."
   // code 1039 == PLAYLIST_EXCEEDED, "Returned on excessive calls to station.getPlaylist. Error self clears (probably 1 hour)."
   if (code != 0 && code != 1039) {

@@ -41,7 +41,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 /**
  * Pandora API method to use
  *
- * Complete list here: http://pan-do-ra-api.wikia.com/wiki/Json/5
+ * Complete list here: http://6xq.net/playground/pandora-apidoc/json/methods/
  */
 @property NSString *method;
 

@@ -3,7 +3,7 @@
  * @brief Implementation of the API with Pandora
  *
  * Currently this is an implementation of the JSON protocol version 5, as
- * documented here: http://pan-do-ra-api.wikia.com/wiki/Json/5
+ * documented here: http://6xq.net/playground/pandora-apidoc/json/
  */
 
 #include <string.h>
