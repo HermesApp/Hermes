@@ -157,7 +157,7 @@
   if (isOptionPressed && [self configureLogFile]) {
     _debugMode = YES;
     HMSLog("Starting in debug mode. Log file: %@", self.hermesLogFile);
-    [window setTitle:[NSString stringWithFormat:@"%@Hermes", self.debugMode ? DEBUG_MODE_TITLE_PREFIX : @""]];
+    [self updateWindowTitle];
   }
   
   if ([window respondsToSelector:@selector(setRestorable:)]) {
@@ -427,6 +427,7 @@
   /* Remove our credentials */
   [self saveUsername:@"" password:@""];
   [auth show];
+  [self updateWindowTitle];
 }
 
 + (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
@@ -652,7 +653,7 @@
 - (void) playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
   if ([stream isPlaying]) {
-    [window setTitle:[NSString stringWithFormat:@"%@%@", self.debugMode ? DEBUG_MODE_TITLE_PREFIX : @"", playback.playing.name]];
+    [self updateWindowTitle];
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
@@ -685,6 +686,15 @@
   }
 
   return YES;
+}
+
+- (void)updateWindowTitle {
+  NSString *debugTitlePrefix = self.debugMode ? DEBUG_MODE_TITLE_PREFIX : @"";
+  if (playback.playing != nil) {
+    [window setTitle:[NSString stringWithFormat:@"%@%@", debugTitlePrefix, playback.playing.name]];
+  } else {
+    [window setTitle:[NSString stringWithFormat:@"%@Hermes", debugTitlePrefix]];
+  }
 }
 
 #pragma mark - Logging facility
