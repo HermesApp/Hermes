@@ -1,3 +1,10 @@
+# Version 1.2.2 (7/12/14)
+
+* [fixed by @gbooker] Always re-grab media keys after opening other app that uses media keys (#184)
+* [changed by @winny-] Default to Notification Center type notifications
+* [fixed by @winny-] Small improvements to logging and the login UI
+* [added by @winny-, @nriley] Document keyboard shortcuts in [Documentation/KeyboardShortcuts.md](https://github.com/HermesApp/Hermes/blob/master/Documentation/KeyboardShortcuts.md)
+
 # Version 1.2.1 (5/29/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.1...v1.2.0)
