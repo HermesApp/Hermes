@@ -6,6 +6,8 @@
 
 @class Song;
 
+#define AD_MAX_DURATION 45
+
 @interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem> {
   IBOutlet NSProgressIndicator *songLoadingProgress;
 

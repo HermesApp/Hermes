@@ -250,6 +250,12 @@ BOOL playOnStart = YES;
     [previewPanel reloadData];
 }
 
+- (BOOL)songIsAdvertisement {
+  double duration;
+  [playing duration:&duration];
+  return duration < AD_MAX_DURATION;
+}
+
 /*
  * Called whenever a song starts playing, updates all fields to reflect that the
  * song is playing
@@ -257,6 +263,14 @@ BOOL playOnStart = YES;
 - (void)songPlayed: (NSNotification *)aNotification {
   Song *song = [playing playingSong];
   assert(song != nil);
+  
+  if ([self songIsAdvertisement]) {
+    [song setTitle:@"Commercial Advertisement"];
+    [song setArtist:@""];
+    [song setAlbum:@""];
+    [song setArt:@""];
+    HMSLog(@"Ad detected.");
+  }
 
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
