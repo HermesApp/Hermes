@@ -263,22 +263,24 @@ BOOL playOnStart = YES;
 - (void)songPlayed: (NSNotification *)aNotification {
   Song *song = [playing playingSong];
   assert(song != nil);
-  
-  if ([self songIsAdvertisement]) {
+
+  BOOL isAdvertisement = [self songIsAdvertisement];
+  if (isAdvertisement) {
     [song setTitle:@"Commercial Ad"];
     [song setArtist:@"Pandora"];
-    [song setAlbum:nil];
-    [song setTitleUrl:@"http://help.pandora.com/customer/portal/articles/162149-why-ads-"];
-    [song setArtistUrl:nil];
-    [song setAlbumUrl:nil];
-    [song setArt:[NSImage imageNamed:@"commercial-advertisement"]];
+    [song setAlbum:@""];
+    [song setTitleUrl:AD_INFO_URL];
+    [song setArtistUrl:AD_INFO_URL];
+    [song setAlbumUrl:AD_INFO_URL];
+    [song setArt:@""];
     HMSLog(@"Ad detected.");
   }
 
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
-      [art setImage: [NSImage imageNamed:@"missing-album"]];
+      NSString *defaultImageName = isAdvertisement ? @"commercial-advertisement" : @"missing-album";
+      [art setImage:[NSImage imageNamed:defaultImageName]];
       [GROWLER growl:song withImage:nil isNew:YES];
       [artLoading setHidden:YES];
       [artLoading stopAnimation:nil];

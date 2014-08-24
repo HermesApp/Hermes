@@ -7,6 +7,7 @@
 @class Song;
 
 #define AD_MAX_DURATION 45
+#define AD_INFO_URL @"http://help.pandora.com/customer/portal/articles/162149-why-ads-"
 
 @interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem> {
   IBOutlet NSProgressIndicator *songLoadingProgress;
