@@ -265,10 +265,13 @@ BOOL playOnStart = YES;
   assert(song != nil);
   
   if ([self songIsAdvertisement]) {
-    [song setTitle:@"Commercial Advertisement"];
-    [song setArtist:@""];
-    [song setAlbum:@""];
-    [song setArt:@""];
+    [song setTitle:@"Commercial Ad"];
+    [song setArtist:@"Pandora"];
+    [song setAlbum:nil];
+    [song setTitleUrl:@"http://help.pandora.com/customer/portal/articles/162149-why-ads-"];
+    [song setArtistUrl:nil];
+    [song setAlbumUrl:nil];
+    [song setArt:[NSImage imageNamed:@"commercial-advertisement"]];
     HMSLog(@"Ad detected.");
   }
 

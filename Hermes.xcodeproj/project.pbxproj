@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		4410AF1A19A9627F00D6E404 /* commercial-advertisement.png in Resources */ = {isa = PBXBuildFile; fileRef = 4410AF1919A9627F00D6E404 /* commercial-advertisement.png */; };
 		44310F8B18EB87AB0095359D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 44310F8A18EB87AB0095359D /* Credits.rtf */; };
 		44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 44411DA6190166FB00EC4E05 /* PandoraDevice.m */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
@@ -182,6 +183,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4410AF1919A9627F00D6E404 /* commercial-advertisement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "commercial-advertisement.png"; sourceTree = "<group>"; };
 		44310F8A18EB87AB0095359D /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		44411DA5190166FB00EC4E05 /* PandoraDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PandoraDevice.h; sourceTree = "<group>"; };
 		44411DA6190166FB00EC4E05 /* PandoraDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PandoraDevice.m; sourceTree = "<group>"; };
@@ -629,6 +631,7 @@
 		FAEFFBFF132D620B007DC6FB /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				4410AF1919A9627F00D6E404 /* commercial-advertisement.png */,
 				97E0DA34159EDF7C00BEA465 /* radio.png */,
 				97177199159EB0E200EE3355 /* music-note.png */,
 				97177193159EAA7D00EE3355 /* cd.png */,
@@ -852,6 +855,7 @@
 				FA7BF0321331832E00E26ADA /* zzs.png in Resources */,
 				FA7FD1E413325F6600DF66EB /* volume_up.png in Resources */,
 				FA85E6CE1333B257005C96B8 /* volume_down.icns in Resources */,
+				4410AF1A19A9627F00D6E404 /* commercial-advertisement.png in Resources */,
 				FAAB28CF1336FB0300FC04C4 /* pandora.icns in Resources */,
 				FAD42FA4136790DE00E935CA /* dsa_pub.pem in Resources */,
 				FA229D6514429E48008AB9FE /* history.png in Resources */,
