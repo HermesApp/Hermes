@@ -254,8 +254,9 @@ BOOL playOnStart = YES;
   Song *song = playing.playingSong;
   if (song != nil && song.advertisement == nil) {
     double duration;
-    [playing duration:&duration];
-    song.advertisement = [NSNumber numberWithBool:duration < AD_MAX_DURATION];
+    if ([playing duration:&duration]) {
+      song.advertisement = [NSNumber numberWithBool:duration < AD_MAX_DURATION];
+    }
     if (song.advertisement.boolValue) {
       HMSLog(@"Current song detected as advertisement (duration %f < AD_MAX_DURATION(%d))",
              duration,
@@ -334,7 +335,7 @@ BOOL playOnStart = YES;
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 
-  if ([[song nrating] intValue] == 1) {
+  if ([[song nrating] intValue] == 1 && ![self songIsAdvertisement]) {
     [toolbar setSelectedItemIdentifier:[like itemIdentifier]];
   } else {
     [toolbar setSelectedItemIdentifier:nil];
