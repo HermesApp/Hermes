@@ -34,7 +34,9 @@
 
   Song *s = [self representedObject];
   NSString *a = [s art];
-  if (a && ![a isEqual:@""]) {
+  if (s.advertisement.boolValue) {
+    art.image = [NSImage imageNamed:@"commercial-advertisement"];
+  } else if (a && ![a isEqual:@""]) {
     [[ImageLoader loader] loadImageURL:a callback:^(NSData* data) {
       NSImage *image = [[NSImage alloc] initWithData: data];
       [art setImage:image];

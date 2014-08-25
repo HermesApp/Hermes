@@ -98,16 +98,14 @@
 }
 
 - (void) updateUI {
-  Song *song = [self selectedItem];
+  Song *song = self.selectedItem;
   int rating = 0;
-  if (song && [[song station] shared]) {
+  if (song && (song.station.shared || song.advertisement.boolValue)) {
     [self setEnabledState:YES allowRating:NO];
-  }
-  else if (song) {
+  } else if (song) {
     [self setEnabledState:YES allowRating:YES];
-    rating = [[song nrating] intValue];
-  }
-  else {
+    rating = song.nrating.intValue;
+  } else {
     [self setEnabledState:NO allowRating:NO];
   }
 

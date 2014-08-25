@@ -251,9 +251,18 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL)songIsAdvertisement {
-  double duration;
-  [playing duration:&duration];
-  return duration < AD_MAX_DURATION;
+  Song *song = playing.playingSong;
+  if (song != nil && song.advertisement == nil) {
+    double duration;
+    [playing duration:&duration];
+    song.advertisement = [NSNumber numberWithBool:duration < AD_MAX_DURATION];
+    if (song.advertisement.boolValue) {
+      HMSLog(@"Current song detected as advertisement (duration %f < AD_MAX_DURATION(%d))",
+             duration,
+             AD_MAX_DURATION);
+    }
+  }
+  return song.advertisement.boolValue;
 }
 
 /*
@@ -598,7 +607,7 @@ BOOL playOnStart = YES;
 
   if (action == @selector(like:) || action == @selector(dislike:)) {
     Song *song = [playing playingSong];
-    if (song && ![playing shared]) {
+    if (song && ![playing shared] && ![self songIsAdvertisement]) {
       NSInteger rating = [[song nrating] integerValue];
       if (action == @selector(like:)) {
         [menuItem setState:rating == 1 ? NSOnState : NSOffState];
@@ -611,7 +620,7 @@ BOOL playOnStart = YES;
       return NO;
     }
   }
-
+  
   return YES;
 }
 
@@ -621,7 +630,7 @@ BOOL playOnStart = YES;
   }
 
   if (toolbarItem == like || toolbarItem == dislike) {
-    return [playing playingSong] && ![playing shared];
+    return [playing playingSong] && ![playing shared] && ![self songIsAdvertisement];
   }
   return YES;
 }

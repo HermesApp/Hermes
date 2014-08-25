@@ -4,36 +4,38 @@
 
 @implementation Song
 
-@synthesize artist, title, album, highUrl, stationId, nrating,
-  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl;
-
 #pragma mark - NSObject
 
 - (BOOL) isEqual:(id)object {
-  return [token isEqual:[object token]];
+  return [self.token isEqual:[object token]];
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"<%@ %p %@ - %@>", NSStringFromClass(self.class), self, self.artist, self.title];
+  return [NSString stringWithFormat:@"<%@ %p %@ - %@>",
+          NSStringFromClass(self.class),
+          self,
+          self.artist,
+          self.title];
 }
 
 #pragma mark - NSCoding
 
 - (id) initWithCoder: (NSCoder *)coder {
   if ((self = [super init])) {
-    [self setArtist:[coder decodeObjectForKey:@"artist"]];
-    [self setTitle:[coder decodeObjectForKey:@"title"]];
-    [self setAlbum:[coder decodeObjectForKey:@"album"]];
-    [self setArt:[coder decodeObjectForKey:@"art"]];
-    [self setHighUrl:[coder decodeObjectForKey:@"highUrl"]];
-    [self setMedUrl:[coder decodeObjectForKey:@"medUrl"]];
-    [self setLowUrl:[coder decodeObjectForKey:@"lowUrl"]];
-    [self setStationId:[coder decodeObjectForKey:@"stationId"]];
-    [self setNrating:[coder decodeObjectForKey:@"nrating"]];
-    [self setAlbumUrl:[coder decodeObjectForKey:@"albumUrl"]];
-    [self setArtistUrl:[coder decodeObjectForKey:@"artistUrl"]];
-    [self setTitleUrl:[coder decodeObjectForKey:@"titleUrl"]];
-    [self setToken:[coder decodeObjectForKey:@"token"]];
+    self.title         = [coder decodeObjectForKey:@"title"];
+    self.artist        = [coder decodeObjectForKey:@"artist"];
+    self.album         = [coder decodeObjectForKey:@"album"];
+    self.art           = [coder decodeObjectForKey:@"art"];
+    self.nrating       = [coder decodeObjectForKey:@"nrating"];
+    self.stationId     = [coder decodeObjectForKey:@"stationId"];
+    self.token         = [coder decodeObjectForKey:@"token"];
+    self.advertisement = [coder decodeObjectForKey:@"advertisement"];
+    self.titleUrl      = [coder decodeObjectForKey:@"titleUrl"];
+    self.artistUrl     = [coder decodeObjectForKey:@"artistUrl"];
+    self.albumUrl      = [coder decodeObjectForKey:@"albumUrl"];
+    self.lowUrl        = [coder decodeObjectForKey:@"lowUrl"];
+    self.medUrl        = [coder decodeObjectForKey:@"medUrl"];
+    self.highUrl       = [coder decodeObjectForKey:@"highUrl"];
   }
   return self;
 }
@@ -48,38 +50,40 @@
 #pragma mark - NSDistributedNotification user info
 
 - (NSDictionary*) toDictionary {
-  NSMutableDictionary *info = [NSMutableDictionary dictionary];
-  [info setValue: artist forKey:@"artist"];
-  [info setValue: title forKey:@"title"];
-  [info setValue: album forKey:@"album"];
-  [info setValue: art forKey:@"art"];
-  [info setValue: lowUrl forKey:@"lowUrl"];
-  [info setValue: medUrl forKey:@"medUrl"];
-  [info setValue: highUrl forKey:@"highUrl"];
-  [info setValue: stationId forKey:@"stationId"];
-  [info setValue: nrating forKey:@"nrating"];
-  [info setValue: albumUrl forKey:@"albumUrl"];
-  [info setValue: artistUrl forKey:@"artistUrl"];
-  [info setValue: titleUrl forKey:@"titleUrl"];
-  [info setValue: token forKey:@"token"];
-  return info;
+  return @{
+           @"title":         self.title,
+           @"artist":        self.artist,
+           @"album":         self.album,
+           @"art":           self.art,
+           @"nrating":       self.nrating,
+           @"stationId":     self.stationId,
+           @"token":         self.token,
+           @"advertisement": self.advertisement,
+           @"titleUrl":      self.titleUrl,
+           @"artistUrl":     self.artistUrl,
+           @"albumUrl":      self.albumUrl,
+           @"lowUrl":        self.lowUrl,
+           @"medUrl":        self.medUrl,
+           @"highUrl":       self.highUrl,
+           };
 }
 
 #pragma mark - Object Specifier
 
 - (NSScriptObjectSpecifier *) objectSpecifier {
-  NSScriptClassDescription *containerClassDesc =
-  [NSScriptClassDescription classDescriptionForClass:[Station class]];
+  NSScriptClassDescription *containerClassDesc = [NSScriptClassDescription
+                                                  classDescriptionForClass:[Station class]];
 
-  return [[NSNameSpecifier alloc]
-          initWithContainerClassDescription:containerClassDesc
-          containerSpecifier:nil key:@"songs" name:[self title]];
+  return [[NSNameSpecifier alloc] initWithContainerClassDescription:containerClassDesc
+                                                 containerSpecifier:nil
+                                                                key:@"songs"
+                                                               name:self.title];
 }
 
 #pragma mark - Reference to station
 
 - (Station*) station {
-  return [Station stationForToken:[self stationId]];
+  return [Station stationForToken:self.stationId];
 }
 
 @end

@@ -17,6 +17,8 @@
 @property NSString *medUrl;
 @property NSString *lowUrl;
 
+@property NSNumber *advertisement;
+
 - (NSDictionary*) toDictionary;
 - (BOOL) isEqual:(id)other;
 - (Station*) station;
