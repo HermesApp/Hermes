@@ -26,6 +26,7 @@
   // Playback related items
   IBOutlet NSToolbarItem *like;
   IBOutlet NSToolbarItem *dislike;
+  IBOutlet NSToolbarItem *tired;
   IBOutlet NSToolbarItem *playpause;
   IBOutlet NSSlider *volume;
   IBOutlet NSToolbar *toolbar;

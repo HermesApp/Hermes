@@ -282,7 +282,6 @@ BOOL playOnStart = YES;
     [song setArtistUrl:AD_INFO_URL];
     [song setAlbumUrl:AD_INFO_URL];
     [song setArt:@""];
-    HMSLog(@"Ad detected.");
   }
 
   /* Prevent a flicker by not loading the same image twice */
@@ -621,6 +620,10 @@ BOOL playOnStart = YES;
     }
   }
   
+  if (action == @selector(tired:) && [self songIsAdvertisement]) {
+    return NO;
+  }
+  
   return YES;
 }
 
@@ -632,6 +635,11 @@ BOOL playOnStart = YES;
   if (toolbarItem == like || toolbarItem == dislike) {
     return [playing playingSong] && ![playing shared] && ![self songIsAdvertisement];
   }
+  
+  if (toolbarItem == tired) {
+    return ![self songIsAdvertisement];
+  }
+  
   return YES;
 }
 
