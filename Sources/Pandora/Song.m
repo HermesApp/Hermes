@@ -29,7 +29,8 @@
     self.nrating       = [coder decodeObjectForKey:@"nrating"];
     self.stationId     = [coder decodeObjectForKey:@"stationId"];
     self.token         = [coder decodeObjectForKey:@"token"];
-    self.advertisement = [coder decodeObjectForKey:@"advertisement"];
+    NSNumber *ad       = [coder decodeObjectForKey:@"advertisement"];
+    self.advertisement = ([ad isEqual:[NSNull null]]) ? nil : ad;
     self.titleUrl      = [coder decodeObjectForKey:@"titleUrl"];
     self.artistUrl     = [coder decodeObjectForKey:@"artistUrl"];
     self.albumUrl      = [coder decodeObjectForKey:@"albumUrl"];
@@ -58,7 +59,7 @@
            @"nrating":       self.nrating,
            @"stationId":     self.stationId,
            @"token":         self.token,
-           @"advertisement": self.advertisement,
+           @"advertisement": (self.advertisement == nil) ? [NSNull null] : self.advertisement,
            @"titleUrl":      self.titleUrl,
            @"artistUrl":     self.artistUrl,
            @"albumUrl":      self.albumUrl,
