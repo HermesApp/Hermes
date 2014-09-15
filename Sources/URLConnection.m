@@ -176,6 +176,8 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
       host, kCFStreamPropertyHTTPProxyHost,
       [NSNumber numberWithInt:port], kCFStreamPropertyHTTPProxyPort,
+      host, kCFStreamPropertyHTTPSProxyHost,
+      [NSNumber numberWithInt:port], kCFStreamPropertyHTTPSProxyPort,
       nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
 }
