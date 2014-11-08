@@ -617,7 +617,7 @@
 
     NSImage *icon = [NSApp applicationIconImage];
     if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
-      icon = [NSImage imageNamed:@"pandora-black"];
+      icon = [NSImage imageNamed:@"Pandora-Menu-Template"];
     }
 
     NSSize size = {.width = 18, .height = 18};
