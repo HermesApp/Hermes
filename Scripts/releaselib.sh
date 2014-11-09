@@ -43,8 +43,9 @@ set_environment() {
     INT_VERSION=$(defaults read "$INFO_PLIST" CFBundleVersion)
     ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 
+    S3_BUCKET="hermesmacapp"
     HERMES_PAGES="$(dirname $SOURCE_ROOT)/hermes-pages"
-    DOWNLOAD_URL="https://s3.amazonaws.com/alexcrichton-hermes/$ARCHIVE_FILENAME"
+    DOWNLOAD_URL="https://s3.amazonaws.com/$S3_BUCKET/$ARCHIVE_FILENAME"
     RELEASENOTES_URL="http://hermesapp.org/changelog.html"
 }
 
@@ -111,5 +112,5 @@ upload_release() {
     information "Uploading $ARCHIVE_FILENAME to $DOWNLOAD_URL"
     cd "$BUILT_PRODUCTS_DIR"
 
-    s3cmd put --acl-public "$ARCHIVE_FILENAME" "s3://alexcrichton-hermes/$ARCHIVE_FILENAME"
+    s3cmd put --acl-public "$ARCHIVE_FILENAME" "s3://$S3_BUCKET/$ARCHIVE_FILENAME"
 }

@@ -1,3 +1,12 @@
+# Version 1.2.3 (11/9/14)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.2...v1.2.3)
+
+* [fixed by @vadimpanin] Fix HTTPS proxy support (#193)
+* [fixed by @cazierb] Fix issue with the Hermes menubar icon and the Yosemite dark theme (#198)
+* [added by @winny-] Add menu item Window → Main Window ⌘1
+* [changed by @winny-] Default to only show notifications for track change
+
 # Version 1.2.2 (7/12/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.1...v1.2.2)
