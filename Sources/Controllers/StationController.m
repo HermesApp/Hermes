@@ -74,6 +74,7 @@
   alikes = adislikes = nil;
   [likes reloadData];
   [dislikes reloadData];
+  [seedSearch setStringValue:@""];
   seeds = lastResults = nil;
   [seedsCurrent reloadData];
   [seedsResults reloadData];
@@ -125,8 +126,6 @@
   [deleteFeedback setEnabled:TRUE];
   seeds = info[@"seeds"];
   if ([cur_station allowAddMusic]) {
-    [seedAdd setEnabled:TRUE];
-    [seedDel setEnabled:TRUE];
     [seedSearch setEnabled:TRUE];
     [seedAdd setToolTip:@""];
     [seedDel setToolTip:@""];
@@ -159,25 +158,36 @@
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
+- (NSDictionary *)seedsWithNoEmptyKinds:(NSDictionary *)seedDictionary {
+  NSMutableDictionary *mutableSeeds = [seedDictionary mutableCopy];
+  for (NSString *seedKind in [mutableSeeds allKeys]) {
+    if ([mutableSeeds[seedKind] count] == 0)
+      [mutableSeeds removeObjectForKey:seedKind];
+  }
+  return [mutableSeeds copy];
+}
+
 #pragma mark - Search for a seed
 
 - (IBAction) searchSeeds:(id)sender {
+  NSString *searchTerms = [[seedSearch stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  if ([searchTerms length] == 0) {
+    lastResults = @{};
+    [seedsResults reloadData];
+    return;
+  }
   Pandora *pandora = [[NSApp delegate] pandora];
   [self showSpinner];
   [pandora search:[seedSearch stringValue]];
 }
 
 - (void) searchCompleted:(NSNotification*) not {
-  lastResults = [not userInfo];
-  [self hideSpinner];
+  lastResults = [self seedsWithNoEmptyKinds:[not userInfo]];
+  [seedsResults deselectAll:nil];
   [seedsResults reloadData];
-  for (NSString *string in [lastResults allKeys]) {
-    if ([lastResults[string] count] > 0) {
-      [seedsResults expandItem:string];
-    } else {
-      [seedsResults collapseItem:string];
-    }
-  }
+  for (NSString *category in [lastResults allKeys])
+    [seedsResults expandItem:category];
+  [self hideSpinner];
 }
 
 #pragma mark - Adding a seed
@@ -202,14 +212,16 @@
 - (void) seedAdded:(NSNotification*) not {
   [self hideSpinner];
   NSDictionary *seed = [not userInfo];
-  NSMutableArray *container;
-  if (seed[@"songName"] == nil) {
-    container = seeds[@"artists"];
-  } else {
-    container = seeds[@"songs"];
+  NSString *seedKind = (seed[@"songName"] == nil) ? @"artists" : @"songs";
+  NSMutableArray *container = seeds[seedKind];
+  if (container == nil) {
+    NSMutableDictionary *mutableSeeds = [seeds mutableCopy];
+    container = mutableSeeds[seedKind] = [NSMutableArray array];
+    seeds = [mutableSeeds copy];
   }
   [container addObject:seed];
   [seedsCurrent reloadData];
+  [seedsCurrent expandItem:seedKind];
 }
 
 #pragma mark - Delete a seed
@@ -256,6 +268,8 @@
       [arr removeObject:d];
     }];
   }
+
+  seeds = [self seedsWithNoEmptyKinds:seeds];
 
   [seedsCurrent deselectAll:nil];
   [seedsCurrent reloadData];
@@ -350,7 +364,7 @@
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
   NSDictionary *d = outlineView == seedsCurrent ? seeds : lastResults;
   if (item == nil) {
-    return [d allKeys][index];
+    return [[d allKeys] sortedArrayUsingSelector:@selector(compare:)][index];
   }
   return d[item][index];
 }
@@ -386,6 +400,25 @@
     return artist;
   }
   return [NSString stringWithFormat:@"%@ - %@", song, artist];
+}
+
+#pragma mark - NSOutlineViewDelegate
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item {
+  return [item isKindOfClass:[NSString class]];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
+  return ![item isKindOfClass:[NSString class]];
+}
+
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification {
+  NSOutlineView *outlineView = [notification object];
+  NSButton *button = nil;
+  if (outlineView == seedsResults)
+    button = seedAdd;
+  else if (outlineView == seedsCurrent)
+    button = seedDel;
+  [button setEnabled:[cur_station allowAddMusic] && ([outlineView numberOfSelectedRows] > 0)];
 }
 
 @end

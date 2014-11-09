@@ -555,8 +555,11 @@ static NSString *hierrs[] = {
     /* Seeds */
     NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
     NSDictionary *music = result[@"music"];
-    seeds[@"songs"] = music[@"songs"];
-    seeds[@"artists"] = music[@"artists"];
+    for (NSString *kind in @[@"songs", @"artists"]) {
+      NSArray *seedsOfKind = music[kind];
+      if ([seedsOfKind count] > 0)
+        seeds[kind] = seedsOfKind;
+    }
     info[@"seeds"] = seeds;
     
     /* Feedback */
