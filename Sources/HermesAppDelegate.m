@@ -219,7 +219,7 @@
     PLEASE_SCROBBLE:            @"0",
     ONLY_SCROBBLE_LIKED:        @"0",
     PLEASE_GROWL:               @"1",
-    PLEASE_GROWL_PLAY:          @"1",
+    PLEASE_GROWL_PLAY:          @"0",
     PLEASE_GROWL_NEW:           @"1",
     PLEASE_BIND_MEDIA:          @"1",
     PLEASE_CLOSE_DRAWER:        @"0",
