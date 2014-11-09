@@ -103,7 +103,8 @@ update_website() {
     ruby $HERMES_PAGES/_config/release.rb \
         "$VERSION" \
         "$PWD/versions.xml" \
-        "$PROJECT_DIR/CHANGELOG.md"
+        "$PROJECT_DIR/CHANGELOG.md" \
+        "$S3_BUCKET"
     # Stop logging
     set +x
 }
