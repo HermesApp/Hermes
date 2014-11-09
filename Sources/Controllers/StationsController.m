@@ -199,7 +199,12 @@
   Station *s = st[rowIndex];
   if ([[aTableColumn identifier] isEqual:@"image"]) {
     if ([s isEqual:[self playingStation]]) {
-      return [NSImage imageNamed:@"volume_up"];
+      static NSImage *playingImage;
+      if (playingImage == nil) {
+        playingImage = [NSImage imageNamed:@"volume_up"];
+        [playingImage setTemplate:YES];
+      }
+      return playingImage;
     }
 
     return nil;
