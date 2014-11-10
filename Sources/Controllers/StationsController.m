@@ -215,7 +215,7 @@
 
 #pragma mark - NSTableViewDelegate protocol
 
-- (BOOL)tableView:(NSTableView *)tableView shouldTypeSelectForEvent:(NSEvent *)event withCurrentSearchString:(NSString *)searchString NS_AVAILABLE_MAC(10_5) {
+- (BOOL)tableView:(NSTableView *)tableView shouldTypeSelectForEvent:(NSEvent *)event withCurrentSearchString:(NSString *)searchString {
   if (searchString == nil && [[event characters] isEqualToString:@" "]) {
     [[[NSApp delegate] playback] playpause:nil];
   }
@@ -228,7 +228,7 @@
 - (id)outlineView:(NSOutlineView*)oview child:(NSInteger)index ofItem:(id)item {
   if (oview == results) {
     if (item == nil) {
-      return [lastResults allKeys][index];
+      return [[lastResults allKeys] sortedArrayUsingSelector:@selector(compare:)][index];
     }
 
     return lastResults[item][index];
@@ -276,6 +276,15 @@
   NSString *str = item[@"categoryName"];
   if (str != nil) return str;
   return item[@"stationName"];
+}
+
+#pragma mark - NSOutlineViewDelegate
+- (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item {
+  return [item isKindOfClass:[NSString class]];
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
+  return ![item isKindOfClass:[NSString class]];
 }
 
 #pragma mark - Other callbacks

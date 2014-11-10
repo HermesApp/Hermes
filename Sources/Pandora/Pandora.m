@@ -723,6 +723,12 @@ static NSString *hierrs[] = {
 - (BOOL) search: (NSString*) search {
   NSLogd(@"Searching for %@...", search);
 
+  search = [search stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  if ([search length] == 0) {
+    [self sendNotification:PandoraDidLoadSearchResultsNotification withUserInfo:@{}];
+    return YES;
+  }
+
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"searchText"] = search;
 

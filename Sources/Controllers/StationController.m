@@ -170,12 +170,6 @@
 #pragma mark - Search for a seed
 
 - (IBAction) searchSeeds:(id)sender {
-  NSString *searchTerms = [[seedSearch stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-  if ([searchTerms length] == 0) {
-    lastResults = @{};
-    [seedsResults reloadData];
-    return;
-  }
   Pandora *pandora = [[NSApp delegate] pandora];
   [self showSpinner];
   [pandora search:[seedSearch stringValue]];
