@@ -545,8 +545,13 @@ static NSString *hierrs[] = {
     
     /* General metadata */
     info[@"name"] = result[@"stationName"];
-    uint64_t created = [result[@"dateCreated"][@"time"] longLongValue];
-    info[@"created"] = [NSDate dateWithTimeIntervalSince1970:created];
+    NSDictionary *dateCreated = result[@"dateCreated"];
+    NSDateComponents *created = [[NSDateComponents alloc] init];
+    created.year = 2000 + [dateCreated[@"year"] integerValue];
+    created.month = 1 + [dateCreated[@"month"] integerValue];
+    created.day = [dateCreated[@"date"] integerValue];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    info[@"created"] = [gregorian dateFromComponents:created];
     NSString *art = result[@"artUrl"];
     if (art != nil) { info[@"art"] = art; }
     info[@"genres"] = result[@"genre"];
