@@ -22,6 +22,10 @@
 
 BOOL playOnStart = YES;
 
+@interface NSToolbarItem ()
+- (void)_setAllPossibleLabelsToFit:(NSArray *)toolbarItemLabels;
+@end
+
 @implementation PlaybackController
 
 @synthesize playing;
@@ -102,6 +106,10 @@ BOOL playOnStart = YES;
                                                       selector:@selector(playOnScreenUnlock:)
                                                           name:AppleScreenIsUnlockedDistributedNotification
                                                         object:nil];
+
+  // This has been SPI forever, but will stop the toolbar icons from sliding around.
+  if ([playpause respondsToSelector:@selector(_setAllPossibleLabelsToFit:)])
+    [playpause _setAllPossibleLabelsToFit:@[@"Play", @"Pause"]];
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */
@@ -203,10 +211,12 @@ BOOL playOnStart = YES;
   if ([playing isPlaying]) {
     NSLogd(@"Stream playing: %@", playing.playingSong);
     [playpause setImage:[NSImage imageNamed:@"pause"]];
+    [playpause setLabel:@"Pause"];
     [self startUpdatingProgress];
   } else if ([playing isPaused]) {
     NSLogd(@"Stream paused.");
     [playpause setImage:[NSImage imageNamed:@"play"]];
+    [playpause setLabel:@"Play"];
     [self stopUpdatingProgress];
   }
 }

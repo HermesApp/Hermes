@@ -784,7 +784,7 @@
 							<object class="NSMutableString" key="NSToolbarItemIdentifier">
 								<characters key="NS.bytes">91BF9814-7597-4F20-9F06-D93EB56DD5A8</characters>
 							</object>
-							<string key="NSToolbarItemLabel">Play/Pause</string>
+							<string key="NSToolbarItemLabel">Play</string>
 							<string key="NSToolbarItemPaletteLabel">Play/Pause</string>
 							<string key="NSToolbarItemToolTip">Play/pause the current song</string>
 							<nil key="NSToolbarItemView"/>
@@ -1536,7 +1536,7 @@
 										<int key="NSvFlags">274</int>
 										<string key="NSFrameSize">{295, 252}</string>
 										<reference key="NSSuperview" ref="674650116"/>
-										<reference key="NSNextKeyView" ref="489077160"/>
+										<reference key="NSNextKeyView" ref="965969471"/>
 										<string key="NSReuseIdentifierKey">_NS:80</string>
 										<string key="NSMinGridSize">{0, 0}</string>
 										<string key="NSMaxGridSize">{0, 0}</string>
@@ -1603,7 +1603,7 @@
 						</array>
 						<string key="NSFrame">{{0, 26}, {297, 254}}</string>
 						<reference key="NSSuperview" ref="302320606"/>
-						<reference key="NSNextKeyView" ref="965969471"/>
+						<reference key="NSNextKeyView" ref="674650116"/>
 						<string key="NSReuseIdentifierKey">_NS:76</string>
 						<int key="NSsFlags">133650</int>
 						<reference key="NSVScroller" ref="489077160"/>
@@ -1660,7 +1660,6 @@
 							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{-2, -4}, {484, 311}}</string>
 							<reference key="NSSuperview" ref="931582578"/>
-							<reference key="NSNextKeyView" ref="467281768"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="900239470">
@@ -1682,7 +1681,7 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{428, 185}</string>
 																<reference key="NSSuperview" ref="407281338"/>
-																<reference key="NSNextKeyView" ref="378584589"/>
+																<reference key="NSNextKeyView" ref="580234420"/>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 																<bool key="NSControlAllowsExpansionToolTips">YES</bool>
@@ -1776,7 +1775,7 @@
 												</array>
 												<string key="NSFrame">{{17, 44}, {430, 187}}</string>
 												<reference key="NSSuperview" ref="467281768"/>
-												<reference key="NSNextKeyView" ref="580234420"/>
+												<reference key="NSNextKeyView" ref="407281338"/>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="378584589"/>
 												<reference key="NSHScroller" ref="580234420"/>
@@ -1984,7 +1983,7 @@
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{428, 214}</string>
 																<reference key="NSSuperview" ref="404025826"/>
-																<reference key="NSNextKeyView" ref="402084673"/>
+																<reference key="NSNextKeyView" ref="772614982"/>
 																<string key="NSReuseIdentifierKey">_NS:13</string>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -2084,7 +2083,7 @@
 												</array>
 												<string key="NSFrame">{{17, 46}, {430, 216}}</string>
 												<reference key="NSSuperview" ref="674966923"/>
-												<reference key="NSNextKeyView" ref="772614982"/>
+												<reference key="NSNextKeyView" ref="404025826"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="402084673"/>
@@ -2596,7 +2595,6 @@
 						</set>
 						<string key="NSFrame">{{205, 7}, {16, 16}}</string>
 						<reference key="NSSuperview" ref="926887804"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="452826405">
 							<int key="NSCellFlags">134217728</int>
@@ -2624,7 +2622,6 @@
 						</set>
 						<string key="NSFrame">{{68, 7}, {16, 16}}</string>
 						<reference key="NSSuperview" ref="926887804"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSImageCell" key="NSCell" id="1043514573">
 							<int key="NSCellFlags">134217728</int>
@@ -2716,7 +2713,6 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{207, 281}, {13, 19}}</string>
 						<reference key="NSSuperview" ref="926887804"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="420497757">
 							<int key="NSCellFlags">-2080374784</int>
@@ -2747,7 +2743,6 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{207, 265}, {13, 19}}</string>
 						<reference key="NSSuperview" ref="926887804"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="162643456">
 							<int key="NSCellFlags">-2080374784</int>
@@ -2771,7 +2766,6 @@
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{207, 249}, {13, 19}}</string>
 						<reference key="NSSuperview" ref="926887804"/>
-						<reference key="NSNextKeyView"/>
 						<bool key="NSEnabled">YES</bool>
 						<object class="NSButtonCell" key="NSCell" id="810374793">
 							<int key="NSCellFlags">-2080374784</int>
@@ -4126,7 +4120,6 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{133, 10}, {465, 270}}</string>
 							<reference key="NSSuperview" ref="428729247"/>
-							<reference key="NSNextKeyView" ref="486578404"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="893053427">
@@ -4148,7 +4141,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{198, 149}</string>
 																<reference key="NSSuperview" ref="751513465"/>
-																<reference key="NSNextKeyView" ref="993286289"/>
+																<reference key="NSNextKeyView" ref="1020813569"/>
 																<string key="NSReuseIdentifierKey">_NS:13</string>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -4246,7 +4239,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 												</array>
 												<string key="NSFrame">{{17, 40}, {200, 151}}</string>
 												<reference key="NSSuperview" ref="486578404"/>
-												<reference key="NSNextKeyView" ref="1020813569"/>
+												<reference key="NSNextKeyView" ref="751513465"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="993286289"/>
@@ -4270,7 +4263,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{198, 149}</string>
 																<reference key="NSSuperview" ref="716782003"/>
-																<reference key="NSNextKeyView" ref="1035732141"/>
+																<reference key="NSNextKeyView" ref="86040627"/>
 																<string key="NSReuseIdentifierKey">_NS:13</string>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -4368,7 +4361,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 												</array>
 												<string key="NSFrame">{{228, 40}, {200, 151}}</string>
 												<reference key="NSSuperview" ref="486578404"/>
-												<reference key="NSNextKeyView" ref="86040627"/>
+												<reference key="NSNextKeyView" ref="716782003"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSsFlags">133650</int>
 												<reference key="NSVScroller" ref="1035732141"/>
@@ -4535,7 +4528,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 																<int key="NSvFlags">301</int>
 																<string key="NSFrameSize">{198, 135}</string>
 																<reference key="NSSuperview" ref="923436224"/>
-																<reference key="NSNextKeyView" ref="804718272"/>
+																<reference key="NSNextKeyView" ref="452431697"/>
 																<string key="NSReuseIdentifierKey">_NS:13</string>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -4656,7 +4649,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 												</array>
 												<string key="NSFrame">{{17, 43}, {200, 153}}</string>
 												<reference key="NSSuperview" ref="1072934160"/>
-												<reference key="NSNextKeyView" ref="452431697"/>
+												<reference key="NSNextKeyView" ref="923436224"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSsFlags">133682</int>
 												<reference key="NSVScroller" ref="804718272"/>
@@ -4681,7 +4674,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 																<int key="NSvFlags">256</int>
 																<string key="NSFrameSize">{198, 135}</string>
 																<reference key="NSSuperview" ref="535451288"/>
-																<reference key="NSNextKeyView" ref="1055878354"/>
+																<reference key="NSNextKeyView" ref="200130878"/>
 																<string key="NSReuseIdentifierKey">_NS:13</string>
 																<bool key="NSEnabled">YES</bool>
 																<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -4805,7 +4798,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 												</array>
 												<string key="NSFrame">{{228, 43}, {200, 153}}</string>
 												<reference key="NSSuperview" ref="1072934160"/>
-												<reference key="NSNextKeyView" ref="200130878"/>
+												<reference key="NSNextKeyView" ref="535451288"/>
 												<string key="NSReuseIdentifierKey">_NS:9</string>
 												<int key="NSsFlags">133682</int>
 												<reference key="NSVScroller" ref="1055878354"/>
@@ -11481,1385 +11474,7 @@ y7bMNcy1zTXNtc42zrbPN8+40DnQutE80b7SP9LB00TTxtRJ1MvVTtXR1lXW2Ndc1+DYZNjo2WzZ8dp2
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AuthController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="authenticate:">id</string>
-						<string key="logout:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="authenticate:">
-							<string key="name">authenticate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="logout:">
-							<string key="name">logout:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="error">NSImageView</string>
-						<string key="errorText">NSTextField</string>
-						<string key="login">NSButton</string>
-						<string key="password">NSSecureTextField</string>
-						<string key="spinner">NSProgressIndicator</string>
-						<string key="username">NSTextField</string>
-						<string key="view">NSView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="error">
-							<string key="name">error</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="errorText">
-							<string key="name">errorText</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="login">
-							<string key="name">login</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="password">
-							<string key="name">password</string>
-							<string key="candidateClassName">NSSecureTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="spinner">
-							<string key="name">spinner</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="username">
-							<string key="name">username</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="view">
-							<string key="name">view</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/AuthController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">AuthController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="authenticate:">id</string>
-						<string key="logout:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="authenticate:">
-							<string key="name">authenticate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="logout:">
-							<string key="name">logout:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/AuthController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">Growler</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Integration/Growler.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HermesAppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="activate:">id</string>
-						<string key="changelog:">id</string>
-						<string key="donate:">id</string>
-						<string key="hermesHomepage:">id</string>
-						<string key="hermesOnGitHub:">id</string>
-						<string key="reportAnIssue:">id</string>
-						<string key="retry:">id</string>
-						<string key="showHistoryDrawer:">id</string>
-						<string key="showStationsDrawer:">id</string>
-						<string key="toggleDrawerContent:">id</string>
-						<string key="toggleDrawerVisible:">id</string>
-						<string key="updateAlwaysOnTop:">id</string>
-						<string key="updateStatusBarIcon:">id</string>
-						<string key="updateStatusBarIconColor:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="activate:">
-							<string key="name">activate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="changelog:">
-							<string key="name">changelog:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="donate:">
-							<string key="name">donate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hermesHomepage:">
-							<string key="name">hermesHomepage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hermesOnGitHub:">
-							<string key="name">hermesOnGitHub:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="reportAnIssue:">
-							<string key="name">reportAnIssue:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="retry:">
-							<string key="name">retry:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showHistoryDrawer:">
-							<string key="name">showHistoryDrawer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showStationsDrawer:">
-							<string key="name">showStationsDrawer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDrawerContent:">
-							<string key="name">toggleDrawerContent:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDrawerVisible:">
-							<string key="name">toggleDrawerVisible:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateAlwaysOnTop:">
-							<string key="name">updateAlwaysOnTop:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateStatusBarIcon:">
-							<string key="name">updateStatusBarIcon:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateStatusBarIconColor:">
-							<string key="name">updateStatusBarIconColor:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="auth">AuthController</string>
-						<string key="currentArtist">NSMenuItem</string>
-						<string key="currentSong">NSMenuItem</string>
-						<string key="drawerToggle">NSToolbarItem</string>
-						<string key="errorButton">NSButton</string>
-						<string key="errorLabel">NSTextField</string>
-						<string key="errorView">NSView</string>
-						<string key="growler">Growler</string>
-						<string key="history">HistoryController</string>
-						<string key="loadingIcon">NSProgressIndicator</string>
-						<string key="loadingView">NSView</string>
-						<string key="mediaKeyTap">SPMediaKeyTap</string>
-						<string key="networkManager">NetworkConnection</string>
-						<string key="newStationSheet">NSWindow</string>
-						<string key="playback">PlaybackController</string>
-						<string key="playbackState">NSMenuItem</string>
-						<string key="preferences">PreferencesController</string>
-						<string key="scrobbler">Scrobbler</string>
-						<string key="station">StationController</string>
-						<string key="stations">StationsController</string>
-						<string key="statusBarMenu">NSMenu</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="auth">
-							<string key="name">auth</string>
-							<string key="candidateClassName">AuthController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="currentArtist">
-							<string key="name">currentArtist</string>
-							<string key="candidateClassName">NSMenuItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="currentSong">
-							<string key="name">currentSong</string>
-							<string key="candidateClassName">NSMenuItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="drawerToggle">
-							<string key="name">drawerToggle</string>
-							<string key="candidateClassName">NSToolbarItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="errorButton">
-							<string key="name">errorButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="errorLabel">
-							<string key="name">errorLabel</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="errorView">
-							<string key="name">errorView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="growler">
-							<string key="name">growler</string>
-							<string key="candidateClassName">Growler</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="history">
-							<string key="name">history</string>
-							<string key="candidateClassName">HistoryController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="loadingIcon">
-							<string key="name">loadingIcon</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="loadingView">
-							<string key="name">loadingView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mediaKeyTap">
-							<string key="name">mediaKeyTap</string>
-							<string key="candidateClassName">SPMediaKeyTap</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="networkManager">
-							<string key="name">networkManager</string>
-							<string key="candidateClassName">NetworkConnection</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="newStationSheet">
-							<string key="name">newStationSheet</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playback">
-							<string key="name">playback</string>
-							<string key="candidateClassName">PlaybackController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playbackState">
-							<string key="name">playbackState</string>
-							<string key="candidateClassName">NSMenuItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="preferences">
-							<string key="name">preferences</string>
-							<string key="candidateClassName">PreferencesController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="scrobbler">
-							<string key="name">scrobbler</string>
-							<string key="candidateClassName">Scrobbler</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="station">
-							<string key="name">station</string>
-							<string key="candidateClassName">StationController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stations">
-							<string key="name">stations</string>
-							<string key="candidateClassName">StationsController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="statusBarMenu">
-							<string key="name">statusBarMenu</string>
-							<string key="candidateClassName">NSMenu</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/HermesAppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HermesAppDelegate</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="activate:">id</string>
-						<string key="changelog:">id</string>
-						<string key="donate:">id</string>
-						<string key="hermesHomepage:">id</string>
-						<string key="hermesOnGitHub:">id</string>
-						<string key="reportAnIssue:">id</string>
-						<string key="showHistoryDrawer:">id</string>
-						<string key="showMainWindow:">id</string>
-						<string key="showStationsDrawer:">id</string>
-						<string key="toggleDrawerContent:">id</string>
-						<string key="toggleDrawerVisible:">id</string>
-						<string key="updateAlwaysOnTop:">id</string>
-						<string key="updateStatusBarIcon:">id</string>
-						<string key="updateStatusBarIconColor:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="activate:">
-							<string key="name">activate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="changelog:">
-							<string key="name">changelog:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="donate:">
-							<string key="name">donate:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hermesHomepage:">
-							<string key="name">hermesHomepage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="hermesOnGitHub:">
-							<string key="name">hermesOnGitHub:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="reportAnIssue:">
-							<string key="name">reportAnIssue:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showHistoryDrawer:">
-							<string key="name">showHistoryDrawer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showMainWindow:">
-							<string key="name">showMainWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showStationsDrawer:">
-							<string key="name">showStationsDrawer:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDrawerContent:">
-							<string key="name">toggleDrawerContent:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleDrawerVisible:">
-							<string key="name">toggleDrawerVisible:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateAlwaysOnTop:">
-							<string key="name">updateAlwaysOnTop:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateStatusBarIcon:">
-							<string key="name">updateStatusBarIcon:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="updateStatusBarIconColor:">
-							<string key="name">updateStatusBarIconColor:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/HermesAppDelegate.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HistoryCollectionView</string>
-					<string key="superclassName">NSCollectionView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/HistoryCollectionView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HistoryController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="dislikeSelected:">id</string>
-						<string key="gotoAlbum:">id</string>
-						<string key="gotoArtist:">id</string>
-						<string key="gotoSong:">id</string>
-						<string key="likeSelected:">id</string>
-						<string key="showLyrics:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="dislikeSelected:">
-							<string key="name">dislikeSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoAlbum:">
-							<string key="name">gotoAlbum:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoArtist:">
-							<string key="name">gotoArtist:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoSong:">
-							<string key="name">gotoSong:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="likeSelected:">
-							<string key="name">likeSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showLyrics:">
-							<string key="name">showLyrics:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="collection">NSCollectionView</string>
-						<string key="controller">NSArrayController</string>
-						<string key="dislike">NSButton</string>
-						<string key="drawer">NSDrawer</string>
-						<string key="like">NSButton</string>
-						<string key="lyrics">NSButton</string>
-						<string key="pandoraAlbum">NSButton</string>
-						<string key="pandoraArtist">NSButton</string>
-						<string key="pandoraSong">NSButton</string>
-						<string key="songs">NSMutableArray</string>
-						<string key="spinner">NSProgressIndicator</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="collection">
-							<string key="name">collection</string>
-							<string key="candidateClassName">NSCollectionView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="controller">
-							<string key="name">controller</string>
-							<string key="candidateClassName">NSArrayController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="dislike">
-							<string key="name">dislike</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="drawer">
-							<string key="name">drawer</string>
-							<string key="candidateClassName">NSDrawer</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="like">
-							<string key="name">like</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="lyrics">
-							<string key="name">lyrics</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pandoraAlbum">
-							<string key="name">pandoraAlbum</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pandoraArtist">
-							<string key="name">pandoraArtist</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="pandoraSong">
-							<string key="name">pandoraSong</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="songs">
-							<string key="name">songs</string>
-							<string key="candidateClassName">NSMutableArray</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="spinner">
-							<string key="name">spinner</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/HistoryController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HistoryController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="dislikeSelected:">id</string>
-						<string key="gotoAlbum:">id</string>
-						<string key="gotoArtist:">id</string>
-						<string key="gotoSong:">id</string>
-						<string key="likeSelected:">id</string>
-						<string key="showLyrics:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="dislikeSelected:">
-							<string key="name">dislikeSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoAlbum:">
-							<string key="name">gotoAlbum:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoArtist:">
-							<string key="name">gotoArtist:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoSong:">
-							<string key="name">gotoSong:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="likeSelected:">
-							<string key="name">likeSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showLyrics:">
-							<string key="name">showLyrics:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/HistoryController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HistoryItem</string>
-					<string key="superclassName">NSCollectionViewItem</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Models/HistoryItem.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">HistoryView</string>
-					<string key="superclassName">NSView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/HistoryView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NetworkConnection</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/NetworkConnection.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PlaybackController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="albumURL:">id</string>
-						<string key="artistURL:">id</string>
-						<string key="decreaseVolume:">id</string>
-						<string key="dislike:">id</string>
-						<string key="increaseVolume:">id</string>
-						<string key="like:">id</string>
-						<string key="loadMore:">id</string>
-						<string key="next:">id</string>
-						<string key="playpause:">id</string>
-						<string key="quickLookArt:">id</string>
-						<string key="songURL:">id</string>
-						<string key="tired:">id</string>
-						<string key="volumeChanged:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="albumURL:">
-							<string key="name">albumURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="artistURL:">
-							<string key="name">artistURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="decreaseVolume:">
-							<string key="name">decreaseVolume:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="dislike:">
-							<string key="name">dislike:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="increaseVolume:">
-							<string key="name">increaseVolume:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="like:">
-							<string key="name">like:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="loadMore:">
-							<string key="name">loadMore:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="next:">
-							<string key="name">next:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playpause:">
-							<string key="name">playpause:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="quickLookArt:">
-							<string key="name">quickLookArt:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="songURL:">
-							<string key="name">songURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="tired:">
-							<string key="name">tired:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="volumeChanged:">
-							<string key="name">volumeChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="albumLabel">NSTextField</string>
-						<string key="art">NSButton</string>
-						<string key="artLoading">NSProgressIndicator</string>
-						<string key="artistLabel">NSTextField</string>
-						<string key="dislike">NSToolbarItem</string>
-						<string key="like">NSToolbarItem</string>
-						<string key="playbackProgress">NSLevelIndicator</string>
-						<string key="playbackView">NSView</string>
-						<string key="playpause">NSToolbarItem</string>
-						<string key="progressLabel">NSTextField</string>
-						<string key="songLabel">NSTextField</string>
-						<string key="songLoadingProgress">NSProgressIndicator</string>
-						<string key="toolbar">NSToolbar</string>
-						<string key="volume">NSSlider</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="albumLabel">
-							<string key="name">albumLabel</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="art">
-							<string key="name">art</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="artLoading">
-							<string key="name">artLoading</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="artistLabel">
-							<string key="name">artistLabel</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="dislike">
-							<string key="name">dislike</string>
-							<string key="candidateClassName">NSToolbarItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="like">
-							<string key="name">like</string>
-							<string key="candidateClassName">NSToolbarItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playbackProgress">
-							<string key="name">playbackProgress</string>
-							<string key="candidateClassName">NSLevelIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playbackView">
-							<string key="name">playbackView</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playpause">
-							<string key="name">playpause</string>
-							<string key="candidateClassName">NSToolbarItem</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="progressLabel">
-							<string key="name">progressLabel</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="songLabel">
-							<string key="name">songLabel</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="songLoadingProgress">
-							<string key="name">songLoadingProgress</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbar">
-							<string key="name">toolbar</string>
-							<string key="candidateClassName">NSToolbar</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="volume">
-							<string key="name">volume</string>
-							<string key="candidateClassName">NSSlider</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/PlaybackController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PlaybackController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="albumURL:">id</string>
-						<string key="artistURL:">id</string>
-						<string key="decreaseVolume:">id</string>
-						<string key="dislike:">id</string>
-						<string key="increaseVolume:">id</string>
-						<string key="like:">id</string>
-						<string key="loadMore:">id</string>
-						<string key="next:">id</string>
-						<string key="playpause:">id</string>
-						<string key="quickLookArt:">id</string>
-						<string key="songURL:">id</string>
-						<string key="tired:">id</string>
-						<string key="volumeChanged:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="albumURL:">
-							<string key="name">albumURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="artistURL:">
-							<string key="name">artistURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="decreaseVolume:">
-							<string key="name">decreaseVolume:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="dislike:">
-							<string key="name">dislike:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="increaseVolume:">
-							<string key="name">increaseVolume:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="like:">
-							<string key="name">like:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="loadMore:">
-							<string key="name">loadMore:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="next:">
-							<string key="name">next:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playpause:">
-							<string key="name">playpause:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="quickLookArt:">
-							<string key="name">quickLookArt:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="songURL:">
-							<string key="name">songURL:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="tired:">
-							<string key="name">tired:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="volumeChanged:">
-							<string key="name">volumeChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/PlaybackController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PreferencesController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="bindMediaChanged:">id</string>
-						<string key="show:">id</string>
-						<string key="showGeneral:">id</string>
-						<string key="showNetwork:">id</string>
-						<string key="showPlayback:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="bindMediaChanged:">
-							<string key="name">bindMediaChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="show:">
-							<string key="name">show:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showGeneral:">
-							<string key="name">showGeneral:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showNetwork:">
-							<string key="name">showNetwork:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showPlayback:">
-							<string key="name">showPlayback:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="general">NSView</string>
-						<string key="network">NSView</string>
-						<string key="notificationEnabled">NSButton</string>
-						<string key="notificationType">NSPopUpButton</string>
-						<string key="playback">NSView</string>
-						<string key="toolbar">NSToolbar</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="general">
-							<string key="name">general</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="network">
-							<string key="name">network</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="notificationEnabled">
-							<string key="name">notificationEnabled</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="notificationType">
-							<string key="name">notificationType</string>
-							<string key="candidateClassName">NSPopUpButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="playback">
-							<string key="name">playback</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="toolbar">
-							<string key="name">toolbar</string>
-							<string key="candidateClassName">NSToolbar</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/PreferencesController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">PreferencesController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="bindMediaChanged:">id</string>
-						<string key="show:">id</string>
-						<string key="showGeneral:">id</string>
-						<string key="showNetwork:">id</string>
-						<string key="showPlayback:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="bindMediaChanged:">
-							<string key="name">bindMediaChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="show:">
-							<string key="name">show:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showGeneral:">
-							<string key="name">showGeneral:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showNetwork:">
-							<string key="name">showNetwork:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="showPlayback:">
-							<string key="name">showPlayback:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/PreferencesController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SPMediaKeyTap</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../ImportedSources/SPMediaKeyTap/SPMediaKeyTap.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">Scrobbler</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Integration/Scrobbler.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StationController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addSeed:">id</string>
-						<string key="deleteFeedback:">id</string>
-						<string key="deleteSeed:">id</string>
-						<string key="gotoPandora:">id</string>
-						<string key="renameStation:">id</string>
-						<string key="searchSeeds:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addSeed:">
-							<string key="name">addSeed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteFeedback:">
-							<string key="name">deleteFeedback:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSeed:">
-							<string key="name">deleteSeed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoPandora:">
-							<string key="name">gotoPandora:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="renameStation:">
-							<string key="name">renameStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="searchSeeds:">
-							<string key="name">searchSeeds:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="art">NSImageView</string>
-						<string key="deleteFeedback">NSButton</string>
-						<string key="dislikes">NSTableView</string>
-						<string key="gotoStation">NSButton</string>
-						<string key="likes">NSTableView</string>
-						<string key="progress">NSProgressIndicator</string>
-						<string key="seedAdd">NSButton</string>
-						<string key="seedDel">NSButton</string>
-						<string key="seedSearch">NSTextField</string>
-						<string key="seedsCurrent">NSOutlineView</string>
-						<string key="seedsResults">NSOutlineView</string>
-						<string key="stationCreated">NSTextField</string>
-						<string key="stationGenres">NSTextField</string>
-						<string key="stationName">NSTextField</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="art">
-							<string key="name">art</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="deleteFeedback">
-							<string key="name">deleteFeedback</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="dislikes">
-							<string key="name">dislikes</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="gotoStation">
-							<string key="name">gotoStation</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="likes">
-							<string key="name">likes</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="progress">
-							<string key="name">progress</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="seedAdd">
-							<string key="name">seedAdd</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="seedDel">
-							<string key="name">seedDel</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="seedSearch">
-							<string key="name">seedSearch</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="seedsCurrent">
-							<string key="name">seedsCurrent</string>
-							<string key="candidateClassName">NSOutlineView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="seedsResults">
-							<string key="name">seedsResults</string>
-							<string key="candidateClassName">NSOutlineView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stationCreated">
-							<string key="name">stationCreated</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stationGenres">
-							<string key="name">stationGenres</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stationName">
-							<string key="name">stationName</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/StationController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StationController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addSeed:">id</string>
-						<string key="deleteFeedback:">id</string>
-						<string key="deleteSeed:">id</string>
-						<string key="gotoPandora:">id</string>
-						<string key="renameStation:">id</string>
-						<string key="searchSeeds:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addSeed:">
-							<string key="name">addSeed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteFeedback:">
-							<string key="name">deleteFeedback:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSeed:">
-							<string key="name">deleteSeed:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="gotoPandora:">
-							<string key="name">gotoPandora:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="renameStation:">
-							<string key="name">renameStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="searchSeeds:">
-							<string key="name">searchSeeds:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/StationController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StationsController</string>
-					<string key="superclassName">NSObject</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addStation:">id</string>
-						<string key="cancelCreateStation:">id</string>
-						<string key="createStation:">id</string>
-						<string key="createStationGenre:">id</string>
-						<string key="deleteSelected:">id</string>
-						<string key="editSelected:">id</string>
-						<string key="playSelected:">id</string>
-						<string key="refreshList:">id</string>
-						<string key="search:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addStation:">
-							<string key="name">addStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelCreateStation:">
-							<string key="name">cancelCreateStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createStation:">
-							<string key="name">createStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createStationGenre:">
-							<string key="name">createStationGenre:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSelected:">
-							<string key="name">deleteSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editSelected:">
-							<string key="name">editSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playSelected:">
-							<string key="name">playSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="refreshList:">
-							<string key="name">refreshList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="search:">
-							<string key="name">search:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="errorIndicator">NSImageView</string>
-						<string key="genreSpinner">NSProgressIndicator</string>
-						<string key="genres">NSOutlineView</string>
-						<string key="results">NSOutlineView</string>
-						<string key="search">NSTextField</string>
-						<string key="searchSpinner">NSProgressIndicator</string>
-						<string key="sort">NSSegmentedControl</string>
-						<string key="stations">NSDrawer</string>
-						<string key="stationsRefreshing">NSProgressIndicator</string>
-						<string key="stationsTable">NSTableView</string>
-						<string key="view">NSView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="errorIndicator">
-							<string key="name">errorIndicator</string>
-							<string key="candidateClassName">NSImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="genreSpinner">
-							<string key="name">genreSpinner</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="genres">
-							<string key="name">genres</string>
-							<string key="candidateClassName">NSOutlineView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="results">
-							<string key="name">results</string>
-							<string key="candidateClassName">NSOutlineView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="search">
-							<string key="name">search</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="searchSpinner">
-							<string key="name">searchSpinner</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="sort">
-							<string key="name">sort</string>
-							<string key="candidateClassName">NSSegmentedControl</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stations">
-							<string key="name">stations</string>
-							<string key="candidateClassName">NSDrawer</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stationsRefreshing">
-							<string key="name">stationsRefreshing</string>
-							<string key="candidateClassName">NSProgressIndicator</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="stationsTable">
-							<string key="name">stationsTable</string>
-							<string key="candidateClassName">NSTableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="view">
-							<string key="name">view</string>
-							<string key="candidateClassName">NSView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/StationsController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StationsController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="addStation:">id</string>
-						<string key="cancelCreateStation:">id</string>
-						<string key="createStation:">id</string>
-						<string key="createStationGenre:">id</string>
-						<string key="deleteSelected:">id</string>
-						<string key="editSelected:">id</string>
-						<string key="playSelected:">id</string>
-						<string key="refreshList:">id</string>
-						<string key="search:">id</string>
-						<string key="toggleSort:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="addStation:">
-							<string key="name">addStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="cancelCreateStation:">
-							<string key="name">cancelCreateStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createStation:">
-							<string key="name">createStation:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="createStationGenre:">
-							<string key="name">createStationGenre:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="deleteSelected:">
-							<string key="name">deleteSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="editSelected:">
-							<string key="name">editSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="playSelected:">
-							<string key="name">playSelected:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="refreshList:">
-							<string key="name">refreshList:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="search:">
-							<string key="name">search:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="toggleSort:">
-							<string key="name">toggleSort:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/StationsController.m</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">StationsTableView</string>
-					<string key="superclassName">NSTableView</string>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">playButton</string>
-						<string key="NS.object.0">NSButton</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">playButton</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">playButton</string>
-							<string key="candidateClassName">NSButton</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">../Sources/Controllers/StationsTableView.h</string>
-					</object>
-				</object>
-			</array>
-			<array class="NSMutableArray" key="referencedPartialClassDescriptionsV3.2+">
-				<object class="IBPartialClassDescription">
-					<string key="className">PDFView</string>
-					<string key="superclassName">NSView</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="goBack:">id</string>
-						<string key="goForward:">id</string>
-						<string key="goToFirstPage:">id</string>
-						<string key="goToLastPage:">id</string>
-						<string key="goToNextPage:">id</string>
-						<string key="goToPreviousPage:">id</string>
-						<string key="selectAll:">id</string>
-						<string key="takeBackgroundColorFrom:">id</string>
-						<string key="zoomIn:">id</string>
-						<string key="zoomOut:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="goBack:">
-							<string key="name">goBack:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goForward:">
-							<string key="name">goForward:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToFirstPage:">
-							<string key="name">goToFirstPage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToLastPage:">
-							<string key="name">goToLastPage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToNextPage:">
-							<string key="name">goToNextPage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="goToPreviousPage:">
-							<string key="name">goToPreviousPage:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="selectAll:">
-							<string key="name">selectAll:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="takeBackgroundColorFrom:">
-							<string key="name">takeBackgroundColorFrom:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="zoomIn:">
-							<string key="name">zoomIn:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="zoomOut:">
-							<string key="name">zoomOut:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Quartz.framework/Frameworks/PDFKit.framework/Headers/PDFView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">QCView</string>
-					<string key="superclassName">NSView</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="play:">id</string>
-						<string key="start:">id</string>
-						<string key="stop:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="play:">
-							<string key="name">play:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="start:">
-							<string key="name">start:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="stop:">
-							<string key="name">stop:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Quartz.framework/Frameworks/QuartzComposer.framework/Headers/QCView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">SUUpdater</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">checkForUpdates:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">checkForUpdates:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">checkForUpdates:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="NSMutableDictionary" key="outlets">
-						<string key="NS.key.0">delegate</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<string key="NS.key.0">delegate</string>
-						<object class="IBToOneOutletInfo" key="NS.object.0">
-							<string key="name">delegate</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBFrameworkSource</string>
-						<string key="minorKey">Sparkle.framework/Headers/SUUpdater.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.previouslyAttemptedUpgradeToXcode5">YES</bool>
