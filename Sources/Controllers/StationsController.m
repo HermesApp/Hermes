@@ -184,6 +184,10 @@
   return size;
 }
 
+- (void)drawerWillClose:(NSNotification *)notification {
+  PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_STA);
+}
+
 #pragma mark - NSTableViewDataSource protocol
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)aTableView {

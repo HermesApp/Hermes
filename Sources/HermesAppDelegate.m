@@ -564,11 +564,9 @@
       break;
     case DRAWER_HISTORY:
       [history hideDrawer];
-      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_HIST);
       break;
     case DRAWER_STATIONS:
       [stations hideDrawer];
-      PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_STA);
       break;
   }
 }

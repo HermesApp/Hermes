@@ -164,6 +164,10 @@
   return size;
 }
 
+- (void)drawerWillClose:(NSNotification *)notification {
+  PREF_KEY_SET_INT(OPEN_DRAWER, DRAWER_NONE_HIST);
+}
+
 - (void) showDrawer {
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   NSSize s;
