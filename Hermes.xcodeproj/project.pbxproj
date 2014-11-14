@@ -91,7 +91,6 @@
 		FA3CFF44132FC4CF003554E2 /* PlaybackController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA3CFF43132FC4CF003554E2 /* PlaybackController.m */; };
 		FA454685156604D100EE98C7 /* blowfish.c in Sources */ = {isa = PBXBuildFile; fileRef = FA454683156604D100EE98C7 /* blowfish.c */; };
 		FA560C511331701E00215F71 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = FA560C501331701E00215F71 /* ImageLoader.m */; };
-		FA570770156D700900AD5E66 /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = FA57076F156D700900AD5E66 /* action.png */; };
 		FA6E801B1438E4B700D01FB5 /* Growl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA6E801D1438E50C00D01FB5 /* Growler.m */; };
 		FA6E801F1438E96F00D01FB5 /* Growl.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FA6E801A1438E4B700D01FB5 /* Growl.framework */; };
@@ -284,7 +283,6 @@
 		FA454684156604D100EE98C7 /* blowfish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = blowfish.h; path = ../ImportedSources/blowfish/blowfish.h; sourceTree = "<group>"; };
 		FA560C4F1331701E00215F71 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLoader.h; path = Models/ImageLoader.h; sourceTree = "<group>"; };
 		FA560C501331701E00215F71 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageLoader.m; path = Models/ImageLoader.m; sourceTree = "<group>"; };
-		FA57076F156D700900AD5E66 /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action.png; sourceTree = "<group>"; };
 		FA6E801A1438E4B700D01FB5 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
 		FA6E801C1438E50C00D01FB5 /* Growler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Growler.h; path = Integration/Growler.h; sourceTree = "<group>"; };
 		FA6E801D1438E50C00D01FB5 /* Growler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Growler.m; path = Integration/Growler.m; sourceTree = "<group>"; };
@@ -635,7 +633,6 @@
 				97E0DA34159EDF7C00BEA465 /* radio.png */,
 				97177199159EB0E200EE3355 /* music-note.png */,
 				97177193159EAA7D00EE3355 /* cd.png */,
-				FA57076F156D700900AD5E66 /* action.png */,
 				FA04AE9A14438F1000819310 /* thumbdown.png */,
 				FA04AE9B14438F1000819310 /* thumbup.png */,
 				FA229D6414429E48008AB9FE /* history.png */,
@@ -862,7 +859,6 @@
 				FA04AE9D14438F1000819310 /* thumbup.png in Resources */,
 				FA0E555A14784A3000C36794 /* Hermes.sdef in Resources */,
 				C63F129919FDE4FF00C3055E /* Pandora-Menu-Template.pdf in Resources */,
-				FA570770156D700900AD5E66 /* action.png in Resources */,
 				44310F8B18EB87AB0095359D /* Credits.rtf in Resources */,
 				97177194159EAA7D00EE3355 /* cd.png in Resources */,
 				9717719A159EB0E200EE3355 /* music-note.png in Resources */,
