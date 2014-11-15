@@ -205,7 +205,7 @@
     if ([s isEqual:[self playingStation]]) {
       static NSImage *playingImage;
       if (playingImage == nil) {
-        playingImage = [NSImage imageNamed:@"volume_up"];
+        playingImage = [[NSImage imageNamed:@"volume_up"] copy];
         [playingImage setTemplate:YES];
       }
       return playingImage;
