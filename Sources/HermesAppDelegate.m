@@ -611,20 +611,34 @@
   [statusItem setMenu:statusBarMenu];
   [statusItem setHighlightMode:YES];
 
-  [self updateStatusBarIconColor:sender];
+  statusItemImageName = @"";
+  [self updateStatusBarIconImage:sender];
 }
 
-- (IBAction) updateStatusBarIconColor:(id)sender {
-    /* If we have a status menu item, then set it here */
+- (IBAction) updateStatusBarIconImage:(id)sender {
+  if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
+    return;
 
-    NSImage *icon = [NSApp applicationIconImage];
-    if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
-      icon = [NSImage imageNamed:@"Pandora-Menu-Template"];
-    }
+  NSString *imageName = nil;
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW))
+    imageName = (playback.playing.isPlaying) ? @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause";
 
-    NSSize size = {.width = 18, .height = 18};
-    [icon setSize:size];
-    [statusItem setImage:icon];
+  if (imageName == statusItemImageName)
+    return;
+
+  NSImage *icon;
+  if (imageName == nil) {
+    icon = [[NSApp applicationIconImage] copy];
+  } else {
+    icon = [NSImage imageNamed:imageName];
+    [icon setTemplate:YES];
+  }
+
+  NSSize size = {.width = 18, .height = 18};
+  [icon setSize:size];
+
+  [statusItem setImage:icon];
+  statusItemImageName = imageName;
 }
 
 - (IBAction) updateAlwaysOnTop:(id)sender {
@@ -660,6 +674,7 @@
   } else {
     [playbackState setTitle:@"Play"];
   }
+  [self updateStatusBarIconImage:nil];
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {

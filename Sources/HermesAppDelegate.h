@@ -41,6 +41,7 @@
   IBOutlet NSMenuItem *currentSong;
   IBOutlet NSMenuItem *currentArtist;
   IBOutlet NSMenuItem *playbackState;
+  NSString *statusItemImageName;
 }
 
 @property (readonly) Pandora *pandora;
@@ -82,7 +83,7 @@
 - (IBAction) showHistoryDrawer:(id)sender;
 - (IBAction) activate:(id)sender;
 - (IBAction) updateStatusBarIcon:(id)sender;
-- (IBAction) updateStatusBarIconColor:(id)sender;
+- (IBAction) updateStatusBarIconImage:(id)sender;
 - (IBAction) updateAlwaysOnTop:(id)sender;
 
 /**
