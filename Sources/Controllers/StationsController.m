@@ -339,18 +339,27 @@
   }
   [[NSApp delegate] handleDrawer];
 
+  BOOL isAscending = YES;
+  NSInteger otherSegment = SORT_DATE;
   switch (PREF_KEY_INT(SORT_STATIONS)) {
-    case SORT_NAME_ASC:
     case SORT_NAME_DSC:
+      isAscending = NO;
+    case SORT_NAME_ASC:
       [sort setSelectedSegment:SORT_NAME];
+      otherSegment = SORT_DATE;
       break;
 
-    case SORT_DATE_ASC:
     case SORT_DATE_DSC:
+      isAscending = NO;
+    case SORT_DATE_ASC:
     default:
       [sort setSelectedSegment:SORT_DATE];
+      otherSegment = SORT_NAME;
       break;
   }
+  [sort setImage:nil forSegment:otherSegment];
+  [sort setImage:
+   [NSImage imageNamed:isAscending ? @"NSAscendingSortIndicator" : @"NSDescendingSortIndicator"] forSegment:[sort selectedSegment]];
 }
 
 /* Called whenever search results are received */
@@ -513,17 +522,25 @@
 }
 
 - (IBAction) toggleSort:(id)sender {
-  int cur = PREF_KEY_INT(SORT_STATIONS);
+  NSInteger cur = PREF_KEY_INT(SORT_STATIONS);
+  NSInteger otherSegment = SORT_NAME;
+  BOOL isAscending = NO;
   switch ([sender selectedSegment]) {
     case SORT_NAME:
-      PREF_KEY_SET_INT(SORT_STATIONS, cur == SORT_NAME_ASC ? SORT_NAME_DSC :
-                                                             SORT_NAME_ASC);
+      cur = (cur == SORT_NAME_ASC) ? SORT_NAME_DSC : SORT_NAME_ASC;
+      isAscending = (cur == SORT_NAME_ASC);
+      otherSegment = SORT_DATE;
       break;
     case SORT_DATE:
-      PREF_KEY_SET_INT(SORT_STATIONS, cur == SORT_DATE_ASC ? SORT_DATE_DSC :
-                                                             SORT_DATE_ASC);
+      cur = (cur == SORT_DATE_ASC) ? SORT_DATE_DSC : SORT_DATE_ASC;
+      otherSegment = SORT_NAME;
+      isAscending = (cur == SORT_DATE_ASC);
       break;
   }
+  PREF_KEY_SET_INT(SORT_STATIONS, cur);
+  [sender setImage:nil forSegment:otherSegment];
+  [sender setImage:
+   [NSImage imageNamed:isAscending ? @"NSAscendingSortIndicator" : @"NSDescendingSortIndicator"] forSegment:[sender selectedSegment]];
   [self sortStations];
   [stationsTable reloadData];
 }
