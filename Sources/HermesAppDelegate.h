@@ -71,7 +71,6 @@
 - (void) tryRetry;
 - (void) handleDrawer;
 
-- (IBAction) donate:(id)sender;
 - (IBAction) changelog:(id)sender;
 - (IBAction) hermesOnGitHub:(id)sender;
 - (IBAction) reportAnIssue:(id)sender;
