@@ -1,3 +1,11 @@
+# Version 1.2.4 (12/26/14)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.3...v1.2.4)
+
+* [fixed by @nriley] General UI clean up to the seed editor and main Hermes window
+* [added by @Djspaceg, @nriley] Play/pause menubar icons
+* [changed by @winny-] Stop asking for donations
+
 # Version 1.2.3 (11/9/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.2...v1.2.3)
