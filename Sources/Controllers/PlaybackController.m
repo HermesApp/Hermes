@@ -88,6 +88,19 @@ BOOL playOnStart = YES;
      selector:@selector(songPlayed:)
      name:StationDidPlaySongNotification
      object:nil];
+
+  CIFilter *volumeSliderFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"]; // 10.9+
+  if (volumeSliderFilter != nil)
+    [volume setContentFilters:@[volumeSliderFilter]];
+
+  CIFilter *playbackProgressFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"]; // 10.9+
+  if (playbackProgressFilter == nil) {
+    playbackProgressFilter = [CIFilter filterWithName:@"CIColorMonochrome"];
+    [playbackProgressFilter setDefaults];
+    [playbackProgressFilter setValue:[CIColor colorWithRed:0 green:0 blue:0] forKey:@"inputColor"];
+  }
+  if (playbackProgressFilter != nil)
+    [playbackProgress setContentFilters:@[playbackProgressFilter]];
   
   // NSDistributedNotificationCenter is for interprocess communication.
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
