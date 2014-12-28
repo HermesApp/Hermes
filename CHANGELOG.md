@@ -1,3 +1,9 @@
+# Version 1.2.5 (12/28/14)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.4...v1.2.5)
+
+* [fixed my @nriley] Restore Mac OS X 10.7 support
+
 # Version 1.2.4 (12/26/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.3...v1.2.4)
