@@ -444,7 +444,7 @@ static NSString *hierrs[] = {
   [station setShared:        [s[@"isShared"] boolValue]];
   [station setAllowAddMusic: [s[@"allowAddMusic"] boolValue]];
   [station setAllowRename:   [s[@"allowRename"] boolValue]];
-  [station setCreated:       [s[@"dateCreated"][@"time"] integerValue]];
+  [station setCreated:       [s[@"dateCreated"][@"time"] unsignedLongLongValue]];
   [station setRadio:self];
   
   if ([s[@"isQuickMix"] boolValue]) {

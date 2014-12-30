@@ -13,7 +13,7 @@
 @property NSString *name;
 @property NSString *token;
 @property NSString *stationId;
-@property UInt32 created;
+@property unsigned long long created;
 @property Song *playingSong;
 @property BOOL shared;
 @property BOOL allowRename;
