@@ -15,7 +15,6 @@
 #import "Pandora/Song.h"
 #import "Pandora/Station.h"
 #import "PreferencesController.h"
-#import <SBJson/SBJson.h>
 #import "URLConnection.h"
 #import "Notifications.h"
 #import "PandoraDevice.h"
@@ -168,8 +167,6 @@ static NSString *hierrs[] = {
   if ((self = [super init])) {
     stations = [[NSMutableArray alloc] init];
     retries  = 0;
-    json_parser = [[SBJsonParser alloc] init];
-    json_writer = [[SBJsonWriter alloc] init];
     self.device = [PandoraDevice android];
   }
   return self;
@@ -824,7 +821,7 @@ static NSString *hierrs[] = {
   [nsrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   /* Create the body */
-  NSData *data = [json_writer dataWithObject: [request request]];
+  NSData *data = [NSJSONSerialization dataWithJSONObject:request.request options:nil error:nil];
   if ([request encrypted]) { data = [self encryptData:data]; }
   [nsrequest setHTTPBody: data];
   
@@ -835,9 +832,7 @@ static NSString *hierrs[] = {
                       /* Parse the JSON if we don't have an error */
                       NSDictionary *dict = nil;
                       if (e == nil) {
-                        NSString *s = [[NSString alloc] initWithData:d
-                                                            encoding:NSUTF8StringEncoding];
-                        dict = [json_parser objectWithString:s error:&e];
+                        dict = [NSJSONSerialization JSONObjectWithData:d options:nil error:&e];
                       }
                       /* If we still don't have an error, look at the JSON for an error */
                       NSString *err = e == nil ? nil : [e localizedDescription];

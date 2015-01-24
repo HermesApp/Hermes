@@ -5,8 +5,6 @@
 //  Created by Alex Crichton on 10/9/11.
 //
 
-#import <SBJson/SBJson.h>
-
 #import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "FileReader.h"
@@ -201,10 +199,8 @@
   URLConnection *conn = [URLConnection connectionForRequest:req
                                   completionHandler:^(NSData *d, NSError *err) {
     if (err == nil) {
-      SBJsonParser *parser = [[SBJsonParser alloc] init];
-      NSString *s = [[NSString alloc] initWithData:d
-                                          encoding:NSUTF8StringEncoding];
-      NSDictionary *object = [parser objectWithString:s error:&err];
+
+      NSDictionary *object = [NSJSONSerialization JSONObjectWithData:d options:nil error:&err];
       if (err == nil) {
         NSString *url = object[@"url"];
         [spinner setHidden:YES];

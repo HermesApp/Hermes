@@ -7,8 +7,6 @@
  * which could probably use some polishing...
  */
 
-#import <SBJson/SBJson.h>
-
 #import "Keychain.h"
 #import "PreferencesController.h"
 #import "Scrobbler.h"
@@ -28,7 +26,6 @@
   if (!(self = [super init])) { return self; }
 
   engine = [[FMEngine alloc] init];
-  parser = [[SBJsonParser alloc] init];
   sessionToken = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
   if ([@"" isEqualToString:sessionToken]) {
     sessionToken = nil;
@@ -75,9 +72,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
       return;
     }
 
-    NSString *s = [[NSString alloc] initWithData:data
-                                        encoding:NSUTF8StringEncoding];
-    NSDictionary *object = [parser objectWithString:s error:&error];
+    NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
 
     /* If this is a last.fm error, however, then this is a serious issue which
      * may need to be addressed manually, so do display a dialog here */
