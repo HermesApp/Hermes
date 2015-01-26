@@ -594,7 +594,7 @@
 
     /* Causes underlying window to activate briefly, but no other solution I could find */
     [NSApp hide:nil];
-    dispatch_async(dispatch_get_current_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
       TransformProcessType(&psn, kProcessTransformToUIElementApplication);
       [NSApp activateIgnoringOtherApps:YES];
       [[NSApp mainWindow] makeKeyAndOrderFront:nil]; // restores mouse cursor
