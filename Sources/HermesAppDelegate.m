@@ -483,12 +483,14 @@
   [history showDrawer];
   [drawerToggle setImage:[NSImage imageNamed:@"radio"]];
   [drawerToggle setToolTip: @"Show station list"];
+  drawerToggle.paletteLabel = drawerToggle.label = @"Stations";
 }
 
 - (void) stationsShow {
   [stations showDrawer];
   [drawerToggle setImage:[NSImage imageNamed:@"history"]];
   [drawerToggle setToolTip: @"Show song history"];
+  drawerToggle.paletteLabel = drawerToggle.label = @"History";
 }
 
 - (IBAction) showHistoryDrawer:(id)sender {
