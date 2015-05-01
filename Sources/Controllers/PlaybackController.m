@@ -123,6 +123,9 @@ BOOL playOnStart = YES;
   // This has been SPI forever, but will stop the toolbar icons from sliding around.
   if ([playpause respondsToSelector:@selector(_setAllPossibleLabelsToFit:)])
     [playpause _setAllPossibleLabelsToFit:@[@"Play", @"Pause"]];
+  
+  // prevent dragging the progress slider
+  [playbackProgress setEnabled:NO];
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */
