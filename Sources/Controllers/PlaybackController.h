@@ -15,7 +15,7 @@
   IBOutlet NSTextField *artistLabel;
   IBOutlet NSTextField *songLabel;
   IBOutlet NSTextField *progressLabel;
-  IBOutlet NSLevelIndicator *playbackProgress;
+  IBOutlet NSSlider *playbackProgress;
   IBOutlet NSButton *art;
   IBOutlet NSProgressIndicator *artLoading;
   IBOutlet NSTextField *albumLabel;
