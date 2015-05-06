@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>pandora.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.alexcrichton.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.5</string>
+	<string>1.2.6</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2030</string>
+	<string>2035</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.music</string>
 	<key>LSMinimumSystemVersion</key>

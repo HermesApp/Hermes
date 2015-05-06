@@ -1,3 +1,13 @@
+# Version 1.2.6 (5/6/15)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.5...v1.2.6)
+
+* [changed by @winny-] Dropped support for Mac OS X 10.8 and earlier
+* [changed by @winny-] Use Apple's JSON parser instead of SBJSON (#213)
+* [fixed by @nriley] Station sort-by-date works again (#209)
+* [fixed by @Aahung] Toolbar 'Station' button's text now correctly reads as "Station" (#224)
+* [added by @Aahung] Playback progress bar replaced with iTunes-like progress bar (#223)
+
 # Version 1.2.5 (12/28/14)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.4...v1.2.5)
