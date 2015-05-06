@@ -81,7 +81,7 @@ build_versions_fragment() {
 <item>
 <title>Version $VERSION</title>
 <sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>
-<sparkle:minimumSystemVersion>10.6</sparkle:minimumSystemVersion>
+<sparkle:minimumSystemVersion>$MACOSX_DEPLOYMENT_TARGET</sparkle:minimumSystemVersion>
 <pubDate>$PUBDATE</pubDate>
 <enclosure
 url="$DOWNLOAD_URL"
