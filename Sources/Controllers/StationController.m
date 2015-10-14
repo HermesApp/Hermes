@@ -274,19 +274,14 @@
 
 - (void) seedFailedDeletion:(NSNotification*) not {
   NSAlert *alert =
-    [NSAlert
-      alertWithMessageText:@"Cannot delete all seeds from a station"
-      defaultButton:@"OK"
-      alternateButton:nil
-      otherButton:nil
-      informativeTextWithFormat:@"There must always be at least one seed"];
+  [[NSAlert alloc] init];
+  [alert setMessageText:@"Cannot delete all seeds from a station"];
+  [alert addButtonWithTitle:@"OK"];
+  [alert setInformativeText:@"There must always be at least one seed"];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert setIcon:[NSImage imageNamed:@"error_icon"]];
 
-  [alert beginSheetModalForWindow:window
-      modalDelegate:nil
-      didEndSelector:nil
-      contextInfo:NULL];
+  [alert beginSheetModalForWindow:window completionHandler:nil];
 
   [self hideSpinner];
   [seedsCurrent setEnabled:TRUE];

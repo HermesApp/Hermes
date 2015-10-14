@@ -547,7 +547,7 @@ static NSString *hierrs[] = {
     created.year = 2000 + [dateCreated[@"year"] integerValue];
     created.month = 1 + [dateCreated[@"month"] integerValue];
     created.day = [dateCreated[@"date"] integerValue];
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     info[@"created"] = [gregorian dateFromComponents:created];
     NSString *art = result[@"artUrl"];
     if (art != nil) { info[@"art"] = art; }

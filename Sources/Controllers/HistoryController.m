@@ -211,10 +211,7 @@
     NSAlert *alert = [NSAlert alertWithError:err];
     [alert setMessageText:@"Couldn't open lyrics"];
     [alert setInformativeText:[err localizedDescription]];
-    [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                      modalDelegate:nil
-                     didEndSelector:nil
-                        contextInfo:nil];
+    [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
   }];
 
   [conn setHermesProxy];

@@ -119,10 +119,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   message = [header stringByAppendingString:message];
   [alert setMessageText:message];
   [alert addButtonWithTitle:@"OK"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:nil
-                      contextInfo:nil];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
 }
 
 /**
@@ -217,10 +214,26 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   [alert setMessageText:@"Hermes needs authorization to scrobble on last.fm"];
   [alert addButtonWithTitle:@"OK"];
   [alert addButtonWithTitle:@"Cancel"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:@selector(openAuthorization:returnCode:contextInfo:)
-                      contextInfo:nil];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSInteger returnCode) {
+    if (returnCode != NSAlertFirstButtonReturn) {
+      return;
+    }
+    
+    NSString *authURL = [NSString stringWithFormat:
+                         @"http://www.last.fm/api/auth/?api_key=%@&token=%@",
+                         _LASTFM_API_KEY_, authToken];
+    NSURL *url = [NSURL URLWithString:authURL];
+    
+    [[NSWorkspace sharedWorkspace] openURL:url];
+    
+    /* Give the user some time to give us permission. Then try to get the session
+     key again */
+    timer = [NSTimer scheduledTimerWithTimeInterval:20
+                                             target:self
+                                           selector:@selector(fetchSessionToken)
+                                           userInfo:nil
+                                            repeats:NO];
+  }];
 }
 
 /**

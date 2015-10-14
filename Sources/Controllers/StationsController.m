@@ -499,19 +499,31 @@
   }
 
   NSAlert *alert =
-    [NSAlert
-      alertWithMessageText:@"Are you sure you want to delete this station?"
-      defaultButton:@"Cancel"
-      alternateButton:nil
-      otherButton:@"OK"
-      informativeTextWithFormat:@"You cannot undo this deletion"];
+  [[NSAlert alloc] init];
+  [alert setMessageText:@"Are you sure you want to delete this station?"];
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert addButtonWithTitle:@"OK"];
+  [alert setInformativeText:@"You cannot undo this deletion"];
   [alert setAlertStyle:NSWarningAlertStyle];
   [alert setIcon:[NSImage imageNamed:@"error_icon"]];
 
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-      modalDelegate:self
-      didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
-      contextInfo:NULL];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSInteger result) {
+    Station *selected = [self selectedStation];
+    
+    // -1 means that OK was hit (it's not the default
+    if (result != -1) {
+      return;
+    }
+    
+    if ([selected isEqual: [self playingStation]]) {
+      [[[NSApp delegate] playback] playStation: nil];
+      [[NSApp delegate] setCurrentView:view];
+    }
+    
+    [stationsRefreshing setHidden:NO];
+    [stationsRefreshing startAnimation:nil];
+    [[self pandora] removeStation:[selected token]];
+  }];
 }
 
 - (IBAction)editSelected:(id)sender {
