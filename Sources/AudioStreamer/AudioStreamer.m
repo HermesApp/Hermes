@@ -55,6 +55,7 @@ typedef struct queued_packet {
 
 NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
+NSString * const ASDidChangeStateDistributedNotification = @"hermes.state";
 
 @interface AudioStreamer ()
 
@@ -482,6 +483,27 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   [[NSNotificationCenter defaultCenter]
         postNotificationName:ASStatusChangedNotification
                       object:self];
+  
+  NSString *statusString = nil;
+  switch (aStatus) {
+    case AS_PLAYING:
+      statusString = @"playing";
+      break;
+    case AS_PAUSED:
+      statusString = @"paused";
+      break;
+    case AS_STOPPED:
+      statusString = @"stopped";
+    default:
+      break;
+  }
+  if (statusString) {
+    [[NSDistributedNotificationCenter defaultCenter]
+     postNotificationName:ASDidChangeStateDistributedNotification
+     object:@"hermes"
+     userInfo:@{@"state":statusString}
+     deliverImmediately: YES];
+  }
 }
 
 /**
