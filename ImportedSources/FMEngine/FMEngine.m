@@ -47,7 +47,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
 
   if(![httpMethod isEqualToString:@"POST"]) {
     NSURL *dataURL = [self generateURLFromDictionary:params];
-    request = [NSURLRequest requestWithURL:dataURL];
+    request = [NSMutableURLRequest requestWithURL:dataURL];
   } else {
     #ifdef _USE_JSON_
     request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_LASTFM_BASEURL_ @"?format=json"]];
