@@ -50,7 +50,7 @@ and Winston Weinert</string>
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://hermesapp.org/versions.xml</string>
+	<string>https://raw.githubusercontent.com/HermesApp/HermesApp.github.io/master/versions.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 	<key>SUShowReleaseNotes</key>
