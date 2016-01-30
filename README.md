@@ -1,9 +1,14 @@
 Hermes
 ======
 
+
 [![Build Status](https://travis-ci.org/HermesApp/Hermes.svg?branch=master)](https://travis-ci.org/HermesApp/Hermes)
 
 A [Pandora](http://www.pandora.com) client for OS X.
+
+### This project needs a new maintainer
+
+If you're interested in fixing up Hermes and taking over all responsibilities, please reply to this [GitHub issue (237)](https://github.com/HermesApp/Hermes/issues/237).
 
 ### Download Hermes
 
