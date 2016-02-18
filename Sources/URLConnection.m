@@ -13,7 +13,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 
   switch (eventType) {
     case kCFStreamEventHasBytesAvailable:
-      if ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
+      while ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
         [conn->bytes appendBytes:buf length:len];
       }
       return;
