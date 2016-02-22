@@ -21,6 +21,7 @@ typedef enum {
 @interface Scrobbler : NSObject {
   FMEngine *engine;
   NSString *authToken;
+  NSString *isAlreadyAuth;
   NSString *sessionToken;
   NSTimer *timer;
   SBJsonParser *parser;

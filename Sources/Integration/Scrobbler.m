@@ -27,8 +27,10 @@
 
   engine = [[FMEngine alloc] init];
   sessionToken = KeychainGetPassword(LASTFM_KEYCHAIN_ITEM);
+  isAlreadyAuth = @"1";
   if ([@"" isEqualToString:sessionToken]) {
     sessionToken = nil;
+    isAlreadyAuth = nil;
   }
 
   [[NSNotificationCenter defaultCenter]
@@ -246,7 +248,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
      key again */
   timer = [NSTimer scheduledTimerWithTimeInterval:20
                                   target:self
-                                selector:@selector(fetchSessionToken)
+                                selector:@selector(fetchSessionTokenAlready)
                                 userInfo:nil
                                  repeats:NO];
 }
@@ -286,11 +288,22 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * token, but then we ask them to approve it and we retry with the same
  * authorization token.
  */
+
+- (void) fetchSessionTokenAlready{
+  isAlreadyAuth = @"1";
+  [self fetchSessionToken];
+}
+
 - (void) fetchSessionToken {
   /* If we don't have an auth token, then fetch one and it will fetch a session
      token on succes */
   if (authToken == nil) {
     [self fetchAuthToken];
+    return;
+  }
+  
+  if (isAlreadyAuth == nil){
+    [self needAuthorization];
     return;
   }
   NSLogd(@"Fetching session token for last.fm...");
@@ -309,6 +322,8 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
         [self error:object[@"message"]];
       }
       sessionToken = nil;
+      isAlreadyAuth = nil;
+      [self fetchAuthToken];
       return;
     }
 
