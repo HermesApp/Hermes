@@ -667,7 +667,11 @@ BOOL playOnStart = YES;
 
 - (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item {
   NSRect frame = [art frame];
+  #pragma clang diagnostic push
+  #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    
   frame.origin = [[[NSApp delegate] window] convertBaseToScreen:frame.origin];
+  #pragma clang diagnostic pop
 
   frame = NSInsetRect(frame, 1, 1); // image doesn't extend into the button border
 

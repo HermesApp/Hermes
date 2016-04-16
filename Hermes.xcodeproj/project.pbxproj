@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		368E4D5B1BDABFED00601518 /* Spotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 368E4D5A1BDABFED00601518 /* Spotifier.m */; };
 		44310F8B18EB87AB0095359D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 44310F8A18EB87AB0095359D /* Credits.rtf */; };
 		44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 44411DA6190166FB00EC4E05 /* PandoraDevice.m */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
@@ -148,6 +149,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		368E4D591BDABFED00601518 /* Spotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Spotifier.h; path = Integration/Spotifier.h; sourceTree = "<group>"; };
+		368E4D5A1BDABFED00601518 /* Spotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Spotifier.m; path = Integration/Spotifier.m; sourceTree = "<group>"; };
 		44310F8A18EB87AB0095359D /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		44411DA5190166FB00EC4E05 /* PandoraDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PandoraDevice.h; sourceTree = "<group>"; };
 		44411DA6190166FB00EC4E05 /* PandoraDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PandoraDevice.m; sourceTree = "<group>"; };
@@ -459,6 +462,8 @@
 				FA0E556014784AF500C36794 /* AppleScript.m */,
 				FA94E6F61368E62C0063860C /* Scrobbler.h */,
 				FA94E6F71368E62C0063860C /* Scrobbler.m */,
+				368E4D591BDABFED00601518 /* Spotifier.h */,
+				368E4D5A1BDABFED00601518 /* Spotifier.m */,
 				FA1063BC132C6A8A00D6DE42 /* Keychain.h */,
 				FA1063BD132C6A8A00D6DE42 /* Keychain.m */,
 				FA6E801C1438E50C00D01FB5 /* Growler.h */,
@@ -826,6 +831,7 @@
 				FA454685156604D100EE98C7 /* blowfish.c in Sources */,
 				FACFACD615673690008A2140 /* StationController.m in Sources */,
 				97539FAD158442A500D1E65C /* URLConnection.m in Sources */,
+				368E4D5B1BDABFED00601518 /* Spotifier.m in Sources */,
 				971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */,
 				97177198159EAF6F00EE3355 /* HistoryView.m in Sources */,
 				9717719D159EBBBF00EE3355 /* FileReader.m in Sources */,
@@ -1262,7 +1268,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx10.11;
 				STRIP_INSTALLED_PRODUCT = NO;
 				WARNING_CFLAGS = "-Wall";
 			};
@@ -1284,7 +1290,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx10.11;
 				STRIP_INSTALLED_PRODUCT = NO;
 				WARNING_CFLAGS = "-Wall";
 			};
