@@ -58,7 +58,8 @@
   [[NSDistributedNotificationCenter defaultCenter]
     postNotificationName:HistoryControllerDidPlaySongDistributedNotification
                   object:@"hermes"
-                userInfo:[song toDictionary]];
+                userInfo:[song toDictionary]
+                deliverImmediately: YES];
 
   while ([songs count] > HISTORY_LIMIT) {
     [self removeObjectFromSongsAtIndex:HISTORY_LIMIT];
@@ -211,10 +212,7 @@
     NSAlert *alert = [NSAlert alertWithError:err];
     [alert setMessageText:@"Couldn't open lyrics"];
     [alert setInformativeText:[err localizedDescription]];
-    [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                      modalDelegate:nil
-                     didEndSelector:nil
-                        contextInfo:nil];
+    [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
   }];
 
   [conn setHermesProxy];

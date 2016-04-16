@@ -19,13 +19,13 @@
 
   [notificationCenter
    addObserver:self
-   selector:@selector(controlTextDidChange:)
+   selector:@selector(controlTextDidChange)
    name:NSControlTextDidChangeNotification
    object:username];
 
   [notificationCenter
    addObserver:self
-   selector:@selector(controlTextDidChange:)
+   selector:@selector(controlTextDidChange)
    name:NSControlTextDidChangeNotification
    object:password];
 
@@ -45,7 +45,7 @@
   } else {
     [password becomeFirstResponder];
   }
-  [self controlTextDidChange:nil];
+  [self controlTextDidChange];
 }
 
 - (void) authenticationSucceeded: (NSNotification*) notification {
@@ -79,7 +79,7 @@
   [[NSApp delegate] setCurrentView:view];
   [username becomeFirstResponder];
 
-  [self controlTextDidChange:nil];
+  [self controlTextDidChange];
 }
 
 /* Log out the current session */
@@ -89,7 +89,7 @@
   [[delegate pandora] logout];
 }
 
-- (void)controlTextDidChange:(NSNotification *)obj {
+- (void)controlTextDidChange {
   NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", ROUGH_EMAIL_REGEX];
   
   [login setEnabled:

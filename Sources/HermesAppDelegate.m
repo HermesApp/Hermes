@@ -71,11 +71,7 @@
 }
 
 - (void) showNewStationSheet {
-  [NSApp beginSheet: newStationSheet
-     modalForWindow: window
-      modalDelegate: self
-     didEndSelector: NULL
-        contextInfo: nil];
+  [[[NSApp delegate] window] beginSheet:window completionHandler:nil];
 }
 
 - (void) showLoader {
