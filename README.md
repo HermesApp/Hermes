@@ -6,9 +6,11 @@ Hermes
 
 A [Pandora](http://www.pandora.com) client for OS X.
 
-### This project needs a new maintainer
+### THIS PROJECT IS UNMAINTAINED
 
-If you're interested in fixing up Hermes and taking over all responsibilities, please reply to this [GitHub issue (237)](https://github.com/HermesApp/Hermes/issues/237).
+This means that bugs will not be fixed and features will not be added unless someone else does so.  Unfortunately, the former maintainers no longer have the time and/or resources to work on Hermes further.
+
+If you're interested in fixing up Hermes, please reply to this [GitHub issue (237)](https://github.com/HermesApp/Hermes/issues/237).
 
 ### Download Hermes
 
