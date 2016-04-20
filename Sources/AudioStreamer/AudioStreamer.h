@@ -76,7 +76,6 @@ typedef enum {
 } AudioStreamerDoneReason;
 
 extern NSString * const ASStatusChangedNotification;
-extern NSString * const ASBitrateReadyNotification;
 
 struct queued_packet;
 

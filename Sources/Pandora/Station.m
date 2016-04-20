@@ -3,6 +3,7 @@
 #import "PreferencesController.h"
 #import "StationsController.h"
 #import "Notifications.h"
+#import "ASPlaylist.h"
 
 @implementation Station
 

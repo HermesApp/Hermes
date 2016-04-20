@@ -54,7 +54,6 @@ typedef struct queued_packet {
 } queued_packet_t;
 
 NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
-NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 
 @interface AudioStreamer ()
 
@@ -648,9 +647,6 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
     NSDictionary *sslSettings = @{
       (id)kCFStreamSSLLevel: (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL,
-      (id)kCFStreamSSLAllowsExpiredCertificates:  @NO,
-      (id)kCFStreamSSLAllowsExpiredRoots:         @NO,
-      (id)kCFStreamSSLAllowsAnyRoot:              @NO,
       (id)kCFStreamSSLValidatesCertificateChain:  @YES,
       (id)kCFStreamSSLPeerName:                   [NSNull null]
     };

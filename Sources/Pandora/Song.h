@@ -2,20 +2,20 @@
 
 @interface Song : NSObject <NSCoding>
 
-@property NSString *artist;
-@property NSString *title;
-@property NSString *album;
-@property NSString *art;
-@property NSString *stationId;
-@property NSNumber *nrating;
-@property NSString *albumUrl;
-@property NSString *artistUrl;
-@property NSString *titleUrl;
-@property NSString *token;
+@property(nonatomic, assign) NSString *artist;
+@property(nonatomic, assign) NSString *title;
+@property(nonatomic, assign) NSString *album;
+@property(nonatomic, assign) NSString *art;
+@property(nonatomic, assign) NSString *stationId;
+@property(nonatomic, assign) NSNumber *nrating;
+@property(nonatomic, assign) NSString *albumUrl;
+@property(nonatomic, assign) NSString *artistUrl;
+@property(nonatomic, assign) NSString *titleUrl;
+@property(nonatomic, assign) NSString *token;
 
-@property NSString *highUrl;
-@property NSString *medUrl;
-@property NSString *lowUrl;
+@property(nonatomic, assign) NSString *highUrl;
+@property(nonatomic, assign) NSString *medUrl;
+@property(nonatomic, assign) NSString *lowUrl;
 
 - (NSDictionary*) toDictionary;
 - (BOOL) isEqual:(id)other;

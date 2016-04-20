@@ -667,7 +667,7 @@ BOOL playOnStart = YES;
 
 - (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item {
   NSRect frame = [art frame];
-  frame.origin = [[[NSApp delegate] window] convertBaseToScreen:frame.origin];
+  frame = [[[NSApp delegate] window] convertRectToScreen:frame];
 
   frame = NSInsetRect(frame, 1, 1); // image doesn't extend into the button border
 

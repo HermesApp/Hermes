@@ -45,7 +45,8 @@
   } else {
     [password becomeFirstResponder];
   }
-  [self controlTextDidChange:nil];
+  NSNotification *emptyNotification;
+  [self controlTextDidChange:emptyNotification];
 }
 
 - (void) authenticationSucceeded: (NSNotification*) notification {
@@ -78,8 +79,9 @@
 - (void) show {
   [[NSApp delegate] setCurrentView:view];
   [username becomeFirstResponder];
-
-  [self controlTextDidChange:nil];
+  
+  NSNotification *emptyNotification;
+  [self controlTextDidChange:emptyNotification];
 }
 
 /* Log out the current session */

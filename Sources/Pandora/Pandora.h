@@ -25,8 +25,9 @@ typedef void(^PandoraCallback)(NSDictionary*);
  */
 @interface PandoraSearchResult : NSObject
 
-@property NSString *name;
-@property NSString *value;
+@property (assign) NSString *name;
+@property (assign) NSString *value;
+
 
 @end
 
@@ -43,31 +44,31 @@ typedef void(^PandoraCallback)(NSDictionary*);
  *
  * Complete list here: http://6xq.net/playground/pandora-apidoc/json/methods/
  */
-@property NSString *method;
+@property (assign) NSString *method;
 
 /**
  * Auth token obtained from auth.userLogin (or auth.partnerLogin)
  */
-@property NSString *authToken;
+@property (assign) NSString *authToken;
 
 /**
  * Partner id as obtained by auth.partnerLogin
  */
-@property NSString *partnerId;
+@property (assign) NSString *partnerId;
 
 /**
  * User id obtained from auth.userLogin
  */
-@property NSString *userId;
+@property (assign) NSString *userId;
 
 #pragma mark JSON data
-@property NSDictionary *request;
-@property NSMutableData *response;
+@property (retain) NSDictionary *request;
+@property (retain) NSMutableData *response;
 
 #pragma mark Internal metadata
 @property (copy) PandoraCallback callback;
-@property BOOL tls;
-@property BOOL encrypted;
+@property (assign) BOOL tls;
+@property (assign) BOOL encrypted;
 
 @end
 
@@ -92,7 +93,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 @property (readonly) NSArray* stations;
 @property (strong) NSDictionary *device;
-@property NSNumber *cachedSubscriberStatus;
+@property (assign) NSNumber *cachedSubscriberStatus;
 
 #pragma mark - Error handling
 
