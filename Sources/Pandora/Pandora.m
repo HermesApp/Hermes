@@ -480,20 +480,32 @@ static NSString *hierrs[] = {
       [song setArtistUrl: s[@"artistDetailUrl"]];
       [song setTitleUrl: s[@"songDetailUrl"]];
       
+      id audioUrlMap = s[@"audioUrlMap"];
+      if ([audioUrlMap isKindOfClass:[NSDictionary class]]) {
+        if ([audioUrlMap[@"highQuality"] isKindOfClass:[NSDictionary class]])
+             [song setHighUrl:audioUrlMap[@"highQuality"][@"audioUrl"]];
+        if ([audioUrlMap[@"mediumQuality"] isKindOfClass:[NSDictionary class]])
+             [song setMedUrl:audioUrlMap[@"mediumQuality"][@"audioUrl"]];
+      }
+      
       id urls = s[@"additionalAudioUrl"];
       if ([urls isKindOfClass:[NSArray class]]) {
         NSArray *urlArray = urls;
         [song setLowUrl:urlArray[0]];
         if ([urlArray count] > 1) {
-          [song setMedUrl:urlArray[1]];
+          if (![song medUrl])
+            [song setMedUrl:urlArray[1]];
         } else {
-          [song setMedUrl:[song lowUrl]];
+          if (![song medUrl])
+            [song setMedUrl:[song lowUrl]];
           NSLog(@"bad medium format specified in request");
         }
         if ([urlArray count] > 2) {
-          [song setHighUrl:urlArray[2]];
+          if (![song highUrl])
+            [song setHighUrl:urlArray[2]];
         } else {
-          [song setHighUrl:[song medUrl]];
+          if (![song highUrl])
+            [song setHighUrl:[song medUrl]];
           NSLog(@"bad high format specified in request");
         }
       } else {
