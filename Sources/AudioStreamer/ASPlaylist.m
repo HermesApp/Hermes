@@ -15,7 +15,6 @@ NSString * const ASNoSongsLeft       = @"ASNoSongsLeft";
 NSString * const ASRunningOutOfSongs = @"ASRunningOutOfSongs";
 NSString * const ASStreamError       = @"ASStreamError";
 NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
-NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 
 @implementation ASPlaylist
 

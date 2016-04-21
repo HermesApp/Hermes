@@ -210,8 +210,8 @@
     [auth show];
   } else {
     [self showLoader];
-    [pandora authenticate:savedUsername
-                 password:savedPassword
+    [pandora authenticate:[self getSavedUsername]
+                 password:[self getSavedPassword]
                   request:nil];
   }
 

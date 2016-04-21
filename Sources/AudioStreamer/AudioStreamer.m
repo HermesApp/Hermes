@@ -53,6 +53,7 @@ typedef struct queued_packet {
   char data[];
 } queued_packet_t;
 
+NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
 NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 
 @interface AudioStreamer ()

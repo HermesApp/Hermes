@@ -811,7 +811,7 @@ static NSString *hierrs[] = {
                     [request method],
                     [request partnerId],
                     [[request authToken] urlEncoded],
-                    [request userId]];
+                    [request.request objectForKey:@"username"]];
   NSLogd(@"%@", url);
   
   /* Prepare the request */

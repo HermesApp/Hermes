@@ -13,10 +13,10 @@
 		441C9F101CC815A1000A0302 /* NSObject+SPInvocationGrabbing.m in Sources */ = {isa = PBXBuildFile; fileRef = 843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		441C9F121CC815A1000A0302 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		441C9F131CC81A82000A0302 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D89C158C3E3C00C078A4 /* Carbon.framework */; };
+		441C9F161CC86A74000A0302 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = FACF0184149A713700D1FB73 /* AudioStreamer.m */; };
 		44310F8B18EB87AB0095359D /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 44310F8A18EB87AB0095359D /* Credits.rtf */; };
 		44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 44411DA6190166FB00EC4E05 /* PandoraDevice.m */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
-		449739F91CC7EA1300A4CE89 /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = 449739F81CC7EA1300A4CE89 /* AudioStreamer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DFC8DF18FDFCBC007422DC /* Notifications.m */; };
 		843B578B19660680000898F2 /* NSObject+SPInvocationGrabbing.h in Headers */ = {isa = PBXBuildFile; fileRef = 843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */; };
 		843B578C19660680000898F2 /* NSObject+SPInvocationGrabbing.m in Sources */ = {isa = PBXBuildFile; fileRef = 843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */; };
@@ -132,8 +132,6 @@
 		44411DA6190166FB00EC4E05 /* PandoraDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PandoraDevice.m; sourceTree = "<group>"; };
 		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryCollectionView.h; path = Controllers/HistoryCollectionView.h; sourceTree = "<group>"; };
 		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryCollectionView.m; path = Controllers/HistoryCollectionView.m; sourceTree = "<group>"; };
-		449739F71CC7EA1300A4CE89 /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
-		449739F81CC7EA1300A4CE89 /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		44DFC8DE18FDFCBC007422DC /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		44DFC8DF18FDFCBC007422DC /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SPInvocationGrabbing.h"; sourceTree = "<group>"; };
@@ -380,19 +378,9 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
-		441C9F141CC81AFB000A0302 /* AudioStreamer */ = {
-			isa = PBXGroup;
-			children = (
-				449739F71CC7EA1300A4CE89 /* AudioStreamer.h */,
-				449739F81CC7EA1300A4CE89 /* AudioStreamer.m */,
-			);
-			name = AudioStreamer;
-			sourceTree = "<group>";
-		};
 		4436BF6B18F4DBE600DDD578 /* ImportedSources */ = {
 			isa = PBXGroup;
 			children = (
-				441C9F141CC81AFB000A0302 /* AudioStreamer */,
 				4436BF6C18F4DC1F00DDD578 /* blowfish */,
 				FA94E6E31368E5830063860C /* FMEngine */,
 				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
@@ -664,11 +652,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 0730;
-				TargetAttributes = {
-					8D1107260486CEB800E47090 = {
-						DevelopmentTeam = 8END7325T3;
-					};
-				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Hermes" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -748,7 +731,6 @@
 			files = (
 				441C9F101CC815A1000A0302 /* NSObject+SPInvocationGrabbing.m in Sources */,
 				441C9F121CC815A1000A0302 /* SPMediaKeyTap.m in Sources */,
-				449739F91CC7EA1300A4CE89 /* AudioStreamer.m in Sources */,
 				441C9F0E1CC80AA0000A0302 /* ASPlaylist.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				FA2A3F7F132BF97E0089AECC /* StationsController.m in Sources */,
@@ -771,6 +753,7 @@
 				44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */,
 				E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */,
 				FA6E801E1438E50C00D01FB5 /* Growler.m in Sources */,
+				441C9F161CC86A74000A0302 /* AudioStreamer.m in Sources */,
 				FA229D6814429F69008AB9FE /* HistoryController.m in Sources */,
 				FA04AE96144365D900819310 /* HistoryItem.m in Sources */,
 				FA0E556114784AF500C36794 /* AppleScript.m in Sources */,
