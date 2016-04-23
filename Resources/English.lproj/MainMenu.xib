@@ -947,9 +947,7 @@ Gw
         </customObject>
         <customObject id="1114" customClass="PreferencesController">
             <connections>
-                <outlet property="container" destination="1113" id="1615"/>
                 <outlet property="general" destination="1610" id="1612"/>
-                <outlet property="httpHost" destination="1941" id="2063"/>
                 <outlet property="network" destination="1919" id="2026"/>
                 <outlet property="notificationEnabled" destination="1827" id="2294"/>
                 <outlet property="notificationType" destination="2288" id="2295"/>
