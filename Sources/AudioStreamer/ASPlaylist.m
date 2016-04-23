@@ -7,6 +7,7 @@
 //
 
 #import "ASPlaylist.h"
+#import "AudioStreamer.h"
 
 NSString * const ASCreatedNewStream  = @"ASCreatedNewStream";
 NSString * const ASNewSongPlaying    = @"ASNewSongPlaying";

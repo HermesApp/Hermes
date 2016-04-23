@@ -30,6 +30,9 @@
 /* Maximum number of packets which can be contained in one buffer */
 #define kAQMaxPacketDescs 512
 
+extern NSString * const ASBitrateReadyNotification;
+
+
 typedef enum {
   AS_INITIALIZED = 0,
   AS_WAITING_FOR_DATA,
@@ -76,7 +79,6 @@ typedef enum {
 } AudioStreamerDoneReason;
 
 extern NSString * const ASStatusChangedNotification;
-extern NSString * const ASBitrateReadyNotification;
 
 struct queued_packet;
 

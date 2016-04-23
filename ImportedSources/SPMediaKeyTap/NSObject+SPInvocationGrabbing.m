@@ -9,12 +9,12 @@
 @end
 
 @implementation SPInvocationGrabber
-- (id)initWithObject:(id)obj;
+- (id)initWithObject:(id)obj
 {
 	return [self initWithObject:obj stacktraceSaving:YES];
 }
 
--(id)initWithObject:(id)obj stacktraceSaving:(BOOL)saveStack;
+-(id)initWithObject:(id)obj stacktraceSaving:(BOOL)saveStack
 {
 	self.object = obj;
 
@@ -23,7 +23,7 @@
 
 	return self;
 }
--(void)dealloc;
+-(void)dealloc
 {
 	free(frameStrings);
 	self.object = nil;
@@ -33,7 +33,7 @@
 @synthesize invocation = _invocation, object = _object;
 
 @synthesize backgroundAfterForward, onMainAfterForward, waitUntilDone;
-- (void)runInBackground;
+- (void)runInBackground
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	@try {
@@ -63,7 +63,7 @@
 	return signature;
 }
 
-- (void)invoke;
+- (void)invoke
 {
 
 	@try {
@@ -80,13 +80,13 @@
 	self.object = nil;
 }
 
--(void)saveBacktrace;
+-(void)saveBacktrace
 {
   void *backtraceFrames[128];
   frameCount = backtrace(&backtraceFrames[0], 128);
   frameStrings = backtrace_symbols(&backtraceFrames[0], frameCount);
 }
--(void)printBacktrace;
+-(void)printBacktrace
 {
 	for(int x = 3; x < frameCount; x++) {
 		if(frameStrings[x] == NULL) { break; }
@@ -96,27 +96,27 @@
 @end
 
 @implementation NSObject (SPInvocationGrabbing)
--(id)grab;
+-(id)grab
 {
 	return [[[SPInvocationGrabber alloc] initWithObject:self] autorelease];
 }
--(id)invokeAfter:(NSTimeInterval)delta;
+-(id)invokeAfter:(NSTimeInterval)delta
 {
 	id grabber = [self grab];
 	[NSTimer scheduledTimerWithTimeInterval:delta target:grabber selector:@selector(invoke) userInfo:nil repeats:NO];
 	return grabber;
 }
-- (id)nextRunloop;
+- (id)nextRunloop
 {
 	return [self invokeAfter:0];
 }
--(id)inBackground;
+-(id)inBackground
 {
     SPInvocationGrabber *grabber = [self grab];
 	grabber.backgroundAfterForward = YES;
 	return grabber;
 }
--(id)onMainAsync:(BOOL)async;
+-(id)onMainAsync:(BOOL)async
 {
     SPInvocationGrabber *grabber = [self grab];
 	grabber.onMainAfterForward = YES;

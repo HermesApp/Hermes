@@ -13,7 +13,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 
   switch (eventType) {
     case kCFStreamEventHasBytesAvailable:
-      if ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
+      while ((len = CFReadStreamRead(aStream, buf, sizeof(buf))) > 0) {
         [conn->bytes appendBytes:buf length:len];
       }
       return;
@@ -84,9 +84,6 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   if ([urlstring rangeOfString:@"https"].location == 0) {
     NSDictionary *settings =
     @{(id)kCFStreamSSLLevel: (NSString *)kCFStreamSocketSecurityLevelNegotiatedSSL,
-     (id)kCFStreamSSLAllowsExpiredCertificates: @NO,
-     (id)kCFStreamSSLAllowsExpiredRoots: @NO,
-     (id)kCFStreamSSLAllowsAnyRoot: @NO,
      (id)kCFStreamSSLValidatesCertificateChain: @YES,
      (id)kCFStreamSSLPeerName: [NSNull null]};
 

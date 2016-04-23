@@ -53,8 +53,9 @@ typedef struct queued_packet {
   char data[];
 } queued_packet_t;
 
-NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
 NSString * const ASBitrateReadyNotification = @"ASBitrateReadyNotification";
+NSString * const ASStatusChangedNotification = @"ASStatusChangedNotification";
+NSString * const ASDidChangeStateDistributedNotification = @"hermes.state";
 
 @interface AudioStreamer ()
 
@@ -482,6 +483,27 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   [[NSNotificationCenter defaultCenter]
         postNotificationName:ASStatusChangedNotification
                       object:self];
+
+  NSString *statusString = nil;
+  switch (aStatus) {
+    case AS_PLAYING:
+      statusString = @"playing";
+      break;
+    case AS_PAUSED:
+      statusString = @"paused";
+      break;
+    case AS_STOPPED:
+      statusString = @"stopped";
+    default:
+      break;
+  }
+  if (statusString) {
+    [[NSDistributedNotificationCenter defaultCenter]
+      postNotificationName:ASDidChangeStateDistributedNotification
+      object:@"hermes"
+      userInfo:@{@"state":statusString}
+      deliverImmediately: YES];
+  }
 }
 
 /**
@@ -648,9 +670,6 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   if ([[url absoluteString] rangeOfString:@"https"].location == 0) {
     NSDictionary *sslSettings = @{
       (id)kCFStreamSSLLevel: (NSString*)kCFStreamSocketSecurityLevelNegotiatedSSL,
-      (id)kCFStreamSSLAllowsExpiredCertificates:  @NO,
-      (id)kCFStreamSSLAllowsExpiredRoots:         @NO,
-      (id)kCFStreamSSLAllowsAnyRoot:              @NO,
       (id)kCFStreamSSLValidatesCertificateChain:  @YES,
       (id)kCFStreamSSLPeerName:                   [NSNull null]
     };

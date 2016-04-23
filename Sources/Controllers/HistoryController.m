@@ -58,7 +58,8 @@
   [[NSDistributedNotificationCenter defaultCenter]
     postNotificationName:HistoryControllerDidPlaySongDistributedNotification
                   object:@"hermes"
-                userInfo:[song toDictionary]];
+                userInfo:[song toDictionary]
+                deliverImmediately: YES];
 
   while ([songs count] > HISTORY_LIMIT) {
     [self removeObjectFromSongsAtIndex:HISTORY_LIMIT];
