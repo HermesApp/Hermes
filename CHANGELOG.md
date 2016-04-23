@@ -1,3 +1,13 @@
+# Version 1.2.7 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.6...HEAD)
+
+* [added by @ericmason] Support for high quality, 192 kbps MP3 streams.
+* [added by @obycode] Add distributed notification for state changes.
+* 
+* [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in.
+* [fixed by @reedloden] Update Sparkle and use SSL to retrieve Hermes’ appcast to address a Sparkle security vulnerability.
+    
 # Version 1.2.6 (5/6/15)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.5...v1.2.6)
@@ -12,7 +22,7 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.4...v1.2.5)
 
-* [fixed my @nriley] Restore Mac OS X 10.7 support
+* [fixed by @nriley] Restore Mac OS X 10.7 support
 
 # Version 1.2.4 (12/26/14)
 
