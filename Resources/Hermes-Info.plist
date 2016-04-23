@@ -38,10 +38,7 @@
 	<key>NSAppleScriptEnabled</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>© 2014
-Alex Crichton,
-Nicholas Riley,
-and Winston Weinert</string>
+	<string>© 2011–2016 Hermes contributors</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
