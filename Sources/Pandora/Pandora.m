@@ -445,7 +445,8 @@ static NSString *hierrs[] = {
   [station setRadio:self];
   
   if ([s[@"isQuickMix"] boolValue]) {
-    [station setName:@"QuickMix"];
+    station.name = @"Shuffle (QuickMix)";
+    station.isQuickMix = YES;
   }
   return station;
 }

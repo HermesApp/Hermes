@@ -18,6 +18,7 @@
 @property BOOL shared;
 @property BOOL allowRename;
 @property BOOL allowAddMusic;
+@property BOOL isQuickMix;
 
 - (void) setRadio:(Pandora*)radio;
 - (NSString*) streamNetworkError;

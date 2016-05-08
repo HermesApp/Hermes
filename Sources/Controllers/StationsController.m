@@ -501,7 +501,7 @@
 
 - (IBAction)editSelected:(id)sender {
   Station *s = [self selectedStation];
-  if (s == nil || [[s name] isEqualToString: @"QuickMix"]) return;
+  if (s == nil || s.isQuickMix) return;
   StationController *c = [(HermesAppDelegate*)[NSApp delegate] station];
   [c editStation:s];
 }
