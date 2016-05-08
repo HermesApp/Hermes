@@ -1066,7 +1066,7 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hermes;
 				PROVISIONING_PROFILE = "";
@@ -1101,7 +1101,7 @@
 				);
 				INFOPLIST_FILE = "Resources/Hermes-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexcrichton.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Hermes;
 				PROVISIONING_PROFILE = "";
