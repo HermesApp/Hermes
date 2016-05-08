@@ -115,7 +115,8 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) error: (NSString*) message {
   NSAlert *alert = [NSAlert new];
-  alert.messageText = [@"last.fm error: " stringByAppendingString:message];
+  alert.messageText = @"last.fm returned an error";
+  alert.informativeText = message;
   [alert addButtonWithTitle:@"OK"];
   [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
 }
@@ -209,11 +210,13 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) needAuthorization {
   NSAlert *alert = [NSAlert new];
-  alert.messageText = @"Hermes needs authorization to scrobble on last.fm";
+  alert.messageText = @"Allow Hermes access to scrobble on last.fm";
+  alert.informativeText = @"Click “Authorize” to allow Hermes access to your last.fm account.\n\nPlease note you only have about a minute to do this before the token expires. If this happens, quit and reopen Hermes to try again.";
   [alert addButtonWithTitle:@"Authorize"];
-  [alert addButtonWithTitle:@"Cancel"];
+  [alert addButtonWithTitle:@"Don’t Scrobble"];
   [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
     if (returnCode != NSAlertFirstButtonReturn) {
+      PREF_KEY_SET_BOOL(PLEASE_SCROBBLE, NO);
       return;
     }
     
