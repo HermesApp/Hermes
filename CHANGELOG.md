@@ -8,7 +8,7 @@
 * [added by @obycode] Add distributed notification for state changes
 * [added by @nriley] Only enable station menu items/buttons where appropriate (#240)
 * [fixed by @jmjones88] Update to build with Xcode 7.3 and fix for OS X 10.11
-* [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in
+* [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in (#244)
 * [fixed by @reedloden] Update Sparkle and use SSL to retrieve Hermes’ appcast to address a Sparkle security vulnerability (#254)
 * [fixed by @nriley] Make lyrics button work again (LyricWikia API change)
 * [fixed by @nriley] Make Last.fm authorization work again (#242)
