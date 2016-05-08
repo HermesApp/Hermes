@@ -469,27 +469,6 @@
   [[self pandora] createStation:token];
 }
 
-/* Callback for the dialog which is shown when deleting a station */
-- (void) alertDidEnd:(NSAlert *)alert returnCode:(NSInteger)returnCode
-    contextInfo:(void *)contextInfo {
-
-  Station *selected = [self selectedStation];
-
-  // -1 means that OK was hit (it's not the default
-  if (returnCode != -1) {
-    return;
-  }
-
-  if ([selected isEqual: [self playingStation]]) {
-    [[[NSApp delegate] playback] playStation: nil];
-    [[NSApp delegate] setCurrentView:view];
-  }
-
-  [stationsRefreshing setHidden:NO];
-  [stationsRefreshing startAnimation:nil];
-  [[self pandora] removeStation:[selected token]];
-}
-
 /* Callback for the delete button on the stations drawer */
 - (IBAction)deleteSelected: (id)sender {
   Station *selected = [self selectedStation];
@@ -498,20 +477,26 @@
     return;
   }
 
-  NSAlert *alert =
-    [NSAlert
-      alertWithMessageText:@"Are you sure you want to delete this station?"
-      defaultButton:@"Cancel"
-      alternateButton:nil
-      otherButton:@"OK"
-      informativeTextWithFormat:@"You cannot undo this deletion"];
-  [alert setAlertStyle:NSWarningAlertStyle];
-  [alert setIcon:[NSImage imageNamed:@"error_icon"]];
+  NSAlert *alert = [NSAlert new];
+  alert.messageText = @"Are you sure you want to permanently delete this station?";
+  [alert addButtonWithTitle:@"Cancel"];
+  [alert addButtonWithTitle:@"Delete"];
+  alert.alertStyle = NSWarningAlertStyle;
+  alert.icon = [NSImage imageNamed:@"error_icon"];
 
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-      modalDelegate:self
-      didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:)
-      contextInfo:NULL];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
+    if (returnCode != NSAlertSecondButtonReturn) // Delete (non-default)
+      return;
+    
+    if ([selected isEqual:[self playingStation]]) {
+      [[[NSApp delegate] playback] playStation:nil];
+      [[NSApp delegate] setCurrentView:view];
+    }
+    
+    [stationsRefreshing setHidden:NO];
+    [stationsRefreshing startAnimation:nil];
+    [[self pandora] removeStation:[selected token]];
+  }];
 }
 
 - (IBAction)editSelected:(id)sender {

@@ -114,15 +114,10 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @brief Internal helper method to display an error message
  */
 - (void) error: (NSString*) message {
-  NSString *header = @"last.fm error: ";
-  NSAlert *alert = [[NSAlert alloc] init];
-  message = [header stringByAppendingString:message];
-  [alert setMessageText:message];
+  NSAlert *alert = [NSAlert new];
+  alert.messageText = [@"last.fm error: " stringByAppendingString:message];
   [alert addButtonWithTitle:@"OK"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:nil
-                      contextInfo:nil];
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
 }
 
 /**
@@ -213,42 +208,30 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * and then we automatically retry to get the authorization token
  */
 - (void) needAuthorization {
-  NSAlert *alert = [[NSAlert alloc] init];
-  [alert setMessageText:@"Hermes needs authorization to scrobble on last.fm"];
-  [alert addButtonWithTitle:@"OK"];
+  NSAlert *alert = [NSAlert new];
+  alert.messageText = @"Hermes needs authorization to scrobble on last.fm";
+  [alert addButtonWithTitle:@"Authorize"];
   [alert addButtonWithTitle:@"Cancel"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                    modalDelegate:self
-                   didEndSelector:@selector(openAuthorization:returnCode:contextInfo:)
-                      contextInfo:nil];
-}
-
-/**
- * @brief Callback for when the user closes the 'need authorization' dialog
- *
- * Implementation of the dialog's delegate
- */
-- (void) openAuthorization:(NSAlert *)alert
-                returnCode:(NSInteger)returnCode
-               contextInfo:(void *)contextInfo {
-  if (returnCode != NSAlertFirstButtonReturn) {
-    return;
-  }
-
-  NSString *authURL = [NSString stringWithFormat:
-                       @"http://www.last.fm/api/auth/?api_key=%@&token=%@",
-                       _LASTFM_API_KEY_, authToken];
-  NSURL *url = [NSURL URLWithString:authURL];
-
-  [[NSWorkspace sharedWorkspace] openURL:url];
-
-  /* Give the user some time to give us permission. Then try to get the session
+  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
+    if (returnCode != NSAlertFirstButtonReturn) {
+      return;
+    }
+    
+    NSString *authURL = [NSString stringWithFormat:
+                         @"http://www.last.fm/api/auth/?api_key=%@&token=%@",
+                         _LASTFM_API_KEY_, authToken];
+    NSURL *url = [NSURL URLWithString:authURL];
+    
+    [[NSWorkspace sharedWorkspace] openURL:url];
+    
+    /* Give the user some time to give us permission. Then try to get the session
      key again */
-  timer = [NSTimer scheduledTimerWithTimeInterval:20
-                                  target:self
-                                selector:@selector(fetchSessionToken)
-                                userInfo:nil
-                                 repeats:NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:20
+                                             target:self
+                                           selector:@selector(fetchSessionToken)
+                                           userInfo:nil
+                                            repeats:NO];
+  }];
 }
 
 /**

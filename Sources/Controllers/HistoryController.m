@@ -198,9 +198,8 @@
   NSURLRequest *req = [NSURLRequest requestWithURL:url];
   NSLogd(@"Fetch: %@", surl);
   URLConnection *conn = [URLConnection connectionForRequest:req
-                                  completionHandler:^(NSData *d, NSError *err) {
+                                          completionHandler:^(NSData *d, NSError *err) {
     if (err == nil) {
-
       NSDictionary *object = [NSJSONSerialization JSONObjectWithData:d options:nil error:&err];
       if (err == nil) {
         NSString *url = object[@"url"];
@@ -210,12 +209,9 @@
       }
     }
     NSAlert *alert = [NSAlert alertWithError:err];
-    [alert setMessageText:@"Couldn't open lyrics"];
-    [alert setInformativeText:[err localizedDescription]];
-    [alert beginSheetModalForWindow:[[NSApp delegate] window]
-                      modalDelegate:nil
-                     didEndSelector:nil
-                        contextInfo:nil];
+    alert.messageText = @"Couldn't open lyrics";
+    alert.informativeText = [err localizedDescription];
+    [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
   }];
 
   [conn setHermesProxy];
