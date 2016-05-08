@@ -1,8 +1,8 @@
 /**
  * @file Scrobbler.m
- * @brief Implementation of talking with last.fm
+ * @brief Implementation of talking with Last.fm
  *
- * Handles the serialization of requests to last.fm and handles all errors
+ * Handles the serialization of requests to Last.fm and handles all errors
  * associated with them. The errors are displayed to the user via popups,
  * which could probably use some polishing...
  */
@@ -20,7 +20,7 @@
 /**
  * @brief Creates a global instance of a Scrobbler, if necessary
  *
- * Also begins fetching of session keys for the last.fm API
+ * Also begins fetching of session keys for the Last.fm API
  */
 - (id) init {
   if (!(self = [super init])) { return self; }
@@ -45,9 +45,6 @@
 }
 
 - (void) dealloc {
-  if (timer != nil && [timer isValid]) {
-    [timer invalidate];
-  }
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -59,7 +56,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @param callback the callback to be invoked with the parsed JSON object if
  *        the JSON was received without error and parsed without error
  * @param handles if YES, then the callback will always be invoked with valid
- *        JSON, otherwise if the json contains a last.fm error, the error will
+ *        JSON, otherwise if the json contains a Last.fm error, the error will
  *        be handled here and the callback will not be invoked.
  */
 - (FMCallback) errorChecker:(ScrobblerCallback)callback
@@ -74,7 +71,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 
     NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
 
-    /* If this is a last.fm error, however, then this is a serious issue which
+    /* If this is a Last.fm error, however, then this is a serious issue which
      * may need to be addressed manually, so do display a dialog here */
     if (error != nil) {
       [self error:[error localizedDescription]];
@@ -115,17 +112,17 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  */
 - (void) error: (NSString*) message {
   NSAlert *alert = [NSAlert new];
-  alert.messageText = @"last.fm returned an error";
+  alert.messageText = @"Last.fm returned an error";
   alert.informativeText = message;
   [alert addButtonWithTitle:@"OK"];
   [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
 }
 
 /**
- * @brief Scrobbles a song to last.fm
+ * @brief Scrobbles a song to Last.fm
  *
  * This can be used for any ScrobbleState, but should only be sent at the
- * appropriate time as per last.fm's guidelines.
+ * appropriate time as per Last.fm's guidelines.
  *
  * Assumes that the session token is already available, if not, the scrobble
  * is ignored under the assumption that the session token will come soon.
@@ -140,7 +137,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   }
   if (sessionToken == nil) {
     [self fetchSessionToken];
-    /* just lose this scrobble, it's not mission critical anyway */
+    /* just lose this scrobble; it's not mission critical anyway */
     return;
   }
 
@@ -170,7 +167,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 }
 
 /**
- * @brief Tell last.fm that a track is 'loved' or 'unloved'
+ * @brief Tell Last.fm that a track is 'loved' or 'unloved'
  *
  * @param song the song to love
  * @param loved whether the song should be 'loved' or 'unloved'
@@ -204,57 +201,62 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 /**
  * @brief Display a dialog saying that we need authorization from the user.
  *
- * If canceled, then last.fm is turned off. Otherwise, when confirmed, the user
+ * If canceled, then Last.fm is turned off. Otherwise, when confirmed, the user
  * is redirected to a page to approve Hermes. We give them a bit to do this
- * and then we automatically retry to get the authorization token
+ * and then we try to get a session token (which despite its name is valid
+ * indefinitely).
  */
 - (void) needAuthorization {
   NSAlert *alert = [NSAlert new];
-  alert.messageText = @"Allow Hermes access to scrobble on last.fm";
-  alert.informativeText = @"Click “Authorize” to allow Hermes access to your last.fm account.\n\nPlease note you only have about a minute to do this before the token expires. If this happens, quit and reopen Hermes to try again.";
+  alert.messageText = @"Allow Hermes to scrobble on Last.fm";
+  alert.informativeText = @"Click “Authorize” to give Hermes permission to access your Last.fm account.\n\nHermes will not try to use Last.fm for at least 30 seconds to give you time to grant permission.\n\nClick “Don’t Scrobbleʺ to stop Hermes from trying to use Last.fm.";
   [alert addButtonWithTitle:@"Authorize"];
   [alert addButtonWithTitle:@"Don’t Scrobble"];
   [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
     if (returnCode != NSAlertFirstButtonReturn) {
       PREF_KEY_SET_BOOL(PLEASE_SCROBBLE, NO);
+      inAuthorization = NO;
       return;
     }
     
     NSString *authURL = [NSString stringWithFormat:
                          @"http://www.last.fm/api/auth/?api_key=%@&token=%@",
-                         _LASTFM_API_KEY_, authToken];
+                         _LASTFM_API_KEY_, requestToken];
     NSURL *url = [NSURL URLWithString:authURL];
     
     [[NSWorkspace sharedWorkspace] openURL:url];
     
-    /* Give the user some time to give us permission. Then try to get the session
-     key again */
-    timer = [NSTimer scheduledTimerWithTimeInterval:20
-                                             target:self
-                                           selector:@selector(fetchSessionToken)
-                                           userInfo:nil
-                                            repeats:NO];
+    /* Give the user some time to authorize the request token. Then try to get a session token again */
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+      inAuthorization = NO;
+      [self fetchSessionToken];
+    });
   }];
 }
 
 /**
- * @brief Fetch an authorization token
+ * @brief Fetch an unauthorized request token
  *
- * This is then used to get a session token via callbacks.
  */
-- (void) fetchAuthToken {
+- (void) fetchRequestToken {
+  if (inAuthorization)
+    return;
+
+  inAuthorization = YES;
+
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   dict[@"api_key"] = _LASTFM_API_KEY_;
 
   /* More info at http://www.last.fm/api/show/auth.getToken */
   ScrobblerCallback cb = ^(NSDictionary *object) {
-    authToken = object[@"token"];
+    requestToken = object[@"token"];
 
-    if (authToken == nil || [@"" isEqual:authToken]) {
-      authToken = nil;
-      [self error:@"Couldn't get an auth token from last.fm!"];
+    if (requestToken == nil || [@"" isEqual:requestToken]) {
+      requestToken = nil;
+      [self error:@"Couldn't get an authentication request token from last.fm!"];
+      inAuthorization = NO;
     } else {
-      [self fetchSessionToken];
+      [self needAuthorization];
     }
   };
 
@@ -268,29 +270,30 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 /**
  * @brief Fetch a session token for a logged in user
  *
- * This will generate an error if they haven't approved our authentication
- * token, but then we ask them to approve it and we retry with the same
- * authorization token.
+ * If we try to do this with an unauthorized request token, this will invalidate it, so we need to start over.
  */
 - (void) fetchSessionToken {
-  /* If we don't have an auth token, then fetch one and it will fetch a session
-     token on succes */
-  if (authToken == nil) {
-    [self fetchAuthToken];
+  if (inAuthorization)
+    return;
+  if (requestToken == nil) {
+    [self fetchRequestToken];
     return;
   }
-  NSLogd(@"Fetching session token for last.fm...");
+
+  NSLogd(@"Fetching session token for Last.fm...");
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   dict[@"api_key"] = _LASTFM_API_KEY_;
-  dict[@"token"] = authToken;
+  dict[@"token"] = requestToken;
+  requestToken = nil; // can be used only once
 
   /* More info at http://www.last.fm/api/show/auth.getSession */
   ScrobblerCallback cb = ^(NSDictionary *object) {
     if (object[@"error"] != nil) {
+      NSLogd(@"Last.fm session token: %@", object);
       NSNumber *code = object[@"error"];
 
       if ([code intValue] == 14) {
-        [self needAuthorization];
+        [self fetchRequestToken];
       } else {
         [self error:object[@"message"]];
       }
