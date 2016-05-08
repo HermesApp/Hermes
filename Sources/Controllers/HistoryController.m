@@ -192,7 +192,7 @@
   if (s == nil) return;
   NSString *surl =
     [NSString
-      stringWithFormat:@"http://lyrics.wikia.com/api.php?artist=%@&song=%@&fmt=realjson",
+      stringWithFormat:@"http://lyrics.wikia.com/api.php?action=lyrics&artist=%@&song=%@&fmt=realjson",
       [[s artist] urlEncoded], [[s title] urlEncoded]];
   NSURL *url = [NSURL URLWithString:surl];
   NSURLRequest *req = [NSURLRequest requestWithURL:url];
