@@ -2,17 +2,23 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.6...HEAD)
 
-* [added by @ericmason] Support for high quality, 192 kbps MP3 streams.
-* [added by @obycode] Add distributed notification for state changes.
-* [fixed by @jmjones88] Update to build with Xcode 7.3.
-* [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in.
-* [fixed by @reedloden] Update Sparkle and use SSL to retrieve Hermes’ appcast to address a Sparkle security vulnerability.
-    
+* [changed by @nriley] Dropped support for OS X 10.9 and earlier
+* [changed by @winny-] Removed "Tired of Song" from default toolbar
+* [added by @ericmason] Support for high quality, 192 Kbps MP3 streams
+* [added by @obycode] Add distributed notification for state changes
+* [added by @nriley] Only enable station menu items/buttons where appropriate
+* [fixed by @jmjones88] Update to build with Xcode 7.3 and fix for OS X 10.11
+* [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in
+* [fixed by @reedloden] Update Sparkle and use SSL to retrieve Hermes’ appcast to address a Sparkle security vulnerability (#254)
+* [fixed by @nriley] Make lyrics button work again (LyricWikia API change)
+* [fixed by @nriley] Make Last.fm authorization work again (#242)
+* [fixed by @nriley] Rename QuickMix to Shuffle to be consistent with current Pandora terminology (#201)
+
 # Version 1.2.6 (5/6/15)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.5...v1.2.6)
 
-* [changed by @winny-] Dropped support for Mac OS X 10.8 and earlier
+* [changed by @winny-] Dropped support for OS X 10.8 and earlier
 * [changed by @winny-] Use Apple's JSON parser instead of SBJSON (#213)
 * [fixed by @nriley] Station sort-by-date works again (#209)
 * [fixed by @Aahung] Toolbar 'Station' button's text now correctly reads as "Station" (#224)
@@ -22,7 +28,7 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.4...v1.2.5)
 
-* [fixed by @nriley] Restore Mac OS X 10.7 support
+* [fixed by @nriley] Restore OS X 10.7 support
 
 # Version 1.2.4 (12/26/14)
 
