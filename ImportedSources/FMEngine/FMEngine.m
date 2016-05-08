@@ -34,7 +34,7 @@ static NSInteger sortAlpha(NSString *n1, NSString *n2, void *context) {
     dataSig = [self generateSignatureFromDictionary:tempDict];
 
     tempDict[@"api_sig"] = dataSig;
-    NSLogd(@"scrobble with signature: %@", tempDict);
+    NSLogd(@"%@", tempDict);
   }
 
   #ifdef _USE_JSON_
