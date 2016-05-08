@@ -6,7 +6,7 @@
 * [changed by @winny-] Removed "Tired of Song" from default toolbar
 * [added by @ericmason] Support for high quality, 192 Kbps MP3 streams
 * [added by @obycode] Add distributed notification for state changes
-* [added by @nriley] Only enable station menu items/buttons where appropriate
+* [added by @nriley] Only enable station menu items/buttons where appropriate (#240)
 * [fixed by @jmjones88] Update to build with Xcode 7.3 and fix for OS X 10.11
 * [fixed by @dwaite] Fix truncation at 1024 bytes of response, usually impacting the ability to log in
 * [fixed by @reedloden] Update Sparkle and use SSL to retrieve Hermes’ appcast to address a Sparkle security vulnerability (#254)
