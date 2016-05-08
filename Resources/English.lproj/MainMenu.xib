@@ -914,9 +914,12 @@ Gw
         </customObject>
         <customObject id="537" customClass="StationsController">
             <connections>
+                <outlet property="deleteStationButton" destination="942" id="feN-bW-9NS"/>
+                <outlet property="editStationButton" destination="1754" id="tb5-WR-F8X"/>
                 <outlet property="errorIndicator" destination="936" id="938"/>
                 <outlet property="genreSpinner" destination="2256" id="2259"/>
                 <outlet property="genres" destination="2246" id="2258"/>
+                <outlet property="playStationButton" destination="939" id="4Px-tv-mVK"/>
                 <outlet property="results" destination="913" id="930"/>
                 <outlet property="search" destination="Pm4-1k-tOe" id="bKu-Ih-rNG"/>
                 <outlet property="searchSpinner" destination="925" id="926"/>

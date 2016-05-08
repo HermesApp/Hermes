@@ -11,6 +11,10 @@
   IBOutlet NSTableView *stationsTable;
   IBOutlet NSProgressIndicator *stationsRefreshing;
 
+  IBOutlet NSButton *playStationButton;
+  IBOutlet NSButton *deleteStationButton;
+  IBOutlet NSButton *editStationButton;
+
   /* New station by searching */
   IBOutlet NSTextField *search;
   IBOutlet NSOutlineView *results;

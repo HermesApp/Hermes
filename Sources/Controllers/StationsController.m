@@ -56,6 +56,12 @@
   if (![[self pandora] isAuthenticated]) {
     return NO;
   }
+  
+  SEL action = [menuItem action];
+  if (action == @selector(editSelected:) || action == @selector(deleteSelected:)) {
+    Station *s = [self selectedStation];
+    if (s == nil || s.isQuickMix) return NO;
+  }
 
   return YES;
 }
@@ -225,6 +231,15 @@
   }
   
   return YES;
+}
+
+- (void)tableViewSelectionDidChange:(NSNotification *)notification {
+  Station *s = [self selectedStation];
+
+  BOOL editableStationSelected = (s != nil && !s.isQuickMix);
+  [editStationButton setEnabled:editableStationSelected];
+  [deleteStationButton setEnabled:editableStationSelected];
+  [playStationButton setEnabled:(s != nil)];
 }
 
 #pragma mark -  NSOutlineViewDataSource protocol
@@ -473,7 +488,7 @@
 - (IBAction)deleteSelected: (id)sender {
   Station *selected = [self selectedStation];
 
-  if (selected == nil) {
+  if (selected == nil || selected.isQuickMix) {
     return;
   }
 
