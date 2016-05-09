@@ -206,7 +206,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * and then we try to get a session token (which despite its name is valid
  * indefinitely).
  */
-- (void) needAuthorization {
+- (void) requestAuthorization {
   NSAlert *alert = [NSAlert new];
   alert.messageText = @"Allow Hermes to scrobble on Last.fm";
   alert.informativeText = @"Click “Authorize” to give Hermes permission to access your Last.fm account.\n\nHermes will not try to use Last.fm for at least 30 seconds to give you time to grant permission.\n\nClick “Don’t Scrobbleʺ to stop Hermes from trying to use Last.fm.";
@@ -256,7 +256,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
       [self error:@"Couldn't get an authentication request token from last.fm!"];
       inAuthorization = NO;
     } else {
-      [self needAuthorization];
+      [self requestAuthorization];
     }
   };
 
