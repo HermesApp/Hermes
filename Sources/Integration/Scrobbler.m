@@ -76,9 +76,19 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
     if (error != nil) {
       [self error:[error localizedDescription]];
     } else if (!handles && object[@"error"] != nil) {
-      /* Ignore temporary errors */
-      if ([object[@"error"] intValue] != 16) {
-        [self error:object[@"message"]];
+      NSLogd(@"Last.fm error: %@", object);
+      NSInteger errorCode = [object[@"error"] integerValue];
+      
+      switch (errorCode) {
+        case 9: /* Invalid session key - Please re-authenticate */
+          sessionToken = nil;
+          [self fetchRequestToken];
+          break;
+        case 8: /* Operation failed - Most likely the backend service failed. Please try again. */
+        case 16: /* The service is temporarily unavailable, please try again */
+          break;
+        default:
+          [self error:object[@"message"]];
       }
     } else {
       callback(object);
@@ -289,10 +299,9 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   /* More info at http://www.last.fm/api/show/auth.getSession */
   ScrobblerCallback cb = ^(NSDictionary *object) {
     if (object[@"error"] != nil) {
-      NSLogd(@"Last.fm session token: %@", object);
-      NSNumber *code = object[@"error"];
+      NSLogd(@"Last.fm session token error: %@", object);
 
-      if ([code intValue] == 14) {
+      if ([object[@"error"] integerValue] == 14) { /* Unauthorized Token - This token has not been authorized */
         [self fetchRequestToken];
       } else {
         [self error:object[@"message"]];
