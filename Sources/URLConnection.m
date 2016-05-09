@@ -101,9 +101,11 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
  * @brief Start sending this request to the server
  */
 - (void) start {
-  if (!CFReadStreamOpen(stream)) {
-    assert(0);
-  }
+  CFReadStreamOpen(stream);
+  CFStreamStatus streamStatus = CFReadStreamGetStatus(stream);
+  if (streamStatus != kCFStreamStatusOpen)
+    NSLog(@"Expected read stream to be open, but it was not (%ld)", (long)streamStatus);
+
   CFStreamClientContext context = {0, (__bridge_retained void*) self, NULL,
                                    NULL, NULL};
   CFReadStreamSetClient(stream,
