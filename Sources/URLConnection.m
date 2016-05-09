@@ -103,6 +103,10 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
 - (void) start {
   CFReadStreamOpen(stream);
   CFStreamStatus streamStatus = CFReadStreamGetStatus(stream);
+  if (streamStatus == kCFStreamStatusError) {
+    cb(nil, (NSError *)CFBridgingRelease(CFReadStreamCopyError(stream)));
+    return;
+  }
   if (streamStatus != kCFStreamStatusOpen)
     NSLog(@"Expected read stream to be open, but it was not (%ld)", (long)streamStatus);
 
