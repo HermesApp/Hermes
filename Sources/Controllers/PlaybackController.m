@@ -330,6 +330,9 @@ BOOL playOnStart = YES;
   [albumLabel setStringValue:[song album]];
   [albumLabel setToolTip:[song album]];
   [playbackProgress setDoubleValue: 0];
+  if ([NSFont respondsToSelector:@selector(monospacedDigitSystemFontOfSize:weight:)]) {
+    [progressLabel setFont:[NSFont monospacedDigitSystemFontOfSize:[[progressLabel font] pointSize] weight:NSFontWeightRegular]];
+  }
   [progressLabel setStringValue: @"0:00/0:00"];
   scrobbleSent = NO;
 

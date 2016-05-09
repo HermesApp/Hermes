@@ -13,6 +13,7 @@
 * [fixed by @nriley] Make lyrics button work again (LyricWikia API change)
 * [fixed by @nriley] Make Last.fm authorization work again (#242)
 * [fixed by @nriley] Rename QuickMix to Shuffle to be consistent with current Pandora terminology (#201)
+* [fixed by @nriley] Use monospaced numbers in OS X 10.11 for song progress
 
 # Version 1.2.6 (5/6/15)
 
