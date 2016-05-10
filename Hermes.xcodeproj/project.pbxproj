@@ -186,8 +186,8 @@
 		FA3CFE28132F9D30003554E2 /* missing-album.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "missing-album.png"; sourceTree = "<group>"; };
 		FA3CFF42132FC4CF003554E2 /* PlaybackController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlaybackController.h; path = Controllers/PlaybackController.h; sourceTree = "<group>"; };
 		FA3CFF43132FC4CF003554E2 /* PlaybackController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlaybackController.m; path = Controllers/PlaybackController.m; sourceTree = "<group>"; };
-		FA454683156604D100EE98C7 /* blowfish.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = blowfish.c; path = ../ImportedSources/blowfish/blowfish.c; sourceTree = "<group>"; };
-		FA454684156604D100EE98C7 /* blowfish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = blowfish.h; path = ../ImportedSources/blowfish/blowfish.h; sourceTree = "<group>"; };
+		FA454683156604D100EE98C7 /* blowfish.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = blowfish.c; sourceTree = "<group>"; };
+		FA454684156604D100EE98C7 /* blowfish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blowfish.h; sourceTree = "<group>"; };
 		FA560C4F1331701E00215F71 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLoader.h; path = Models/ImageLoader.h; sourceTree = "<group>"; };
 		FA560C501331701E00215F71 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageLoader.m; path = Models/ImageLoader.m; sourceTree = "<group>"; };
 		FA6E801A1438E4B700D01FB5 /* Growl.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Growl.framework; sourceTree = "<group>"; };
@@ -346,7 +346,7 @@
 				FA94E6E31368E5830063860C /* FMEngine */,
 				9728D887158C3D3100C078A4 /* SPMediaKeyTap */,
 			);
-			name = ImportedSources;
+			path = ImportedSources;
 			sourceTree = "<group>";
 		};
 		4436BF6C18F4DC1F00DDD578 /* blowfish */ = {
@@ -355,8 +355,7 @@
 				FA454683156604D100EE98C7 /* blowfish.c */,
 				FA454684156604D100EE98C7 /* blowfish.h */,
 			);
-			name = blowfish;
-			path = Classes;
+			path = blowfish;
 			sourceTree = "<group>";
 		};
 		9728D887158C3D3100C078A4 /* SPMediaKeyTap */ = {
@@ -367,9 +366,8 @@
 				9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */,
 				9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */,
 			);
-			name = SPMediaKeyTap;
-			path = ImportedSources/SPMediaKeyTap;
-			sourceTree = SOURCE_ROOT;
+			path = SPMediaKeyTap;
+			sourceTree = "<group>";
 		};
 		B2A26AF01AE39E9F00ADD460 /* Views */ = {
 			isa = PBXGroup;
@@ -456,8 +454,7 @@
 				FA94E6EA1368E5830063860C /* NSString+FMEngine.h */,
 				FA94E6EB1368E5830063860C /* NSString+FMEngine.m */,
 			);
-			name = FMEngine;
-			path = ImportedSources/FMEngine;
+			path = FMEngine;
 			sourceTree = "<group>";
 		};
 		FACF0180149A713700D1FB73 /* AudioStreamer */ = {
