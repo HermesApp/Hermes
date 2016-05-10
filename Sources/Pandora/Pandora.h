@@ -1,5 +1,3 @@
-@class SBJsonParser;
-@class SBJsonWriter;
 @class Station;
 
 #import "Pandora/Song.h"
@@ -86,9 +84,6 @@ typedef void(^PandoraCallback)(NSDictionary*);
   uint64_t sync_time;
   uint64_t start_time;
   int64_t syncOffset;
-  
-  SBJsonParser *json_parser;
-  SBJsonWriter *json_writer;
 }
 
 @property (readonly) NSArray* stations;

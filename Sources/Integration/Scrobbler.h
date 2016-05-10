@@ -16,14 +16,11 @@ typedef enum {
 
 #define SCROBBLER [[NSApp delegate] scrobbler]
 
-@class SBJsonParser;
-
 @interface Scrobbler : NSObject {
   FMEngine *engine;
   NSString *requestToken;
   NSString *sessionToken;
   BOOL inAuthorization;
-  SBJsonParser *parser;
 }
 
 - (void) setPreference: (Song*)song loved:(BOOL)loved;
