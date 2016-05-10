@@ -18,8 +18,6 @@
 		44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 44411DA6190166FB00EC4E05 /* PandoraDevice.m */; };
 		44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 44619492187407A300482DC4 /* HistoryCollectionView.m */; };
 		44DFC8E018FDFCBC007422DC /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DFC8DF18FDFCBC007422DC /* Notifications.m */; };
-		843B578B19660680000898F2 /* NSObject+SPInvocationGrabbing.h in Headers */ = {isa = PBXBuildFile; fileRef = 843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */; };
-		843B578C19660680000898F2 /* NSObject+SPInvocationGrabbing.m in Sources */ = {isa = PBXBuildFile; fileRef = 843B578A19660680000898F2 /* NSObject+SPInvocationGrabbing.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -29,11 +27,6 @@
 		9717719D159EBBBF00EE3355 /* FileReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9717719C159EBBBF00EE3355 /* FileReader.m */; };
 		971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 971CC3991585DA11004D75BA /* NetworkConnection.m */; };
 		971CC3A11585DBD7004D75BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */; };
-		9728D89A158C3DA500C078A4 /* SPMediaKeyTap.h in Headers */ = {isa = PBXBuildFile; fileRef = 9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */; };
-		9728D89B158C3DA500C078A4 /* SPMediaKeyTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */; };
-		9728D89F158C3E4800C078A4 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D89E158C3E4800C078A4 /* IOKit.framework */; };
-		9728D8A3158C3E5D00C078A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D877158C3D1F00C078A4 /* Cocoa.framework */; };
-		9728D8A4158C3E6400C078A4 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9728D89C158C3E3C00C078A4 /* Carbon.framework */; };
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		B2A26AEF1AE39E9B00ADD460 /* MusicProgressSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */; };
@@ -147,7 +140,6 @@
 		971CC3981585DA11004D75BA /* NetworkConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkConnection.h; sourceTree = "<group>"; };
 		971CC3991585DA11004D75BA /* NetworkConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkConnection.m; sourceTree = "<group>"; };
 		971CC3A01585DBD7004D75BA /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SPMediaKeyTap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9728D877158C3D1F00C078A4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		9728D898158C3DA500C078A4 /* SPMediaKeyTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPMediaKeyTap.h; sourceTree = "<group>"; };
 		9728D899158C3DA500C078A4 /* SPMediaKeyTap.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = SPMediaKeyTap.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; };
@@ -249,16 +241,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9728D872158C3D1F00C078A4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9728D8A4158C3E6400C078A4 /* Carbon.framework in Frameworks */,
-				9728D8A3158C3E5D00C078A4 /* Cocoa.framework in Frameworks */,
-				9728D89F158C3E4800C078A4 /* IOKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -323,7 +305,6 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* Hermes.app */,
-				9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -526,18 +507,6 @@
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		9728D873158C3D1F00C078A4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9728D89A158C3DA500C078A4 /* SPMediaKeyTap.h in Headers */,
-				843B578B19660680000898F2 /* NSObject+SPInvocationGrabbing.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXLegacyTarget section */
 		44B251C418FE415900D73344 /* Archive Hermes */ = {
 			isa = PBXLegacyTarget;
@@ -591,24 +560,6 @@
 			productReference = 8D1107320486CEB800E47090 /* Hermes.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9728D875158C3D1F00C078A4 /* SPMediaKeyTap */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9728D885158C3D1F00C078A4 /* Build configuration list for PBXNativeTarget "SPMediaKeyTap" */;
-			buildPhases = (
-				9728D871158C3D1F00C078A4 /* Sources */,
-				9728D872158C3D1F00C078A4 /* Frameworks */,
-				9728D873158C3D1F00C078A4 /* Headers */,
-				9728D874158C3D1F00C078A4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = SPMediaKeyTap;
-			productName = SPMediaKeyTap;
-			productReference = 9728D876158C3D1F00C078A4 /* SPMediaKeyTap.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -634,7 +585,6 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* Hermes */,
-				9728D875158C3D1F00C078A4 /* SPMediaKeyTap */,
 				44B251C418FE415900D73344 /* Archive Hermes */,
 				44B251CA18FE41D400D73344 /* Upload Hermes Release */,
 			);
@@ -669,13 +619,6 @@
 				E1C1EC131A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf in Resources */,
 				9717719A159EB0E200EE3355 /* music-note.png in Resources */,
 				97E0DA35159EDF7C00BEA465 /* radio.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9728D874158C3D1F00C078A4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -721,15 +664,6 @@
 				97177198159EAF6F00EE3355 /* HistoryView.m in Sources */,
 				9717719D159EBBBF00EE3355 /* FileReader.m in Sources */,
 				E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9728D871158C3D1F00C078A4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				843B578C19660680000898F2 /* NSObject+SPInvocationGrabbing.m in Sources */,
-				9728D89B158C3DA500C078A4 /* SPMediaKeyTap.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -904,53 +838,6 @@
 			};
 			name = Release;
 		};
-		9728D883158C3D1F00C078A4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2039;
-				FRAMEWORK_VERSION = A;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = framework;
-			};
-			name = Debug;
-		};
-		9728D884158C3D1F00C078A4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 2039;
-				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = framework;
-			};
-			name = Release;
-		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1073,15 +960,6 @@
 			buildConfigurations = (
 				44B251CC18FE41D400D73344 /* Debug */,
 				44B251CD18FE41D400D73344 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9728D885158C3D1F00C078A4 /* Build configuration list for PBXNativeTarget "SPMediaKeyTap" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9728D883158C3D1F00C078A4 /* Debug */,
-				9728D884158C3D1F00C078A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
