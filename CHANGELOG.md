@@ -15,6 +15,7 @@
 * [fixed by @nriley] Rename QuickMix to Shuffle to be consistent with current Pandora terminology (#201)
 * [fixed by @nriley] Use monospaced numbers in OS X 10.11 for song progress
 * [fixed by @nriley] Better handle errors when opening a connection
+* [fixed by @nriley] Fix an error when handling media keys
 
 # Version 1.2.6 (5/6/15)
 
@@ -36,7 +37,7 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.3...v1.2.4)
 
-* [fixed by @nriley] General UI clean up to the seed editor and main Hermes window
+* [fixed by @nriley] General UI cleanup of the seed editor and main Hermes window
 * [added by @Djspaceg, @nriley] Play/pause menubar icons
 * [changed by @winny-] Stop asking for donations
 
@@ -73,7 +74,7 @@
 * [fixed by @winny-] Issue where non-growl notification clicked does not raise Hermes.
 * [added by @winny-] Optional debug logging to `~/Library/Logs/Hermes/` enabled at startup
           — hold down Option (⌥) and look for ladybug emoji (🐞) in menubar.
-* [fixed by @nriley, @winny-] Do not disable Like/Dislike in Menubar and Dock menu,
+* [fixed by @nriley, @winny-] Do not disable Like/Dislike in menu bar and Dock menu,
           instead simply show status using a checkmark — this way one may "undo" Like
           or Dislike from any menu item.
 
