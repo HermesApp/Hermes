@@ -38,9 +38,8 @@ set_environment() {
     SCRIPTS_DIR="$PROJECT_DIR/Scripts"
     APPLICATION="$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app"
 
-    INFO_PLIST="$APPLICATION/Contents/Info.plist"
-    VERSION=$(defaults read "$INFO_PLIST" CFBundleShortVersionString)
-    INT_VERSION=$(defaults read "$INFO_PLIST" CFBundleVersion)
+    VERSION=$(cd "$PROJECT_DIR"; agvtool mvers -terse1)
+    INT_VERSION=$(cd "$PROJECT_DIR"; agvtool vers -terse)
     ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 
     S3_BUCKET="hermesmacapp"
