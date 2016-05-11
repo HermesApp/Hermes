@@ -61,7 +61,7 @@ build_archive() {
 sign_and_verify() {
     information "Signing for Sparkle distribution"
     cd "$BUILT_PRODUCTS_DIR"
-    SIGNATURE=$("$SCRIPTS_DIR/sign_sparkle_release.sh" "$HOME/Documents/hermes.key" "$ARCHIVE_FILENAME")
+    SIGNATURE=$("$SCRIPTS_DIR/sign_sparkle_release.sh" "$PROJECT_DIR/../hermes.key" "$ARCHIVE_FILENAME")
     if [ "$SIGNATURE" = '' ]; then
         error 'Signing failed. Aborting.'
     fi
