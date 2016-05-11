@@ -1,6 +1,6 @@
-# Version 1.2.7 (unreleased)
+# Version 1.2.7 (5/11/16)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.6...HEAD)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.6...v1.2.7)
 
 * [changed by @nriley] Dropped support for OS X 10.9 and earlier
 * [changed by @winny-] Removed "Tired of Song" from default toolbar
