@@ -10,7 +10,7 @@ mytput() {
 
 information() {
     mytput setaf 2
-    printf '>>> INFO:  '
+    printf '>>> INFO: '
     mytput sgr0
     printf '%s\n' "$*"
 }
@@ -42,9 +42,8 @@ set_environment() {
     INT_VERSION=$(cd "$PROJECT_DIR"; agvtool vers -terse)
     ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 
-    S3_BUCKET="hermesmacapp"
     HERMES_PAGES="$(dirname $SOURCE_ROOT)/hermes-pages"
-    DOWNLOAD_URL="https://s3.amazonaws.com/$S3_BUCKET/$ARCHIVE_FILENAME"
+    DOWNLOAD_URL="https://github.com/HermesApp/Hermes/releases/download/v${VERSION}/Hermes-${VERSION}.zip"
     RELEASENOTES_URL="http://hermesapp.org/changelog.html"
 }
 
@@ -77,20 +76,16 @@ build_versions_fragment() {
     information 'Building versions.xml fragment'
     cd "$BUILT_PRODUCTS_DIR"
     cat > versions.xml <<EOF
-<item>
-<title>Version $VERSION</title>
-<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>
-<sparkle:minimumSystemVersion>$MACOSX_DEPLOYMENT_TARGET</sparkle:minimumSystemVersion>
-<pubDate>$PUBDATE</pubDate>
-<enclosure
-url="$DOWNLOAD_URL"
-sparkle:version="$INT_VERSION"
-sparkle:shortVersionString="$VERSION"
-type="application/octet-stream"
-length="$SIZE"
-sparkle:dsaSignature="$SIGNATURE"
-/>
-</item>
+
+    <item>
+        <title>Version $VERSION</title>
+        <sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>
+        <sparkle:minimumSystemVersion>$MACOSX_DEPLOYMENT_TARGET</sparkle:minimumSystemVersion>
+        <pubDate>$PUBDATE</pubDate>
+        <enclosure url="$DOWNLOAD_URL"
+            sparkle:version="$INT_VERSION" sparkle:shortVersionString="$VERSION"
+            type="application/octet-stream" length="$SIZE" sparkle:dsaSignature="$SIGNATURE"/>
+    </item>
 EOF
 }
 
@@ -103,14 +98,32 @@ update_website() {
         "$VERSION" \
         "$PWD/versions.xml" \
         "$PROJECT_DIR/CHANGELOG.md" \
-        "$S3_BUCKET"
+        "$MACOSX_DEPLOYMENT_TARGET"
     # Stop logging
     set +x
 }
 
 upload_release() {
-    information "Uploading $ARCHIVE_FILENAME to $DOWNLOAD_URL"
-    cd "$BUILT_PRODUCTS_DIR"
+    local releases_url release_json html_url upload_url
+    information "Creating release for $VERSION"
+    releases_url='https://api.github.com/repos/HermesApp/Hermes/releases?access_token='$GITHUB_ACCESS_TOKEN
+    release_json=$(curl --data @- "$releases_url" <<EOF
+    {
+        "tag_name": "v$VERSION",
+        "target_commitish": "master",
+        "name": "v$VERSION",
+        "body": "",
+        "draft": true,
+        "prerelease": false
+    }
+EOF
+    )
+    html_url=$(python -c 'import sys; import json; print json.load(sys.stdin)["html_url"]' <<<$release_json)
 
-    s3cmd put --acl-public "$ARCHIVE_FILENAME" "s3://$S3_BUCKET/$ARCHIVE_FILENAME"
+    information "Uploading $ARCHIVE_FILENAME to GitHub"
+    upload_url=$(python -c 'import sys; import json; print json.load(sys.stdin)["upload_url"]' <<<$release_json)
+    upload_url=$(sed -e 's/{.*$//' <<<$upload_url)"?name=${ARCHIVE_FILENAME}&access_token=${GITHUB_ACCESS_TOKEN}"
+    curl -H 'Content-Type: application/zip' --data-binary "@$BUILT_PRODUCTS_DIR/$ARCHIVE_FILENAME" "$upload_url"
+
+    open "$html_url"
 }
