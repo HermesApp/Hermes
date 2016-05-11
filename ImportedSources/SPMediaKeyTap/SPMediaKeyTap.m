@@ -277,9 +277,8 @@ NSString *kIgnoreMediaKeysDefaultsKey = @"SPIgnoreMediaKeys";
 		NSLog(@"%d: %@", i++, bundleIdentifier);
 	}*/
 	
-	NSString *topBundleId;
+	NSString *topBundleId = _mediaKeyAppList[0];
 	NSString *appBundle = [[NSBundle mainBundle] bundleIdentifier];
-	[[_mediaKeyAppList objectAtIndex:0] getValue:&topBundleId];
 
 	Boolean same = [topBundleId isEqualToString: appBundle];
 	[self setShouldInterceptMediaKeyEvents: same];
