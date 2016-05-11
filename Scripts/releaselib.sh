@@ -43,7 +43,7 @@ set_environment() {
     ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 
     HERMES_PAGES="$(dirname $SOURCE_ROOT)/hermes-pages"
-    DOWNLOAD_URL="https://github.com/HermesApp/Hermes/releases/download/v${VERSION}/Hermes-${VERSION}.zip"
+    DOWNLOAD_URL="https://github.com/HermesApp/Hermes/releases/download/v${VERSION}/${ARCHIVE_FILENAME}"
     RELEASENOTES_URL="http://hermesapp.org/changelog.html"
 }
 
