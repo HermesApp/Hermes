@@ -1598,7 +1598,7 @@ DQ
                 <button id="1837">
                     <rect key="frame" x="18" y="163" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Scrobble tracks to last.fm" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1842">
+                    <buttonCell key="cell" type="check" title="Scrobble tracks to Last.fm" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1842">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1609,7 +1609,7 @@ DQ
                 <button id="1839">
                     <rect key="frame" x="39" y="123" width="305" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Scrobble likes/dislikes to last.fm" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1840">
+                    <buttonCell key="cell" type="check" title="Scrobble likes/dislikes" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1840">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
