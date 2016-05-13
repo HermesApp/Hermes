@@ -39,6 +39,7 @@ set_environment() {
     APPLICATION="$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app"
 
     VERSION=$(cd "$PROJECT_DIR"; agvtool mvers -terse1)
+    VERSION_IS_PRERELEASE=$([[ $VERSION =~ [^0-9.] ]] && echo true || echo false)
     INT_VERSION=$(cd "$PROJECT_DIR"; agvtool vers -terse)
     ARCHIVE_FILENAME="$PROJECT_NAME-$VERSION.zip"
 
@@ -58,6 +59,10 @@ build_archive() {
 
 # This also verifies the signature.
 sign_and_verify() {
+    if [[ $VERSION_IS_PRERELEASE == true ]]; then
+        information "Not signing for Sparkle distribution for prerelease version"
+        return
+    fi
     information "Signing for Sparkle distribution"
     cd "$BUILT_PRODUCTS_DIR"
     SIGNATURE=$("$SCRIPTS_DIR/sign_sparkle_release.sh" "$PROJECT_DIR/../hermes.key" "$ARCHIVE_FILENAME")
@@ -73,6 +78,10 @@ sign_and_verify() {
 }
 
 build_versions_fragment() {
+    if [[ $VERSION_IS_PRERELEASE == true ]]; then
+        information "Not building versions.xml fragment for prerelease version"
+        return
+    fi
     information 'Building versions.xml fragment'
     cd "$BUILT_PRODUCTS_DIR"
     cat > versions.xml <<EOF
@@ -90,6 +99,10 @@ EOF
 }
 
 update_website() {
+    if [[ $VERSION_IS_PRERELEASE == true ]]; then
+        information "Not updating website for prerelease version"
+        return
+    fi
     information "Updating website in $HERMES_PAGES"
     cd "$BUILT_PRODUCTS_DIR"
     # Log the command
@@ -114,7 +127,7 @@ upload_release() {
         "name": "v$VERSION",
         "body": "",
         "draft": true,
-        "prerelease": false
+        "prerelease": $VERSION_IS_PRERELEASE
     }
 EOF
     )
