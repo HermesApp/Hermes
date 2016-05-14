@@ -445,7 +445,7 @@ static NSString *hierrs[] = {
   [station setRadio:self];
   
   if ([s[@"isQuickMix"] boolValue]) {
-    station.name = @"Shuffle (QuickMix)";
+    station.name = @"\U0001F500 Shuffle";
     station.isQuickMix = YES;
   }
   return station;
@@ -635,22 +635,20 @@ static NSString *hierrs[] = {
 - (void) sortStations:(int)sort {
   [stations sortUsingComparator:
    ^NSComparisonResult (Station *s1, Station *s2) {
-     NSInteger factor = 1;
-     switch (sort) {
-       case SORT_NAME_ASC: return [[s1 name] caseInsensitiveCompare:[s2 name]];
-       case SORT_NAME_DSC: return -[[s1 name] caseInsensitiveCompare:[s2 name]];
-         
-       case SORT_DATE_DSC:
-         factor = -1;
-       default:
-       case SORT_DATE_ASC:
-         if ([s1 created] < [s2 created]) {
-           return factor * NSOrderedAscending;
-         } else if ([s1 created] > [s2 created]) {
-           return factor * NSOrderedDescending;
-         }
-         return NSOrderedSame;
+     // keep Shuffle/QuickMix at the top of the list
+     if ([s1 isQuickMix]) return NSOrderedAscending;
+     if ([s2 isQuickMix]) return NSOrderedDescending;
+
+     NSInteger factor = (sort == SORT_NAME_DSC || sort == SORT_DATE_DSC) ? -1 : 1;
+     if (sort == SORT_NAME_ASC || sort == SORT_NAME_DSC)
+       return factor * [[s1 name] caseInsensitiveCompare:[s2 name]];
+     
+     if ([s1 created] < [s2 created]) {
+       return factor * NSOrderedAscending;
+     } else if ([s1 created] > [s2 created]) {
+       return factor * NSOrderedDescending;
      }
+     return NSOrderedSame;
    }];
 }
 
