@@ -1313,4 +1313,24 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   }
 }
 
+- (NSString *)description {
+  NSMutableString *description = [[NSString stringWithFormat:@"%@", [super description]] mutableCopy];
+
+  if (asbd.mSampleRate != 0) {
+    // based on https://developer.apple.com/library/ios/documentation/MusicAudio/Conceptual/AudioUnitHostingGuide_iOS/ConstructingAudioUnitApps/ConstructingAudioUnitApps.html#//apple_ref/doc/uid/TP40009492-CH16-SW29
+    char formatIDString[5];
+    UInt32 formatID = CFSwapInt32HostToBig(asbd.mFormatID);
+    bcopy(&formatID, formatIDString, 4);
+    formatIDString[4] = '\0';
+
+    [description appendFormat:@" %.1f KHz '%s'", asbd.mSampleRate / 1000., formatIDString];
+  }
+
+  double bitRate;
+  if ([self calculatedBitRate:&bitRate])
+    [description appendFormat:@" ~%.0f Kbps", round(bitRate / 1000.)];
+
+  return [description copy];
+}
+
 @end
