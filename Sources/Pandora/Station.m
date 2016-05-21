@@ -154,7 +154,7 @@
     [self play];
   }
   shouldPlaySongOnFetch = NO;
-  NSLogd(@"Recieved %@ from %@ with qualities: %@", not.name, not.object, [qualities componentsJoinedByString:@" "]);
+  NSLogd(@"Received %@ from %@ with qualities: %@", not.name, not.object, [qualities componentsJoinedByString:@" "]);
 }
 
 - (void) configureNewStream:(NSNotification*) notification {
