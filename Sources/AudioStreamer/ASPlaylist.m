@@ -75,6 +75,7 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
         postNotificationName:ASNewSongPlaying
                       object:self
                     userInfo:@{@"url": _playing}];
+  NSLogd(@"%@", stream);
   if (lastKnownSeekTime == 0)
     return;
   if (![stream seekToTime:lastKnownSeekTime])
