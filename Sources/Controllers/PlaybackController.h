@@ -12,13 +12,13 @@
   IBOutlet NSView *playbackView;
 
   // Song view items
-  IBOutlet NSTextField *artistLabel;
   IBOutlet NSTextField *songLabel;
-  IBOutlet NSTextField *progressLabel;
-  IBOutlet NSSlider *playbackProgress;
-  IBOutlet NSButton *art;
-  IBOutlet NSProgressIndicator *artLoading;
+  IBOutlet NSTextField *artistLabel;
   IBOutlet NSTextField *albumLabel;
+  IBOutlet NSTextField *progressLabel;
+  IBOutlet NSButton *art;
+  IBOutlet NSSlider *playbackProgress;
+  IBOutlet NSProgressIndicator *artLoading;
 
   // Playback related items
   IBOutlet NSToolbarItem *like;
