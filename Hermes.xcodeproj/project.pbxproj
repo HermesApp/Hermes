@@ -125,8 +125,8 @@
 		44310F8A18EB87AB0095359D /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		44411DA5190166FB00EC4E05 /* PandoraDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PandoraDevice.h; sourceTree = "<group>"; };
 		44411DA6190166FB00EC4E05 /* PandoraDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PandoraDevice.m; sourceTree = "<group>"; };
-		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryCollectionView.h; path = Controllers/HistoryCollectionView.h; sourceTree = "<group>"; };
-		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryCollectionView.m; path = Controllers/HistoryCollectionView.m; sourceTree = "<group>"; };
+		44619491187407A300482DC4 /* HistoryCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryCollectionView.h; path = Views/HistoryCollectionView.h; sourceTree = "<group>"; };
+		44619492187407A300482DC4 /* HistoryCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryCollectionView.m; path = Views/HistoryCollectionView.m; sourceTree = "<group>"; };
 		44DFC8DE18FDFCBC007422DC /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		44DFC8DF18FDFCBC007422DC /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		843B578919660680000898F2 /* NSObject+SPInvocationGrabbing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SPInvocationGrabbing.h"; sourceTree = "<group>"; };
@@ -134,8 +134,8 @@
 		8D1107310486CEB800E47090 /* Hermes-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Hermes-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Hermes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hermes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97177193159EAA7D00EE3355 /* cd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cd.png; sourceTree = "<group>"; };
-		97177196159EAF6F00EE3355 /* HistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryView.h; path = Controllers/HistoryView.h; sourceTree = "<group>"; };
-		97177197159EAF6F00EE3355 /* HistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryView.m; path = Controllers/HistoryView.m; sourceTree = "<group>"; };
+		97177196159EAF6F00EE3355 /* HistoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryView.h; path = Views/HistoryView.h; sourceTree = "<group>"; };
+		97177197159EAF6F00EE3355 /* HistoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryView.m; path = Views/HistoryView.m; sourceTree = "<group>"; };
 		97177199159EB0E200EE3355 /* music-note.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "music-note.png"; sourceTree = "<group>"; };
 		9717719B159EBBBF00EE3355 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
 		9717719C159EBBBF00EE3355 /* FileReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileReader.m; sourceTree = "<group>"; };
@@ -160,8 +160,8 @@
 		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Pandora-Menu-Dark-Play.pdf"; sourceTree = "<group>"; };
 		E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Pandora-Menu-Dark-Pause.pdf"; sourceTree = "<group>"; };
-		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationsTableView.h; path = Controllers/StationsTableView.h; sourceTree = "<group>"; };
-		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationsTableView.m; path = Controllers/StationsTableView.m; sourceTree = "<group>"; };
+		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationsTableView.h; path = Views/StationsTableView.h; sourceTree = "<group>"; };
+		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationsTableView.m; path = Views/StationsTableView.m; sourceTree = "<group>"; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryItem.h; path = Models/HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryItem.m; path = Models/HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -378,12 +378,18 @@
 		B2A26AF01AE39E9F00ADD460 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				44619491187407A300482DC4 /* HistoryCollectionView.h */,
+				44619492187407A300482DC4 /* HistoryCollectionView.m */,
+				97177196159EAF6F00EE3355 /* HistoryView.h */,
+				97177197159EAF6F00EE3355 /* HistoryView.m */,
 				E1200A9F1CF2A4CC000D3215 /* LabelHoverShowField.h */,
 				E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */,
 				E1200AA21CF2B015000D3215 /* LabelHoverShowFieldCell.h */,
 				E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */,
 				B2A26AED1AE39E9B00ADD460 /* MusicProgressSliderCell.h */,
 				B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */,
+				E1D0A73817E5630100429DE0 /* StationsTableView.h */,
+				E1D0A73917E5630100429DE0 /* StationsTableView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -406,8 +412,6 @@
 		FA0E5568147855AB00C36794 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				44619491187407A300482DC4 /* HistoryCollectionView.h */,
-				44619492187407A300482DC4 /* HistoryCollectionView.m */,
 				FAEFFAAF132CB173007DC6FB /* AuthController.h */,
 				FAEFFAB0132CB173007DC6FB /* AuthController.m */,
 				FA229D6614429F68008AB9FE /* HistoryController.h */,
@@ -418,12 +422,8 @@
 				FA2442BA136B18DC00E126D3 /* PreferencesController.m */,
 				FA2A3F75132BF97E0089AECC /* StationsController.h */,
 				FA2A3F76132BF97E0089AECC /* StationsController.m */,
-				E1D0A73817E5630100429DE0 /* StationsTableView.h */,
-				E1D0A73917E5630100429DE0 /* StationsTableView.m */,
 				FACFACD415673690008A2140 /* StationController.h */,
 				FACFACD515673690008A2140 /* StationController.m */,
-				97177196159EAF6F00EE3355 /* HistoryView.h */,
-				97177197159EAF6F00EE3355 /* HistoryView.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
