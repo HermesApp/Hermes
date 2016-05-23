@@ -30,6 +30,8 @@
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		B2A26AEF1AE39E9B00ADD460 /* MusicProgressSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */; };
+		E1200AA11CF2A4CC000D3215 /* LabelHoverShowField.m in Sources */ = {isa = PBXBuildFile; fileRef = E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */; };
+		E1200AA41CF2B015000D3215 /* LabelHoverShowFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */; };
 		E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */ = {isa = PBXBuildFile; fileRef = E124109918EBAF6F007AF091 /* HermesApp.m */; };
 		E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E195ABA817D4636B00FE518C /* Quartz.framework */; };
 		E1C1EC121A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */; };
@@ -149,6 +151,10 @@
 		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		B2A26AED1AE39E9B00ADD460 /* MusicProgressSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MusicProgressSliderCell.h; path = Views/MusicProgressSliderCell.h; sourceTree = "<group>"; };
 		B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicProgressSliderCell.m; path = Views/MusicProgressSliderCell.m; sourceTree = "<group>"; };
+		E1200A9F1CF2A4CC000D3215 /* LabelHoverShowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LabelHoverShowField.h; path = Views/LabelHoverShowField.h; sourceTree = "<group>"; };
+		E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LabelHoverShowField.m; path = Views/LabelHoverShowField.m; sourceTree = "<group>"; };
+		E1200AA21CF2B015000D3215 /* LabelHoverShowFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LabelHoverShowFieldCell.h; path = Views/LabelHoverShowFieldCell.h; sourceTree = "<group>"; };
+		E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LabelHoverShowFieldCell.m; path = Views/LabelHoverShowFieldCell.m; sourceTree = "<group>"; };
 		E124109818EBAF6F007AF091 /* HermesApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HermesApp.h; sourceTree = "<group>"; };
 		E124109918EBAF6F007AF091 /* HermesApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HermesApp.m; sourceTree = "<group>"; };
 		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
@@ -372,6 +378,10 @@
 		B2A26AF01AE39E9F00ADD460 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E1200A9F1CF2A4CC000D3215 /* LabelHoverShowField.h */,
+				E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */,
+				E1200AA21CF2B015000D3215 /* LabelHoverShowFieldCell.h */,
+				E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */,
 				B2A26AED1AE39E9B00ADD460 /* MusicProgressSliderCell.h */,
 				B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */,
 			);
@@ -619,6 +629,7 @@
 				441C9F101CC815A1000A0302 /* NSObject+SPInvocationGrabbing.m in Sources */,
 				441C9F121CC815A1000A0302 /* SPMediaKeyTap.m in Sources */,
 				441C9F0E1CC80AA0000A0302 /* ASPlaylist.m in Sources */,
+				E1200AA41CF2B015000D3215 /* LabelHoverShowFieldCell.m in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				FA2A3F7F132BF97E0089AECC /* StationsController.m in Sources */,
 				FA2A3F80132BF97E0089AECC /* Pandora.m in Sources */,
@@ -649,6 +660,7 @@
 				97539FAD158442A500D1E65C /* URLConnection.m in Sources */,
 				971CC39A1585DA11004D75BA /* NetworkConnection.m in Sources */,
 				97177198159EAF6F00EE3355 /* HistoryView.m in Sources */,
+				E1200AA11CF2A4CC000D3215 /* LabelHoverShowField.m in Sources */,
 				9717719D159EBBBF00EE3355 /* FileReader.m in Sources */,
 				E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */,
 			);

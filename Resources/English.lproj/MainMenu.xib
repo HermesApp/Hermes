@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
     </dependencies>
@@ -1141,38 +1141,47 @@ DQ
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="volume_down" id="1187"/>
                 </imageView>
-                <textField toolTip="Song Title" verticalHuggingPriority="750" id="1172">
-                    <rect key="frame" x="29" y="282" width="181" height="17"/>
+                <textField toolTip="Song Title" verticalHuggingPriority="750" id="1172" customClass="LabelHoverShowField">
+                    <rect key="frame" x="18" y="282" width="204" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Song Title" id="1175">
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Song Title" id="1175" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="hoverView" destination="1171" id="eTu-nf-nwN"/>
+                    </connections>
                 </textField>
-                <textField toolTip="Song Artist" verticalHuggingPriority="750" id="1173">
-                    <rect key="frame" x="29" y="266" width="181" height="14"/>
+                <textField toolTip="Song Artist" verticalHuggingPriority="750" id="1173" customClass="LabelHoverShowField">
+                    <rect key="frame" x="18" y="266" width="204" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Artist" id="1174">
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Artist" id="1174" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="hoverView" destination="1169" id="Wzy-Di-eRV"/>
+                    </connections>
                 </textField>
-                <textField toolTip="Song Album" verticalHuggingPriority="750" id="1170">
-                    <rect key="frame" x="29" y="250" width="181" height="14"/>
+                <textField toolTip="Song Album" verticalHuggingPriority="750" id="1170" customClass="LabelHoverShowField">
+                    <rect key="frame" x="18" y="250" width="204" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Album" id="1177">
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Album" id="1177" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
+                    <connections>
+                        <outlet property="hoverView" destination="1168" id="BZz-A6-PAn"/>
+                    </connections>
                 </textField>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="1160">
                     <rect key="frame" x="2" y="283" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </progressIndicator>
-                <button toolTip="View song on Pandora" id="1171">
+                <button hidden="YES" toolTip="View song on Pandora" id="1171">
                     <rect key="frame" x="207" y="281" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1176">
@@ -1183,7 +1192,7 @@ DQ
                         <action selector="songURL:" target="835" id="1194"/>
                     </connections>
                 </button>
-                <button toolTip="View artist on Pandora" id="1169">
+                <button hidden="YES" toolTip="View artist on Pandora" id="1169">
                     <rect key="frame" x="207" y="265" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1178">
@@ -1194,7 +1203,7 @@ DQ
                         <action selector="artistURL:" target="835" id="1192"/>
                     </connections>
                 </button>
-                <button toolTip="View album on Pandora" id="1168">
+                <button hidden="YES" toolTip="View album on Pandora" id="1168">
                     <rect key="frame" x="207" y="249" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1179">
