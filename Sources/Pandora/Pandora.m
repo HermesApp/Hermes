@@ -456,12 +456,12 @@ static NSString *hierrs[] = {
   NSLogd(@"Getting fragment for %@...", [station name]);
   
   NSMutableDictionary *d = [self defaultRequestDictionary];
-  d[@"stationToken"] = [station token];
+  d[@"stationToken"] = station.token;
   d[@"additionalAudioUrl"] = @"HTTP_32_AACPLUS_ADTS,HTTP_64_AACPLUS_ADTS,HTTP_128_MP3";
   
   PandoraRequest *r = [self defaultRequestWithMethod:@"station.getPlaylist"];
-  [r setRequest:d];
-  [r setCallback: ^(NSDictionary* dict) {
+  r.request = d;
+  r.callback = ^(NSDictionary* dict) {
     NSDictionary *result = dict[@"result"];
     NSMutableArray *songs = [NSMutableArray array];
     
@@ -470,61 +470,64 @@ static NSString *hierrs[] = {
       
       Song *song = [[Song alloc] init];
       
-      [song setArtist: s[@"artistName"]];
-      [song setTitle: s[@"songName"]];
-      [song setAlbum: s[@"albumName"]];
-      [song setArt: s[@"albumArtUrl"]];
-      [song setStationId: s[@"stationId"]];
-      [song setToken: s[@"trackToken"]];
-      [song setNrating: s[@"songRating"]];
-      [song setAlbumUrl: s[@"albumDetailUrl"]];
-      [song setArtistUrl: s[@"artistDetailUrl"]];
-      [song setTitleUrl: s[@"songDetailUrl"]];
+      song.artist = s[@"artistName"];
+      song.title = s[@"songName"];
+      song.album = s[@"albumName"];
+      song.art = s[@"albumArtUrl"];
+      song.stationId = s[@"stationId"];
+      song.token = s[@"trackToken"];
+      song.nrating = s[@"songRating"];
+      song.albumUrl = s[@"albumDetailUrl"];
+      song.artistUrl = s[@"artistDetailUrl"];
+      song.titleUrl = s[@"songDetailUrl"];
       
       id audioUrlMap = s[@"audioUrlMap"];
       if ([audioUrlMap isKindOfClass:[NSDictionary class]]) {
-        if ([audioUrlMap[@"highQuality"] isKindOfClass:[NSDictionary class]])
-             [song setHighUrl:audioUrlMap[@"highQuality"][@"audioUrl"]];
-        if ([audioUrlMap[@"mediumQuality"] isKindOfClass:[NSDictionary class]])
-             [song setMedUrl:audioUrlMap[@"mediumQuality"][@"audioUrl"]];
+        id qualityMap = audioUrlMap[@"highQuality"];
+        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
+          song.highUrl = qualityMap[@"audioUrl"]; // 192 Kbps MP3 with Pandora One
+          NSLogd(@"High quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
+        }
+        qualityMap = audioUrlMap[@"mediumQuality"];
+        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
+          song.medUrl = audioUrlMap[@"mediumQuality"][@"audioUrl"]; // 64 Kbps AAC+ with Pandora One
+          NSLogd(@"Medium quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
+        }
       }
       
       id urls = s[@"additionalAudioUrl"];
       if ([urls isKindOfClass:[NSArray class]]) {
         NSArray *urlArray = urls;
-        [song setLowUrl:urlArray[0]];
-        if ([urlArray count] > 1) {
-          if (![song medUrl])
-            [song setMedUrl:urlArray[1]];
-        } else {
-          if (![song medUrl])
-            [song setMedUrl:[song lowUrl]];
-          NSLog(@"bad medium format specified in request");
+        if (urlArray.count < 3) {
+          NSLog(@"Fewer than 3 (expected) items for additionalAudioUrl: %@", urlArray);
         }
-        if ([urlArray count] > 2) {
-          if (![song highUrl])
-            [song setHighUrl:urlArray[2]];
-        } else {
-          if (![song highUrl])
-            [song setHighUrl:[song medUrl]];
-          NSLog(@"bad high format specified in request");
+        switch (urlArray.count) {
+          case 3:
+            if (!song.highUrl) song.highUrl = urlArray[2];
+          case 2:
+            if (!song.medUrl) song.medUrl = urlArray[1];
+          case 1:
+            if (!song.lowUrl) song.lowUrl = urlArray[0];
+            break;
+          default:
+            NSLog(@"Unexpected number of items (not 1-3) for additionalAudioUrl: %@", urlArray);
         }
       } else {
-        NSLog(@"all bad formats in request?");
-        [song setLowUrl:urls];
-        [song setMedUrl:urls];
-        [song setHighUrl:urls];
+        NSLog(@"Unexpected format for additionalAudioUrl: %@", urls);
       }
-      
+
+      if (!song.medUrl) song.medUrl = song.lowUrl;
+      if (!song.highUrl) song.highUrl = song.medUrl;
+
       [songs addObject: song];
     };
     
     NSString *name = [NSString stringWithFormat:@"hermes.fragment-fetched.%@",
-                      [station token]];
+                      station.token];
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     d[@"songs"] = songs;
     [self sendNotification:name withUserInfo:d];
-  }];
+  };
   
   return [self sendAuthenticatedRequest:r];
 }
