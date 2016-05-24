@@ -45,6 +45,12 @@
     object:[[NSApp delegate] pandora]];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
+    selector:@selector(stationRemoved:)
+    name:PandoraDidLogOutNotification
+    object:[[NSApp delegate] pandora]];
+
+  [[NSNotificationCenter defaultCenter]
+    addObserver:self
     selector:@selector(stationRenamed:)
     name:PandoraDidDeleteFeedbackNotification
     object:[[NSApp delegate] pandora]];
