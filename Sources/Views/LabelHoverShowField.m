@@ -26,8 +26,6 @@
 }
 
 - (void)resetCursorRects {
-  [super resetCursorRects];
-
   if (_hoverView != nil) {
     NSRect hoverViewRect = [self convertRect:_hoverView.bounds fromView:_hoverView];
     [self addCursorRect:hoverViewRect cursor:[NSCursor arrowCursor]];
@@ -39,6 +37,8 @@
       boundsRect.size.width -= intersectionRect.size.width;
     }
     [self addCursorRect:boundsRect cursor:[NSCursor IBeamCursor]];
+  } else {
+    [super resetCursorRects];
   }
 }
 
