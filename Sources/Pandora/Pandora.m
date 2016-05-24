@@ -517,7 +517,7 @@ static NSString *hierrs[] = {
         if ([qualityMap isKindOfClass:[NSDictionary class]]) {
           NSLogd(@"Low quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
           if (!song.lowUrl || [qualityMap[@"bitrate"] integerValue] > 32)
-            song.lowUrl = qualityMap[@"audioUrl"]; // 32 Kbps AAC+ (not provided without Pandora One)
+            song.lowUrl = qualityMap[@"audioUrl"]; // 32 Kbps AAC+ (not provided with Pandora One)
         }
       }
 
