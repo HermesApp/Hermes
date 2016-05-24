@@ -675,6 +675,9 @@
   SEL action = [menuItem action];
 
   if (action == @selector(showHistoryDrawer:) || action == @selector(showStationsDrawer:) || action == @selector(toggleDrawerVisible:)) {
+    if (!self.pandora.isAuthenticated)
+      return NO;
+
     NSInteger openDrawer = [PREF_KEY_VALUE(OPEN_DRAWER) integerValue];
     NSCellStateValue state = NSOffState;
     if (action == @selector(showHistoryDrawer:)) {
