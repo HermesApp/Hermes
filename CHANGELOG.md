@@ -1,3 +1,14 @@
+# Version 1.2.8 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...HEAD)
+
+* [changed by @nriley] Fix a regression introduced in 1.2.17 where non-Pandora One users had audio quality degraded (#263)
+* [changed by @nriley] Only display song/artist/album arrows in playback screen on mouseover
+* [changed by @nriley] Display Shuffle (formerly QuickMix) at the top of the station list and more like the Web site
+* [fixed by @nriley] Don't allow the drawer to be used before you're logged into Pandora
+* [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
+* [changed by @reedloden] Scrobble securely where possible
+
 # Version 1.2.7 (5/11/16)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.6...v1.2.7)
