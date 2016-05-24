@@ -46,7 +46,7 @@
   if (_labelTrackingArea != nil) [self removeTrackingArea:_labelTrackingArea];
 
   _labelTrackingArea = [[NSTrackingArea alloc] initWithRect:[self bounds]
-                                                    options:NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow
+                                                    options:NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways
                                                       owner:self
                                                    userInfo:nil];
   [self addTrackingArea:_labelTrackingArea];
