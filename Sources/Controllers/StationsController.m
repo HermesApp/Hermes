@@ -351,6 +351,7 @@
 
   if ([self playingStation] == nil && ![self playSavedStation]) {
     [[NSApp delegate] setCurrentView:view];
+    [[NSApp delegate] showStationsDrawer:nil];
   }
   [[NSApp delegate] handleDrawer];
 
