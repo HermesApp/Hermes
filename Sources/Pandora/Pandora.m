@@ -480,21 +480,7 @@ static NSString *hierrs[] = {
       song.albumUrl = s[@"albumDetailUrl"];
       song.artistUrl = s[@"artistDetailUrl"];
       song.titleUrl = s[@"songDetailUrl"];
-      
-      id audioUrlMap = s[@"audioUrlMap"];
-      if ([audioUrlMap isKindOfClass:[NSDictionary class]]) {
-        id qualityMap = audioUrlMap[@"highQuality"];
-        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
-          song.highUrl = qualityMap[@"audioUrl"]; // 192 Kbps MP3 with Pandora One
-          NSLogd(@"High quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
-        }
-        qualityMap = audioUrlMap[@"mediumQuality"];
-        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
-          song.medUrl = audioUrlMap[@"mediumQuality"][@"audioUrl"]; // 64 Kbps AAC+ with Pandora One
-          NSLogd(@"Medium quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
-        }
-      }
-      
+
       id urls = s[@"additionalAudioUrl"];
       if ([urls isKindOfClass:[NSArray class]]) {
         NSArray *urlArray = urls;
@@ -502,18 +488,37 @@ static NSString *hierrs[] = {
           NSLog(@"Fewer than 3 (expected) items for additionalAudioUrl: %@", urlArray);
         }
         switch (urlArray.count) {
-          case 3:
-            if (!song.highUrl) song.highUrl = urlArray[2];
-          case 2:
-            if (!song.medUrl) song.medUrl = urlArray[1];
-          case 1:
-            if (!song.lowUrl) song.lowUrl = urlArray[0];
+          case 3: song.highUrl = urlArray[2];
+          case 2: song.medUrl = urlArray[1];
+          case 1: song.lowUrl = urlArray[0];
             break;
           default:
             NSLog(@"Unexpected number of items (not 1-3) for additionalAudioUrl: %@", urlArray);
         }
       } else {
         NSLog(@"Unexpected format for additionalAudioUrl: %@", urls);
+      }
+
+      id audioUrlMap = s[@"audioUrlMap"];
+      if ([audioUrlMap isKindOfClass:[NSDictionary class]]) {
+        id qualityMap = audioUrlMap[@"highQuality"];
+        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
+          NSLogd(@"High quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
+          if (!song.highUrl || [qualityMap[@"bitrate"] integerValue] > 128)
+            song.highUrl = qualityMap[@"audioUrl"]; // 192 Kbps MP3 with Pandora One; 64 Kbps AAC+ without
+        }
+        qualityMap = audioUrlMap[@"mediumQuality"];
+        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
+          NSLogd(@"Medium quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
+          if (!song.medUrl || [qualityMap[@"bitrate"] integerValue] > 64)
+            song.medUrl = qualityMap[@"audioUrl"]; // 64 Kbps AAC+
+        }
+        qualityMap = audioUrlMap[@"lowQuality"];
+        if ([qualityMap isKindOfClass:[NSDictionary class]]) {
+          NSLogd(@"Low quality audio from audioUrlMap is %@ Kbps %@", qualityMap[@"bitrate"], qualityMap[@"encoding"]);
+          if (!song.lowUrl || [qualityMap[@"bitrate"] integerValue] > 32)
+            song.lowUrl = qualityMap[@"audioUrl"]; // 32 Kbps AAC+ (not provided without Pandora One)
+        }
       }
 
       if (!song.medUrl) song.medUrl = song.lowUrl;
