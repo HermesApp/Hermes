@@ -1844,16 +1844,16 @@ DQ
                                                 <rect key="frame" x="1" y="23" width="198" height="129"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveColumns="NO" headerView="1774" id="1699">
+                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Likes table" headerView="1774" id="1699">
                                                         <rect key="frame" x="0.0" y="0.0" width="198" height="129"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="195" minWidth="10" maxWidth="3.4028234663852886e+38" id="1769">
-                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Song - Artist">
-                                                                    <font key="font" metaFont="smallSystem"/>
+                                                            <tableColumn identifier="name" editable="NO" width="195" minWidth="10" maxWidth="3.4028234663852886e+38" id="1769">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Artist - Song">
+                                                                    <font key="font" metaFont="systemMedium" size="11"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
@@ -1862,7 +1862,7 @@ DQ
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
-                                                                <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="name"/>
+                                                                <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="name"/>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                             </tableColumn>
                                                         </tableColumns>
@@ -1894,16 +1894,16 @@ DQ
                                                 <rect key="frame" x="1" y="23" width="198" height="129"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveColumns="NO" headerView="1773" id="1711">
+                                                    <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Dislikes table" headerView="1773" id="1711">
                                                         <rect key="frame" x="0.0" y="0.0" width="198" height="129"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="195" minWidth="40" maxWidth="1000" id="1713">
-                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Song - Artist">
-                                                                    <font key="font" metaFont="smallSystem"/>
+                                                            <tableColumn identifier="name" editable="NO" width="195" minWidth="40" maxWidth="1000" id="1713">
+                                                                <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Artist - Song">
+                                                                    <font key="font" metaFont="systemMedium" size="11"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </tableHeaderCell>
@@ -1912,7 +1912,7 @@ DQ
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
-                                                                <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="name"/>
+                                                                <sortDescriptor key="sortDescriptorPrototype" selector="localizedStandardCompare:" sortKey="name"/>
                                                                 <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                             </tableColumn>
                                                         </tableColumns>

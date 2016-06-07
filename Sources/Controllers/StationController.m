@@ -83,6 +83,18 @@
   [window makeKeyAndOrderFront:nil];
 }
 
+- (NSArray *)formattedArray:(NSArray *)alikesDislikes forLikesOrDislikes:(NSTableView *)likesDislikes {
+  NSMutableArray *formattedArray = [[NSMutableArray alloc] initWithCapacity:alikesDislikes.count];
+  for (NSDictionary *likeDislike in alikesDislikes) {
+    NSMutableDictionary *likeDislikeFormatted = [likeDislike mutableCopy];
+    likeDislikeFormatted[@"name"] = [NSString stringWithFormat:@"%@ - %@",
+                                     likeDislikeFormatted[@"artistName"],
+                                     likeDislikeFormatted[@"songName"]];
+    [formattedArray addObject:likeDislikeFormatted];
+  }
+  return [formattedArray sortedArrayUsingDescriptors:likesDislikes.sortDescriptors];
+}
+
 /**
  * @brief Callback invoked when a station's info arrives
  *
@@ -121,8 +133,8 @@
     [art setImage:[NSImage imageNamed:@"missing-album"]];
   }
 
-  alikes = info[@"likes"];
-  adislikes = info[@"dislikes"];
+  alikes = [self formattedArray:info[@"likes"] forLikesOrDislikes:likes];
+  adislikes = [self formattedArray:info[@"dislikes"] forLikesOrDislikes:dislikes];
   [deleteFeedback setEnabled:TRUE];
   seeds = info[@"seeds"];
   if ([cur_station allowAddMusic]) {
@@ -332,10 +344,29 @@
   NSArray *arr = aTableView == likes ? alikes : adislikes;
 
   if ((NSUInteger) rowIndex >= [arr count]) { return nil; }
-  NSDictionary *d = arr[rowIndex];
-  return [NSString stringWithFormat:@"%@ - %@",
-                    d[@"songName"],
-                    d[@"artistName"]];
+  return arr[rowIndex][@"name"];
+}
+
+- (void)tableView:(NSTableView *)aTableView sortDescriptorsDidChange:(NSArray<NSSortDescriptor *> *)oldDescriptors {
+  NSArray *newDescriptors = aTableView.sortDescriptors;
+  if (newDescriptors.count == 0)
+    return;
+  
+  // tri-state sort — ascending name/descending name/descending date (default as returned from Pandora)
+  if (oldDescriptors.count > 0) {
+    NSSortDescriptor *oldDescriptor = oldDescriptors[0];
+    if ([oldDescriptor.key isEqualToString:@"name"] && !oldDescriptor.ascending) {
+      [aTableView setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"dateCreated.time" ascending:NO selector:@selector(compare:)]]];
+      return;
+    }
+  }
+  
+  if (aTableView == likes) {
+    alikes = [alikes sortedArrayUsingDescriptors:newDescriptors];
+  } else {
+    adislikes = [adislikes sortedArrayUsingDescriptors:newDescriptors];
+  }
+  [aTableView reloadData];
 }
 
 - (void)tableViewSelectionIsChanging:(NSNotification *)aNotification {
