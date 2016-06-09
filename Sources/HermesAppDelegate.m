@@ -66,8 +66,7 @@
 }
 
 - (void) closeNewStationSheet {
-  [NSApp endSheet:newStationSheet];
-  [newStationSheet orderOut:self];
+  [window endSheet:newStationSheet];
 }
 
 - (void) showNewStationSheet {

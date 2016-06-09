@@ -11,6 +11,7 @@
 * [fixed by @nriley] Don't allow the drawer to be used before you're logged into Pandora
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
+* [fixed by @nriley] Don't show the add station sheet after dismissing another sheet
 
 # Version 1.2.7 (5/11/16)
 
