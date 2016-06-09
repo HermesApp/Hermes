@@ -321,39 +321,38 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
             </view>
             <toolbar key="toolbar" implicitIdentifier="523691DA-3184-4F47-A885-9465F8ED1820" prefersToBeShown="NO" displayMode="iconOnly" sizeMode="small" id="768">
                 <allowedToolbarItems>
-                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="773"/>
-                    <toolbarItem implicitItemIdentifier="91BF9814-7597-4F20-9F06-D93EB56DD5A8" label="Play" paletteLabel="Play/Pause" toolTip="Play/pause the current song" tag="-1" image="play" id="776">
+                    <toolbarItem implicitItemIdentifier="93E09D6C-9E59-4A3C-A062-D1300904AE9D" label="Play" paletteLabel="Play/Pause" toolTip="Play/pause the current song" tag="-1" image="play" id="776">
                         <connections>
                             <action selector="playpause:" target="835" id="854"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="774"/>
-                    <toolbarItem implicitItemIdentifier="6C64FF40-0870-4EA3-858A-F4361C571D94" label="Next Song" paletteLabel="Next Song" toolTip="Skip current song" tag="-1" image="fast_forward" id="777">
+                    <toolbarItem implicitItemIdentifier="C1F73AAE-CA9B-4AE4-84F0-6FD469CA5403" label="Next Song" paletteLabel="Next Song" toolTip="Skip current song" tag="-1" image="fast_forward" id="777">
                         <connections>
                             <action selector="next:" target="835" id="853"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="526948D3-5A13-4D94-884F-D7D135AC8E03" explicitItemIdentifier="like" label="Like" paletteLabel="Like" toolTip="Like current song" tag="-1" image="thumbup" selectable="YES" id="818">
-                        <connections>
-                            <action selector="like:" target="835" id="852"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="D242F1EF-60B3-4626-907F-6BC5D69CA5C1" label="Dislike" paletteLabel="Dislike" toolTip="Dislike current song" tag="-1" image="thumbdown" id="819">
-                        <connections>
-                            <action selector="dislike:" target="835" id="851"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="6A790A9A-7FBC-4857-8A77-C48493A9D499" label="Tired" paletteLabel="Tired" toolTip="Don't play current song for a month" tag="-1" image="zzs" id="820">
-                        <connections>
-                            <action selector="tired:" target="835" id="850"/>
-                        </connections>
-                    </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="F5061362-B8F4-4328-987B-2E3384A2639C" label="History" paletteLabel="History" toolTip="Show playback history" tag="-1" image="history" id="1328">
+                    <toolbarItem implicitItemIdentifier="63378708-9425-4BEA-BDC4-0A119EA2829F" label="History" paletteLabel="History/Stations" toolTip="Show playback history" tag="-1" image="history" id="1328">
                         <connections>
                             <action selector="toggleDrawerContent:" target="494" id="2226"/>
                         </connections>
                     </toolbarItem>
-                    <toolbarItem implicitItemIdentifier="NSToolbarSeparatorItem" id="771"/>
+                    <toolbarItem implicitItemIdentifier="A449647C-5E3D-4B0A-A7A9-25D95931BEAA" explicitItemIdentifier="like" label="Like" paletteLabel="Like" toolTip="Like current song" tag="-1" image="thumbup" selectable="YES" id="818">
+                        <connections>
+                            <action selector="like:" target="835" id="852"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="2C8D8643-12E0-4455-B548-CE63FB4051DD" label="Dislike" paletteLabel="Dislike" toolTip="Dislike current song" tag="-1" image="thumbdown" id="819">
+                        <connections>
+                            <action selector="dislike:" target="835" id="851"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="ACC84F8C-7985-4757-9D76-09A92CE90D5D" label="Tired" paletteLabel="Tired" toolTip="Don't play current song for a month" tag="-1" image="zzs" id="820">
+                        <connections>
+                            <action selector="tired:" target="835" id="850"/>
+                        </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="NSToolbarFlexibleSpaceItem" id="774"/>
+                    <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="773"/>
                 </allowedToolbarItems>
                 <defaultToolbarItems>
                     <toolbarItem reference="776"/>
