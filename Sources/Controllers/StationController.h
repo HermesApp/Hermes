@@ -20,7 +20,7 @@
   IBOutlet NSTextField *seedSearch;
   IBOutlet NSOutlineView *seedsResults;
   IBOutlet NSOutlineView *seedsCurrent;
-  NSDictionary *seeds;
+  NSMutableDictionary *seeds;
   NSDictionary *lastResults;
   IBOutlet NSButton *seedAdd;
   IBOutlet NSButton *seedDel;

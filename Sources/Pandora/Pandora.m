@@ -575,13 +575,13 @@ static NSString *hierrs[] = {
     info[@"genres"] = result[@"genre"];
     info[@"url"] = result[@"stationDetailUrl"];
     
-    /* Seeds */
+    /* Seeds - note that mutability is assumed by StationController */
     NSMutableDictionary *seeds = [NSMutableDictionary dictionary];
     NSDictionary *music = result[@"music"];
     for (NSString *kind in @[@"songs", @"artists"]) {
       NSArray *seedsOfKind = music[kind];
       if ([seedsOfKind count] > 0)
-        seeds[kind] = seedsOfKind;
+        seeds[kind] = [seedsOfKind mutableCopy];
     }
     info[@"seeds"] = seeds;
     

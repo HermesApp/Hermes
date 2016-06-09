@@ -75,7 +75,8 @@
   [likes reloadData];
   [dislikes reloadData];
   [seedSearch setStringValue:@""];
-  seeds = lastResults = nil;
+  seeds = nil;
+  lastResults = nil;
   [seedsCurrent reloadData];
   [seedsResults reloadData];
   [self showSpinner];
@@ -199,6 +200,8 @@
 #pragma mark - Adding a seed
 
 - (IBAction) addSeed:(id)sender {
+  // XXX doesn't fully implement adding multiple seeds (particularly, there's no support for handling errors)
+  // XXX - multiple selection is disabled in IB for this reason
   NSIndexSet *set = [seedsResults selectedRowIndexes];
   if ([set count] == 0) return;
   Pandora *pandora = [[NSApp delegate] pandora];
@@ -219,13 +222,12 @@
   [self hideSpinner];
   NSDictionary *seed = [not userInfo];
   NSString *seedKind = (seed[@"songName"] == nil) ? @"artists" : @"songs";
-  NSMutableArray *container = seeds[seedKind];
-  if (container == nil) {
-    NSMutableDictionary *mutableSeeds = [seeds mutableCopy];
-    container = mutableSeeds[seedKind] = [NSMutableArray array];
-    seeds = [mutableSeeds copy];
+  NSMutableArray *seedsOfKind = seeds[seedKind];
+  if (seedsOfKind == nil) {
+    seedsOfKind = seeds[seedKind] = [NSMutableArray array];
   }
-  [container addObject:seed];
+  [seedsOfKind addObject:seed];
+  seeds[seedKind] = seedsOfKind;
   [seedsCurrent reloadData];
   [seedsCurrent expandItem:seedKind];
 }
@@ -233,10 +235,12 @@
 #pragma mark - Delete a seed
 
 - (IBAction) deleteSeed:(id)sender {
+  // XXX doesn't fully implement deleting multiple seeds (particularly, there's no support for handling errors)
+  // XXX - multiple selection is disabled in IB for this reason
   NSIndexSet *set = [seedsCurrent selectedRowIndexes];
   if ([set count] == 0) return;
   Pandora *pandora = [[NSApp delegate] pandora];
-  __block int deleted = 0;
+  __block int removeRequests = 0;
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     id item = [seedsCurrent itemAtRow:idx];
@@ -245,10 +249,10 @@
     }
     NSDictionary *d = item;
     [pandora removeSeed:d[@"seedId"]];
-    deleted++;
+    removeRequests++;
   }];
 
-  if (deleted == 0) {
+  if (removeRequests == 0) {
     return;
   }
   [self showSpinner];
@@ -257,25 +261,31 @@
 }
 
 - (void) seedDeleted:(NSNotification*) not {
+  // XXX doesn't fully implement deleting multiple seeds (particularly, there's no path for error handling)
+  // XXX - multiple selection is disabled in IB for this reason
+  // XXX however, the same seed can be added more than once, so we may actually delete multiple items even in this case
   [self hideSpinner];
   NSIndexSet *set = [seedsCurrent selectedRowIndexes];
-  NSMutableArray *todel = [NSMutableArray array];
+  if ([set count] == 0) return;
 
+  NSMutableSet *seedIdsToDelete = [NSMutableSet set];
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     id item = [seedsCurrent itemAtRow:idx];
     if ([item isKindOfClass:[NSDictionary class]]) {
-      [todel addObject:item];
+      [seedIdsToDelete addObject:item[@"seedId"]];
     }
   }];
 
-  for (NSDictionary *d in todel) {
-    [seeds enumerateKeysAndObjectsUsingBlock: ^(id key, id obj, BOOL *stop) {
-      NSMutableArray *arr = obj;
-      [arr removeObject:d];
+  for (NSString *seedKind in seeds) {
+    NSMutableArray *seedsOfKind = seeds[seedKind];
+    NSIndexSet *seedIndexesToDelete = [seedsOfKind indexesOfObjectsPassingTest:^BOOL(id _Nonnull seed, NSUInteger idx, BOOL * _Nonnull stop) {
+      return [seedIdsToDelete containsObject:seed[@"seedId"]];
     }];
+    if (seedIndexesToDelete.count == 0)
+      continue;
+    [seedsOfKind removeObjectsAtIndexes:seedIndexesToDelete];
   }
-
-  seeds = [self seedsWithNoEmptyKinds:seeds];
+  seeds = [[self seedsWithNoEmptyKinds:seeds] mutableCopy];
 
   [seedsCurrent deselectAll:nil];
   [seedsCurrent reloadData];

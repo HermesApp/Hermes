@@ -10,6 +10,7 @@
 * [added by @nriley] Save the size and position of the Edit Station window
 * [fixed by @nriley] Don't allow the drawer to be used before you're logged into Pandora
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
+* [fixed by @nriley] Don't crash when adding or removing seeds from a station
 
 # Version 1.2.7 (5/11/16)
 
