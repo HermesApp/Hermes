@@ -5,7 +5,7 @@
 
 @interface StationsController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
 
-  IBOutlet NSView *view;
+  IBOutlet NSView *chooseStationView;
 
   IBOutlet NSDrawer *stations;
   IBOutlet NSTableView *stationsTable;

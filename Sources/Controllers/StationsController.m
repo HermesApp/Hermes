@@ -356,7 +356,7 @@
   [stationsRefreshing stopAnimation:nil];
 
   if ([self playingStation] == nil && ![self playSavedStation]) {
-    [[NSApp delegate] setCurrentView:view];
+    [[NSApp delegate] setCurrentView:chooseStationView];
     [[NSApp delegate] showStationsDrawer:nil];
   }
   [[NSApp delegate] handleDrawer];
@@ -512,7 +512,7 @@
     
     if ([selected isEqual:[self playingStation]]) {
       [[[NSApp delegate] playback] playStation:nil];
-      [[NSApp delegate] setCurrentView:view];
+      [[NSApp delegate] setCurrentView:chooseStationView];
     }
     
     [stationsRefreshing setHidden:NO];

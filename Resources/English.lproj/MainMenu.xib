@@ -913,6 +913,7 @@ Gw
         </customObject>
         <customObject id="537" customClass="StationsController">
             <connections>
+                <outlet property="chooseStationView" destination="1234" id="QVG-L3-jUY"/>
                 <outlet property="deleteStationButton" destination="942" id="feN-bW-9NS"/>
                 <outlet property="editStationButton" destination="1754" id="tb5-WR-F8X"/>
                 <outlet property="errorIndicator" destination="936" id="938"/>
@@ -926,7 +927,6 @@ Gw
                 <outlet property="stations" destination="702" id="741"/>
                 <outlet property="stationsRefreshing" destination="863" id="864"/>
                 <outlet property="stationsTable" destination="734" id="740"/>
-                <outlet property="view" destination="1234" id="1235"/>
             </connections>
         </customObject>
         <customObject id="835" userLabel="Playback Controller" customClass="PlaybackController">
