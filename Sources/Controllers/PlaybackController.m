@@ -625,10 +625,13 @@ BOOL playOnStart = YES;
   return YES;
 }
 
-- (BOOL) validateToolbarItem:(NSToolbarItem *)toolbarItem {
+- (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem {
   if (![[self pandora] isAuthenticated]) {
     return NO;
   }
+
+  if (toolbarItem == playpause || toolbarItem == nextSong || toolbarItem == tiredOfSong)
+    return (playing != nil);
 
   if (toolbarItem == like || toolbarItem == dislike) {
     return [playing playingSong] && ![playing shared];

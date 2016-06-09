@@ -937,12 +937,14 @@ Gw
                 <outlet property="artistLabel" destination="1173" id="1243"/>
                 <outlet property="dislike" destination="819" id="2271"/>
                 <outlet property="like" destination="818" id="847"/>
+                <outlet property="nextSong" destination="777" id="GyL-Fk-D4G"/>
                 <outlet property="playbackProgress" destination="7eu-hy-jM9" id="cdd-rs-hGP"/>
                 <outlet property="playbackView" destination="1155" id="1238"/>
                 <outlet property="playpause" destination="776" id="845"/>
                 <outlet property="progressLabel" destination="1156" id="1245"/>
                 <outlet property="songLabel" destination="1172" id="1244"/>
                 <outlet property="songLoadingProgress" destination="1160" id="1246"/>
+                <outlet property="tiredOfSong" destination="820" id="nFf-SX-qEV"/>
                 <outlet property="toolbar" destination="768" id="844"/>
                 <outlet property="volume" destination="1158" id="1247"/>
             </connections>
@@ -1703,7 +1705,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" outlineTableColumn="1683" id="1679">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="149"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="20"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1749,7 +1751,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" outlineTableColumn="1692" id="1688">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="149"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="20"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1853,7 +1855,7 @@ DQ
                                                         <tableColumns>
                                                             <tableColumn identifier="name" editable="NO" width="195" minWidth="10" maxWidth="3.4028234663852886e+38" id="1769">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Artist - Song">
-                                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                                 </tableHeaderCell>
@@ -1903,7 +1905,7 @@ DQ
                                                         <tableColumns>
                                                             <tableColumn identifier="name" editable="NO" width="195" minWidth="40" maxWidth="1000" id="1713">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Artist - Song">
-                                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                                    <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" white="0.33333298560000002" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </tableHeaderCell>

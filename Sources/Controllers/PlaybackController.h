@@ -24,6 +24,8 @@
   IBOutlet NSToolbarItem *like;
   IBOutlet NSToolbarItem *dislike;
   IBOutlet NSToolbarItem *playpause;
+  IBOutlet NSToolbarItem *nextSong;
+  IBOutlet NSToolbarItem *tiredOfSong;
   IBOutlet NSSlider *volume;
   IBOutlet NSToolbar *toolbar;
 
