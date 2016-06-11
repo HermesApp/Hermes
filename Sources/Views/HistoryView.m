@@ -11,6 +11,11 @@
 
 @synthesize selected;
 
+- (NSView *)hitTest:(NSPoint)aPoint {
+  // don't allow any mouse clicks for subviews
+  return nil;
+}
+
 - (void)setTextColor:(NSColor *)color {
   for (NSView *view in [self subviews]) {
     if ([view respondsToSelector:@selector(setTextColor:)]) {
