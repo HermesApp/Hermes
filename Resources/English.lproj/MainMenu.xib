@@ -1885,7 +1885,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <tableHeaderView key="headerView" id="1774">
-                                                <rect key="frame" x="0.0" y="0.0" width="198" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="198" height="17"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
                                         </scrollView>
@@ -1935,7 +1935,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
                                             <tableHeaderView key="headerView" id="1773">
-                                                <rect key="frame" x="0.0" y="0.0" width="198" height="23"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="198" height="17"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </tableHeaderView>
                                         </scrollView>
