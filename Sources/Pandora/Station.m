@@ -120,7 +120,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(songsLoaded:)
                                                  name:n
-                                               object:pandora];
+                                               object:nil];
   }
 }
 

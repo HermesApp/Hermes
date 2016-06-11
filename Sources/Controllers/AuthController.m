@@ -15,7 +15,7 @@
     addObserver:self
     selector:@selector(authenticationSucceeded:)
     name:PandoraDidAuthenticateNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [notificationCenter
    addObserver:self

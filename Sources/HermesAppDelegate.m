@@ -167,7 +167,7 @@
      addObserver:self
         selector:@selector(handlePandoraError:)
             name:PandoraDidErrorNotification
-          object:[[NSApp delegate] pandora]];
+          object:nil];
 
   [[NSNotificationCenter defaultCenter]
      addObserver:self
@@ -179,7 +179,7 @@
      addObserver:self
         selector:@selector(handlePandoraLoggedOut:)
             name:PandoraDidLogOutNotification
-          object:[[NSApp delegate] pandora]];
+          object:nil];
 
   [[NSNotificationCenter defaultCenter]
      addObserver:self

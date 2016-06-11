@@ -19,41 +19,41 @@
     addObserver:self
     selector:@selector(stationsLoaded:)
     name:PandoraDidLoadStationsNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(searchResultsLoaded:)
     name:PandoraDidLoadSearchResultsNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(genreStationsLoaded:)
     name:PandoraDidLoadGenreStationsNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationCreated:)
     name:PandoraDidCreateStationNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRemoved:)
     name:PandoraDidDeleteStationNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRemoved:)
     name:PandoraDidLogOutNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [[NSNotificationCenter defaultCenter]
     addObserver:self
     selector:@selector(stationRenamed:)
     name:PandoraDidDeleteFeedbackNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   return self;
 }
@@ -386,6 +386,9 @@
 
 /* Called whenever search results are received */
 - (void) searchResultsLoaded: (NSNotification*) not {
+  if (![not.object isEqualToString:[search stringValue]])
+    return;
+
   lastResults = [not userInfo];
 
   [searchSpinner setHidden:YES];

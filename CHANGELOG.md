@@ -12,6 +12,7 @@
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
 * [fixed by @nriley] Don't show the add station sheet after dismissing another sheet
+* [fixed by @nriley] Fix search results showing up in unexpected places
 
 # Version 1.2.7 (5/11/16)
 

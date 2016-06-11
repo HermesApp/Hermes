@@ -63,19 +63,19 @@ BOOL playOnStart = YES;
     addObserver:self
     selector:@selector(hideSpinner)
     name:PandoraDidRateSongNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [center
     addObserver:self
     selector:@selector(hideSpinner)
     name:PandoraDidDeleteFeedbackNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [center
     addObserver:self
     selector:@selector(hideSpinner)
     name:PandoraDidTireSongNotification
-    object:[[NSApp delegate] pandora]];
+    object:nil];
 
   [center
     addObserver:self

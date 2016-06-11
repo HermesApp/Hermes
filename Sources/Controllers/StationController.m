@@ -23,7 +23,6 @@
 
 - (id) init {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-  Pandora *pandora = [[NSApp delegate] pandora];
   [center addObserver:self
              selector:@selector(stationInfo:)
                  name:PandoraDidLoadStationInfoNotification
@@ -31,23 +30,23 @@
   [center addObserver:self
              selector:@selector(hideSpinner)
                  name:PandoraDidRenameStationNotification
-               object:pandora];
+               object:nil];
   [center addObserver:self
              selector:@selector(hideSpinner)
                  name:PandoraDidDeleteFeedbackNotification
-               object:pandora];
+               object:nil];
   [center addObserver:self
              selector:@selector(searchCompleted:)
                  name:PandoraDidLoadSearchResultsNotification
-               object:pandora];
+               object:nil];
   [center addObserver:self
              selector:@selector(seedAdded:)
                  name:PandoraDidAddSeedNotification
-               object:pandora];
+               object:nil];
   [center addObserver:self
              selector:@selector(seedDeleted:)
                  name:PandoraDidDeleteSeedNotification
-               object:pandora];
+               object:nil];
   return [super init];
 }
 
@@ -189,6 +188,8 @@
 }
 
 - (void) searchCompleted:(NSNotification*) not {
+  if (![not.object isEqualToString:[seedSearch stringValue]])
+    return;
   lastResults = [self seedsWithNoEmptyKinds:[not userInfo]];
   [seedsResults deselectAll:nil];
   [seedsResults reloadData];
