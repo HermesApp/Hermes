@@ -96,8 +96,8 @@ Your Web browser will open to a draft release (unpublished, with no correspondin
 
 Once you're convinced the download works, make and push a commit to mark the release.  
 
-    % git commit -am $(agvtool mvers -terse1)
-    [master 0f6078f] 1.2.8b1
+    % git commit -am v$(agvtool mvers -terse1)
+    [master 0f6078f] v1.2.8b1
     [...]
     % git push
     [...]
