@@ -47,13 +47,17 @@
              selector:@selector(seedDeleted:)
                  name:PandoraDidDeleteSeedNotification
                object:nil];
+  [center addObserver:self
+             selector:@selector(stationRemoved:)
+                 name:PandoraDidDeleteStationNotification
+               object:nil];
   return [super init];
 }
 
 /**
  * @brief Begin editing a station by displaying all the necessary dialogs
  *
- * @param station the station to edit
+ * @param station the station to edit (nil to close editor, e.g. if station is deleted)
  */
 - (void) editStation: (Station*) station {
   [stationName setEnabled:FALSE];
@@ -61,9 +65,11 @@
   [stationCreated setStringValue:@""];
   [stationGenres setStringValue:@""];
   [art setImage:nil];
-  [progress setHidden:FALSE];
-  [progress startAnimation:nil];
-  [[[NSApp delegate] pandora] fetchStationInfo: station];
+  if (station != nil) {
+    [progress setHidden:FALSE];
+    [progress startAnimation:nil];
+    [[[NSApp delegate] pandora] fetchStationInfo: station];
+  }
   cur_station = station;
   station_url = nil;
 
@@ -78,9 +84,12 @@
   lastResults = nil;
   [seedsCurrent reloadData];
   [seedsResults reloadData];
-  [self showSpinner];
-  [window setIsVisible:TRUE];
-  [window makeKeyAndOrderFront:nil];
+  if (station == nil) {
+    [window orderOut:nil];
+  } else {
+    [self showSpinner];
+    [window makeKeyAndOrderFront:nil];
+  }
 }
 
 - (NSArray *)formattedArray:(NSArray *)alikesDislikes forLikesOrDislikes:(NSTableView *)likesDislikes {
@@ -177,6 +186,11 @@
       [mutableSeeds removeObjectForKey:seedKind];
   }
   return [mutableSeeds copy];
+}
+
+- (void)stationRemoved:(NSNotification *)notification {
+  if ([notification object] == cur_station)
+    [self editStation:nil];
 }
 
 #pragma mark - Search for a seed

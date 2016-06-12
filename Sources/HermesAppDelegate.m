@@ -101,6 +101,8 @@
   frame.size.width = superFrame.size.width;
   frame.size.height = superFrame.size.height;
   [view setFrame:frame];
+
+  [self updateWindowTitle];
 }
 
 - (void) migrateDefaults:(NSUserDefaults*) defaults {
@@ -418,11 +420,11 @@
   [playback reset];
   [stations hideDrawer];
   [history hideDrawer];
+  [station editStation:nil];
 
   /* Remove our credentials */
   [self saveUsername:@"" password:@""];
   [auth show];
-  [self updateWindowTitle];
 }
 
 + (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
@@ -659,14 +661,14 @@
   }
 }
 
-- (void) playbackStateChanged:(NSNotification*) not {
+- (void)playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
   if ([stream isPlaying]) {
-    [self updateWindowTitle];
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
   }
+  [self updateWindowTitle];
   [self updateStatusBarIconImage:nil];
 }
 

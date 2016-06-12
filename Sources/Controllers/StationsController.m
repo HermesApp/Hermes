@@ -330,6 +330,7 @@
 - (void) stationRemoved: (NSNotification*) not {
   [stationsRefreshing setHidden:YES];
   [stationsRefreshing stopAnimation:nil];
+  [stationsTable deselectAll:nil];
   [stationsTable reloadData];
 }
 
@@ -514,8 +515,9 @@
       return;
     
     if ([selected isEqual:[self playingStation]]) {
-      [[[NSApp delegate] playback] playStation:nil];
-      [[NSApp delegate] setCurrentView:chooseStationView];
+      HermesAppDelegate *delegate = [NSApp delegate];
+      [[delegate playback] playStation:nil];
+      [delegate setCurrentView:chooseStationView];
     }
     
     [stationsRefreshing setHidden:NO];

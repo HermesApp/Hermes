@@ -188,13 +188,8 @@ BOOL playOnStart = YES;
 }
 
 - (void) reset {
-  [toolbar setVisible:NO];
-  if (playing) {
-    [playing stop];
-    [[ImageLoader loader] cancel:[[playing playingSong] art]];
-  }
-  playing = nil;
-  lastImgSrc = nil;
+  [self playStation:nil];
+
   NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 }
@@ -346,25 +341,29 @@ BOOL playOnStart = YES;
   [self hideSpinner];
 }
 
-/* Plays a new station */
+/* Plays a new station, or nil to play no station (e.g., if station deleted) */
 - (void) playStation: (Station*) station {
   if ([playing stationId] == [station stationId]) {
     return;
   }
 
-  [playing stop];
-  [[ImageLoader loader] cancel:[[playing playingSong] art]];
-  [[NSApp delegate] setCurrentView:playbackView];
-  [toolbar setVisible:YES];
-
-  if (station == nil) {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
-  } else {
-    [[NSUserDefaults standardUserDefaults] setObject:[station stationId]
-                                              forKey:LAST_STATION_KEY];
+  if (playing) {
+    [playing stop];
+    [[ImageLoader loader] cancel:[[playing playingSong] art]];
   }
 
   playing = station;
+
+  if (station == nil) {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:LAST_STATION_KEY];
+    lastImgSrc = nil;
+    return;
+  }
+
+  [[NSUserDefaults standardUserDefaults] setObject:[station stationId]
+                                            forKey:LAST_STATION_KEY];
+  [[NSApp delegate] setCurrentView:playbackView];
+
   if (playOnStart) {
     [station play];
   } else {

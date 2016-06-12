@@ -13,6 +13,7 @@
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
 * [fixed by @nriley] Don't show the add station sheet after dismissing another sheet
 * [fixed by @nriley] Fix search results showing up in unexpected places
+* [fixed by @nriley] Better handle deleting the current station
 
 # Version 1.2.7 (5/11/16)
 

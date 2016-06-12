@@ -123,6 +123,7 @@ static NSString *hierrs[] = {
 
 // Convenience methods to post notifications.
 - (void)postNotification:(NSString *)notificationName;
+- (void)postNotification:(NSString *)notificationName request:(id)request;
 - (void)postNotification:(NSString *)notificationName result:(NSDictionary *)result;
 - (void)postNotification:(NSString *)notificationName request:(id)request result:(NSDictionary *)result;
 
@@ -173,6 +174,10 @@ static NSString *hierrs[] = {
 
 - (void)postNotification:(NSString *)notificationName {
   [self postNotification:notificationName request:nil result:nil];
+}
+
+- (void)postNotification:(NSString *)notificationName request:(id)request {
+  [self postNotification:notificationName request:request result:nil];
 }
 
 - (void)postNotification:(NSString *)notificationName result:(NSDictionary *)result {
@@ -386,15 +391,16 @@ static NSString *hierrs[] = {
         break;
       }
     }
-    
+
     if ([stations count] == i) {
       NSLogd(@"Deleted unknown station?!");
     } else {
-      [Station removeStation:stations[i]];
+      Station *stationToRemove = stations[i];
+      [Station removeStation:stationToRemove];
       [stations removeObjectAtIndex:i];
+      [self postNotification:PandoraDidDeleteStationNotification request:stationToRemove];
     }
     
-    [self postNotification:PandoraDidDeleteStationNotification];
   }];
   return [self sendAuthenticatedRequest:req];
 }
