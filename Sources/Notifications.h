@@ -20,21 +20,21 @@ extern NSString * const AppleScreenIsUnlockedDistributedNotification;
 
 #pragma mark Internal Notifications
 
-extern NSString * const PandoraDidErrorNotification;
+extern NSString * const PandoraDidErrorNotification; // userInfo: error
 extern NSString * const PandoraDidAuthenticateNotification;
 extern NSString * const PandoraDidLogOutNotification;
-extern NSString * const PandoraDidRateSongNotification;
-extern NSString * const PandoraDidTireSongNotification;
+extern NSString * const PandoraDidRateSongNotification; // userInfo: result
+extern NSString * const PandoraDidTireSongNotification; // userInfo: result
 extern NSString * const PandoraDidLoadStationsNotification;
-extern NSString * const PandoraDidCreateStationNotification;
-extern NSString * const PandoraDidDeleteStationNotification;
+extern NSString * const PandoraDidCreateStationNotification; // userInfo: result
+extern NSString * const PandoraDidDeleteStationNotification; // object: Station
 extern NSString * const PandoraDidRenameStationNotification;
-extern NSString * const PandoraDidLoadStationInfoNotification;
-extern NSString * const PandoraDidAddSeedNotification;
+extern NSString * const PandoraDidLoadStationInfoNotification; // userInfo: info
+extern NSString * const PandoraDidAddSeedNotification; // userInfo: result
 extern NSString * const PandoraDidDeleteSeedNotification;
 extern NSString * const PandoraDidDeleteFeedbackNotification;
-extern NSString * const PandoraDidLoadSearchResultsNotification;
-extern NSString * const PandoraDidLoadGenreStationsNotification;
+extern NSString * const PandoraDidLoadSearchResultsNotification; // object: search string; userInfo: result
+extern NSString * const PandoraDidLoadGenreStationsNotification; // userInfo: result
 
 extern NSString * const StationDidPlaySongNotification;
 
