@@ -2,17 +2,18 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...HEAD)
 
-* [changed by @nriley] Fix a regression introduced in 1.2.17 where non-Pandora One users had audio quality degraded (#263)
-* [changed by @nriley] Display Shuffle (formerly QuickMix) at the top of the station list, more like the Pandora Web site
+* [changed by @nriley] Fix a regression introduced in 1.2.17 which degraded audio quality for non-Pandora One users (#263)
+* [changed by @nriley] Always display Shuffle (formerly QuickMix) at the top of the station list, more like the Pandora Web site
 * [changed by @reedloden] Scrobble securely where possible
 * [added by @nriley] Only display song/artist/album arrows in playback screen on mouseover
-* [added by @nriley] Allow the likes/dislikes lists in the Edit Station window to be sorted — also (#266)
+* [added by @nriley] Allow the likes/dislikes lists in the Edit Station window to be sorted (#266)
 * [added by @nriley] Save the size and position of the Edit Station window
-* [fixed by @nriley] Don't allow the drawer to be used before you're logged into Pandora
+* [fixed by @nriley] Don't allow the drawer or toolbar to be used before you're logged into Pandora
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
 * [fixed by @nriley] Don't show the add station sheet after dismissing another sheet
 * [fixed by @nriley] Fix search results showing up in unexpected places
+* [fixed by @nriley] Allow clicking on album art in the history drawer (#178)
 * [fixed by @nriley] Better handle deleting the current station
 
 # Version 1.2.7 (5/11/16)
