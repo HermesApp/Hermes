@@ -138,6 +138,8 @@
     [stationsTable
      selectRowIndexes:[NSIndexSet indexSetWithIndex:index]
      byExtendingSelection:NO];
+    [stationsTable scrollRowToVisible:index];
+    [self tableViewSelectionDidChange:nil];
   }
 }
 
