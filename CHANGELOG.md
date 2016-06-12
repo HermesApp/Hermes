@@ -2,7 +2,7 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...HEAD)
 
-* [changed by @nriley] Fix a regression introduced in 1.2.17 which degraded audio quality for non-Pandora One users (#263)
+* [changed by @nriley] Fix a regression introduced in 1.2.7 which degraded audio quality for non-Pandora One users (#263)
 * [changed by @nriley] Always display Shuffle (formerly QuickMix) at the top of the station list, more like the Pandora Web site
 * [changed by @reedloden] Scrobble securely where possible
 * [added by @nriley] Only display song/artist/album arrows in playback screen on mouseover
