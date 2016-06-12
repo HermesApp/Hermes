@@ -506,7 +506,7 @@
   }
 
   NSAlert *alert = [NSAlert new];
-  alert.messageText = @"Are you sure you want to permanently delete this station?";
+  alert.messageText = [NSString stringWithFormat:@"Are you sure you want to permanently delete the station “%@”?", selected.name];
   [alert addButtonWithTitle:@"Cancel"];
   [alert addButtonWithTitle:@"Delete"];
   alert.alertStyle = NSWarningAlertStyle;
