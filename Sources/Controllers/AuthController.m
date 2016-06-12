@@ -53,11 +53,11 @@
   [spinner setHidden:YES];
   [spinner stopAnimation:nil];
 
+  HermesAppDelegate *delegate = [NSApp delegate];
   if (![[username stringValue] isEqualToString:@""]) {
-    [[NSApp delegate] saveUsername:[username stringValue] password:[password stringValue]];
+    [delegate saveUsername:[username stringValue] password:[password stringValue]];
   }
 
-  HermesAppDelegate *delegate = [NSApp delegate];
   [[delegate stations] show];
   [PlaybackController setPlayOnStart:YES];
 }
