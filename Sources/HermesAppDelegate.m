@@ -672,6 +672,13 @@
   [self updateStatusBarIconImage:nil];
 }
 
+- (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem {
+  if (![[self pandora] isAuthenticated]) {
+    return NO;
+  }
+  return YES;
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
   SEL action = [menuItem action];
 

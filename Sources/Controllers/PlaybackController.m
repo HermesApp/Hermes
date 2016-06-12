@@ -61,6 +61,12 @@ BOOL playOnStart = YES;
 
   [center
     addObserver:self
+    selector:@selector(showToolbar)
+    name:PandoraDidAuthenticateNotification
+    object:nil];
+
+  [center
+    addObserver:self
     selector:@selector(hideSpinner)
     name:PandoraDidRateSongNotification
     object:nil];
@@ -126,6 +132,10 @@ BOOL playOnStart = YES;
   
   // prevent dragging the progress slider
   [playbackProgress setEnabled:NO];
+}
+
+- (void)showToolbar {
+  toolbar.visible = YES;
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */
