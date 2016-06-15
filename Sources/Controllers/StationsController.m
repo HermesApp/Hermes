@@ -408,7 +408,16 @@
 }
 
 - (void) genreStationsLoaded: (NSNotification*) not {
-  genreResults = [not userInfo][@"categories"];
+  NSArray *categories = [not userInfo][@"categories"];
+  NSMutableArray *mutableCategories = [[NSMutableArray alloc] initWithCapacity:[categories count]];
+  for (NSDictionary *category in categories) {
+    NSMutableDictionary *mutableCategory = [category mutableCopy];
+    mutableCategory[@"stations"] = [category[@"stations"] sortedArrayUsingComparator:^NSComparisonResult(id  _Nonnull s1, id  _Nonnull s2) {
+      return [s1[@"stationName"] localizedStandardCompare:s2[@"stationName"]];
+    }];
+    [mutableCategories addObject:[mutableCategory copy]];
+  }
+  genreResults = [mutableCategories copy];
   [genres reloadData];
   [genreSpinner stopAnimation:nil];
   [genreSpinner setHidden:YES];
