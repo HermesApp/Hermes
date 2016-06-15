@@ -150,19 +150,6 @@
   adislikes = [self formattedArray:info[@"dislikes"] forLikesOrDislikes:dislikes];
   [deleteFeedback setEnabled:TRUE];
   seeds = info[@"seeds"];
-  if ([cur_station allowAddMusic]) {
-    if ([seedsTabViewItem tabView] == nil) {
-      [editTabView insertTabViewItem:seedsTabViewItem atIndex:0];
-      [editTabView selectTabViewItem:seedsTabViewItem];
-    }
-    [seedSearch setEnabled:TRUE];
-    [seedAdd setToolTip:@""];
-    [seedDel setToolTip:@""];
-    [seedSearch setToolTip:@""];
-  } else {
-    if ([seedsTabViewItem tabView] != nil)
-      [editTabView removeTabViewItem:seedsTabViewItem];
-  }
   [likes reloadData];
   [dislikes reloadData];
   [likes setEnabled:YES];
@@ -489,7 +476,7 @@
     button = seedAdd;
   else if (outlineView == seedsCurrent)
     button = seedDel;
-  [button setEnabled:[cur_station allowAddMusic] && ([outlineView numberOfSelectedRows] > 0)];
+  [button setEnabled:([outlineView numberOfSelectedRows] > 0)];
 }
 
 @end

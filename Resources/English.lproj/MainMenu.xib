@@ -983,7 +983,6 @@ Gw
                 <outlet property="art" destination="1663" id="1732"/>
                 <outlet property="deleteFeedback" destination="1775" id="1795"/>
                 <outlet property="dislikes" destination="1711" id="1739"/>
-                <outlet property="editTabView" destination="1667" id="oz4-dN-rB4"/>
                 <outlet property="gotoStation" destination="1789" id="1794"/>
                 <outlet property="likes" destination="1699" id="1738"/>
                 <outlet property="progress" destination="1751" id="1752"/>
@@ -992,7 +991,6 @@ Gw
                 <outlet property="seedSearch" destination="cvt-nm-iu6" id="arb-xb-S0T"/>
                 <outlet property="seedsCurrent" destination="1688" id="1737"/>
                 <outlet property="seedsResults" destination="1679" id="1736"/>
-                <outlet property="seedsTabViewItem" destination="1668" id="1gM-W5-Nsq"/>
                 <outlet property="stationCreated" destination="1665" id="1733"/>
                 <outlet property="stationGenres" destination="1674" id="1741"/>
                 <outlet property="stationName" destination="1761" id="1763"/>
