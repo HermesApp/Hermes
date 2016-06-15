@@ -686,6 +686,7 @@ DQ
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
+                                                            <action trigger="doubleAction" selector="createStation:" target="537" id="uaQ-RL-LuB"/>
                                                             <outlet property="dataSource" destination="537" id="976"/>
                                                             <outlet property="delegate" destination="537" id="OIQ-U3-SbX"/>
                                                         </connections>
@@ -799,6 +800,7 @@ Gw
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
+                                                            <action trigger="doubleAction" selector="createStationGenre:" target="537" id="9eL-2v-5pa"/>
                                                             <outlet property="dataSource" destination="537" id="2262"/>
                                                             <outlet property="delegate" destination="537" id="PNX-ud-RoJ"/>
                                                         </connections>
