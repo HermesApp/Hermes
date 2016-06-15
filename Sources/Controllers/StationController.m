@@ -147,17 +147,17 @@
   [deleteFeedback setEnabled:TRUE];
   seeds = info[@"seeds"];
   if ([cur_station allowAddMusic]) {
+    if ([seedsTabViewItem tabView] == nil) {
+      [editTabView insertTabViewItem:seedsTabViewItem atIndex:0];
+      [editTabView selectTabViewItem:seedsTabViewItem];
+    }
     [seedSearch setEnabled:TRUE];
     [seedAdd setToolTip:@""];
     [seedDel setToolTip:@""];
     [seedSearch setToolTip:@""];
   } else {
-    [seedAdd setEnabled:NO];
-    [seedDel setEnabled:NO];
-    [seedSearch setEnabled:NO];
-    [seedAdd setToolTip:@"Cannot add seeds to this station"];
-    [seedDel setToolTip:@"Cannot modify the seeds of this station"];
-    [seedSearch setToolTip:@"Cannot add seeds to this station"];
+    if ([seedsTabViewItem tabView] != nil)
+      [editTabView removeTabViewItem:seedsTabViewItem];
   }
   [likes reloadData];
   [dislikes reloadData];

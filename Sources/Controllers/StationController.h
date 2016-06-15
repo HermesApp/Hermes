@@ -8,6 +8,8 @@
 @interface StationController : NSObject <NSTableViewDataSource, NSOutlineViewDataSource> {
   IBOutlet NSWindow *window;
 
+  IBOutlet NSTabView *editTabView;
+
   /* Metadata */
   IBOutlet NSImageView *art;
   IBOutlet NSTextField *stationName;
@@ -17,6 +19,7 @@
   IBOutlet NSButton *gotoStation;
 
   /* Seeds */
+  IBOutlet NSTabViewItem *seedsTabViewItem;
   IBOutlet NSTextField *seedSearch;
   IBOutlet NSOutlineView *seedsResults;
   IBOutlet NSOutlineView *seedsCurrent;
