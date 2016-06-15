@@ -5,9 +5,11 @@
 * [changed by @nriley] Fix a regression introduced in 1.2.7 which degraded audio quality for non-Pandora One users (#263)
 * [changed by @nriley] Always display Shuffle (formerly QuickMix) at the top of the station list, more like the Pandora Web site
 * [changed by @reedloden] Scrobble securely where possible
-* [added by @nriley] Only display song/artist/album arrows in playback screen on mouseover
+* [added by @nriley] Only display song/artist/album arrows in the playback screen on mouseover
+* [added by @nriley] Allow double-clicking seeds or genres to create a station or add a seed
 * [added by @nriley] Allow the likes/dislikes lists in the Edit Station window to be sorted (#266)
 * [added by @nriley] Save the size and position of the Edit Station window
+* [added by @nriley] Sort station genres and improve their display
 * [fixed by @nriley] Don't allow the drawer or toolbar to be used before you're logged into Pandora
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
@@ -15,7 +17,7 @@
 * [fixed by @nriley] Fix search results showing up in unexpected places
 * [fixed by @nriley] Allow clicking on album art in the history drawer (#178)
 * [fixed by @nriley] Better handle deleting the current station
-* [fixed by @nriley] Better handle genre stations (#267)
+* [fixed by @nriley] Allow editing seeds in genre stations (#267)
 * [fixed by @nriley] Immediately reflect changes to likes/dislikes in the Edit Station window
 
 # Version 1.2.7 (5/11/16)
