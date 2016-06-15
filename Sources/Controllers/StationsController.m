@@ -307,11 +307,15 @@
 
 #pragma mark - NSOutlineViewDelegate
 - (BOOL)outlineView:(NSOutlineView *)outlineView isGroupItem:(id)item {
-  return [item isKindOfClass:[NSString class]];
+  if (outlineView == results)
+    return [item isKindOfClass:[NSString class]];
+  else if (outlineView == genres)
+    return [item isKindOfClass:[NSDictionary class]] && item[@"categoryName"] != nil;
+  return NO;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item {
-  return ![item isKindOfClass:[NSString class]];
+  return ![self outlineView:outlineView isGroupItem:item];
 }
 
 #pragma mark - Other callbacks

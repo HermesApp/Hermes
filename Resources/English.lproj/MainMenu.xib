@@ -800,6 +800,7 @@ Gw
                                                         </tableColumns>
                                                         <connections>
                                                             <outlet property="dataSource" destination="537" id="2262"/>
+                                                            <outlet property="delegate" destination="537" id="PNX-ud-RoJ"/>
                                                         </connections>
                                                     </outlineView>
                                                 </subviews>
