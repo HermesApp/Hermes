@@ -23,8 +23,8 @@ extern NSString * const AppleScreenIsUnlockedDistributedNotification;
 extern NSString * const PandoraDidErrorNotification; // userInfo: error
 extern NSString * const PandoraDidAuthenticateNotification;
 extern NSString * const PandoraDidLogOutNotification;
-extern NSString * const PandoraDidRateSongNotification; // userInfo: result
-extern NSString * const PandoraDidTireSongNotification; // userInfo: result
+extern NSString * const PandoraDidRateSongNotification; // object: song
+extern NSString * const PandoraDidTireSongNotification; // object: song
 extern NSString * const PandoraDidLoadStationsNotification;
 extern NSString * const PandoraDidCreateStationNotification; // userInfo: result
 extern NSString * const PandoraDidDeleteStationNotification; // object: Station

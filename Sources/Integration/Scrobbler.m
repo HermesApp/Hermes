@@ -111,9 +111,9 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
  * @brief Callback for when a song is rated
  */
 - (void) songRated:(NSNotification*) not {
-  Song *song = [not userInfo][@"song"];
+  Song *song = [not object];
   if (song) {
-    [self setPreference:song loved:([[song nrating] intValue] == 1)];
+    [self setPreference:song loved:([song.nrating integerValue] == 1)];
   }
 }
 
