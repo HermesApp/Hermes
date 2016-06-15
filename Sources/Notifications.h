@@ -32,7 +32,7 @@ extern NSString * const PandoraDidRenameStationNotification;
 extern NSString * const PandoraDidLoadStationInfoNotification; // userInfo: info
 extern NSString * const PandoraDidAddSeedNotification; // userInfo: result
 extern NSString * const PandoraDidDeleteSeedNotification;
-extern NSString * const PandoraDidDeleteFeedbackNotification;
+extern NSString * const PandoraDidDeleteFeedbackNotification; // object: feedbackId string
 extern NSString * const PandoraDidLoadSearchResultsNotification; // object: search string; userInfo: result
 extern NSString * const PandoraDidLoadGenreStationsNotification; // userInfo: result
 

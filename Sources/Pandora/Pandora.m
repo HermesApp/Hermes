@@ -619,7 +619,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self postNotification:PandoraDidDeleteFeedbackNotification];
+    [self postNotification:PandoraDidDeleteFeedbackNotification request:feedbackId];
   }];
   return [self sendAuthenticatedRequest:req];
 }
@@ -714,7 +714,6 @@ static NSString *hierrs[] = {
       for (NSDictionary* feed in d[@"result"][@"feedback"][thumb]) {
         if ([feed[@"songName"] isEqualToString:[song title]]) {
           [self deleteFeedback:feed[@"feedbackId"]];
-          [self postNotification:PandoraDidRateSongNotification request:song];
           break;
         }
       }
