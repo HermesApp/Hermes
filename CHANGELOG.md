@@ -15,6 +15,8 @@
 * [fixed by @nriley] Fix search results showing up in unexpected places
 * [fixed by @nriley] Allow clicking on album art in the history drawer (#178)
 * [fixed by @nriley] Better handle deleting the current station
+* [fixed by @nriley] Better handle genre stations (#267)
+* [fixed by @nriley] Immediately reflect changes to likes/dislikes in the Edit Station window
 
 # Version 1.2.7 (5/11/16)
 
