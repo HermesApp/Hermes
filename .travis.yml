@@ -1,3 +1,3 @@
 osx_image: xcode7.3
 language: objective-c
-script: make hermes CODE_SIGNING_REQUIRED=NO
+script: make hermes-signing-not-required

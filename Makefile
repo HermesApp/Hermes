@@ -14,6 +14,9 @@ all: hermes
 hermes:
 	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes
 
+hermes-signing-not-required: COMMON_OPTS += CODE_SIGNING_REQUIRED=NO
+hermes-signing-not-required: hermes
+
 run: hermes
 	$(HERMES)
 
@@ -25,12 +28,12 @@ install:
 	rm -rf /Applications/Hermes.app
 	cp -a ./build/Release/Hermes.app /Applications/
 
+# Create an archive to share (for beta testing purposes).
 archive:
-	# Create an archive to share (for beta testing purposes).
 	$(XCB) $(COMMON_OPTS) -configuration Release -scheme 'Archive Hermes'
 
+# Used to be called 'archive'. Upload Hermes and update the website.
 upload-release:
-	# Used to be called 'archive'. Upload Hermes and update the website.
 	$(XCB) $(COMMON_OPTS) -configuration Release -scheme 'Upload Hermes Release'
 
 clean:
