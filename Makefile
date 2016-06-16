@@ -14,7 +14,7 @@ all: hermes
 hermes:
 	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes
 
-hermes-signing-not-required: COMMON_OPTS += CODE_SIGNING_REQUIRED=NO
+hermes-signing-not-required: COMMON_OPTS += CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
 hermes-signing-not-required: hermes
 
 run: hermes
