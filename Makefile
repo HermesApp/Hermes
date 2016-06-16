@@ -1,6 +1,7 @@
 # Do not mind me. I'm just a nice wrapper around xcodebuild(1).
 
 XCB           = xcodebuild
+XCPIPE        =
 CONFIGURATION = Debug
 HERMES        = ./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
 DEBUGGER      = lldb
@@ -12,10 +13,11 @@ COMMON_OPTS   = -project Hermes.xcodeproj SYMROOT=build
 all: hermes
 
 hermes:
-	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes
+	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes $(XCPIPE)
 
-hermes-signing-not-required: COMMON_OPTS += CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
-hermes-signing-not-required: hermes
+travis: COMMON_OPTS += CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
+travis: XCPIPE = | xcpretty -f `xcpretty-travis-formatter`
+travis: hermes
 
 run: hermes
 	$(HERMES)
