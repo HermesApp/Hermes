@@ -3,6 +3,7 @@
 XCB           = xcodebuild
 XCPIPE        =
 CONFIGURATION = Debug
+SCHEME        = Hermes
 HERMES        = ./build/$(CONFIGURATION)/Hermes.app/Contents/MacOS/Hermes
 DEBUGGER      = lldb
 
@@ -13,7 +14,7 @@ COMMON_OPTS   = -project Hermes.xcodeproj SYMROOT=build
 all: hermes
 
 hermes:
-	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme Hermes $(XCPIPE)
+	$(XCB) $(COMMON_OPTS) -configuration $(CONFIGURATION) -scheme $(SCHEME) $(XCPIPE)
 
 travis: COMMON_OPTS += CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO
 travis: XCPIPE = | xcpretty -f `xcpretty-travis-formatter`
@@ -31,15 +32,17 @@ install:
 	cp -a ./build/Release/Hermes.app /Applications/
 
 # Create an archive to share (for beta testing purposes).
-archive:
-	$(XCB) $(COMMON_OPTS) -configuration Release -scheme 'Archive Hermes'
+archive: CONFIGURATION = Release
+archive: SCHEME = 'Archive Hermes'
+archive: hermes
 
 # Used to be called 'archive'. Upload Hermes and update the website.
-upload-release:
-	$(XCB) $(COMMON_OPTS) -configuration Release -scheme 'Upload Hermes Release'
+upload-release: CONFIGURATION = Release
+upload-release: SCHEME = 'Upload Hermes Release'
+upload-release: hermes
 
 clean:
-	$(XCB) $(COMMON_OPTS) -scheme Hermes clean
+	$(XCB) $(COMMON_OPTS) -scheme $(SCHEME) clean
 	rm -rf build
 
 .PHONY: all hermes run dbg archive clean install archive upload-release
