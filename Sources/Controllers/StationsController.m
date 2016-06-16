@@ -318,6 +318,11 @@
   return ![self outlineView:outlineView isGroupItem:item];
 }
 
+- (void)outlineViewSelectionDidChange:(NSNotification *)notification {
+  NSOutlineView *outlineView = [notification object];
+  [[outlineView target] setEnabled:[outlineView selectedRow] != -1];
+}
+
 #pragma mark - Other callbacks
 
 - (void) stationCreated: (NSNotification*) not {

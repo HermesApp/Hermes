@@ -686,7 +686,7 @@ DQ
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
-                                                            <action trigger="doubleAction" selector="createStation:" target="537" id="uaQ-RL-LuB"/>
+                                                            <action trigger="doubleAction" selector="performClick:" target="933" id="DOi-D3-oAw"/>
                                                             <outlet property="dataSource" destination="537" id="976"/>
                                                             <outlet property="delegate" destination="537" id="OIQ-U3-SbX"/>
                                                         </connections>
@@ -710,7 +710,7 @@ DQ
                                         <button verticalHuggingPriority="750" id="933">
                                             <rect key="frame" x="324" y="10" width="129" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                            <buttonCell key="cell" type="push" title="Create Station" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="934">
+                                            <buttonCell key="cell" type="push" title="Create Station" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="934">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
@@ -800,7 +800,7 @@ Gw
                                                             </tableColumn>
                                                         </tableColumns>
                                                         <connections>
-                                                            <action trigger="doubleAction" selector="createStationGenre:" target="537" id="9eL-2v-5pa"/>
+                                                            <action trigger="doubleAction" selector="performClick:" target="2254" id="dcH-uH-nH5"/>
                                                             <outlet property="dataSource" destination="537" id="2262"/>
                                                             <outlet property="delegate" destination="537" id="PNX-ud-RoJ"/>
                                                         </connections>
@@ -820,7 +820,7 @@ Gw
                                         <button verticalHuggingPriority="750" id="2254">
                                             <rect key="frame" x="324" y="10" width="129" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                            <buttonCell key="cell" type="push" title="Create Station" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2255">
+                                            <buttonCell key="cell" type="push" title="Create Station" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2255">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
