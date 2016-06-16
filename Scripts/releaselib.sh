@@ -77,6 +77,11 @@ sign_and_verify() {
     fi
 }
 
+check_code_signature() {
+    codesign --verify --verbose=4 "$APPLICATION" || error 'codesign failed. Aborting.'
+    spctl -vv --assess "$APPLICATION" || error 'spctl failed. Aborting.'
+}
+
 build_versions_fragment() {
     if [[ $VERSION_IS_PRERELEASE == true ]]; then
         information "Not building versions.xml fragment for prerelease version"
