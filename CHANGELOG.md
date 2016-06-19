@@ -22,6 +22,7 @@
 * [fixed by @nriley] Better handle deleting the current station
 * [fixed by @nriley] Allow editing seeds in genre stations (#267)
 * [fixed by @nriley] Immediately reflect changes to likes/dislikes in the Edit Station window
+* [fixed by @nriley] Display a progress indicator rather than appearing to get “stuck” when changing stations
 
 # Version 1.2.7 (5/11/16)
 

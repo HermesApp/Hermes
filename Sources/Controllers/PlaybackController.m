@@ -369,7 +369,8 @@ BOOL playOnStart = YES;
 
   [[NSUserDefaults standardUserDefaults] setObject:[station stationId]
                                             forKey:LAST_STATION_KEY];
-  [[NSApp delegate] setCurrentView:playbackView];
+  
+  [[NSApp delegate] showLoader];
 
   if (playOnStart) {
     [station play];

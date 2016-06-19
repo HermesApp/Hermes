@@ -91,7 +91,9 @@
     if (prev_view == view) {
       return;
     }
-    [[superview animator] replaceSubview:prev_view with:view];
+    [superview replaceSubview:prev_view with:view];
+    // FIXME: This otherwise looks nicer but it causes the toolbar to flash.
+    // [[superview animator] replaceSubview:prev_view with:view];
   } else {
     [superview addSubview:view];
   }
