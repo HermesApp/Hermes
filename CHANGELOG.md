@@ -13,7 +13,7 @@
 * [added by @nriley] Show playback date/time with tooltips in history drawer
 * [added by @nriley] Sign with Developer ID for Gatekeeper
 * [fixed by @nriley] Don't allow the drawer or toolbar to be used before you're logged into Pandora
-* [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"
+* [fixed by @nriley] Display the station drawer when asking the user to "Choose a station" (#170)
 * [fixed by @nriley] Don't crash when adding or removing seeds from a station
 * [fixed by @nriley] Don't show the add station sheet after dismissing another sheet
 * [fixed by @nriley] Fix search results showing up in unexpected places
@@ -21,6 +21,7 @@
 * [fixed by @nriley] Better handle deleting the current station
 * [fixed by @nriley] Allow editing seeds in genre stations (#267)
 * [fixed by @nriley] Immediately reflect changes to likes/dislikes in the Edit Station window
+* [fixed by @nriley] Improve initial display of playback history (no longer scrolls to/selects the oldest song)
 
 # Version 1.2.7 (5/11/16)
 
