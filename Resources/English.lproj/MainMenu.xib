@@ -553,6 +553,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="gotoArtist:" target="1331" id="2209"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="MvM-MH-kzJ"/>
                     </connections>
                 </button>
                 <button toolTip="Go to selected song's page on Pandora" verticalHuggingPriority="750" id="2204">
@@ -564,6 +565,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="gotoSong:" target="1331" id="2208"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="SkD-S2-TOF"/>
                     </connections>
                 </button>
                 <button toolTip="Go to selected album's page on Pandora" verticalHuggingPriority="750" id="2197">
@@ -575,6 +577,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="gotoAlbum:" target="1331" id="2210"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="Aah-W0-gD3"/>
                     </connections>
                 </button>
                 <button toolTip="View selected song's lyrics" verticalHuggingPriority="750" id="2265">
@@ -586,6 +589,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="showLyrics:" target="1331" id="2270"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="yuh-8m-hHi"/>
                     </connections>
                 </button>
                 <button toolTip="Dislike selected song" verticalHuggingPriority="750" id="2199">
@@ -597,6 +601,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="dislikeSelected:" target="1331" id="2212"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="DCY-hA-ETz"/>
                     </connections>
                 </button>
                 <button toolTip="Like selected song" verticalHuggingPriority="750" id="2201">
@@ -608,6 +613,7 @@ DQ
                     </buttonCell>
                     <connections>
                         <action selector="likeSelected:" target="1331" id="2213"/>
+                        <binding destination="1444" name="enabled" keyPath="selectedObjects.@count" id="Vds-0j-LHV"/>
                     </connections>
                 </button>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="2268">
@@ -1321,7 +1327,7 @@ DQ
                 </button>
             </subviews>
         </view>
-        <arrayController objectClassName="Song" id="1444" userLabel="History Items">
+        <arrayController objectClassName="Song" selectsInsertedObjects="NO" avoidsEmptySelection="NO" id="1444" userLabel="History Items">
             <connections>
                 <binding destination="1331" name="contentArray" keyPath="songs" id="1445"/>
             </connections>
