@@ -515,14 +515,14 @@ DQ
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="20" verticalPageScroll="20" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="2160">
-                    <rect key="frame" x="0.0" y="23" width="297" height="260"/>
+                    <rect key="frame" x="0.0" y="23" width="297" height="257"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="5Gd-m0-JbG">
-                        <rect key="frame" x="1" y="1" width="295" height="258"/>
+                        <rect key="frame" x="1" y="1" width="295" height="255"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" maxNumberOfRows="26" maxNumberOfColumns="1" id="2161" customClass="HistoryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="295" height="258"/>
+                                <rect key="frame" x="0.0" y="0.0" width="295" height="255"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="secondaryBackgroundColor" name="controlAlternatingRowColor" catalog="System" colorSpace="catalog"/>
@@ -1285,11 +1285,11 @@ DQ
             </connections>
         </collectionViewItem>
         <view id="1441" userLabel="History Item View" customClass="HistoryView">
-            <rect key="frame" x="0.0" y="0.0" width="227" height="41"/>
+            <rect key="frame" x="0.0" y="0.0" width="227" height="42"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textField verticalHuggingPriority="750" id="1459" userLabel="Title">
-                    <rect key="frame" x="39" y="21" width="182" height="17"/>
+                    <rect key="frame" x="41" y="22" width="182" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="1460">
                         <font key="font" metaFont="system"/>
@@ -1301,7 +1301,7 @@ DQ
                     </connections>
                 </textField>
                 <textField verticalHuggingPriority="750" id="1464" userLabel="Artist">
-                    <rect key="frame" x="39" y="3" width="182" height="17"/>
+                    <rect key="frame" x="41" y="7" width="182" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Label" id="1465">
                         <font key="font" metaFont="smallSystem"/>
@@ -1313,7 +1313,7 @@ DQ
                     </connections>
                 </textField>
                 <button toolTip="Album artwork" id="1514" userLabel="album">
-                    <rect key="frame" x="1" y="2" width="35" height="35"/>
+                    <rect key="frame" x="3" y="3" width="36" height="36"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="bevel" alternateTitle="Album" bezelStyle="rounded" image="missing-album" imagePosition="overlaps" alignment="center" refusesFirstResponder="YES" state="on" imageScaling="proportionallyDown" inset="2" id="1515">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
@@ -1329,6 +1329,7 @@ DQ
             <connections>
                 <binding destination="1440" name="toolTip" keyPath="representedObject.playDateString" id="feO-zW-iF2"/>
             </connections>
+            <point key="canvasLocation" x="278.5" y="244"/>
         </view>
         <arrayController objectClassName="Song" selectsInsertedObjects="NO" avoidsEmptySelection="NO" id="1444" userLabel="History Items">
             <connections>
