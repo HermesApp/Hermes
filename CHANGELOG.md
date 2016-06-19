@@ -10,6 +10,7 @@
 * [added by @nriley] Allow the likes/dislikes lists in the Edit Station window to be sorted (#266)
 * [added by @nriley] Save the size and position of the Edit Station window
 * [added by @nriley] Sort station genres and improve their display
+* [added by @nriley] Show playback date/time with tooltips in history drawer
 * [added by @nriley] Sign with Developer ID for Gatekeeper
 * [fixed by @nriley] Don't allow the drawer or toolbar to be used before you're logged into Pandora
 * [fixed by @nriley] Display the station drawer when asking the user to "Choose a station"

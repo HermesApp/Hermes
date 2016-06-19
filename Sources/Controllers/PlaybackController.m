@@ -289,6 +289,8 @@ BOOL playOnStart = YES;
   Song *song = [playing playingSong];
   assert(song != nil);
 
+  song.playDate = [NSDate date];
+
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {

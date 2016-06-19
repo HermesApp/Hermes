@@ -5,7 +5,7 @@
 @implementation Song
 
 @synthesize artist, title, album, highUrl, stationId, nrating,
-  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl;
+  albumUrl, artistUrl, titleUrl, art, token, medUrl, lowUrl, playDate;
 
 #pragma mark - NSObject
 
@@ -34,6 +34,7 @@
     [self setArtistUrl:[coder decodeObjectForKey:@"artistUrl"]];
     [self setTitleUrl:[coder decodeObjectForKey:@"titleUrl"]];
     [self setToken:[coder decodeObjectForKey:@"token"]];
+    [self setPlayDate:[coder decodeObjectForKey:@"playDate"]];
   }
   return self;
 }
@@ -49,19 +50,20 @@
 
 - (NSDictionary*) toDictionary {
   NSMutableDictionary *info = [NSMutableDictionary dictionary];
-  [info setValue: artist forKey:@"artist"];
-  [info setValue: title forKey:@"title"];
-  [info setValue: album forKey:@"album"];
-  [info setValue: art forKey:@"art"];
-  [info setValue: lowUrl forKey:@"lowUrl"];
-  [info setValue: medUrl forKey:@"medUrl"];
-  [info setValue: highUrl forKey:@"highUrl"];
-  [info setValue: stationId forKey:@"stationId"];
-  [info setValue: nrating forKey:@"nrating"];
-  [info setValue: albumUrl forKey:@"albumUrl"];
-  [info setValue: artistUrl forKey:@"artistUrl"];
-  [info setValue: titleUrl forKey:@"titleUrl"];
-  [info setValue: token forKey:@"token"];
+  [info setValue:artist forKey:@"artist"];
+  [info setValue:title forKey:@"title"];
+  [info setValue:album forKey:@"album"];
+  [info setValue:art forKey:@"art"];
+  [info setValue:lowUrl forKey:@"lowUrl"];
+  [info setValue:medUrl forKey:@"medUrl"];
+  [info setValue:highUrl forKey:@"highUrl"];
+  [info setValue:stationId forKey:@"stationId"];
+  [info setValue:nrating forKey:@"nrating"];
+  [info setValue:albumUrl forKey:@"albumUrl"];
+  [info setValue:artistUrl forKey:@"artistUrl"];
+  [info setValue:titleUrl forKey:@"titleUrl"];
+  [info setValue:token forKey:@"token"];
+  [info setValue:playDate forKey:@"playDate"];
   return info;
 }
 
@@ -80,6 +82,23 @@
 
 - (Station*) station {
   return [Station stationForToken:[self stationId]];
+}
+
+#pragma mark - Formatted play date
+
+- (NSString *)playDateString {
+  if (self.playDate == nil)
+    return nil;
+
+  static NSDateFormatter *songDateFormatter = nil;
+  if (songDateFormatter == nil) {
+    songDateFormatter = [[NSDateFormatter alloc] init];
+    songDateFormatter.dateStyle = NSDateFormatterShortStyle;
+    songDateFormatter.timeStyle = NSDateFormatterShortStyle;
+    songDateFormatter.doesRelativeDateFormatting = YES;
+  }
+
+  return [songDateFormatter stringFromDate:playDate];
 }
 
 @end

@@ -17,6 +17,9 @@
 @property(nonatomic, retain) NSString *medUrl;
 @property(nonatomic, retain) NSString *lowUrl;
 
+@property(nonatomic, retain) NSDate *playDate;
+@property(readonly) NSString *playDateString;
+
 - (NSDictionary*) toDictionary;
 - (BOOL) isEqual:(id)other;
 - (Station*) station;

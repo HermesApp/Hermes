@@ -1326,6 +1326,9 @@ DQ
                     </buttonCell>
                 </button>
             </subviews>
+            <connections>
+                <binding destination="1440" name="toolTip" keyPath="representedObject.playDateString" id="feO-zW-iF2"/>
+            </connections>
         </view>
         <arrayController objectClassName="Song" selectsInsertedObjects="NO" avoidsEmptySelection="NO" id="1444" userLabel="History Items">
             <connections>

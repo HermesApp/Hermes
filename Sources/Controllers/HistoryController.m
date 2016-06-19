@@ -24,17 +24,19 @@
 
 - (void) loadSavedSongs {
   NSLogd(@"loading saved songs");
-  NSString *saved_state = [[NSApp delegate] stateDirectory:@"history.savestate"];
-  if (saved_state == nil) { return; }
-  reader = [FileReader readerForFile:saved_state
-                   completionHandler:^(NSData *data, NSError *err) {
+  NSString *historySaveStatePath = [[NSApp delegate] stateDirectory:@"history.savestate"];
+  if (historySaveStatePath == nil) return;
+
+  reader = [FileReader readerForFile:historySaveStatePath completionHandler:^(NSData *data, NSError *err) {
     if (err) return;
     assert(data != nil);
+
     NSArray *s = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     for (Song *song in s) {
       if ([songs indexOfObject:song] == NSNotFound)
         [controller addObject:song];
     }
+
     reader = nil;
   }];
   [reader start];
