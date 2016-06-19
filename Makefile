@@ -45,4 +45,4 @@ clean:
 	$(XCB) $(COMMON_OPTS) -scheme $(SCHEME) clean
 	rm -rf build
 
-.PHONY: all hermes run dbg archive clean install archive upload-release
+.PHONY: all hermes travis run dbg archive clean install archive upload-release
