@@ -95,16 +95,11 @@ BOOL playOnStart = YES;
      name:StationDidPlaySongNotification
      object:nil];
 
-  CIFilter *volumeSliderFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"]; // 10.9+
+  CIFilter *volumeSliderFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"];
   if (volumeSliderFilter != nil)
     [volume setContentFilters:@[volumeSliderFilter]];
 
-  CIFilter *playbackProgressFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"]; // 10.9+
-  if (playbackProgressFilter == nil) {
-    playbackProgressFilter = [CIFilter filterWithName:@"CIColorMonochrome"];
-    [playbackProgressFilter setDefaults];
-    [playbackProgressFilter setValue:[CIColor colorWithRed:0 green:0 blue:0] forKey:@"inputColor"];
-  }
+  CIFilter *playbackProgressFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"];
   if (playbackProgressFilter != nil)
     [playbackProgress setContentFilters:@[playbackProgressFilter]];
   
