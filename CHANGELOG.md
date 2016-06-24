@@ -1,6 +1,6 @@
 # Version 1.2.8 (6/24/16)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...1.2.8)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...v1.2.8)
 
 * [changed by @nriley] Fix a regression introduced in 1.2.7 which degraded audio quality for non-Pandora One users (#263)
 * [changed by @nriley] Always display Shuffle (formerly QuickMix) at the top of the station list, more like the Pandora Web site
