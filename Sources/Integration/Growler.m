@@ -10,6 +10,7 @@
 
 #import "Growler.h"
 #import "PreferencesController.h"
+#import "PlaybackController.h"
 #import "Pandora/Song.h"
 
 @implementation Growler
@@ -48,6 +49,15 @@
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
     [not setInformativeText:description];
+    [not setHasActionButton:true];
+    
+    // Notification buttons
+    [not setValue:@YES forKey:@"_showsButtons"];
+    not.actionButtonTitle = @"Skip";
+    
+    NSUserNotificationAction *skipAction = [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
+    not.additionalActions = [NSArray arrayWithObjects: skipAction,nil];
+    
     if ([not respondsToSelector:@selector(setContentImage:)]) {
       not.contentImage = [[NSImage alloc] initWithData:image];
     }
@@ -105,8 +115,15 @@
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
-  [[[NSApp delegate] window] orderFront:nil];
-  [NSApp activateIgnoringOtherApps:YES];
+  if ([[notification actionButtonTitle] caseInsensitiveCompare:@"Skip"] == NSOrderedSame) {
+    PlaybackController *playback = [[NSApp delegate] playback];
+    [playback next:self];
+  } else {
+    [[[NSApp delegate] window] orderFront:nil];
+    [NSApp activateIgnoringOtherApps:YES];
+  }
 }
+
+
 
 @end
