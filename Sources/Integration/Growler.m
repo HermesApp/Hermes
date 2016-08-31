@@ -51,10 +51,11 @@
     [not setInformativeText:description];
     [not setHasActionButton:true];
     
-    // Notification buttons
+    // Notification buttons (makes them visible, see: https://github.com/indragiek/NSUserNotificationPrivate )
     [not setValue:@YES forKey:@"_showsButtons"];
     not.actionButtonTitle = @"Skip";
     
+    // Creates action to attach to actionButton (see: https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSUserNotificationCenter_Class/ )
     NSUserNotificationAction *skipAction = [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
     not.additionalActions = [NSArray arrayWithObjects: skipAction,nil];
     
@@ -115,13 +116,18 @@
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
-  if ([[notification actionButtonTitle] caseInsensitiveCompare:@"Skip"] == NSOrderedSame) {
+  
+  // If the action button (next) is pressed
+  if ([[notification identifier] caseInsensitiveCompare:@"next"] == NSOrderedSame) {
+    // Call next track in Playback controller
     PlaybackController *playback = [[NSApp delegate] playback];
     [playback next:self];
   } else {
+    // Otherwise, bring up and focus main UI
     [[[NSApp delegate] window] orderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
   }
+  
 }
 
 
