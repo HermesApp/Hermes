@@ -67,18 +67,16 @@
     NSUserNotificationAction *skipAction =
       [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
     
-    // Thumb Up/Down actions
-    NSString *likeActionTitle = @"Thumb Up";
-    if ([[song nrating] intValue] == 1)
-      likeActionTitle = @"Remove Thumb Up";
+    // Like/Dislike actions
+    NSString *likeActionTitle =
+      ([[song nrating] intValue] == 1) ? @"Remove Like" : @"Like";
     
     NSUserNotificationAction *likeAction =
-      [NSUserNotificationAction actionWithIdentifier:@"tup" title:likeActionTitle];
+      [NSUserNotificationAction actionWithIdentifier:@"like" title:likeActionTitle];
     NSUserNotificationAction *dislikeAction =
-      [NSUserNotificationAction actionWithIdentifier:@"tud" title:@"Thumb Down"];
+      [NSUserNotificationAction actionWithIdentifier:@"dislike" title:@"Dislike"];
     
-    [not setAdditionalActions:
-      [NSArray arrayWithObjects: skipAction,likeAction,dislikeAction,nil]];
+    [not setAdditionalActions: @[skipAction,likeAction,dislikeAction]];
     
     if ([not respondsToSelector:@selector(setContentImage:)]) {
       // Set album art where app icon is (like in iTunes)
@@ -149,35 +147,35 @@
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
   
-  // If one of the additional action buttons are pressed
   PlaybackController *playback = [[NSApp delegate] playback];
   NSString *actionID = [[notification additionalActivationAction] identifier];
   
-  if (actionID != NULL) {
-    
-    // One of the drop down buttons was pressed
-    if ([actionID caseInsensitiveCompare:@"tup"] == NSOrderedSame) {
-      [playback like:self];
-    } else if ([actionID caseInsensitiveCompare:@"tud"] == NSOrderedSame) {
-      [playback dislike:self];
-    } else if ([actionID caseInsensitiveCompare:@"next"] == NSOrderedSame) {
+  switch([notification activationType]) {
+    case NSUserNotificationActivationTypeActionButtonClicked:
+      
+      // Skip button pressed
       [playback next:self];
-    }
-    
-  } else if ([[notification identifier] caseInsensitiveCompare:@"next"] ==
-              NSOrderedSame) {
-    
-    // Call next track in Playback controller
-    [playback next:self];
-    
-  } else {
-    
-    // Otherwise, the banner was clicked, so bring up and focus main UI
-    [[[NSApp delegate] window] orderFront:nil];
-    [NSApp activateIgnoringOtherApps:YES];
-    
+      break;
+      
+    case NSUserNotificationActivationTypeAdditionalActionClicked:
+      
+      // One of the drop down buttons was pressed
+      if ([actionID isEqualToString:@"like"]) {
+        [playback like:self];
+      } else if ([actionID isEqualToString:@"dislike"]) {
+        [playback dislike:self];
+      } else if ([actionID isEqualToString:@"next"]) {
+        [playback next:self];
+      }
+      break;
+      
+    default:
+      
+      // Banner was clicked, so bring up and focus main UI
+      [[[NSApp delegate] window] orderFront:nil];
+      [NSApp activateIgnoringOtherApps:YES];
+      break;
   }
-  
 }
 
 
