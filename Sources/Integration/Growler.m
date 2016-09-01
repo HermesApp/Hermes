@@ -49,18 +49,34 @@
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
     [not setInformativeText:description];
-    [not setHasActionButton:true];
+    [not setHasActionButton:YES];
+    [not setActionButtonTitle: @"Skip"];
     
-    // Notification buttons (makes them visible, see: https://github.com/indragiek/NSUserNotificationPrivate )
+    // Make skip button visible for banner notifications
+    // - see: https://github.com/indragiek/NSUserNotificationPrivate
     [not setValue:@YES forKey:@"_showsButtons"];
-    not.actionButtonTitle = @"Skip";
     
-    // Creates action to attach to actionButton (see: https://developer.apple.com/library/mac/documentation/Foundation/Reference/NSUserNotificationCenter_Class/ )
-    NSUserNotificationAction *skipAction = [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
-    not.additionalActions = [NSArray arrayWithObjects: skipAction,nil];
+    // Skip action
+    NSUserNotificationAction *skipAction =
+      [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
+    
+    // Thumb Up/Down actions
+    NSString *likeActionTitle = @"Thumb Up";
+    if ([[song nrating] intValue] == 1)
+      likeActionTitle = @"Remove Thumb Up";
+    
+    NSUserNotificationAction *likeAction =
+      [NSUserNotificationAction actionWithIdentifier:@"tup" title:likeActionTitle];
+    NSUserNotificationAction *dislikeAction =
+      [NSUserNotificationAction actionWithIdentifier:@"tud" title:@"Thumb Down"];
+    
+    [not setAdditionalActions:
+      [NSArray arrayWithObjects: skipAction,likeAction,dislikeAction,nil]];
     
     if ([not respondsToSelector:@selector(setContentImage:)]) {
-      not.contentImage = [[NSImage alloc] initWithData:image];
+      // Set image to album art
+      // - see: https://github.com/indragiek/NSUserNotificationPrivate
+      [not setValue:[[NSImage alloc] initWithData:image] forKey:@"_identityImage"];
     }
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
@@ -117,16 +133,33 @@
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
   
-  // If the action button (next) is pressed
-  if ([[notification identifier] caseInsensitiveCompare:@"next"] == NSOrderedSame &&
-    PREF_KEY_INT(GROWL_TYPE) == GROWL_TYPE_OSX) {
+  // If one of the additional action buttons are pressed
+  PlaybackController *playback = [[NSApp delegate] playback];
+  NSString *actionID = [[notification additionalActivationAction] identifier];
+  
+  if (actionID != NULL) {
+    
+    // One of the drop down buttons was pressed
+    if ([actionID caseInsensitiveCompare:@"tup"] == NSOrderedSame) {
+      [playback like:self];
+    } else if ([actionID caseInsensitiveCompare:@"tud"] == NSOrderedSame) {
+      [playback dislike:self];
+    } else if ([actionID caseInsensitiveCompare:@"next"] == NSOrderedSame) {
+      [playback next:self];
+    }
+    
+  } else if ([[notification identifier] caseInsensitiveCompare:@"next"] ==
+              NSOrderedSame) {
+    
     // Call next track in Playback controller
-    PlaybackController *playback = [[NSApp delegate] playback];
     [playback next:self];
+    
   } else {
-    // Otherwise, bring up and focus main UI
+    
+    // Otherwise, the banner was clicked, so bring up and focus main UI
     [[[NSApp delegate] window] orderFront:nil];
     [NSApp activateIgnoringOtherApps:YES];
+    
   }
   
 }
