@@ -118,7 +118,8 @@
        didActivateNotification:(NSUserNotification *)notification {
   
   // If the action button (next) is pressed
-  if ([[notification identifier] caseInsensitiveCompare:@"next"] == NSOrderedSame) {
+  if ([[notification identifier] caseInsensitiveCompare:@"next"] == NSOrderedSame &&
+    PREF_KEY_INT(GROWL_TYPE) == GROWL_TYPE_OSX) {
     // Call next track in Playback controller
     PlaybackController *playback = [[NSApp delegate] playback];
     [playback next:self];
