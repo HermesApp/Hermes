@@ -52,9 +52,16 @@
     [not setHasActionButton:YES];
     [not setActionButtonTitle: @"Skip"];
     
-    // Make skip button visible for banner notifications
+    // Make skip button visible for banner notifications (like in iTunes)
+    // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+    //   class.  Otherwise, skip button will only appear if 'Alert' style
+    //   notifications are used.
     // - see: https://github.com/indragiek/NSUserNotificationPrivate
-    [not setValue:@YES forKey:@"_showsButtons"];
+    @try {
+      [not setValue:@YES forKey:@"_showsButtons"];
+    } @catch (NSException *e) {
+      if ([e name] != NSUndefinedKeyException) @throw e;
+    }
     
     // Skip action
     NSUserNotificationAction *skipAction =
@@ -74,10 +81,19 @@
       [NSArray arrayWithObjects: skipAction,likeAction,dislikeAction,nil]];
     
     if ([not respondsToSelector:@selector(setContentImage:)]) {
-      // Set image to album art
+      // Set album art where app icon is (like in iTunes)
+      // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+      //   class.  Otherwise, skip button will only appear if 'Alert' style
+      //   notifications are used.
       // - see: https://github.com/indragiek/NSUserNotificationPrivate
-      [not setValue:[[NSImage alloc] initWithData:image] forKey:@"_identityImage"];
+      @try {
+        [not setValue:[[NSImage alloc] initWithData:image] forKey:@"_identityImage"];
+      } @catch (NSException *e) {
+        if ([e name] != NSUndefinedKeyException) @throw e;
+        [not setContentImage:[[NSImage alloc] initWithData:image]];
+      }
     }
+    
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
     [center scheduleNotification:not];
