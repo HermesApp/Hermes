@@ -1,3 +1,10 @@
+# Version 1.2.9 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.8...HEAD)
+
+* [added by @paullj1] Allow skipping songs (if using banners) and liking/disliking songs (if using alerts) from OS X notifications (#273)
+* [changed by @paullj1] Make Hermes OS X song notifications look more like iTunes notifications (#273)
+
 # Version 1.2.8 (6/24/16)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.7...v1.2.8)
