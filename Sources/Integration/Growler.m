@@ -43,9 +43,7 @@
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
 
-  if (NSClassFromString(@"NSUserNotification") != nil &&
-      PREF_KEY_INT(GROWL_TYPE) == GROWL_TYPE_OSX) {
-    //Class Center = NSClassFromString(@"NSUserNotificationCenter");
+  if (PREF_KEY_INT(GROWL_TYPE) == GROWL_TYPE_OSX) {
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
     [not setInformativeText:description];
