@@ -10,6 +10,7 @@
 
 #import "Growler.h"
 #import "PreferencesController.h"
+#import "PlaybackController.h"
 #import "Pandora/Song.h"
 
 @implementation Growler
@@ -48,9 +49,49 @@
     NSUserNotification *not = [[NSUserNotification alloc] init];
     [not setTitle:title];
     [not setInformativeText:description];
-    if ([not respondsToSelector:@selector(setContentImage:)]) {
-      not.contentImage = [[NSImage alloc] initWithData:image];
+    [not setHasActionButton:YES];
+    [not setActionButtonTitle: @"Skip"];
+    
+    // Make skip button visible for banner notifications (like in iTunes)
+    // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+    //   class.  Otherwise, skip button will only appear if 'Alert' style
+    //   notifications are used.
+    // - see: https://github.com/indragiek/NSUserNotificationPrivate
+    @try {
+      [not setValue:@YES forKey:@"_showsButtons"];
+    } @catch (NSException *e) {
+      if ([e name] != NSUndefinedKeyException) @throw e;
     }
+    
+    // Skip action
+    NSUserNotificationAction *skipAction =
+      [NSUserNotificationAction actionWithIdentifier:@"next" title:@"Skip"];
+    
+    // Like/Dislike actions
+    NSString *likeActionTitle =
+      ([[song nrating] intValue] == 1) ? @"Remove Like" : @"Like";
+    
+    NSUserNotificationAction *likeAction =
+      [NSUserNotificationAction actionWithIdentifier:@"like" title:likeActionTitle];
+    NSUserNotificationAction *dislikeAction =
+      [NSUserNotificationAction actionWithIdentifier:@"dislike" title:@"Dislike"];
+    
+    [not setAdditionalActions: @[skipAction,likeAction,dislikeAction]];
+    
+    if ([not respondsToSelector:@selector(setContentImage:)]) {
+      // Set album art where app icon is (like in iTunes)
+      // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+      //   class.  Otherwise, skip button will only appear if 'Alert' style
+      //   notifications are used.
+      // - see: https://github.com/indragiek/NSUserNotificationPrivate
+      @try {
+        [not setValue:[[NSImage alloc] initWithData:image] forKey:@"_identityImage"];
+      } @catch (NSException *e) {
+        if ([e name] != NSUndefinedKeyException) @throw e;
+        [not setContentImage:[[NSImage alloc] initWithData:image]];
+      }
+    }
+    
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
     [center scheduleNotification:not];
@@ -105,8 +146,38 @@
 
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
-  [[[NSApp delegate] window] orderFront:nil];
-  [NSApp activateIgnoringOtherApps:YES];
+  
+  PlaybackController *playback = [[NSApp delegate] playback];
+  NSString *actionID = [[notification additionalActivationAction] identifier];
+  
+  switch([notification activationType]) {
+    case NSUserNotificationActivationTypeActionButtonClicked:
+      
+      // Skip button pressed
+      [playback next:self];
+      break;
+      
+    case NSUserNotificationActivationTypeAdditionalActionClicked:
+      
+      // One of the drop down buttons was pressed
+      if ([actionID isEqualToString:@"like"]) {
+        [playback like:self];
+      } else if ([actionID isEqualToString:@"dislike"]) {
+        [playback dislike:self];
+      } else if ([actionID isEqualToString:@"next"]) {
+        [playback next:self];
+      }
+      break;
+      
+    default:
+      
+      // Banner was clicked, so bring up and focus main UI
+      [[[NSApp delegate] window] orderFront:nil];
+      [NSApp activateIgnoringOtherApps:YES];
+      break;
+  }
 }
+
+
 
 @end
