@@ -92,6 +92,7 @@
     
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
+    [not setDeliveryDate:[NSDate date]];
     [center scheduleNotification:not];
     return;
   }
@@ -167,13 +168,19 @@
       }
       break;
       
-    default:
-      
+    case NSUserNotificationActivationTypeContentsClicked:
       // Banner was clicked, so bring up and focus main UI
       [[[NSApp delegate] window] orderFront:nil];
       [NSApp activateIgnoringOtherApps:YES];
       break;
+      
+    default:
+      // Any other action
+      break;
+      
   }
+  // Only way to get this notification to be removed from center
+  [center removeAllDeliveredNotifications];
 }
 
 
