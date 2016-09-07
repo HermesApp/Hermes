@@ -92,6 +92,7 @@
     
     NSUserNotificationCenter *center =
         [NSUserNotificationCenter defaultUserNotificationCenter];
+    [not setDeliveryDate:[NSDate date]];
     [center scheduleNotification:not];
     return;
   }
@@ -178,6 +179,8 @@
       break;
       
   }
+  // Only way to get this notification to be removed from center
+  [center removeAllDeliveredNotifications];
 }
 
 
