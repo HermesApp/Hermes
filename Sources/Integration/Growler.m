@@ -167,12 +167,16 @@
       }
       break;
       
-    default:
-      
+    case NSUserNotificationActivationTypeContentsClicked:
       // Banner was clicked, so bring up and focus main UI
       [[[NSApp delegate] window] orderFront:nil];
       [NSApp activateIgnoringOtherApps:YES];
       break;
+      
+    default:
+      // Any other action
+      break;
+      
   }
 }
 
