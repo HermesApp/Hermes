@@ -661,7 +661,7 @@
   if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG)) {
     NSString *title = playback.playing.playingSong.title;
     if (title.length > STATUS_BAR_STRING_LENGTH) {
-      title = [[NSString alloc] initWithFormat:@"%@...",
+      title = [[NSString alloc] initWithFormat:@" %@...",
                 [title substringToIndex:STATUS_BAR_STRING_LENGTH]];
     }
     [statusItem setTitle:title];
