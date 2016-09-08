@@ -631,21 +631,36 @@
     return;
 
   NSImage *icon;
+  NSSize size = {.width = 18, .height = 18};
+  
   if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
     
-    icon = [NSImage
-            imageNamed: (playback.playing.isPlaying) ?
+    icon = [NSImage imageNamed: (playback.playing.isPlaying) ?
             @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
     [icon setTemplate:YES];
     
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     
-    if (playback.playing.isPlaying) {
-      NSData *data = [playback lastImg];
-      icon = (data) ? [[NSImage alloc] initWithData:data] :
-                      [NSImage imageNamed: @"missing-album"];
-    } else
-      icon = [[NSApp applicationIconImage] copy];
+    // Build base image
+    NSData *data = [playback lastImg];
+    icon = (data) ? [[NSImage alloc] initWithData:data] :
+                    [NSImage imageNamed: @"missing-album"];
+    [icon setSize:size];
+    
+    // draw the overlay image (if there is album art)
+    if (data) {
+      NSImage *overlay = [NSImage imageNamed: (playback.playing.isPlaying) ?
+                          @"play" : @"pause"];
+      NSSize overlaySize = {.width = 12, .height = 12};
+      [overlay setSize:overlaySize];
+    
+      [icon lockFocus];
+      [overlay drawInRect:NSMakeRect(3, 3, [overlay size].width, [overlay size].height)
+                 fromRect:NSZeroRect
+                operation:NSCompositeSourceOver
+                 fraction:1.0];
+      [icon unlockFocus];
+    }
     
   } else {
     // Use color application image
@@ -653,7 +668,6 @@
   }
 
   // Set image size, then set status bar icon
-  NSSize size = {.width = 18, .height = 18};
   [icon setSize:size];
   [statusItem setImage:icon];
   
