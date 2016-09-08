@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
@@ -1337,11 +1337,11 @@ DQ
             </connections>
         </arrayController>
         <customView id="1610" userLabel="General Preferences View">
-            <rect key="frame" x="0.0" y="0.0" width="362" height="280"/>
+            <rect key="frame" x="0.0" y="0.0" width="362" height="364"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button id="1117">
-                    <rect key="frame" x="18" y="244" width="235" height="18"/>
+                    <rect key="frame" x="18" y="328" width="235" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Control playback with media keys" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1118">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1353,7 +1353,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1550">
-                    <rect key="frame" x="36" y="214" width="309" height="28"/>
+                    <rect key="frame" x="36" y="298" width="309" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause, forward and back keys to control Hermes from any application." id="1551">
                         <font key="font" metaFont="smallSystem"/>
@@ -1407,7 +1407,7 @@ DQ
                     </connections>
                 </popUpButton>
                 <button id="2338">
-                    <rect key="frame" x="18" y="167" width="192" height="18"/>
+                    <rect key="frame" x="18" y="254" width="192" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Hide Dock icon and menus" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1419,7 +1419,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="2354">
-                    <rect key="frame" x="36" y="137" width="317" height="28"/>
+                    <rect key="frame" x="32" y="130" width="317" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When selected, control Hermes with the keyboard or its icon on the right side of the menu bar." id="2355">
                         <font key="font" metaFont="smallSystem"/>
@@ -1439,19 +1439,6 @@ DQ
                         <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
                     </connections>
                 </button>
-                <button id="2375">
-                    <rect key="frame" x="236" y="167" width="108" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2376">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateStatusBarIconImage:" target="494" id="1Hw-WP-wNi"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="2392"/>
-                        <binding destination="979" name="value" keyPath="values.statusBarIconBlackWhite" id="2390"/>
-                    </connections>
-                </button>
                 <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="S4B-aI-Ikt">
                     <rect key="frame" x="12" y="73" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1460,7 +1447,7 @@ DQ
                     <font key="titleFont" metaFont="system"/>
                 </box>
                 <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="bjW-f8-vOq">
-                    <rect key="frame" x="12" y="196" width="338" height="5"/>
+                    <rect key="frame" x="12" y="280" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -1473,8 +1460,57 @@ DQ
                     <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <font key="titleFont" metaFont="system"/>
                 </box>
+                <button id="qU3-Mb-t5B">
+                    <rect key="frame" x="18" y="164" width="194" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Show song title in status bar" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Jjy-wl-Erl">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusBarIconImage:" target="494" id="baC-ME-4Pb"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="fm2-kn-VmX"/>
+                        <binding destination="979" name="value" keyPath="values.statusBarShowSongTitle" id="HaC-QQ-VPO"/>
+                    </connections>
+                </button>
+                <button identifier="statusBarIconUseBlackWhite" id="2375">
+                    <rect key="frame" x="32" y="209" width="108" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="2376">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusBarIconValue:" target="494" id="bAM-8r-Ge6"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="2392"/>
+                    </connections>
+                </button>
+                <button identifier="statusBarIconUseColor" id="sIX-RA-vSL">
+                    <rect key="frame" x="32" y="231" width="126" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Use Hermes icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusBarIconValue:" target="494" id="Pxc-gH-UeK"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="qig-Tq-jcU"/>
+                    </connections>
+                </button>
+                <button identifier="statusBarIconUseAlbumArt" id="28c-Js-E8a">
+                    <rect key="frame" x="32" y="187" width="110" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Use Album Art" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusBarIconValue:" target="494" id="AY9-n1-zRZ"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
+                    </connections>
+                </button>
             </subviews>
-            <point key="canvasLocation" x="405" y="171"/>
+            <point key="canvasLocation" x="405" y="204"/>
         </customView>
         <customView id="1616" userLabel="Playback Preferences View">
             <rect key="frame" x="0.0" y="0.0" width="362" height="405"/>

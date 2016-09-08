@@ -29,6 +29,7 @@ BOOL playOnStart = YES;
 @implementation PlaybackController
 
 @synthesize playing;
+@synthesize lastImg;
 
 + (void) setPlayOnStart: (BOOL)play {
   playOnStart = play;
@@ -309,6 +310,8 @@ BOOL playOnStart = YES;
         } else {
           image = [[NSImage alloc] initWithData:data];
         }
+                                  
+        [[NSApp delegate] updateStatusBarIconImage:nil];
 
         if (![playing isPaused]) {
           [GROWLER growl:song withImage:data isNew:YES];
