@@ -4,6 +4,7 @@
 
 * [added by @paullj1] Allow skipping songs (if using banners) and liking/disliking songs (if using alerts) from OS X notifications (#273)
 * [changed by @paullj1] Make Hermes OS X song notifications look more like iTunes notifications (#273)
+* [fixed by @nriley] Work around macOS 10.12 bug which caused volume slider and song progress not to display
 
 # Version 1.2.8 (6/24/16)
 
