@@ -79,7 +79,7 @@
 }
 
 - (IBAction) bindMediaChanged: (id) sender {
-  SPMediaKeyTap *mediaKeyTap = [[NSApp delegate] mediaKeyTap];
+  SPMediaKeyTap *mediaKeyTap = [HMSAppDelegate mediaKeyTap];
   if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
     [mediaKeyTap startWatchingMediaKeys];
   } else {

@@ -3,7 +3,7 @@
 #import "HermesAppDelegate.h"
 #include <libgen.h>
 
-#define NSLogd(fmt, args...) [(HermesAppDelegate *)[NSApp delegate] logMessage:[NSString stringWithFormat:@"%s:%d %s " fmt, basename(__FILE__), __LINE__, __PRETTY_FUNCTION__, ##args]];
+#define NSLogd(fmt, args...) [(HermesAppDelegate *)HMSAppDelegate logMessage:[NSString stringWithFormat:@"%s:%d %s " fmt, basename(__FILE__), __LINE__, __PRETTY_FUNCTION__, ##args]];
 #define HMSLog NSLogd
 
 #define HMSAssert(expression, ...) \
@@ -14,3 +14,5 @@
   } \
 } while (0)
 #endif
+
+#define HMSAppDelegate ((HermesAppDelegate *)[NSApp delegate])

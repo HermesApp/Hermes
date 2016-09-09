@@ -75,11 +75,11 @@
 #pragma mark - Miscellaneous helpers
 
 - (Pandora*) pandora {
-  return [[NSApp delegate] pandora];
+  return [HMSAppDelegate pandora];
 }
 
 - (Station*) playingStation {
-  return [[[NSApp delegate] playback] playing];
+  return [[HMSAppDelegate playback] playing];
 }
 
 - (Station*) selectedStation {
@@ -166,7 +166,7 @@
   if (!tried_restore) {
     tried_restore = 1;
     NSString *saved_state =
-      [[NSApp delegate] stateDirectory:@"station.savestate"];
+      [HMSAppDelegate stateDirectory:@"station.savestate"];
     if (saved_state != nil) {
       reader = [FileReader readerForFile:saved_state
                        completionHandler:^(NSData *data, NSError *err) {
@@ -178,7 +178,7 @@
           }
         }
         [self selectStation: last];
-        [[[NSApp delegate] playback] playStation:last];
+        [[HMSAppDelegate playback] playStation:last];
         return;
       }];
       [reader start];
@@ -186,7 +186,7 @@
     }
   }
   [self selectStation: last];
-  [[[NSApp delegate] playback] playStation:last];
+  [[HMSAppDelegate playback] playStation:last];
   return YES;
 }
 
@@ -235,7 +235,7 @@
 
 - (BOOL)tableView:(NSTableView *)tableView shouldTypeSelectForEvent:(NSEvent *)event withCurrentSearchString:(NSString *)searchString {
   if (searchString == nil && [[event characters] isEqualToString:@" "]) {
-    [[[NSApp delegate] playback] playpause:nil];
+    [[HMSAppDelegate playback] playpause:nil];
   }
   
   return YES;
@@ -327,7 +327,7 @@
 
 - (void) stationCreated: (NSNotification*) not {
   Station *s = [not userInfo][@"station"];
-  [[NSApp delegate] closeNewStationSheet];
+  [HMSAppDelegate closeNewStationSheet];
 
   [searchSpinner setHidden:YES];
   [searchSpinner stopAnimation:nil];
@@ -335,7 +335,7 @@
   [genreSpinner stopAnimation:nil];
   [stationsTable reloadData];
   [self selectStation:s];
-  [[[NSApp delegate] playback] playStation:s];
+  [[HMSAppDelegate playback] playStation:s];
 }
 
 - (void) stationRemoved: (NSNotification*) not {
@@ -368,10 +368,10 @@
   [stationsRefreshing stopAnimation:nil];
 
   if ([self playingStation] == nil && ![self playSavedStation]) {
-    [[NSApp delegate] setCurrentView:chooseStationView];
-    [[NSApp delegate] showStationsDrawer:nil];
+    [HMSAppDelegate setCurrentView:chooseStationView];
+    [HMSAppDelegate showStationsDrawer:nil];
   }
-  [[NSApp delegate] handleDrawer];
+  [HMSAppDelegate handleDrawer];
 
   BOOL isAscending = YES;
   NSInteger otherSegment = SORT_DATE;
@@ -436,7 +436,7 @@
 
 /* Called after the user has authenticated */
 - (void) show {
-  [[NSApp delegate] showLoader];
+  [HMSAppDelegate showLoader];
   [self refreshList:nil];
 }
 
@@ -449,7 +449,7 @@
   }
 
   [self selectStation:selected];
-  [[[NSApp delegate] playback] playStation:selected];
+  [[HMSAppDelegate playback] playStation:selected];
   [stationsTable reloadData];
 }
 
@@ -465,7 +465,7 @@
   [search setStringValue:@""];
   lastResults = @{};
   [results reloadData];
-  [[NSApp delegate] showNewStationSheet];
+  [HMSAppDelegate showNewStationSheet];
   [search becomeFirstResponder];
   [[self pandora] fetchGenreStations];
   [genreSpinner startAnimation:nil];
@@ -483,7 +483,7 @@
 
 /* Callback for the cancel button is hit on the create sheet */
 - (IBAction)cancelCreateStation: (id)sender {
-  [[NSApp delegate] closeNewStationSheet];
+  [HMSAppDelegate closeNewStationSheet];
 }
 
 /* Callback for the create button on the create sheet */
@@ -530,12 +530,12 @@
   alert.alertStyle = NSWarningAlertStyle;
   alert.icon = [NSImage imageNamed:@"error_icon"];
 
-  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
+  [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:^(NSModalResponse returnCode) {
     if (returnCode != NSAlertSecondButtonReturn) // Delete (non-default)
       return;
     
     if ([selected isEqual:[self playingStation]]) {
-      HermesAppDelegate *delegate = [NSApp delegate];
+      HermesAppDelegate *delegate = HMSAppDelegate;
       [[delegate playback] playStation:nil];
       [delegate setCurrentView:chooseStationView];
     }
@@ -549,7 +549,7 @@
 - (IBAction)editSelected:(id)sender {
   Station *s = [self selectedStation];
   if (s == nil || s.isQuickMix) return;
-  StationController *c = [(HermesAppDelegate*)[NSApp delegate] station];
+  StationController *c = [(HermesAppDelegate*)HMSAppDelegate station];
   [c editStation:s];
 }
 

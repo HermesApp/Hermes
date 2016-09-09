@@ -24,7 +24,7 @@
 
 - (void) loadSavedSongs {
   NSLogd(@"loading saved songs");
-  NSString *historySaveStatePath = [[NSApp delegate] stateDirectory:@"history.savestate"];
+  NSString *historySaveStatePath = [HMSAppDelegate stateDirectory:@"history.savestate"];
   if (historySaveStatePath == nil) return;
 
   reader = [FileReader readerForFile:historySaveStatePath completionHandler:^(NSData *data, NSError *err) {
@@ -69,7 +69,7 @@
 }
 
 - (BOOL) saveSongs {
-  NSString *path = [[NSApp delegate] stateDirectory:@"history.savestate"];
+  NSString *path = [HMSAppDelegate stateDirectory:@"history.savestate"];
   if (path == nil) {
     return NO;
   }
@@ -86,7 +86,7 @@
 }
 
 - (Pandora*) pandora {
-  return [[NSApp delegate] pandora];
+  return [HMSAppDelegate pandora];
 }
 
 - (void) setEnabledState:(BOOL)enabled allowRating:(BOOL)ratingEnabled {
@@ -129,13 +129,13 @@
 - (IBAction) dislikeSelected:(id)sender {
   Song* song = [self selectedItem];
   if (!song) return;
-  [[[NSApp delegate] playback] rate:song as:NO];
+  [[HMSAppDelegate playback] rate:song as:NO];
 }
 
 - (IBAction) likeSelected:(id)sender {
   Song* song = [self selectedItem];
   if (!song) return;
-  [[[NSApp delegate] playback] rate:song as:YES];
+  [[HMSAppDelegate playback] rate:song as:YES];
 }
 
 - (IBAction)gotoSong:(id)sender {
@@ -174,6 +174,7 @@
   NSSize s;
   s.height = 100;
   s.width = [defaults integerForKey:HIST_DRAWER_WIDTH];
+
   [drawer open];
   [drawer setContentSize:s];
   [collection setMaxItemSize:NSMakeSize(227, 41)];
@@ -213,7 +214,7 @@
     NSAlert *alert = [NSAlert alertWithError:err];
     alert.messageText = @"Couldn't open lyrics";
     alert.informativeText = [err localizedDescription];
-    [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
+    [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:nil];
   }];
 
   [conn setHermesProxy];

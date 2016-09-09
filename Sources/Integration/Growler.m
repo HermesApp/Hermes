@@ -17,11 +17,7 @@
 
 - (id) init {
   [GrowlApplicationBridge setGrowlDelegate:self];
-  if (NSClassFromString(@"NSUserNotificationCenter") != nil) {
-    NSUserNotificationCenter *center =
-        [NSUserNotificationCenter defaultUserNotificationCenter];
-    [center setDelegate:self];
-  }
+  [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
   return self;
 }
 
@@ -38,7 +34,7 @@
 
   NSString *title = [song title];
   if ([[song nrating] intValue] == 1) {
-	  title = [NSString stringWithFormat:@"%@ %@", NSAppKitVersionNumber >= NSAppKitVersionNumber10_7 ? @"👍" : @"❤", title];
+	  title = [NSString stringWithFormat:@"👍 %@", title];
   }
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
@@ -51,7 +47,7 @@
     [not setActionButtonTitle: @"Skip"];
     
     // Make skip button visible for banner notifications (like in iTunes)
-    // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+    // - Undocumented API.  Will only work if Apple keeps in NSUserNotification
     //   class.  Otherwise, skip button will only appear if 'Alert' style
     //   notifications are used.
     // - see: https://github.com/indragiek/NSUserNotificationPrivate
@@ -78,7 +74,7 @@
     
     if ([not respondsToSelector:@selector(setContentImage:)]) {
       // Set album art where app icon is (like in iTunes)
-      // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+      // - Undocumented API.  Will only work if Apple keeps in NSUserNotification
       //   class.  Otherwise, skip button will only appear if 'Alert' style
       //   notifications are used.
       // - see: https://github.com/indragiek/NSUserNotificationPrivate
@@ -129,7 +125,7 @@
 }
 
 - (void) growlNotificationWasClicked:(id)clickContext {
-  [[[NSApp delegate] window] orderFront:nil];
+  [[HMSAppDelegate window] orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
 }
 
@@ -146,7 +142,7 @@
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
   
-  PlaybackController *playback = [[NSApp delegate] playback];
+  PlaybackController *playback = [HMSAppDelegate playback];
   NSString *actionID = [[notification additionalActivationAction] identifier];
   
   switch([notification activationType]) {
@@ -170,7 +166,7 @@
       
     case NSUserNotificationActivationTypeContentsClicked:
       // Banner was clicked, so bring up and focus main UI
-      [[[NSApp delegate] window] orderFront:nil];
+      [[HMSAppDelegate window] orderFront:nil];
       [NSApp activateIgnoringOtherApps:YES];
       break;
       

@@ -4,7 +4,7 @@ Hermes
 
 [![Build Status](https://travis-ci.org/HermesApp/Hermes.svg?branch=master)](https://travis-ci.org/HermesApp/Hermes)
 
-A [Pandora](http://www.pandora.com) client for OS X.
+A [Pandora](http://www.pandora.com) client for macOS.
 
 ### THIS PROJECT IS UNMAINTAINED
 

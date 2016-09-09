@@ -26,7 +26,7 @@ void NetworkCallback(SCNetworkReachabilityRef target,
      currently pending request. This doesn't mean that we're guaranteed the
      request will succeed, but it's at least remotely possible that it can. */
   if (flags & kSCNetworkReachabilityFlagsIsLocalAddress) {
-    [[NSApp delegate] tryRetry];
+    [HMSAppDelegate tryRetry];
   }
 }
 

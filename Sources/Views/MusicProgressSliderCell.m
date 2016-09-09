@@ -1,5 +1,5 @@
 //
-//  MusicProgressSlider.m
+//  MusicProgressSliderCell.m
 //  Hermes
 //
 //  Created by Xinhong LIU on 19/4/15.
@@ -30,54 +30,43 @@
 }
 
 - (void)drawKnob:(NSRect)knobRect {
+  // Don't draw knob if it can't be dragged.
+  // If we do support seeking at some point, would be better to ape the miniplayer, with symmetric knob
+#if 0
   [[self knobColor] setFill];
-  NSRectFill(knobRect);
+  NSRectFill(knobRect); */
+#endif
 }
 
-- (void)drawBarInside:(NSRect)aRect flipped:(BOOL)flipped {
-  NSRect barRect = aRect;
+- (NSRect)barRectFlipped:(BOOL)flipped {
+  NSRect barRect = [super barRectFlipped:flipped];
+  barRect = NSInsetRect(barRect, -1, 0);
+
   CGFloat barHeight = 4.0; // this value is measured in iTunes App
   barRect.origin.y += (barRect.size.height - barHeight);
   barRect.size.height = barHeight;
-  
-  NSRect leftRect = [self leftBarRectInsideBarRect:barRect];
-  [[self leftBarColor] setFill];
-  NSRectFill(leftRect);
-  
-  NSRect rightRect = [self rightBarRectInsideBarRect:barRect];
-  [[self rightBarColor] setFill];
-  NSRectFill(rightRect);
+
+  return barRect;
 }
 
-- (NSRect)leftBarRectInsideBarRect:(NSRect)barRect {
+- (void)drawBarInside:(NSRect)barRect flipped:(BOOL)flipped {
   NSRect knobRect = [self knobRectFlipped:false];
+
   NSRect leftBarRect = barRect;
   leftBarRect.size.width = knobRect.origin.x - barRect.origin.x;
-  return leftBarRect;
-}
+  [[self leftBarColor] setFill];
+  NSRectFill(leftBarRect);
 
-- (NSRect)rightBarRectInsideBarRect:(NSRect)barRect {
-  NSRect knobRect = [self knobRectFlipped:false];
   NSRect rightBarRect = barRect;
   rightBarRect.origin.x = knobRect.origin.x;
-  rightBarRect.size.width = barRect.origin.x + barRect.size.width
-                            - knobRect.origin.x;
-  return rightBarRect;
+  rightBarRect.size.width = barRect.origin.x + barRect.size.width - knobRect.origin.x;
+  [[self rightBarColor] setFill];
+  NSRectFill(rightBarRect);
 }
 
-- (NSColor *)knobColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:4.0/255.0 green:4.0/255.0 blue:4.0/255.0 alpha:1.0];
-}
-
-- (NSColor *)leftBarColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:93.0/255.0 green:93.0/255.0 blue:93.0/255.0 alpha:1.0];
-}
-
-- (NSColor *)rightBarColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:174.0/255.0 green:174.0/255.0 blue:174.0/255.0 alpha:1.0];
-}
+// colors from iTunes 12.4
+- (NSColor *)knobColor { return [NSColor blackColor]; }
+- (NSColor *)leftBarColor { return [NSColor colorWithGenericGamma22White:112/255. alpha:1]; }
+- (NSColor *)rightBarColor { return [NSColor colorWithGenericGamma22White:188/255. alpha:1]; }
 
 @end

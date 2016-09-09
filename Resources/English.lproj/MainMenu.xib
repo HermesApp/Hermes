@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -298,12 +298,11 @@
             </items>
         </menu>
         <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="371" userLabel="Main Window">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="300" y="434" width="240" height="306"/>
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
+            <rect key="contentRect" x="300" y="434" width="240" height="294"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
             <view key="contentView" wantsLayer="YES" canDrawConcurrently="YES" id="372" userLabel="View">
-                <rect key="frame" x="0.0" y="0.0" width="240" height="306"/>
+                <rect key="frame" x="0.0" y="0.0" width="240" height="294"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <animations>
                     <caTransition key="subviews">
@@ -319,7 +318,7 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                     </caTransition>
                 </animations>
             </view>
-            <toolbar key="toolbar" implicitIdentifier="523691DA-3184-4F47-A885-9465F8ED1820" prefersToBeShown="NO" displayMode="iconOnly" sizeMode="small" id="768">
+            <toolbar key="toolbar" implicitIdentifier="523691DA-3184-4F47-A885-9465F8ED1820" showsBaselineSeparator="NO" prefersToBeShown="NO" displayMode="iconOnly" sizeMode="small" id="768">
                 <allowedToolbarItems>
                     <toolbarItem implicitItemIdentifier="93E09D6C-9E59-4A3C-A062-D1300904AE9D" label="Play" paletteLabel="Play/Pause" toolTip="Play/pause the current song" tag="-1" image="play" id="776">
                         <connections>
@@ -363,9 +362,11 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                     <toolbarItem reference="819"/>
                 </defaultToolbarItems>
             </toolbar>
+            <contentBorderThickness minY="0.0" maxY="0.0"/>
+            <point key="canvasLocation" x="39" y="-307.5"/>
         </window>
         <customObject id="420" customClass="NSFontManager"/>
-        <customView id="701" userLabel="Stations Drawer">
+        <customView id="701" userLabel="Stations Drawer" customClass="HermesBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="303" height="297"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -485,7 +486,6 @@ DQ
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="733">
                         <rect key="frame" x="1" y="156" width="121" height="15"/>
@@ -510,7 +510,7 @@ DQ
             </subviews>
             <point key="canvasLocation" x="149.5" y="176.5"/>
         </customView>
-        <customView id="2155" userLabel="History Drawer">
+        <customView id="2155" userLabel="History Drawer" customClass="HermesBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="297" height="280"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
@@ -698,7 +698,6 @@ DQ
                                                         </connections>
                                                     </outlineView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="912">
                                                 <rect key="frame" x="-100" y="-100" width="428" height="16"/>
@@ -812,7 +811,6 @@ Gw
                                                         </connections>
                                                     </outlineView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="2247">
                                                 <rect key="frame" x="-100" y="-100" width="432" height="15"/>
@@ -1107,11 +1105,11 @@ DQ
             </subviews>
         </customView>
         <view wantsLayer="YES" canDrawConcurrently="YES" id="1155" userLabel="Playback View">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="306"/>
+            <rect key="frame" x="0.0" y="0.0" width="240" height="294"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <button verticalHuggingPriority="750" id="2436">
-                    <rect key="frame" x="19" y="45" width="202" height="204"/>
+                    <rect key="frame" x="19" y="38" width="202" height="204"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" imagePosition="only" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2437">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1136,7 +1134,7 @@ DQ
                 <slider toolTip="Volume Control" wantsLayer="YES" verticalHuggingPriority="750" id="1158">
                     <rect key="frame" x="89" y="7" width="110" height="15"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <sliderCell key="cell" controlSize="small" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="1186"/>
+                    <sliderCell key="cell" controlSize="small" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="1186" customClass="HermesVolumeSliderCell"/>
                     <connections>
                         <action selector="volumeChanged:" target="835" id="1189"/>
                     </connections>
@@ -1152,7 +1150,7 @@ DQ
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="volume_down" id="1187"/>
                 </imageView>
                 <textField toolTip="Song Title" verticalHuggingPriority="750" id="1172" customClass="LabelHoverShowField">
-                    <rect key="frame" x="18" y="282" width="204" height="17"/>
+                    <rect key="frame" x="18" y="275" width="204" height="17"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Song Title" id="1175" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="system"/>
@@ -1164,7 +1162,7 @@ DQ
                     </connections>
                 </textField>
                 <textField toolTip="Song Artist" verticalHuggingPriority="750" id="1173" customClass="LabelHoverShowField">
-                    <rect key="frame" x="18" y="266" width="204" height="14"/>
+                    <rect key="frame" x="18" y="259" width="204" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Artist" id="1174" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="smallSystem"/>
@@ -1176,7 +1174,7 @@ DQ
                     </connections>
                 </textField>
                 <textField toolTip="Song Album" verticalHuggingPriority="750" id="1170" customClass="LabelHoverShowField">
-                    <rect key="frame" x="18" y="250" width="204" height="14"/>
+                    <rect key="frame" x="18" y="243" width="204" height="14"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" selectable="YES" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Album" id="1177" customClass="LabelHoverShowFieldCell">
                         <font key="font" metaFont="smallSystem"/>
@@ -1188,11 +1186,11 @@ DQ
                     </connections>
                 </textField>
                 <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="1160">
-                    <rect key="frame" x="2" y="283" width="16" height="16"/>
+                    <rect key="frame" x="2" y="276" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </progressIndicator>
                 <button hidden="YES" toolTip="View song on Pandora" id="1171">
-                    <rect key="frame" x="207" y="281" width="13" height="19"/>
+                    <rect key="frame" x="207" y="274" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1176">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1203,7 +1201,7 @@ DQ
                     </connections>
                 </button>
                 <button hidden="YES" toolTip="View artist on Pandora" id="1169">
-                    <rect key="frame" x="207" y="265" width="13" height="19"/>
+                    <rect key="frame" x="207" y="258" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1178">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1214,7 +1212,7 @@ DQ
                     </connections>
                 </button>
                 <button hidden="YES" toolTip="View album on Pandora" id="1168">
-                    <rect key="frame" x="207" y="249" width="13" height="19"/>
+                    <rect key="frame" x="207" y="242" width="13" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="roundRect" bezelStyle="roundedRect" image="NSFollowLinkFreestandingTemplate" imagePosition="overlaps" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="1179">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1225,19 +1223,19 @@ DQ
                     </connections>
                 </button>
                 <progressIndicator focusRingType="none" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="spinning" id="1249">
-                    <rect key="frame" x="103" y="126" width="32" height="32"/>
+                    <rect key="frame" x="103" y="119" width="32" height="32"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                 </progressIndicator>
                 <slider verticalHuggingPriority="750" id="7eu-hy-jM9">
-                    <rect key="frame" x="18" y="22" width="204" height="19"/>
+                    <rect key="frame" x="19" y="23" width="202" height="15"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <shadow key="shadow">
                         <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </shadow>
-                    <sliderCell key="cell" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="9lo-wA-JHN" customClass="MusicProgressSliderCell"/>
+                    <sliderCell key="cell" controlSize="mini" alignment="left" maxValue="100" doubleValue="50" tickMarkPosition="above" sliderType="linear" id="9lo-wA-JHN" customClass="MusicProgressSliderCell"/>
                 </slider>
             </subviews>
-            <point key="canvasLocation" x="140" y="249"/>
+            <point key="canvasLocation" x="375" y="-310"/>
         </view>
         <customView id="1251" userLabel="Error View">
             <rect key="frame" x="0.0" y="0.0" width="362" height="431"/>
@@ -1442,23 +1440,14 @@ DQ
                 <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="S4B-aI-Ikt">
                     <rect key="frame" x="12" y="73" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
                 <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="bjW-f8-vOq">
                     <rect key="frame" x="12" y="280" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="y6s-Gc-dec">
+                <box verticalHuggingPriority="750" boxType="separator" id="y6s-Gc-dec">
                     <rect key="frame" x="12" y="119" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
                 <button id="qU3-Mb-t5B">
                     <rect key="frame" x="18" y="164" width="194" height="18"/>
@@ -1637,13 +1626,13 @@ DQ
                 <popUpButton hidden="YES" verticalHuggingPriority="750" id="2288">
                     <rect key="frame" x="38" y="249" width="203" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Notify with Growl" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="2291" id="2289">
+                    <popUpButtonCell key="cell" type="push" title="Notify with macOS" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="2292" id="2289">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="OtherViews" id="2290">
                             <items>
-                                <menuItem title="Notify with Growl" state="on" id="2291"/>
-                                <menuItem title="Notify with OS X" id="2292"/>
+                                <menuItem title="Notify with Growl" id="2291"/>
+                                <menuItem title="Notify with macOS" state="on" id="2292"/>
                             </items>
                         </menu>
                         <connections>
@@ -1689,26 +1678,17 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.pleaseScrobble" id="2001"/>
                     </connections>
                 </button>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="GpK-a2-OG5">
+                <box verticalHuggingPriority="750" boxType="separator" id="GpK-a2-OG5">
                     <rect key="frame" x="12" y="107" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="O60-Oc-pJJ">
+                <box verticalHuggingPriority="750" boxType="separator" id="O60-Oc-pJJ">
                     <rect key="frame" x="12" y="192" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="whK-em-OTO">
+                <box verticalHuggingPriority="750" boxType="separator" id="whK-em-OTO">
                     <rect key="frame" x="12" y="286" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
         </customView>
@@ -1892,11 +1872,11 @@ DQ
                                             <rect key="frame" x="17" y="43" width="200" height="153"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="ujC-cy-77I">
-                                                <rect key="frame" x="1" y="23" width="198" height="129"/>
+                                                <rect key="frame" x="1" y="0.0" width="198" height="152"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Likes table" headerView="1774" id="1699">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1923,7 +1903,6 @@ DQ
                                                         </connections>
                                                     </tableView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1700">
                                                 <rect key="frame" x="1" y="137" width="198" height="15"/>
@@ -1942,11 +1921,11 @@ DQ
                                             <rect key="frame" x="228" y="43" width="200" height="153"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="Z8l-JW-aVQ">
-                                                <rect key="frame" x="1" y="23" width="198" height="129"/>
+                                                <rect key="frame" x="1" y="0.0" width="198" height="152"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Dislikes table" headerView="1773" id="1711">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1973,7 +1952,6 @@ DQ
                                                         </connections>
                                                     </tableView>
                                                 </subviews>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </clipView>
                                             <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1710">
                                                 <rect key="frame" x="1" y="137" width="198" height="15"/>
@@ -2122,7 +2100,7 @@ DQ
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="2112">
                     <rect key="frame" x="36" y="207" width="307" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use the default OS X proxy settings, or no proxy if one isn't configured." id="2113">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use the default macOS proxy settings, or no proxy if one isn't configured." id="2113">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -2209,12 +2187,9 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="rP2-yA-ecv">
+                <box verticalHuggingPriority="750" boxType="separator" id="rP2-yA-ecv">
                     <rect key="frame" x="12" y="93" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                    <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <font key="titleFont" metaFont="system"/>
                 </box>
             </subviews>
         </customView>

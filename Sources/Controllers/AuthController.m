@@ -53,7 +53,7 @@
   [spinner setHidden:YES];
   [spinner stopAnimation:nil];
 
-  HermesAppDelegate *delegate = [NSApp delegate];
+  HermesAppDelegate *delegate = HMSAppDelegate;
   if (![[username stringValue] isEqualToString:@""]) {
     [delegate saveUsername:[username stringValue] password:[password stringValue]];
   }
@@ -69,7 +69,7 @@
   [spinner setHidden:NO];
   [spinner startAnimation: sender];
 
-  [[[NSApp delegate] pandora] authenticate:[username stringValue]
+  [[HMSAppDelegate pandora] authenticate:[username stringValue]
                                   password:[password stringValue]
                                    request:nil];
   [login setEnabled:NO];
@@ -77,7 +77,7 @@
 
 /* Show the authentication view */
 - (void) show {
-  [[NSApp delegate] setCurrentView:view];
+  [HMSAppDelegate setCurrentView:view];
   [username becomeFirstResponder];
   
   NSNotification *emptyNotification;
@@ -87,7 +87,7 @@
 /* Log out the current session */
 - (IBAction) logout: (id) sender {
   [password setStringValue:@""];
-  HermesAppDelegate *delegate = [NSApp delegate];
+  HermesAppDelegate *delegate = HMSAppDelegate;
   [[delegate pandora] logout];
 }
 
@@ -101,7 +101,7 @@
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
-  HermesAppDelegate *delegate = [NSApp delegate];
+  HermesAppDelegate *delegate = HMSAppDelegate;
 
   if (![[delegate pandora] isAuthenticated]) {
     return NO;

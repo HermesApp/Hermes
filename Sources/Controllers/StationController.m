@@ -72,7 +72,7 @@
   if (station != nil) {
     [progress setHidden:FALSE];
     [progress startAnimation:nil];
-    [[[NSApp delegate] pandora] fetchStationInfo: station];
+    [[HMSAppDelegate pandora] fetchStationInfo: station];
   }
   cur_station = station;
   station_url = nil;
@@ -161,7 +161,7 @@
 }
 
 - (IBAction) renameStation:(id)sender {
-  Pandora *pandora = [[NSApp delegate] pandora];
+  Pandora *pandora = [HMSAppDelegate pandora];
   [pandora renameStation:[cur_station token] to:[stationName stringValue]];
   [cur_station setName:[stationName stringValue]];
   [self showSpinner];
@@ -189,7 +189,7 @@
 #pragma mark - Search for a seed
 
 - (IBAction) searchSeeds:(id)sender {
-  Pandora *pandora = [[NSApp delegate] pandora];
+  Pandora *pandora = [HMSAppDelegate pandora];
   [self showSpinner];
   [pandora search:[seedSearch stringValue]];
 }
@@ -212,7 +212,7 @@
   // XXX - multiple selection is disabled in IB for this reason
   NSIndexSet *set = [seedsResults selectedRowIndexes];
   if ([set count] == 0) return;
-  Pandora *pandora = [[NSApp delegate] pandora];
+  Pandora *pandora = [HMSAppDelegate pandora];
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     id item = [seedsResults itemAtRow:idx];
@@ -247,7 +247,7 @@
   // XXX - multiple selection is disabled in IB for this reason
   NSIndexSet *set = [seedsCurrent selectedRowIndexes];
   if ([set count] == 0) return;
-  Pandora *pandora = [[NSApp delegate] pandora];
+  Pandora *pandora = [HMSAppDelegate pandora];
   __block int removeRequests = 0;
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
@@ -324,7 +324,7 @@
     [dislikes setEnabled:NO];
     [progress setHidden:FALSE];
     [progress startAnimation:nil];
-    [[[NSApp delegate] pandora] fetchStationInfo:cur_station];
+    [[HMSAppDelegate pandora] fetchStationInfo:cur_station];
   }
 }
 
@@ -335,7 +335,7 @@
   if ([set count] == 0)
     return;
 
-  Pandora *pandora = [[NSApp delegate] pandora];
+  Pandora *pandora = [HMSAppDelegate pandora];
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
     NSDictionary *song = feed[idx];
     [pandora deleteFeedback:song[@"feedbackId"]];

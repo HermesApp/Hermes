@@ -14,7 +14,7 @@ typedef enum {
   FinalStatus
 } ScrobbleState;
 
-#define SCROBBLER [[NSApp delegate] scrobbler]
+#define SCROBBLER [HMSAppDelegate scrobbler]
 
 @interface Scrobbler : NSObject {
   FMEngine *engine;
