@@ -17,11 +17,7 @@
 
 - (id) init {
   [GrowlApplicationBridge setGrowlDelegate:self];
-  if (NSClassFromString(@"NSUserNotificationCenter") != nil) {
-    NSUserNotificationCenter *center =
-        [NSUserNotificationCenter defaultUserNotificationCenter];
-    [center setDelegate:self];
-  }
+  [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate:self];
   return self;
 }
 
@@ -38,7 +34,7 @@
 
   NSString *title = [song title];
   if ([[song nrating] intValue] == 1) {
-	  title = [NSString stringWithFormat:@"%@ %@", NSAppKitVersionNumber >= NSAppKitVersionNumber10_7 ? @"👍" : @"❤", title];
+	  title = [NSString stringWithFormat:@"👍 %@", title];
   }
   NSString *description = [NSString stringWithFormat:@"%@\n%@", [song artist],
                                                      [song album]];
