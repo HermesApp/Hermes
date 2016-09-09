@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -385,7 +385,7 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                     </connections>
                 </segmentedControl>
                 <button toolTip="Edit selected station" id="1754">
-                    <rect key="frame" x="63" y="2" width="31" height="20"/>
+                    <rect key="frame" x="66" y="2" width="31" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="square" title="Edit" bezelStyle="shadowlessSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1755">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -396,7 +396,7 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                     </connections>
                 </button>
                 <button toolTip="Delete selected station" id="942">
-                    <rect key="frame" x="43" y="2" width="21" height="20"/>
+                    <rect key="frame" x="46" y="2" width="21" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="square" title="Remove Station" bezelStyle="shadowlessSquare" image="NSRemoveTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="943">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -407,7 +407,7 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                     </connections>
                 </button>
                 <button toolTip="Play selected station" id="939">
-                    <rect key="frame" x="0.0" y="2" width="21" height="20"/>
+                    <rect key="frame" x="3" y="2" width="21" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="square" title="Play Station" bezelStyle="shadowlessSquare" image="play" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="940">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -420,12 +420,12 @@ DQ
                         <action selector="playSelected:" target="537" id="941"/>
                     </connections>
                 </button>
-                <progressIndicator hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="863">
-                    <rect key="frame" x="263" y="4" width="16" height="16"/>
+                <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="863">
+                    <rect key="frame" x="258" y="4" width="16" height="16"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                 </progressIndicator>
                 <button toolTip="Refresh station list" id="860">
-                    <rect key="frame" x="283" y="2" width="20" height="20"/>
+                    <rect key="frame" x="281" y="2" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="square" title="Refresh Stations" bezelStyle="shadowlessSquare" image="NSRefreshTemplate" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="861">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -497,7 +497,7 @@ DQ
                     </scroller>
                 </scrollView>
                 <button toolTip="Add a new station" id="898">
-                    <rect key="frame" x="24" y="2" width="20" height="20"/>
+                    <rect key="frame" x="27" y="2" width="20" height="20"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <buttonCell key="cell" type="square" title="Add Station" bezelStyle="shadowlessSquare" image="NSAddTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="899">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1335,11 +1335,11 @@ DQ
             </connections>
         </arrayController>
         <customView id="1610" userLabel="General Preferences View">
-            <rect key="frame" x="0.0" y="0.0" width="362" height="364"/>
+            <rect key="frame" x="0.0" y="0.0" width="362" height="353"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button id="1117">
-                    <rect key="frame" x="18" y="328" width="235" height="18"/>
+                    <rect key="frame" x="18" y="317" width="235" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Control playback with media keys" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1118">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1351,7 +1351,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1550">
-                    <rect key="frame" x="36" y="298" width="309" height="28"/>
+                    <rect key="frame" x="36" y="287" width="309" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause, forward and back keys to control Hermes from any application." id="1551">
                         <font key="font" metaFont="smallSystem"/>
@@ -1437,25 +1437,8 @@ DQ
                         <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
                     </connections>
                 </button>
-                <button id="2375">
-                    <rect key="frame" x="236" y="167" width="108" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2376">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateStatusBarIconImage:" target="494" id="1Hw-WP-wNi"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="2392"/>
-                        <binding destination="979" name="value" keyPath="values.statusBarIconBlackWhite" id="2390"/>
-                    </connections>
-                </button>
                 <box verticalHuggingPriority="750" boxType="separator" id="S4B-aI-Ikt">
                     <rect key="frame" x="12" y="73" width="338" height="5"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </box>
-                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
-                    <rect key="frame" x="12" y="196" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
                 <box verticalHuggingPriority="750" boxType="separator" id="y6s-Gc-dec">
@@ -1475,16 +1458,16 @@ DQ
                         <binding destination="979" name="value" keyPath="values.statusBarShowSongTitle" id="HaC-QQ-VPO"/>
                     </connections>
                 </button>
-                <button identifier="statusBarIconUseBlackWhite" id="2375">
+                <button identifier="statusBarIconUseBlackWhite" id="12375">
                     <rect key="frame" x="32" y="209" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="2376">
+                    <buttonCell key="cell" type="radio" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="12376">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
                         <action selector="updateStatusBarIconValue:" target="494" id="bAM-8r-Ge6"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="2392"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="12392"/>
                     </connections>
                 </button>
                 <button identifier="statusBarIconUseColor" id="sIX-RA-vSL">
@@ -1511,8 +1494,12 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
                     </connections>
                 </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
+                    <rect key="frame" x="12" y="276" width="338" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
             </subviews>
-            <point key="canvasLocation" x="405" y="204"/>
+            <point key="canvasLocation" x="405" y="198.5"/>
         </customView>
         <customView id="1616" userLabel="Playback Preferences View">
             <rect key="frame" x="0.0" y="0.0" width="362" height="405"/>
@@ -1889,7 +1876,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Likes table" headerView="1774" id="1699">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1938,7 +1925,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Dislikes table" headerView="1773" id="1711">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
