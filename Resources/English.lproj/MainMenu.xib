@@ -1589,13 +1589,13 @@ DQ
                 <popUpButton hidden="YES" verticalHuggingPriority="750" id="2288">
                     <rect key="frame" x="38" y="249" width="203" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <popUpButtonCell key="cell" type="push" title="Notify with Growl" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="2291" id="2289">
+                    <popUpButtonCell key="cell" type="push" title="Notify with macOS" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="2292" id="2289">
                         <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="menu"/>
                         <menu key="menu" title="OtherViews" id="2290">
                             <items>
-                                <menuItem title="Notify with Growl" state="on" id="2291"/>
-                                <menuItem title="Notify with OS X" id="2292"/>
+                                <menuItem title="Notify with Growl" id="2291"/>
+                                <menuItem title="Notify with macOS" state="on" id="2292"/>
                             </items>
                         </menu>
                         <connections>
@@ -2063,7 +2063,7 @@ DQ
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="2112">
                     <rect key="frame" x="36" y="207" width="307" height="28"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use the default OS X proxy settings, or no proxy if one isn't configured." id="2113">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use the default macOS proxy settings, or no proxy if one isn't configured." id="2113">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
