@@ -194,7 +194,7 @@
 }
 
 - (NSScriptObjectSpecifier *) objectSpecifier {
-  HermesAppDelegate *delegate = [NSApp delegate];
+  HermesAppDelegate *delegate = HMSAppDelegate;
   StationsController *stationsc = [delegate stations];
   int index = [stationsc stationIndex:self];
 

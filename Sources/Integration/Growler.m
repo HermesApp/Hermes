@@ -129,7 +129,7 @@
 }
 
 - (void) growlNotificationWasClicked:(id)clickContext {
-  [[[NSApp delegate] window] orderFront:nil];
+  [[HMSAppDelegate window] orderFront:nil];
   [NSApp activateIgnoringOtherApps:YES];
 }
 
@@ -146,7 +146,7 @@
 - (void)userNotificationCenter:(NSUserNotificationCenter *)center
        didActivateNotification:(NSUserNotification *)notification {
   
-  PlaybackController *playback = [[NSApp delegate] playback];
+  PlaybackController *playback = [HMSAppDelegate playback];
   NSString *actionID = [[notification additionalActivationAction] identifier];
   
   switch([notification activationType]) {
@@ -170,7 +170,7 @@
       
     case NSUserNotificationActivationTypeContentsClicked:
       // Banner was clicked, so bring up and focus main UI
-      [[[NSApp delegate] window] orderFront:nil];
+      [[HMSAppDelegate window] orderFront:nil];
       [NSApp activateIgnoringOtherApps:YES];
       break;
       

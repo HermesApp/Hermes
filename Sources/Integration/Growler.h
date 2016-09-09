@@ -7,7 +7,7 @@
 
 @class Song;
 
-#define GROWLER [[NSApp delegate] growler]
+#define GROWLER [HMSAppDelegate growler]
 
 @interface Growler : NSObject<GrowlApplicationBridgeDelegate,
                               NSUserNotificationCenterDelegate>

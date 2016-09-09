@@ -125,7 +125,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   alert.messageText = @"Last.fm returned an error";
   alert.informativeText = message;
   [alert addButtonWithTitle:@"OK"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:nil];
+  [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:nil];
 }
 
 /**
@@ -222,7 +222,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   alert.informativeText = @"Click “Authorize” to give Hermes permission to access your Last.fm account.\n\nHermes will not try to use Last.fm for at least 30 seconds to give you time to grant permission.\n\nClick “Don’t Scrobbleʺ to stop Hermes from trying to use Last.fm.";
   [alert addButtonWithTitle:@"Authorize"];
   [alert addButtonWithTitle:@"Don’t Scrobble"];
-  [alert beginSheetModalForWindow:[[NSApp delegate] window] completionHandler:^(NSModalResponse returnCode) {
+  [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:^(NSModalResponse returnCode) {
     if (returnCode != NSAlertFirstButtonReturn) {
       PREF_KEY_SET_BOOL(PLEASE_SCROBBLE, NO);
       inAuthorization = NO;

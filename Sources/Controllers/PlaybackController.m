@@ -41,7 +41,7 @@ BOOL playOnStart = YES;
 - (void) awakeFromNib {
   NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-  NSWindow *window = [[NSApp delegate] window];
+  NSWindow *window = [HMSAppDelegate window];
   [center addObserver:self
              selector:@selector(stopUpdatingProgress)
                  name:NSWindowWillCloseNotification
@@ -189,18 +189,18 @@ BOOL playOnStart = YES;
 }
 
 - (Pandora*) pandora {
-  return [[NSApp delegate] pandora];
+  return [HMSAppDelegate pandora];
 }
 
 - (void) reset {
   [self playStation:nil];
 
-  NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
+  NSString *path = [HMSAppDelegate stateDirectory:@"station.savestate"];
   [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 }
 
 - (void) show {
-  [[NSApp delegate] setCurrentView:playbackView];
+  [HMSAppDelegate setCurrentView:playbackView];
 }
 
 - (void) showSpinner {
@@ -214,7 +214,7 @@ BOOL playOnStart = YES;
 }
 
 - (BOOL) saveState {
-  NSString *path = [[NSApp delegate] stateDirectory:@"station.savestate"];
+  NSString *path = [HMSAppDelegate stateDirectory:@"station.savestate"];
   if (path == nil) {
     return NO;
   }
@@ -267,7 +267,7 @@ BOOL playOnStart = YES;
     return;
 
   QLPreviewPanel *previewPanel = [QLPreviewPanel sharedPreviewPanel];
-  if (previewPanel.currentController != [NSApp delegate])
+  if (previewPanel.currentController != HMSAppDelegate)
     return;
 
   if (hasArt)
@@ -323,7 +323,7 @@ BOOL playOnStart = YES;
     NSLogd(@"Skipping loading image");
   }
 
-  [[NSApp delegate] setCurrentView:playbackView];
+  [HMSAppDelegate setCurrentView:playbackView];
 
   [songLabel setStringValue: [song title]];
   [songLabel setToolTip:[song title]];
@@ -344,7 +344,7 @@ BOOL playOnStart = YES;
     [toolbar setSelectedItemIdentifier:nil];
   }
 
-  [[[NSApp delegate] history] addSong:song];
+  [[HMSAppDelegate history] addSong:song];
   [self hideSpinner];
 }
 
@@ -370,7 +370,7 @@ BOOL playOnStart = YES;
   [[NSUserDefaults standardUserDefaults] setObject:[station stationId]
                                             forKey:LAST_STATION_KEY];
   
-  [[NSApp delegate] showLoader];
+  [HMSAppDelegate showLoader];
 
   if (playOnStart) {
     [station play];
@@ -430,8 +430,8 @@ BOOL playOnStart = YES;
     }
   }
 
-  if ([[[NSApp delegate] history] selectedItem] == song) {
-    [[[NSApp delegate] history] updateUI];
+  if ([[HMSAppDelegate history] selectedItem] == song) {
+    [[HMSAppDelegate history] updateUI];
   }
 }
 
@@ -486,7 +486,7 @@ BOOL playOnStart = YES;
 /* Load more songs manually */
 - (IBAction)loadMore: (id)sender {
   [self showSpinner];
-  [[NSApp delegate] setCurrentView:playbackView];
+  [HMSAppDelegate setCurrentView:playbackView];
 
   if ([playing playingSong] != nil) {
     [playing retry];
@@ -680,7 +680,7 @@ BOOL playOnStart = YES;
 
 - (NSRect)previewPanel:(QLPreviewPanel *)panel sourceFrameOnScreenForPreviewItem:(id <QLPreviewItem>)item {
   NSRect frame = [art frame];
-  frame = [[[NSApp delegate] window] convertRectToScreen:frame];
+  frame = [[HMSAppDelegate window] convertRectToScreen:frame];
 
   frame = NSInsetRect(frame, 1, 1); // image doesn't extend into the button border
 
