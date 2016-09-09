@@ -2268,28 +2268,29 @@ DQ
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="2322"/>
+                <menuItem title="About Hermes" id="Qwq-0z-jUK">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="orderFrontStandardAboutPanel:" target="-2" id="twq-VT-q9u"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="Check for Updates…" id="y6Z-jE-Fwo">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkForUpdates:" target="1000" id="VN2-Ro-b6R"/>
+                    </connections>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="fLS-rf-56B"/>
                 <menuItem title="Hermes Preferences…" id="2325">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="show:" target="1114" id="2336"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for Updates…" alternate="YES" id="y6Z-jE-Fwo">
-                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                    <connections>
-                        <action selector="checkForUpdates:" target="1000" id="VN2-Ro-b6R"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Quit Hermes" id="2323">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="terminate:" target="-3" id="2324"/>
-                    </connections>
-                </menuItem>
-                <menuItem title="About Hermes" alternate="YES" id="Qwq-0z-jUK">
-                    <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                    <connections>
-                        <action selector="orderFrontStandardAboutPanel:" target="-2" id="twq-VT-q9u"/>
                     </connections>
                 </menuItem>
             </items>
