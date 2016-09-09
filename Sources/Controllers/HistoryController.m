@@ -174,6 +174,7 @@
   NSSize s;
   s.height = 100;
   s.width = [defaults integerForKey:HIST_DRAWER_WIDTH];
+
   [drawer open];
   [drawer setContentSize:s];
   [collection setMaxItemSize:NSMakeSize(227, 41)];

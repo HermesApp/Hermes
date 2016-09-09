@@ -30,13 +30,17 @@
 }
 
 - (void)drawKnob:(NSRect)knobRect {
+  // Don't draw knob if it can't be dragged.
+  // If we do support seeking at some point, would be better to ape the miniplayer, with symmetric knob
+#if 0
   [[self knobColor] setFill];
-  NSRectFill(knobRect);
+  NSRectFill(knobRect); */
+#endif
 }
 
 - (NSRect)barRectFlipped:(BOOL)flipped {
   NSRect barRect = [super barRectFlipped:flipped];
-  barRect = NSInsetRect(barRect, -2, 0);
+  barRect = NSInsetRect(barRect, -1, 0);
 
   CGFloat barHeight = 4.0; // this value is measured in iTunes App
   barRect.origin.y += (barRect.size.height - barHeight);

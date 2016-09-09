@@ -34,6 +34,7 @@
 		E1200AA41CF2B015000D3215 /* LabelHoverShowFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */; };
 		E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */ = {isa = PBXBuildFile; fileRef = E124109918EBAF6F007AF091 /* HermesApp.m */; };
 		E1301AFB1D828FC100FF557D /* HermesVolumeSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1301AFA1D828FC100FF557D /* HermesVolumeSliderCell.m */; };
+		E17E8D0E1D82E27A00B14840 /* HermesBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = E17E8D0D1D82E27A00B14840 /* HermesBackgroundView.m */; };
 		E195ABA917D4636B00FE518C /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E195ABA817D4636B00FE518C /* Quartz.framework */; };
 		E1C1EC121A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */; };
 		E1C1EC131A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */; };
@@ -160,6 +161,8 @@
 		E124109918EBAF6F007AF091 /* HermesApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HermesApp.m; sourceTree = "<group>"; };
 		E1301AF91D828FC100FF557D /* HermesVolumeSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HermesVolumeSliderCell.h; path = Views/HermesVolumeSliderCell.h; sourceTree = "<group>"; };
 		E1301AFA1D828FC100FF557D /* HermesVolumeSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HermesVolumeSliderCell.m; path = Views/HermesVolumeSliderCell.m; sourceTree = "<group>"; };
+		E17E8D0C1D82E27A00B14840 /* HermesBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HermesBackgroundView.h; path = Views/HermesBackgroundView.h; sourceTree = "<group>"; };
+		E17E8D0D1D82E27A00B14840 /* HermesBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HermesBackgroundView.m; path = Views/HermesBackgroundView.m; sourceTree = "<group>"; };
 		E195ABA817D4636B00FE518C /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Pandora-Menu-Dark-Play.pdf"; sourceTree = "<group>"; };
 		E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Pandora-Menu-Dark-Pause.pdf"; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 		B2A26AF01AE39E9F00ADD460 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E17E8D0C1D82E27A00B14840 /* HermesBackgroundView.h */,
+				E17E8D0D1D82E27A00B14840 /* HermesBackgroundView.m */,
 				E1301AF91D828FC100FF557D /* HermesVolumeSliderCell.h */,
 				E1301AFA1D828FC100FF557D /* HermesVolumeSliderCell.m */,
 				44619491187407A300482DC4 /* HistoryCollectionView.h */,
@@ -649,6 +654,7 @@
 				B2A26AEF1AE39E9B00ADD460 /* MusicProgressSliderCell.m in Sources */,
 				FA94E6ED1368E5830063860C /* FMEngine.m in Sources */,
 				FA94E6EF1368E5830063860C /* NSString+FMEngine.m in Sources */,
+				E17E8D0E1D82E27A00B14840 /* HermesBackgroundView.m in Sources */,
 				44411DA7190166FB00EC4E05 /* PandoraDevice.m in Sources */,
 				FA94E6F81368E62C0063860C /* Scrobbler.m in Sources */,
 				44619493187407A300482DC4 /* HistoryCollectionView.m in Sources */,
