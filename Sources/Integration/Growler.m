@@ -51,7 +51,7 @@
     [not setActionButtonTitle: @"Skip"];
     
     // Make skip button visible for banner notifications (like in iTunes)
-    // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+    // - Undocumented API.  Will only work if Apple keeps in NSUserNotification
     //   class.  Otherwise, skip button will only appear if 'Alert' style
     //   notifications are used.
     // - see: https://github.com/indragiek/NSUserNotificationPrivate
@@ -78,7 +78,7 @@
     
     if ([not respondsToSelector:@selector(setContentImage:)]) {
       // Set album art where app icon is (like in iTunes)
-      // - Undocumented API.  Will only work if Apple keeps in NSUserNotivication
+      // - Undocumented API.  Will only work if Apple keeps in NSUserNotification
       //   class.  Otherwise, skip button will only appear if 'Alert' style
       //   notifications are used.
       // - see: https://github.com/indragiek/NSUserNotificationPrivate
