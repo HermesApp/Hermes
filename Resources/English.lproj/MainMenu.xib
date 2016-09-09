@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
@@ -1437,12 +1437,25 @@ DQ
                         <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
                     </connections>
                 </button>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="S4B-aI-Ikt">
+                <button id="2375">
+                    <rect key="frame" x="236" y="167" width="108" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2376">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusBarIconImage:" target="494" id="1Hw-WP-wNi"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="2392"/>
+                        <binding destination="979" name="value" keyPath="values.statusBarIconBlackWhite" id="2390"/>
+                    </connections>
+                </button>
+                <box verticalHuggingPriority="750" boxType="separator" id="S4B-aI-Ikt">
                     <rect key="frame" x="12" y="73" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
-                <box verticalHuggingPriority="750" title="Box" boxType="separator" titlePosition="noTitle" id="bjW-f8-vOq">
-                    <rect key="frame" x="12" y="280" width="338" height="5"/>
+                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
+                    <rect key="frame" x="12" y="196" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
                 <box verticalHuggingPriority="750" boxType="separator" id="y6s-Gc-dec">
