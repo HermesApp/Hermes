@@ -1,5 +1,5 @@
 //
-//  MusicProgressSlider.h
+//  MusicProgressSliderCell.h
 //  Hermes
 //
 //  Created by Xinhong LIU on 19/4/15.
