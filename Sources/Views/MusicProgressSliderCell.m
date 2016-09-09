@@ -65,19 +65,9 @@
   return rightBarRect;
 }
 
-- (NSColor *)knobColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:4.0/255.0 green:4.0/255.0 blue:4.0/255.0 alpha:1.0];
-}
-
-- (NSColor *)leftBarColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:93.0/255.0 green:93.0/255.0 blue:93.0/255.0 alpha:1.0];
-}
-
-- (NSColor *)rightBarColor {
-  // this color value is measured in iTunes App
-  return [NSColor colorWithRed:174.0/255.0 green:174.0/255.0 blue:174.0/255.0 alpha:1.0];
-}
+// colors from iTunes 12.4
+- (NSColor *)knobColor { return [NSColor blackColor]; }
+- (NSColor *)leftBarColor { return [NSColor colorWithGenericGamma22White:112/255. alpha:1]; }
+- (NSColor *)rightBarColor { return [NSColor colorWithGenericGamma22White:188/255. alpha:1]; }
 
 @end

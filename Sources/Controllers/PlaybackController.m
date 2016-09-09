@@ -99,10 +99,6 @@ BOOL playOnStart = YES;
   if (volumeSliderFilter != nil)
     [volume setContentFilters:@[volumeSliderFilter]];
 
-  CIFilter *playbackProgressFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"];
-  if (playbackProgressFilter != nil)
-    [playbackProgress setContentFilters:@[playbackProgressFilter]];
-  
   // NSDistributedNotificationCenter is for interprocess communication.
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(pauseOnScreensaverStart:)
