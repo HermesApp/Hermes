@@ -95,10 +95,6 @@ BOOL playOnStart = YES;
      name:StationDidPlaySongNotification
      object:nil];
 
-  CIFilter *volumeSliderFilter = [CIFilter filterWithName:@"CIPhotoEffectMono"];
-  if (volumeSliderFilter != nil)
-    [volume setContentFilters:@[volumeSliderFilter]];
-
   // NSDistributedNotificationCenter is for interprocess communication.
   [[NSDistributedNotificationCenter defaultCenter] addObserver:self
                                                       selector:@selector(pauseOnScreensaverStart:)
