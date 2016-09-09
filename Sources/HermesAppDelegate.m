@@ -25,7 +25,7 @@
 
 #define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"
 #define DEBUG_MODE_TITLE_PREFIX @"🐞 "
-#define STATUS_BAR_STRING_LENGTH 18
+#define STATUS_BAR_MAX_WIDTH 200
 
 @interface HermesAppDelegate ()
 
@@ -635,7 +635,7 @@
   
   if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
     
-    icon = [NSImage imageNamed: (playback.playing.isPlaying) ?
+    icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
             @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
     [icon setTemplate:YES];
     
@@ -644,12 +644,12 @@
     // Build base image
     NSData *data = [playback lastImg];
     icon = (data) ? [[NSImage alloc] initWithData:data] :
-                    [NSImage imageNamed: @"missing-album"];
+                    [NSImage imageNamed:@"missing-album"];
     [icon setSize:size];
     
     // draw the overlay image (if there is album art)
     if (data) {
-      NSImage *overlay = [NSImage imageNamed: (playback.playing.isPlaying) ?
+      NSImage *overlay = [NSImage imageNamed:(playback.playing.isPlaying) ?
                           @"play" : @"pause"];
       NSSize overlaySize = {.width = 12, .height = 12};
       [overlay setSize:overlaySize];
@@ -669,20 +669,32 @@
 
   // Set image size, then set status bar icon
   [icon setSize:size];
-  [statusItem setImage:icon];
+  [[statusItem button] setImage:icon];
   
   // Optionally show song title in status bar
   if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG)) {
-    NSString *title = playback.playing.playingSong.title;
-    if (title.length > STATUS_BAR_STRING_LENGTH) {
-      title = [[NSString alloc] initWithFormat:@" %@...",
-                [title substringToIndex:STATUS_BAR_STRING_LENGTH]];
-    }
-    [statusItem setTitle:title];
-  
+    NSString *title = [[NSString alloc] initWithFormat:@"%@ - %@",
+                        playback.playing.playingSong.title,
+                        playback.playing.playingSong.album];
+    [[statusItem button] setImagePosition:NSImageLeft];
+    [[statusItem button] setLineBreakMode:NSLineBreakByTruncatingTail];
+    [[statusItem button] setTitle:title];
+    [statusItem setLength:STATUS_BAR_MAX_WIDTH]; // Only way to get it to truncate title
+    
+    /* TODO: When 'visible' property is made public in 10.12, remove title if not visible
+        if([statusItem isVisible]) {
+          [[statusItem button] setTitle:@""];
+          [[statusItem button] setImagePosition:NSImageOnly];
+          [statusItem setLength:icon.size.width + 4];
+        }
+     */
+    
   }
-  else
-    [statusItem setTitle:@""];
+  else {
+    [[statusItem button] setTitle:@""];
+    [[statusItem button] setImagePosition:NSImageOnly];
+    [statusItem setLength:icon.size.width + 4];
+  }
 }
 
 - (IBAction) updateAlwaysOnTop:(id)sender {
