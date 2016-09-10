@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -443,7 +443,7 @@ DQ
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="734" customClass="StationsTableView">
-                                <rect key="frame" x="0.0" y="0.0" width="301" height="246"/>
+                                <rect key="frame" x="0.0" y="0.0" width="301" height="19"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -671,7 +671,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="915" id="913">
-                                                        <rect key="frame" x="0.0" y="0.0" width="428" height="185"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="428" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -784,7 +784,7 @@ Gw
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="2250" id="2246">
-                                                        <rect key="frame" x="0.0" y="0.0" width="428" height="214"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="428" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -882,7 +882,7 @@ Gw
                 <outlet property="delegate" destination="1114" id="1134"/>
             </connections>
         </window>
-        <customObject id="494" customClass="HermesAppDelegate">
+        <customObject id="494" userLabel="AppDelegate" customClass="HermesAppDelegate">
             <connections>
                 <outlet property="auth" destination="659" id="669"/>
                 <outlet property="currentArtist" destination="2319" id="2367"/>
@@ -907,7 +907,7 @@ Gw
                 <outlet property="window" destination="371" id="532"/>
             </connections>
         </customObject>
-        <customObject id="659" customClass="AuthController">
+        <customObject id="659" userLabel="AuthController" customClass="AuthController">
             <connections>
                 <outlet property="error" destination="1203" id="1224"/>
                 <outlet property="errorText" destination="2305" id="2307"/>
@@ -918,7 +918,7 @@ Gw
                 <outlet property="view" destination="1202" id="1222"/>
             </connections>
         </customObject>
-        <customObject id="537" customClass="StationsController">
+        <customObject id="537" userLabel="StationsController" customClass="StationsController">
             <connections>
                 <outlet property="chooseStationView" destination="1234" id="QVG-L3-jUY"/>
                 <outlet property="deleteStationButton" destination="942" id="feN-bW-9NS"/>
@@ -936,7 +936,7 @@ Gw
                 <outlet property="stationsTable" destination="734" id="740"/>
             </connections>
         </customObject>
-        <customObject id="835" userLabel="Playback Controller" customClass="PlaybackController">
+        <customObject id="835" userLabel="PlaybackController" customClass="PlaybackController">
             <connections>
                 <outlet property="albumLabel" destination="1170" id="1240"/>
                 <outlet property="art" destination="2436" id="2439"/>
@@ -956,7 +956,7 @@ Gw
                 <outlet property="volume" destination="1158" id="1247"/>
             </connections>
         </customObject>
-        <customObject id="1114" userLabel="Preferences Controller " customClass="PreferencesController">
+        <customObject id="1114" userLabel="PreferencesController" customClass="PreferencesController">
             <connections>
                 <outlet property="general" destination="1610" id="1612"/>
                 <outlet property="network" destination="1919" id="2026"/>
@@ -971,7 +971,7 @@ Gw
             </connections>
         </customObject>
         <customObject id="1000" userLabel="Sparkle Updater" customClass="SUUpdater"/>
-        <customObject id="1331" customClass="HistoryController">
+        <customObject id="1331" userLabel="HistoryController" customClass="HistoryController">
             <connections>
                 <outlet property="collection" destination="2161" id="2440"/>
                 <outlet property="controller" destination="1444" id="1497"/>
@@ -1746,7 +1746,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" outlineTableColumn="1683" id="1679">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="149"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="20"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1792,7 +1792,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" outlineTableColumn="1692" id="1688">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="149"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="20"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="2" height="3"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1888,7 +1888,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Likes table" headerView="1774" id="1699">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1937,7 +1937,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Dislikes table" headerView="1773" id="1711">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
