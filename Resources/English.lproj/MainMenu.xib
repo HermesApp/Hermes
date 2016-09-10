@@ -1487,9 +1487,9 @@ DQ
                     </connections>
                 </button>
                 <button identifier="statusBarIconUseAlbumArt" id="28c-Js-E8a">
-                    <rect key="frame" x="39" y="151" width="110" height="18"/>
+                    <rect key="frame" x="39" y="151" width="107" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="Use Album Art" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
+                    <buttonCell key="cell" type="radio" title="Use album art" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
