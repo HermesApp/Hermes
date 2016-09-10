@@ -590,7 +590,7 @@
     return;
   }
 
-  window.collectionBehavior = NSWindowCollectionBehaviorMoveToActiveSpace;
+  window.collectionBehavior = NSWindowCollectionBehaviorMoveToActiveSpace | NSWindowCollectionBehaviorTransient;
 
   if (sender != nil) {
     /* If we're not executing at process launch, then the menu bar will remain visible
