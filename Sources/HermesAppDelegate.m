@@ -620,8 +620,15 @@
   /* If we have a status menu item, then set it here */
   statusItem = [[NSStatusBar systemStatusBar]
                     statusItemWithLength:NSVariableStatusItemLength];
-  [statusItem setMenu:statusBarMenu];
-  [statusItem setHighlightMode:YES];
+  statusItem.menu = statusBarMenu;
+  [statusItem.button addConstraint:
+   [NSLayoutConstraint constraintWithItem:statusItem.button
+                                attribute:NSLayoutAttributeWidth
+                                relatedBy:NSLayoutRelationLessThanOrEqual
+                                   toItem:nil
+                                attribute:NSLayoutAttributeNotAnAttribute
+                               multiplier:0
+                                 constant:STATUS_BAR_MAX_WIDTH]];
 
   [self updateStatusBarIconImage:sender];
 }
@@ -669,27 +676,30 @@
 
   // Set image size, then set status bar icon
   [icon setSize:size];
-  [[statusItem button] setImage:icon];
+  NSStatusBarButton *button = statusItem.button;
+  button.image = icon;
   
   // Optionally show song title in status bar
-  if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG)) {
-    NSString *title = [[NSString alloc] initWithFormat:@" %@",
-                       playback.playing.playingSong.title];
-    [[statusItem button] setImagePosition:NSImageLeft];
-    [[statusItem button] setLineBreakMode:NSLineBreakByTruncatingTail];
-    [[statusItem button] setTitle:title];
+  NSString *title = nil;
+  if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG))
+    title = playback.playing.playingSong.title;
+
+  if (title) {
+    button.imagePosition = NSImageLeft;
+    button.lineBreakMode = NSLineBreakByTruncatingTail;
+    button.title = title;
     
-    // Only way to get it to truncate title
-    if ([[statusItem button] fittingSize].width > STATUS_BAR_MAX_WIDTH) {
-      [statusItem setLength:STATUS_BAR_MAX_WIDTH];
-    } else {
-      [statusItem setLength:NSVariableStatusItemLength];
-    }
-  
+    NSMutableAttributedString *attributedTitle = [button.attributedTitle mutableCopy];
+    NSRange titleRange = NSMakeRange(0, attributedTitle.length);
+    
+    [attributedTitle addAttributes:@{NSBaselineOffsetAttributeName: @1} range:titleRange];
+    button.attributedTitle = attributedTitle;
+    
+    statusItem.length = NSVariableStatusItemLength;
   } else {
-    [[statusItem button] setTitle:@""];
-    [[statusItem button] setImagePosition:NSImageOnly];
-    [statusItem setLength:NSSquareStatusItemLength];
+    button.title = @"";
+    button.imagePosition = NSImageOnly;
+    statusItem.length = NSSquareStatusItemLength;
   }
 }
 
