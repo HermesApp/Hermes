@@ -57,6 +57,8 @@
     }
     break;
   }
+
+  [NSApp activateIgnoringOtherApps:YES];
 }
 
 @end
