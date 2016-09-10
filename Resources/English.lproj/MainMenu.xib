@@ -1407,7 +1407,7 @@ DQ
                 <button id="2338">
                     <rect key="frame" x="18" y="254" width="192" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Hide Dock icon and menus" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
+                    <buttonCell key="cell" type="check" title="Show status bar icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -1417,7 +1417,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="2354">
-                    <rect key="frame" x="32" y="130" width="317" height="28"/>
+                    <rect key="frame" x="25" y="220" width="312" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When selected, control Hermes with the keyboard or its icon on the right side of the menu bar." id="2355">
                         <font key="font" metaFont="smallSystem"/>
@@ -1445,8 +1445,12 @@ DQ
                     <rect key="frame" x="12" y="119" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
+                    <rect key="frame" x="12" y="276" width="338" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
                 <button id="qU3-Mb-t5B">
-                    <rect key="frame" x="18" y="164" width="194" height="18"/>
+                    <rect key="frame" x="25" y="128" width="194" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show song title in status bar" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Jjy-wl-Erl">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1459,7 +1463,7 @@ DQ
                     </connections>
                 </button>
                 <button identifier="statusBarIconUseBlackWhite" id="12375">
-                    <rect key="frame" x="32" y="209" width="108" height="18"/>
+                    <rect key="frame" x="39" y="173" width="108" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Use B&amp;W icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="12376">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1471,7 +1475,7 @@ DQ
                     </connections>
                 </button>
                 <button identifier="statusBarIconUseColor" id="sIX-RA-vSL">
-                    <rect key="frame" x="32" y="231" width="126" height="18"/>
+                    <rect key="frame" x="39" y="195" width="126" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Use Hermes icon" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1483,7 +1487,7 @@ DQ
                     </connections>
                 </button>
                 <button identifier="statusBarIconUseAlbumArt" id="28c-Js-E8a">
-                    <rect key="frame" x="32" y="187" width="110" height="18"/>
+                    <rect key="frame" x="39" y="151" width="110" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Use Album Art" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1494,10 +1498,6 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
                     </connections>
                 </button>
-                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
-                    <rect key="frame" x="12" y="276" width="338" height="5"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </box>
             </subviews>
             <point key="canvasLocation" x="405" y="198.5"/>
         </customView>
