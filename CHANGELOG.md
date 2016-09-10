@@ -2,11 +2,13 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.8...HEAD)
 
-* [added by @paullj1] Allow skipping songs (if using banners) and liking/disliking songs (if using alerts) from OS X notifications (#273)
-* [changed by @paullj1] Make Hermes OS X song notifications look more like iTunes notifications (#273)
+* [added by @paullj1] Allow skipping songs (if using banners) and liking/disliking songs (if using alerts) from macOS notifications (#273)
+* [added by @paullj1] Optionally show album art and/or track titles in the menu bar (#208, #275)
+* [changed by @paullj1] Make Hermes macOS song notifications look more like iTunes notifications (#273)
 * [changed by @nriley] Simplify and reduce screen space used by main window
+* [fixed by @nriley] Allow the Hermes to appear over fullscreen applications when the Dock icon is hidden
 * [fixed by @nriley] Work around OS X 10.10 bug causing strange drawer background coloring
-* [fixed by @nriley] Work around macOS 10.12 bug which caused volume slider and song progress not to display
+* [fixed by @nriley] Work around macOS 10.12 bug causing volume slider and song progress not to display
 
 # Version 1.2.8 (6/24/16)
 
