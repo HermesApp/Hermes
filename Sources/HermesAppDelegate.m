@@ -673,27 +673,23 @@
   
   // Optionally show song title in status bar
   if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG)) {
-    NSString *title = [[NSString alloc] initWithFormat:@"%@ - %@",
-                        playback.playing.playingSong.title,
-                        playback.playing.playingSong.album];
+    NSString *title = [[NSString alloc] initWithFormat:@" %@",
+                       playback.playing.playingSong.title];
     [[statusItem button] setImagePosition:NSImageLeft];
     [[statusItem button] setLineBreakMode:NSLineBreakByTruncatingTail];
     [[statusItem button] setTitle:title];
-    [statusItem setLength:STATUS_BAR_MAX_WIDTH]; // Only way to get it to truncate title
     
-    /* TODO: When 'visible' property is made public in 10.12, remove title if not visible
-        if([statusItem isVisible]) {
-          [[statusItem button] setTitle:@""];
-          [[statusItem button] setImagePosition:NSImageOnly];
-          [statusItem setLength:icon.size.width + 4];
-        }
-     */
-    
-  }
-  else {
+    // Only way to get it to truncate title
+    if ([[statusItem button] fittingSize].width > STATUS_BAR_MAX_WIDTH) {
+      [statusItem setLength:STATUS_BAR_MAX_WIDTH];
+    } else {
+      [statusItem setLength:NSVariableStatusItemLength];
+    }
+  
+  } else {
     [[statusItem button] setTitle:@""];
     [[statusItem button] setImagePosition:NSImageOnly];
-    [statusItem setLength:icon.size.width + 4];
+    [statusItem setLength:NSSquareStatusItemLength];
   }
 }
 
