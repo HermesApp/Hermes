@@ -36,6 +36,7 @@
 }
 
 @property (readonly) Station *playing;
+@property (readonly) NSData *lastImg;
 @property BOOL pausedByScreensaver;
 @property BOOL pausedByScreenLock;
 

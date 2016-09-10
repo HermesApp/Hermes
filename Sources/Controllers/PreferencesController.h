@@ -28,6 +28,8 @@
 #define GROWL_TYPE                 @"notificationType"
 #define STATUS_BAR_ICON            @"statusBarIcon"
 #define STATUS_BAR_ICON_BNW        @"statusBarIconBlackWhite"
+#define STATUS_BAR_ICON_ALBUM      @"statusBarIconAlbumArt"
+#define STATUS_BAR_SHOW_SONG       @"statusBarShowSongTitle"
 #define ALWAYS_ON_TOP              @"alwaysOnTop"
 #define PAUSE_ON_SCREENSAVER_START @"pauseOnScreensaverStart"
 #define PLAY_ON_SCREENSAVER_STOP   @"playOnScreensaverStop"

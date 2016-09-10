@@ -25,6 +25,7 @@
 
 #define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"
 #define DEBUG_MODE_TITLE_PREFIX @"🐞 "
+#define STATUS_BAR_MAX_WIDTH 200
 
 @interface HermesAppDelegate ()
 
@@ -568,6 +569,20 @@
   }
 }
 
+- (IBAction) updateStatusBarIconValue:(id)sender {
+  if([[sender identifier] isEqualToString:@"statusBarIconUseColor"]) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
+  } else if([[sender identifier] isEqualToString:@"statusBarIconUseBlackWhite"]) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, YES);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
+  } else if([[sender identifier] isEqualToString:@"statusBarIconUseAlbumArt"]) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, YES);
+  }
+  [self updateStatusBarIconImage:sender];
+}
+
 - (IBAction) updateStatusBarIcon:(id)sender {
   /* Transform the application appropriately */
   ProcessSerialNumber psn = { 0, kCurrentProcess };
@@ -608,7 +623,6 @@
   [statusItem setMenu:statusBarMenu];
   [statusItem setHighlightMode:YES];
 
-  statusItemImageName = @"";
   [self updateStatusBarIconImage:sender];
 }
 
@@ -616,26 +630,67 @@
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
     return;
 
-  NSString *imageName = nil;
-  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW))
-    imageName = (playback.playing.isPlaying) ? @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause";
-
-  if (imageName == statusItemImageName)
-    return;
-
   NSImage *icon;
-  if (imageName == nil) {
-    icon = [[NSApp applicationIconImage] copy];
-  } else {
-    icon = [NSImage imageNamed:imageName];
+  NSSize size = {.width = 18, .height = 18};
+  
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
+    
+    icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
+            @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
     [icon setTemplate:YES];
+    
+  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
+    
+    // Build base image
+    NSData *data = [playback lastImg];
+    icon = (data) ? [[NSImage alloc] initWithData:data] :
+                    [NSImage imageNamed:@"missing-album"];
+    [icon setSize:size];
+    
+    // draw the overlay image (if there is album art)
+    if (data) {
+      NSImage *overlay = [NSImage imageNamed:(playback.playing.isPlaying) ?
+                          @"play" : @"pause"];
+      NSSize overlaySize = {.width = 12, .height = 12};
+      [overlay setSize:overlaySize];
+    
+      [icon lockFocus];
+      [overlay drawInRect:NSMakeRect(3, 3, [overlay size].width, [overlay size].height)
+                 fromRect:NSZeroRect
+                operation:NSCompositeSourceOver
+                 fraction:1.0];
+      [icon unlockFocus];
+    }
+    
+  } else {
+    // Use color application image
+    icon = [[NSApp applicationIconImage] copy];
   }
 
-  NSSize size = {.width = 18, .height = 18};
+  // Set image size, then set status bar icon
   [icon setSize:size];
-
-  [statusItem setImage:icon];
-  statusItemImageName = imageName;
+  [[statusItem button] setImage:icon];
+  
+  // Optionally show song title in status bar
+  if (PREF_KEY_BOOL(STATUS_BAR_SHOW_SONG)) {
+    NSString *title = [[NSString alloc] initWithFormat:@" %@",
+                       playback.playing.playingSong.title];
+    [[statusItem button] setImagePosition:NSImageLeft];
+    [[statusItem button] setLineBreakMode:NSLineBreakByTruncatingTail];
+    [[statusItem button] setTitle:title];
+    
+    // Only way to get it to truncate title
+    if ([[statusItem button] fittingSize].width > STATUS_BAR_MAX_WIDTH) {
+      [statusItem setLength:STATUS_BAR_MAX_WIDTH];
+    } else {
+      [statusItem setLength:NSVariableStatusItemLength];
+    }
+  
+  } else {
+    [[statusItem button] setTitle:@""];
+    [[statusItem button] setImagePosition:NSImageOnly];
+    [statusItem setLength:NSSquareStatusItemLength];
+  }
 }
 
 - (IBAction) updateAlwaysOnTop:(id)sender {
