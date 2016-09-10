@@ -303,7 +303,7 @@ BOOL playOnStart = YES;
           image = [[NSImage alloc] initWithData:data];
         }
 
-        [HMSAppDelegate updateStatusBarIconImage:nil];
+        [HMSAppDelegate updateStatusItem:nil];
 
         if (![playing isPaused]) {
           [GROWLER growl:song withImage:data isNew:YES];

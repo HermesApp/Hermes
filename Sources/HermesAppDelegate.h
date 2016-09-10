@@ -80,9 +80,8 @@
 - (IBAction) showStationsDrawer:(id)sender;
 - (IBAction) showHistoryDrawer:(id)sender;
 - (IBAction) activate:(id)sender;
-- (IBAction) updateStatusBarIcon:(id)sender;
-- (IBAction) updateStatusBarIconImage:(id)sender;
-- (IBAction) updateStatusBarIconValue:(id)sender;
+- (IBAction) updateStatusItemVisibility:(id)sender;
+- (IBAction) updateStatusItem:(id)sender;
 - (IBAction) updateAlwaysOnTop:(id)sender;
 
 /**

@@ -9,6 +9,13 @@
   /* See HermesAppDelegate#updateStatusBarIcon */
   [window setCanHide:NO];
 
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW))
+    statusItemShowBlackAndWhiteIcon.state = NSOnState;
+  else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM))
+    statusItemShowAlbumArt.state = NSOnState;
+  else
+    statusItemShowColorIcon.state = NSOnState;
+
   NSString *last = PREF_KEY_VALUE(LAST_PREF_PANE);
   if (NSClassFromString(@"NSUserNotification") != nil) {
     [notificationEnabled setTitle:@""];
@@ -76,6 +83,20 @@
 
 - (IBAction) showNetwork: (id) sender {
   [self setPreferenceView:network as:@"network"];
+}
+
+- (IBAction) statusItemIconChanged:(id)sender {
+  if (sender == statusItemShowColorIcon) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
+  } else if (sender == statusItemShowBlackAndWhiteIcon) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, YES);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
+  } else if (sender == statusItemShowAlbumArt) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, YES);
+  }
+  [HMSAppDelegate updateStatusItem:sender];
 }
 
 - (IBAction) bindMediaChanged: (id) sender {

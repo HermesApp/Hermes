@@ -147,7 +147,7 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
   // Must do this before the app is activated, or the menu bar doesn't draw.
   // <http://stackoverflow.com/questions/7596643/>
-  [self updateStatusBarIcon:nil];
+  [self updateStatusItemVisibility:nil];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -569,24 +569,11 @@
   }
 }
 
-- (IBAction) updateStatusBarIconValue:(id)sender {
-  if([[sender identifier] isEqualToString:@"statusBarIconUseColor"]) {
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, NO);
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
-  } else if([[sender identifier] isEqualToString:@"statusBarIconUseBlackWhite"]) {
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, YES);
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
-  } else if([[sender identifier] isEqualToString:@"statusBarIconUseAlbumArt"]) {
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BNW, NO);
-    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, YES);
-  }
-  [self updateStatusBarIconImage:sender];
-}
-
-- (IBAction) updateStatusBarIcon:(id)sender {
+- (IBAction) updateStatusItemVisibility:(id)sender {
   /* Transform the application appropriately */
   ProcessSerialNumber psn = { 0, kCurrentProcess };
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON)) {
+    window.collectionBehavior = NSWindowCollectionBehaviorDefault;
     [window setCanHide:YES];
     TransformProcessType(&psn, kProcessTransformToForegroundApplication);
     statusItem = nil;
@@ -603,6 +590,8 @@
     return;
   }
 
+  window.collectionBehavior = NSWindowCollectionBehaviorMoveToActiveSpace;
+
   if (sender != nil) {
     /* If we're not executing at process launch, then the menu bar will remain visible
        but unusable; hide/show Hermes to fix it, but stop the window from hiding with it */
@@ -617,7 +606,6 @@
     });
   }
 
-  /* If we have a status menu item, then set it here */
   statusItem = [[NSStatusBar systemStatusBar]
                     statusItemWithLength:NSVariableStatusItemLength];
   statusItem.menu = statusBarMenu;
@@ -630,17 +618,17 @@
                                multiplier:0
                                  constant:STATUS_BAR_MAX_WIDTH]];
 
-  [self updateStatusBarIconImage:sender];
+  [self updateStatusItem:sender];
 }
 
-- (IBAction) updateStatusBarIconImage:(id)sender {
+- (IBAction) updateStatusItem:(id)sender {
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
     return;
 
   NSImage *icon;
   NSSize size = {.width = 18, .height = 18};
   
-  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BNW)) {
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
     
     icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
             @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
@@ -736,7 +724,7 @@
     [playbackState setTitle:@"Play"];
   }
   [self updateWindowTitle];
-  [self updateStatusBarIconImage:nil];
+  [self updateStatusItem:nil];
 }
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem {

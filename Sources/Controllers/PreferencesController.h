@@ -27,7 +27,7 @@
 #define SORT_STATIONS              @"sortStations"
 #define GROWL_TYPE                 @"notificationType"
 #define STATUS_BAR_ICON            @"statusBarIcon"
-#define STATUS_BAR_ICON_BNW        @"statusBarIconBlackWhite"
+#define STATUS_BAR_ICON_BW         @"statusBarIconBlackWhite"
 #define STATUS_BAR_ICON_ALBUM      @"statusBarIconAlbumArt"
 #define STATUS_BAR_SHOW_SONG       @"statusBarShowSongTitle"
 #define ALWAYS_ON_TOP              @"alwaysOnTop"
@@ -68,6 +68,10 @@
   IBOutlet NSView *playback;
   IBOutlet NSView *network;
 
+  IBOutlet NSButton *statusItemShowColorIcon;
+  IBOutlet NSButton *statusItemShowBlackAndWhiteIcon;
+  IBOutlet NSButton *statusItemShowAlbumArt;
+  
   IBOutlet NSButton *notificationEnabled;
   IBOutlet NSPopUpButton *notificationType;
   IBOutlet NSWindow *window;
@@ -80,6 +84,7 @@
 - (IBAction) showPlayback: (id) sender;
 - (IBAction) showNetwork: (id) sender;
 
+- (IBAction) statusItemIconChanged:(id)sender;
 - (IBAction) bindMediaChanged: (id) sender;
 - (IBAction) show: (id) sender;
 
