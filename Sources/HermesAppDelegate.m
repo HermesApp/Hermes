@@ -677,11 +677,15 @@
     button.lineBreakMode = NSLineBreakByTruncatingTail;
     button.title = title;
     
-    NSMutableAttributedString *attributedTitle = [button.attributedTitle mutableCopy];
-    NSRange titleRange = NSMakeRange(0, attributedTitle.length);
-    
-    [attributedTitle addAttributes:@{NSBaselineOffsetAttributeName: @1} range:titleRange];
-    button.attributedTitle = attributedTitle;
+    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_11) {
+      // baseline is now correct with NSStatusItem changes in 10.12
+
+      NSMutableAttributedString *attributedTitle = [button.attributedTitle mutableCopy];
+      NSRange titleRange = NSMakeRange(0, attributedTitle.length);
+      
+      [attributedTitle addAttributes:@{NSBaselineOffsetAttributeName: @1} range:titleRange];
+      button.attributedTitle = attributedTitle;
+    }
     
     statusItem.length = NSVariableStatusItemLength;
   } else {
