@@ -271,22 +271,22 @@
   }
   menuItem = [menu addItemWithTitle:title
                              action:@selector(playpause:)
-                      keyEquivalent:@"p"];
-  [menuItem setTarget:playback];
-  menuItem = [menu addItemWithTitle:@"Next"
-                             action:@selector(next:)
-                      keyEquivalent:@"n"];
+                      keyEquivalent:@""];
   [menuItem setTarget:playback];
   menuItem = [menu addItemWithTitle:@"Like"
                              action:@selector(like:)
-                      keyEquivalent:@"l"];
+                      keyEquivalent:@""];
   [menuItem setTarget:playback];
   if ([[song nrating] intValue] == 1) {
     menuItem.state = NSOnState;
   }
   menuItem = [menu addItemWithTitle:@"Dislike"
                              action:@selector(dislike:)
-                      keyEquivalent:@"d"];
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Skip to Next Song"
+                             action:@selector(next:)
+                      keyEquivalent:@""];
   [menuItem setTarget:playback];
   return menu;
 }
