@@ -39,8 +39,6 @@
 @synthesize stations, auth, playback, pandora, window, history, station,
             growler, scrobbler, mediaKeyTap, networkManager, preferences;
 
-#pragma mark - NSObject
-
 - (id) init {
   if ((self = [super init])) {
     pandora = [[Pandora alloc] init];
@@ -55,7 +53,7 @@
   }
 }
 
-#pragma mark -
+#pragma mark - NSApplicationDelegate
 
 - (BOOL) applicationShouldHandleReopen:(NSApplication *)theApplication
                     hasVisibleWindows:(BOOL)flag {
@@ -65,6 +63,50 @@
 
   return YES;
 }
+
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
+  NSMenu *menu = [[NSMenu alloc] init];
+  NSMenuItem *menuItem;
+  Song *song = [[playback playing] playingSong];
+  if (song != nil) {
+    [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]
+                    action:nil
+             keyEquivalent:@""];
+    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]
+                    action:nil
+             keyEquivalent:@""];
+    [menu addItem:[NSMenuItem separatorItem]];
+  }
+  NSString *title;
+  if ([[playback playing] isPaused] || song == nil) {
+    title = @"Play";
+  } else {
+    title = @"Pause";
+  }
+  menuItem = [menu addItemWithTitle:title
+                             action:@selector(playpause:)
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Like"
+                             action:@selector(like:)
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  if ([[song nrating] intValue] == 1) {
+    menuItem.state = NSOnState;
+  }
+  menuItem = [menu addItemWithTitle:@"Dislike"
+                             action:@selector(dislike:)
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Skip to Next Song"
+                             action:@selector(next:)
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  return menu;
+}
+
+#pragma mark -
 
 - (void) closeNewStationSheet {
   [window endSheet:newStationSheet];
@@ -77,11 +119,6 @@
 - (void) showLoader {
   [self setCurrentView:loadingView];
   [loadingIcon startAnimation:nil];
-}
-
-- (void) saveUsername: (NSString*) username password: (NSString*) password {
-  [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
-  KeychainSetItem(username, password);
 }
 
 - (void) setCurrentView:(NSView *)view {
@@ -143,6 +180,8 @@
     [defaults setInteger:QUALITY_LOW forKey:DESIRED_QUALITY];
   }
 }
+
+#pragma mark - NSApplication notifications
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notification {
   // Must do this before the app is activated, or the menu bar doesn't draw.
@@ -249,56 +288,6 @@
   [self updateAlwaysOnTop:nil];
 }
 
-- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
-  NSMenu *menu = [[NSMenu alloc] init];
-  NSMenuItem *menuItem;
-  Song *song = [[playback playing] playingSong];
-  if (song != nil) {
-    [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]
-                    action:nil
-             keyEquivalent:@""];
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]
-                    action:nil
-             keyEquivalent:@""];
-    [menu addItem:[NSMenuItem separatorItem]];
-  }
-  NSString *title;
-  if ([[playback playing] isPaused] || song == nil) {
-    title = @"Play";
-  } else {
-    title = @"Pause";
-  }
-  menuItem = [menu addItemWithTitle:title
-                             action:@selector(playpause:)
-                      keyEquivalent:@""];
-  [menuItem setTarget:playback];
-  menuItem = [menu addItemWithTitle:@"Like"
-                             action:@selector(like:)
-                      keyEquivalent:@""];
-  [menuItem setTarget:playback];
-  if ([[song nrating] intValue] == 1) {
-    menuItem.state = NSOnState;
-  }
-  menuItem = [menu addItemWithTitle:@"Dislike"
-                             action:@selector(dislike:)
-                      keyEquivalent:@""];
-  [menuItem setTarget:playback];
-  menuItem = [menu addItemWithTitle:@"Skip to Next Song"
-                             action:@selector(next:)
-                      keyEquivalent:@""];
-  [menuItem setTarget:playback];
-  return menu;
-}
-
-- (NSString*) getSavedUsername {
-  return [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
-}
-
-- (NSString*) getSavedPassword {
-  return KeychainGetPassword([self getSavedUsername]);
-}
-
 - (void)applicationWillResignActive:(NSNotification *)aNotification {
   [playback saveState];
   [history saveSongs];
@@ -309,88 +298,35 @@
   [history saveSongs];
 }
 
-- (void) receiveSleepNote: (NSNotification*) note {
-  [[playback playing] pause];
+#pragma mark - NSWindow notification
+
+- (void)windowDidBecomeKey:(NSNotification *)notification {
+
 }
 
-- (void) handleStreamError: (NSNotification*) notification {
-  lastStationErr = [notification object];
-  [self setCurrentView:errorView];
-  NSString *err = [lastStationErr streamNetworkError];
-  [errorLabel setStringValue:err];
-  [window orderFront:nil];
+#pragma mark - NSWindowRestoration
+
++ (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
+                              state:(NSCoder *)state
+                  completionHandler:(void (^)(NSWindow *, NSError *))done {
+  [PlaybackController setPlayOnStart:NO];
+  done(nil, nil);
+  return YES;
 }
 
-- (void) handlePandoraError: (NSNotification*) notification {
-  NSDictionary *info = [notification userInfo];
-  NSString *err      = info[@"error"];
-  NSNumber *nscode   = info[@"code"];
-  NSLogd(@"error received %@", info);
-  /* If this is a generic error (like a network error) it's possible to retry.
-     Otherewise if it's a Pandora error (with a code listed) there's likely
-     nothing we can do about it */
-  [errorButton setHidden:FALSE];
-  lastRequest = nil;
-  int code = [nscode intValue];
-  NSString *other = [Pandora stringForErrorCode:code];
-  if (other != nil) {
-    err = other;
-  }
+#pragma mark -
 
-  if (nscode != nil) {
-    [errorButton setHidden:TRUE];
+- (NSString*) getSavedUsername {
+  return [[NSUserDefaults standardUserDefaults] stringForKey:USERNAME_KEY];
+}
 
-    switch (code) {
-      case INVALID_SYNC_TIME:
-      case INVALID_AUTH_TOKEN: {
-        NSString *user = [self getSavedUsername];
-        NSString *pass = [self getSavedPassword];
-        if (user == nil || pass == nil) {
-          [[playback playing] pause];
-          [auth authenticationFailed:notification error:err];
-        } else {
-          [pandora logoutNoNotify];
-          [pandora authenticate:user
-                       password:pass
-                        request:info[@"request"]];
-        }
-        return;
-      }
+- (NSString*) getSavedPassword {
+  return KeychainGetPassword([self getSavedUsername]);
+}
 
-      /* Oddly enough, the same error code is given our for invalid login
-         information as is for invalid partner login information... */
-      case INVALID_PARTNER_LOGIN:
-      case INVALID_USERNAME:
-      case INVALID_PASSWORD:
-        [[playback playing] pause];
-        [auth authenticationFailed:notification error:err];
-        return;
-
-      case NO_SEEDS_LEFT:
-        [station seedFailedDeletion:notification];
-        return;
-
-      default:
-        break;
-    }
-  }
-
-  lastRequest = [notification userInfo][@"request"];
-  [self setCurrentView:errorView];
-  [errorLabel setStringValue:err];
-  [window orderFront:nil];
-  [autoRetry invalidate];
-
-  // From the unofficial Pandora API documentation ( http://6xq.net/playground/pandora-apidoc/json/errorcodes/ ):
-  // code 0 == INTERNAL, "It can denote that your account has been temporarily blocked due to having too frequent station.getPlaylist calls."
-  // code 1039 == PLAYLIST_EXCEEDED, "Returned on excessive calls to station.getPlaylist. Error self clears (probably 1 hour)."
-  if (code != 0 && code != 1039) {
-      autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
-                                                   target:self
-                                                 selector:@selector(retry:)
-                                                 userInfo:nil
-                                                  repeats:NO];
-  }
+- (void) saveUsername: (NSString*) username password: (NSString*) password {
+  [[NSUserDefaults standardUserDefaults] setObject:username forKey:USERNAME_KEY];
+  KeychainSetItem(username, password);
 }
 
 - (void) retry:(id)sender {
@@ -418,26 +354,6 @@
   }
 }
 
-- (void) handlePandoraLoggedOut: (NSNotification*) notification {
-  [stations reset];
-  [playback reset];
-  [stations hideDrawer];
-  [history hideDrawer];
-  [station editStation:nil];
-
-  /* Remove our credentials */
-  [self saveUsername:@"" password:@""];
-  [auth show];
-}
-
-+ (BOOL)restoreWindowWithIdentifier:(NSString *)identifier
-                              state:(NSCoder *)state
-                  completionHandler:(void (^)(NSWindow *, NSError *))done {
-  [PlaybackController setPlayOnStart:NO];
-  done(nil, nil);
-  return YES;
-}
-
 - (NSString*) stateDirectory:(NSString *)file {
   NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -459,8 +375,23 @@
   return [folder stringByAppendingPathComponent: file];
 }
 
+#pragma mark - Actions
+
+- (IBAction) updateAlwaysOnTop:(id)sender {
+  if (PREF_KEY_BOOL(ALWAYS_ON_TOP)) {
+    [[self window] setLevel:NSFloatingWindowLevel];
+  } else {
+    [[self window] setLevel:NSNormalWindowLevel];
+  }
+}
+
+- (IBAction) activate:(id)sender {
+  [NSApp activateIgnoringOtherApps:YES];
+  [window makeKeyAndOrderFront:sender];
+}
+
 - (IBAction)showMainWindow:(id)sender {
-    [self activate:nil];
+  [self activate:nil];
 }
 
 - (IBAction)changelog:(id)sender {
@@ -478,6 +409,8 @@
 - (IBAction)hermesHomepage:(id)sender {
   [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://hermesapp.org/"]];
 }
+
+#pragma mark - Drawer management
 
 - (void) historyShow {
   [history showDrawer];
@@ -568,6 +501,8 @@
       break;
   }
 }
+
+#pragma mark - Status item display
 
 - (IBAction) updateStatusItemVisibility:(id)sender {
   /* Transform the application appropriately */
@@ -677,7 +612,7 @@
     button.lineBreakMode = NSLineBreakByTruncatingTail;
     button.title = title;
     
-    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_11) {
+    if (floor(NSAppKitVersionNumber) <= 9999) {
       // baseline is now correct with NSStatusItem changes in 10.12
 
       NSMutableAttributedString *attributedTitle = [button.attributedTitle mutableCopy];
@@ -695,18 +630,7 @@
   }
 }
 
-- (IBAction) updateAlwaysOnTop:(id)sender {
-  if (PREF_KEY_BOOL(ALWAYS_ON_TOP)) {
-    [[self window] setLevel:NSFloatingWindowLevel];
-  } else {
-    [[self window] setLevel:NSNormalWindowLevel];
-  }
-}
-
-- (IBAction) activate:(id)sender {
-  [NSApp activateIgnoringOtherApps:YES];
-  [window makeKeyAndOrderFront:sender];
-}
+#pragma mark - Internal notifications
 
 - (void) songPlayed:(NSNotification*) not {
   Station *s = [not object];
@@ -730,6 +654,104 @@
   [self updateWindowTitle];
   [self updateStatusItem:nil];
 }
+
+- (void) receiveSleepNote: (NSNotification*) note {
+  [[playback playing] pause];
+}
+
+- (void) handleStreamError: (NSNotification*) notification {
+  lastStationErr = [notification object];
+  [self setCurrentView:errorView];
+  NSString *err = [lastStationErr streamNetworkError];
+  [errorLabel setStringValue:err];
+  [window orderFront:nil];
+}
+
+- (void) handlePandoraError: (NSNotification*) notification {
+  NSDictionary *info = [notification userInfo];
+  NSString *err      = info[@"error"];
+  NSNumber *nscode   = info[@"code"];
+  NSLogd(@"error received %@", info);
+  /* If this is a generic error (like a network error) it's possible to retry.
+   Otherewise if it's a Pandora error (with a code listed) there's likely
+   nothing we can do about it */
+  [errorButton setHidden:FALSE];
+  lastRequest = nil;
+  int code = [nscode intValue];
+  NSString *other = [Pandora stringForErrorCode:code];
+  if (other != nil) {
+    err = other;
+  }
+
+  if (nscode != nil) {
+    [errorButton setHidden:TRUE];
+
+    switch (code) {
+      case INVALID_SYNC_TIME:
+      case INVALID_AUTH_TOKEN: {
+        NSString *user = [self getSavedUsername];
+        NSString *pass = [self getSavedPassword];
+        if (user == nil || pass == nil) {
+          [[playback playing] pause];
+          [auth authenticationFailed:notification error:err];
+        } else {
+          [pandora logoutNoNotify];
+          [pandora authenticate:user
+                       password:pass
+                        request:info[@"request"]];
+        }
+        return;
+      }
+
+        /* Oddly enough, the same error code is given our for invalid login
+         information as is for invalid partner login information... */
+      case INVALID_PARTNER_LOGIN:
+      case INVALID_USERNAME:
+      case INVALID_PASSWORD:
+        [[playback playing] pause];
+        [auth authenticationFailed:notification error:err];
+        return;
+
+      case NO_SEEDS_LEFT:
+        [station seedFailedDeletion:notification];
+        return;
+
+      default:
+        break;
+    }
+  }
+
+  lastRequest = [notification userInfo][@"request"];
+  [self setCurrentView:errorView];
+  [errorLabel setStringValue:err];
+  [window orderFront:nil];
+  [autoRetry invalidate];
+
+  // From the unofficial Pandora API documentation ( http://6xq.net/playground/pandora-apidoc/json/errorcodes/ ):
+  // code 0 == INTERNAL, "It can denote that your account has been temporarily blocked due to having too frequent station.getPlaylist calls."
+  // code 1039 == PLAYLIST_EXCEEDED, "Returned on excessive calls to station.getPlaylist. Error self clears (probably 1 hour)."
+  if (code != 0 && code != 1039) {
+    autoRetry = [NSTimer scheduledTimerWithTimeInterval:20
+                                                 target:self
+                                               selector:@selector(retry:)
+                                               userInfo:nil
+                                                repeats:NO];
+  }
+}
+
+- (void) handlePandoraLoggedOut: (NSNotification*) notification {
+  [stations reset];
+  [playback reset];
+  [stations hideDrawer];
+  [history hideDrawer];
+  [station editStation:nil];
+
+  /* Remove our credentials */
+  [self saveUsername:@"" password:@""];
+  [auth show];
+}
+
+#pragma mark - User interface validation
 
 - (BOOL)validateToolbarItem:(NSToolbarItem *)toolbarItem {
   if (![[self pandora] isAuthenticated]) {
