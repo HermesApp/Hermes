@@ -625,9 +625,11 @@
   if (playing != nil) {
     [currentSong setTitle:[playing title]];
     [currentArtist setTitle:[playing artist]];
+    nowPlaying.title = [@"Now Playing: " stringByAppendingString:s.name];
   } else {
     [currentSong setTitle:@"(song)"];
     [currentArtist setTitle:@"(artist)"];
+    nowPlaying.title = @"Now Playing";
   }
 }
 

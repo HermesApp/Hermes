@@ -897,6 +897,7 @@ Gw
                 <outlet property="loadingView" destination="1230" id="1232"/>
                 <outlet property="networkManager" destination="2136" id="2272"/>
                 <outlet property="newStationSheet" destination="902" id="919"/>
+                <outlet property="nowPlaying" destination="2310" id="XEm-lj-68s"/>
                 <outlet property="playback" destination="835" id="836"/>
                 <outlet property="playbackState" destination="2309" id="2368"/>
                 <outlet property="preferences" destination="1114" id="2335"/>

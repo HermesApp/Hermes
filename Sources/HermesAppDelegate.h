@@ -38,6 +38,7 @@
 
   /* Status bar menu */
   NSStatusItem *statusItem;
+  IBOutlet NSMenuItem *nowPlaying;
   IBOutlet NSMenuItem *currentSong;
   IBOutlet NSMenuItem *currentArtist;
   IBOutlet NSMenuItem *playbackState;
