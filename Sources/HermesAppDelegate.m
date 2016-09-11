@@ -207,35 +207,22 @@
   }
   [NSApp activateIgnoringOtherApps:YES];
 
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-        selector:@selector(handlePandoraError:)
-            name:PandoraDidErrorNotification
-          object:nil];
+  NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-        selector:@selector(handleStreamError:)
-            name:ASStreamError
-          object:nil];
+  [notificationCenter addObserver:self selector:@selector(handlePandoraError:)
+                             name:PandoraDidErrorNotification object:nil];
 
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-        selector:@selector(handlePandoraLoggedOut:)
-            name:PandoraDidLogOutNotification
-          object:nil];
+  [notificationCenter addObserver:self selector:@selector(handleStreamError:)
+                             name:ASStreamError object:nil];
 
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-        selector:@selector(songPlayed:)
-            name:StationDidPlaySongNotification
-          object:nil];
+  [notificationCenter addObserver:self selector:@selector(handlePandoraLoggedOut:)
+                             name:PandoraDidLogOutNotification object:nil];
 
-  [[NSNotificationCenter defaultCenter]
-     addObserver:self
-        selector:@selector(playbackStateChanged:)
-            name:ASStatusChangedNotification
-          object:nil];
+  [notificationCenter addObserver:self selector:@selector(songPlayed:)
+                             name:StationDidPlaySongNotification object:nil];
+
+  [notificationCenter addObserver:self selector:@selector(playbackStateChanged:)
+                             name:ASStatusChangedNotification object:nil];
 
   // See http://developer.apple.com/mac/library/qa/qa2004/qa1340.html
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
