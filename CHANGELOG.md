@@ -9,6 +9,8 @@
 * [fixed by @nriley] Allow the Hermes to appear over fullscreen applications when the Dock icon is hidden
 * [fixed by @nriley] Work around OS X 10.10 bug causing strange drawer background coloring
 * [fixed by @nriley] Work around macOS 10.12 bug causing volume slider and song progress not to display
+* [fixed by @nriley] More reliably respond to the play/pause keyboard shortcut (space bar)
+* [fixed by @nriley] Properly show the About Hermes window when Hermes’ Dock icon is hidden
 
 # Version 1.2.8 (6/24/16)
 
