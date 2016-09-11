@@ -16,3 +16,8 @@
 #endif
 
 #define HMSAppDelegate ((HermesAppDelegate *)[NSApp delegate])
+
+// XXX remove when we don't need to compile against the < 10.12 SDK any more
+#ifndef NSAppKitVersionNumber10_11
+#define NSAppKitVersionNumber10_11 1404
+#endif

@@ -543,10 +543,6 @@
   [self updateStatusItem:sender];
 }
 
-#ifndef NSAppKitVersionNumber10_11
-#define NSAppKitVersionNumber10_11 1404
-#endif
-
 - (IBAction) updateStatusItem:(id)sender {
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
     return;
