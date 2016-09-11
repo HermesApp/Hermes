@@ -623,13 +623,16 @@
   Station *s = [not object];
   Song *playing = [s playingSong];
   if (playing != nil) {
-    [currentSong setTitle:[playing title]];
-    [currentArtist setTitle:[playing artist]];
     nowPlaying.title = [@"Now Playing: " stringByAppendingString:s.name];
+    currentSong.title = playing.title;
+    currentArtist.title = playing.artist;
+    currentArtist.hidden = NO;
+    statusItem.button.toolTip = [NSString stringWithFormat:@"Song: %@\nArtist: %@\nAlbum: %@\nStation: %@", playing.title, playing.artist, playing.album, s.name];
   } else {
-    [currentSong setTitle:@"(song)"];
-    [currentArtist setTitle:@"(artist)"];
     nowPlaying.title = @"Now Playing";
+    currentSong.title = @"(none)";
+    currentArtist.hidden = YES;
+    statusItem.button.toolTip = nil;
   }
 }
 
