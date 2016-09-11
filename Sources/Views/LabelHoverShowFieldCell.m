@@ -25,6 +25,7 @@
 }
 
 - (void)editWithFrame:(NSRect)aRect inView:(NSView *)controlView editor:(NSText *)textObj delegate:(nullable id)anObject event:(NSEvent *)theEvent {
+  [[self controlView] setNeedsDisplay:YES];
   aRect = NSInsetRect([self drawingRectForBounds:controlView.bounds], 3, 0);
   // despite passing smaller rect to super, it ends up too wide the first time unless we set it explicitly
   NSDisableScreenUpdates(); // to prevent flashing of wider rect
