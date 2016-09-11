@@ -543,6 +543,10 @@
   [self updateStatusItem:sender];
 }
 
+#ifndef NSAppKitVersionNumber10_11
+#define NSAppKitVersionNumber10_11 1404
+#endif
+
 - (IBAction) updateStatusItem:(id)sender {
   if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
     return;
@@ -599,7 +603,7 @@
     button.lineBreakMode = NSLineBreakByTruncatingTail;
     button.title = title;
     
-    if (floor(NSAppKitVersionNumber) <= 9999) {
+    if (floor(NSAppKitVersionNumber) <= NSAppKitVersionNumber10_11) {
       // baseline is now correct with NSStatusItem changes in 10.12
 
       NSMutableAttributedString *attributedTitle = [button.attributedTitle mutableCopy];
