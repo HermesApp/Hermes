@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1912" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9532"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -1339,11 +1339,11 @@ DQ
             </connections>
         </arrayController>
         <customView misplaced="YES" id="1610" userLabel="General Preferences View">
-            <rect key="frame" x="0.0" y="0.0" width="362" height="356"/>
+            <rect key="frame" x="0.0" y="0.0" width="362" height="360"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button id="1117">
-                    <rect key="frame" x="18" y="320" width="235" height="18"/>
+                    <rect key="frame" x="18" y="324" width="235" height="18"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Control playback with media keys" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1118">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1355,7 +1355,7 @@ DQ
                     </connections>
                 </button>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1550">
-                    <rect key="frame" x="36" y="290" width="309" height="28"/>
+                    <rect key="frame" x="36" y="294" width="309" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause, forward and back keys to control Hermes from any application." id="1551">
                         <font key="font" metaFont="smallSystem"/>
@@ -1363,6 +1363,109 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button misplaced="YES" id="2338">
+                    <rect key="frame" x="18" y="261" width="327" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Hide Dock icon and menus" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusItemVisibility:" target="494" id="m2c-Dl-mG6"/>
+                        <binding destination="979" name="value" keyPath="values.statusBarIcon" id="2357"/>
+                    </connections>
+                </button>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="2354">
+                    <rect key="frame" x="36" y="231" width="312" height="28"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When checked, control Hermes with the keyboard or its menu on the right side of the menu bar." id="2355">
+                        <font key="font" metaFont="smallSystem"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="y6s-Gc-dec">
+                    <rect key="frame" x="12" y="100" width="338" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
+                    <rect key="frame" x="12" y="283" width="338" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button misplaced="YES" id="qU3-Mb-t5B">
+                    <rect key="frame" x="156" y="206" width="189" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Song title" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Jjy-wl-Erl">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateStatusItem:" target="494" id="EI8-dK-oeG"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="fm2-kn-VmX"/>
+                        <binding destination="979" name="value" keyPath="values.statusBarShowSongTitle" id="HaC-QQ-VPO"/>
+                    </connections>
+                </button>
+                <button misplaced="YES" id="12375">
+                    <rect key="frame" x="156" y="161" width="188" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="B&amp;W icon and play/pause" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="12376">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="statusItemIconChanged:" target="1114" id="HxN-nP-mqP"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="12392"/>
+                    </connections>
+                </button>
+                <button misplaced="YES" id="sIX-RA-vSL">
+                    <rect key="frame" x="156" y="183" width="188" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Color Hermes icon only" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="statusItemIconChanged:" target="1114" id="ov7-Re-3On"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="qig-Tq-jcU"/>
+                    </connections>
+                </button>
+                <button misplaced="YES" id="28c-Js-E8a">
+                    <rect key="frame" x="156" y="139" width="188" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="radio" title="Album art and play/pause" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="statusItemIconChanged:" target="1114" id="80F-jh-SdH"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
+                    </connections>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="cu3-Mz-UFU">
+                    <rect key="frame" x="36" y="207" width="118" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Show in menu bar:" id="eNj-oy-3dc">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="S4B-aI-Ikt">
+                    <rect key="frame" x="12" y="69" width="338" height="5"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                </box>
+                <button misplaced="YES" id="2369">
+                    <rect key="frame" x="18" y="78" width="283" height="18"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="check" title="Keep Hermes on top of all other windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2370">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="updateAlwaysOnTop:" target="494" id="2374"/>
+                        <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
+                    </connections>
+                </button>
                 <button misplaced="YES" id="1847">
                     <rect key="frame" x="18" y="44" width="142" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1386,97 +1489,6 @@ DQ
                         <binding destination="1000" name="value" keyPath="automaticallyDownloadsUpdates" id="1863"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="2338">
-                    <rect key="frame" x="18" y="257" width="327" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Hide Dock icon and menus" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateStatusItemVisibility:" target="494" id="m2c-Dl-mG6"/>
-                        <binding destination="979" name="value" keyPath="values.statusBarIcon" id="2357"/>
-                    </connections>
-                </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="2354">
-                    <rect key="frame" x="36" y="227" width="312" height="28"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When checked, control Hermes with the keyboard or its menu on the right side of the menu bar." id="2355">
-                        <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
-                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="S4B-aI-Ikt">
-                    <rect key="frame" x="12" y="73" width="338" height="5"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </box>
-                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="y6s-Gc-dec">
-                    <rect key="frame" x="12" y="118" width="338" height="5"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </box>
-                <box verticalHuggingPriority="750" boxType="separator" id="bjW-f8-vOq">
-                    <rect key="frame" x="12" y="279" width="338" height="5"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                </box>
-                <button misplaced="YES" id="qU3-Mb-t5B">
-                    <rect key="frame" x="156" y="202" width="189" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Song title" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Jjy-wl-Erl">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="updateStatusItem:" target="494" id="EI8-dK-oeG"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="fm2-kn-VmX"/>
-                        <binding destination="979" name="value" keyPath="values.statusBarShowSongTitle" id="HaC-QQ-VPO"/>
-                    </connections>
-                </button>
-                <button misplaced="YES" id="12375">
-                    <rect key="frame" x="156" y="157" width="188" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="B&amp;W icon and play/pause" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="12376">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="statusItemIconChanged:" target="1114" id="HxN-nP-mqP"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="12392"/>
-                    </connections>
-                </button>
-                <button misplaced="YES" id="sIX-RA-vSL">
-                    <rect key="frame" x="156" y="179" width="188" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="Color Hermes icon only" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="statusItemIconChanged:" target="1114" id="ov7-Re-3On"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="qig-Tq-jcU"/>
-                    </connections>
-                </button>
-                <button misplaced="YES" id="28c-Js-E8a">
-                    <rect key="frame" x="156" y="135" width="188" height="18"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="radio" title="Album art and play/pause" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
-                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="statusItemIconChanged:" target="1114" id="80F-jh-SdH"/>
-                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
-                    </connections>
-                </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" id="cu3-Mz-UFU">
-                    <rect key="frame" x="36" y="203" width="118" height="17"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Show in menu bar:" id="eNj-oy-3dc">
-                        <font key="font" metaFont="system"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                </textField>
                 <popUpButton verticalHuggingPriority="750" misplaced="YES" id="1864">
                     <rect key="frame" x="164" y="39" width="100" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -1499,20 +1511,25 @@ DQ
                         <binding destination="1000" name="selectedTag" keyPath="updateCheckInterval" id="1878"/>
                     </connections>
                 </popUpButton>
-                <button misplaced="YES" id="2369">
-                    <rect key="frame" x="18" y="89" width="283" height="18"/>
+                <button id="vFC-lf-ywe">
+                    <rect key="frame" x="18" y="109" width="286" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <buttonCell key="cell" type="check" title="Keep Hermes on top of all other windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2370">
+                    <buttonCell key="cell" type="check" title="Use album art with play/pause as Dock icon" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="BzU-zr-sam">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="updateAlwaysOnTop:" target="494" id="2374"/>
-                        <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
+                        <action selector="updateDockIcon:" target="494" id="Gh7-uM-DAG"/>
+                        <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="GD4-SH-0Hf">
+                            <dictionary key="options">
+                                <string key="NSValueTransformerName">NSNegateBoolean</string>
+                            </dictionary>
+                        </binding>
+                        <binding destination="979" name="value" keyPath="values.dockIconAlbumArt" id="rtR-xD-b8I"/>
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="34" y="123"/>
+            <point key="canvasLocation" x="34" y="125"/>
         </customView>
         <customView id="1616" userLabel="Playback Preferences View">
             <rect key="frame" x="0.0" y="0.0" width="362" height="405"/>
@@ -1889,7 +1906,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Likes table" headerView="1774" id="1699">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -1938,7 +1955,7 @@ DQ
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" columnResizing="NO" autosaveName="Edit Station Dislikes table" headerView="1773" id="1711">
-                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="19"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="198" height="135"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <size key="intercellSpacing" width="3" height="2"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

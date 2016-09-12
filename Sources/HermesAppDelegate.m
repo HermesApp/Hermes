@@ -69,13 +69,9 @@
   NSMenuItem *menuItem;
   Song *song = [[playback playing] playingSong];
   if (song != nil) {
-    [menu addItemWithTitle:@"Now Playing" action:nil keyEquivalent:@""];;
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song title]]
-                    action:nil
-             keyEquivalent:@""];
-    [menu addItemWithTitle:[NSString stringWithFormat:@"   %@", [song artist]]
-                    action:nil
-             keyEquivalent:@""];
+    [menu addItemWithTitle:nowPlaying.title action:nil keyEquivalent:@""];;
+    [menu addItemWithTitle:song.title action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:song.artist action:nil keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
   }
   NSString *title;
@@ -101,6 +97,10 @@
   [menuItem setTarget:playback];
   menuItem = [menu addItemWithTitle:@"Skip to Next Song"
                              action:@selector(next:)
+                      keyEquivalent:@""];
+  [menuItem setTarget:playback];
+  menuItem = [menu addItemWithTitle:@"Tired of Song"
+                             action:@selector(tired:)
                       keyEquivalent:@""];
   [menuItem setTarget:playback];
   return menu;
@@ -509,6 +509,7 @@
                                                   launchIdentifier:nil];
       [NSApp activateIgnoringOtherApps:YES];
     }
+    [self updateDockIcon:sender];
     return;
   }
 
@@ -543,13 +544,58 @@
   [self updateStatusItem:sender];
 }
 
-- (IBAction) updateStatusItem:(id)sender {
-  if (!PREF_KEY_BOOL(STATUS_BAR_ICON))
-    return;
+- (NSImage *) buildPlayPauseAlbumArtImage:(NSSize)size {
+    
+  NSImage *icon;
 
+  // Build base image
+  NSData *data = [playback lastImg];
+  icon = (data) ? [[NSImage alloc] initWithData:data] :
+                  [NSImage imageNamed:@"missing-album"];
+  [icon setSize:size];
+  
+  // draw the overlay image (if there is album art)
+  if (data) {
+    NSImage *overlay = [NSImage imageNamed:(playback.playing.isPlaying) ?
+                        @"play" : @"pause"];
+    
+    int playPauseSize = size.width * 2 / 3;
+    int playPauseOffset = (size.width - playPauseSize)/ 2;
+    
+    NSSize overlaySize = {.width = playPauseSize, .height = playPauseSize};
+    [overlay setSize:overlaySize];
+  
+    [icon lockFocus];
+    [overlay drawInRect:NSMakeRect(playPauseOffset, playPauseOffset,
+                                   [overlay size].width, [overlay size].height)
+               fromRect:NSZeroRect
+              operation:NSCompositeSourceOver
+               fraction:1.0];
+    [icon unlockFocus];
+  }
+  
+  return icon;
+}
+
+- (IBAction) updateDockIcon:(id)sender {
+  if (PREF_KEY_BOOL(DOCK_ICON_ALBUM_ART)) {
+    NSSize size = {.width = 1024, .height = 1024};
+    [NSApp setApplicationIconImage:[self buildPlayPauseAlbumArtImage:size]];
+  } else {
+    [NSApp setApplicationIconImage:[NSImage imageNamed:@"pandora"]];
+  }
+}
+
+- (IBAction) updateStatusItem:(id)sender {
+  
+  if (!PREF_KEY_BOOL(STATUS_BAR_ICON)) {
+    [self updateDockIcon:sender];
+    return;
+  }
+  
   NSImage *icon;
   NSSize size = {.width = 18, .height = 18};
-  
+
   if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
     
     icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
@@ -558,30 +604,11 @@
     
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     
-    // Build base image
-    NSData *data = [playback lastImg];
-    icon = (data) ? [[NSImage alloc] initWithData:data] :
-                    [NSImage imageNamed:@"missing-album"];
-    [icon setSize:size];
-    
-    // draw the overlay image (if there is album art)
-    if (data) {
-      NSImage *overlay = [NSImage imageNamed:(playback.playing.isPlaying) ?
-                          @"play" : @"pause"];
-      NSSize overlaySize = {.width = 12, .height = 12};
-      [overlay setSize:overlaySize];
-    
-      [icon lockFocus];
-      [overlay drawInRect:NSMakeRect(3, 3, [overlay size].width, [overlay size].height)
-                 fromRect:NSZeroRect
-                operation:NSCompositeSourceOver
-                 fraction:1.0];
-      [icon unlockFocus];
-    }
+    icon = [self buildPlayPauseAlbumArtImage:size];
     
   } else {
     // Use color application image
-    icon = [[NSApp applicationIconImage] copy];
+    icon = [NSImage imageNamed:@"pandora"];
   }
 
   // Set image size, then set status bar icon

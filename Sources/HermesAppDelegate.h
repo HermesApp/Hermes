@@ -67,6 +67,7 @@
 
 - (NSString*) getSavedUsername;
 - (NSString*) getSavedPassword;
+- (NSImage*) buildPlayPauseAlbumArtImage:(NSSize)size;
 
 - (void) tryRetry;
 - (void) handleDrawer;
