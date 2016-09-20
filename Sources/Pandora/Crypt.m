@@ -33,8 +33,8 @@ NSData* PandoraDecryptString(NSString *string, NSString *decryptionKey) {
                      (__bridge void *)mut);
 
   const char *bytes = [string cStringUsingEncoding:NSASCIIStringEncoding];
-  int len = [string lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
-  for (int i = 0; i < len; i += 2) {
+  NSUInteger len = [string lengthOfBytesUsingEncoding:NSASCIIStringEncoding];
+  for (NSUInteger i = 0; i < len; i += 2) {
     Blowfish_ecb_feed(&ctx, h2i[(int) bytes[i]] * 16 + h2i[(int) bytes[i + 1]]);
   }
   Blowfish_ecb_stop(&ctx);
@@ -52,8 +52,8 @@ NSData* PandoraEncryptData(NSData *data, NSString *encryptionKey) {
                      (__bridge void*)mut);
 
   const char *bytes = [data bytes];
-  int len = [data length];
-  for (int i = 0; i < len; i++) {
+  NSUInteger len = [data length];
+  for (NSUInteger i = 0; i < len; i++) {
     Blowfish_ecb_feed(&ctx, bytes[i]);
   }
   Blowfish_ecb_stop(&ctx);

@@ -78,7 +78,7 @@
   }
   [aCoder encodeFloat:seek forKey:@"lastKnownSeekTime"];
   [aCoder encodeFloat:volume forKey:@"volume"];
-  [aCoder encodeInt32:_created forKey:@"created"];
+  [aCoder encodeInt32:(int32_t)_created forKey:@"created"]; // XXX truncated?
   [aCoder encodeObject:songs forKey:@"songs"];
   [aCoder encodeObject:urls forKey:@"urls"];
   [aCoder encodeObject:[self playing] forKey:@"playingURL"];

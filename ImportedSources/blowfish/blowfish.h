@@ -27,7 +27,7 @@ void Blowfish_decipher (const struct blf_ctx *c,
 
 /* Initialize the cipher by calculating the subkeys from the key. */
 void Blowfish_initialize (struct blf_ctx *c,
-                          const unsigned char key[], int key_bytes);
+                          const unsigned char key[], unsigned long key_bytes);
 
 /* --- Blowfish used in Electronic Code Book (ECB) mode --- */
 
@@ -50,7 +50,7 @@ struct blf_ecb_ctx {
  * encrypting or decrypting, what key is to be used, and what callback
  * should be called for every byte produced. */
 void Blowfish_ecb_start (struct blf_ecb_ctx *c, char encrypt,
-                         const unsigned char key[], int key_bytes,
+                         const unsigned char key[], unsigned long key_bytes,
                          void (* callback) (unsigned char byte,
                                             void *user_data),
                          void *user_data);

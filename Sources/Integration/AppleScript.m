@@ -10,7 +10,7 @@
 #import "PlaybackController.h"
 #import "StationsController.h"
 
-int savedVolume = 0;
+NSInteger savedVolume = 0;
 
 @implementation PlayCommand
 - (id) performDefaultImplementation {
@@ -58,43 +58,43 @@ int savedVolume = 0;
 @implementation RaiseVolumeCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [HMSAppDelegate playback];
-  int volume = [playback getIntVolume];
-  [playback setIntVolume:volume + 7];
-  NSLogd(@"Raised volume to: %d", [playback getIntVolume]);
+  NSInteger volume = [playback integerVolume];
+  [playback setIntegerVolume:volume + 7];
+  NSLogd(@"Raised volume to: %ld", (long)[playback integerVolume]);
   return self;
 }
 @end
 @implementation LowerVolumeCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [HMSAppDelegate playback];
-  int volume = [playback getIntVolume];
-  [playback setIntVolume:volume - 7];
-  NSLogd(@"Lowered volume to: %d", [playback getIntVolume]);
+  NSInteger volume = [playback integerVolume];
+  [playback setIntegerVolume:volume - 7];
+  NSLogd(@"Lowered volume to: %ld", (long)[playback integerVolume]);
   return self;
 }
 @end
 @implementation FullVolumeCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [HMSAppDelegate playback];
-  [playback setIntVolume:100];
-  NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
+  [playback setIntegerVolume:100];
+  NSLogd(@"Changed volume to: %ld", (long)[playback integerVolume]);
   return self;
 }
 @end
 @implementation MuteCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [HMSAppDelegate playback];
-  savedVolume = [playback getIntVolume];
-  [playback setIntVolume:0];
-  NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
+  savedVolume = [playback integerVolume];
+  [playback setIntegerVolume:0];
+  NSLogd(@"Changed volume to: %ld", (long)[playback integerVolume]);
   return self;
 }
 @end
 @implementation UnmuteCommand
 - (id) performDefaultImplementation {
   PlaybackController *playback = [HMSAppDelegate playback];
-  [playback setIntVolume:savedVolume];
-  NSLogd(@"Changed volume to: %d", [playback getIntVolume]);
+  [playback setIntegerVolume:savedVolume];
+  NSLogd(@"Changed volume to: %ld", (long)[playback integerVolume]);
   return self;
 }
 @end
@@ -110,12 +110,12 @@ int savedVolume = 0;
 
 - (NSNumber*) volume {
   PlaybackController *playback = [HMSAppDelegate playback];
-  return @([playback getIntVolume]);
+  return @([playback integerVolume]);
 }
 
 - (void) setVolume: (NSNumber*) vol {
   PlaybackController *playback = [HMSAppDelegate playback];
-  [playback setIntVolume:[vol intValue]];
+  [playback setIntegerVolume:[vol intValue]];
 }
 
 - (int) playbackState {

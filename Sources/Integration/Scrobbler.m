@@ -69,7 +69,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
       return;
     }
 
-    NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:nil error:&error];
+    NSDictionary *object = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
 
     /* If this is a Last.fm error, however, then this is a serious issue which
      * may need to be addressed manually, so do display a dialog here */

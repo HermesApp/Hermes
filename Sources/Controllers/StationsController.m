@@ -83,7 +83,7 @@
 }
 
 - (Station*) selectedStation {
-  int row = [stationsTable selectedRow];
+  NSInteger row = [stationsTable selectedRow];
 
   if (row < 0 || (unsigned) row >= [[[self pandora] stations] count]) {
     return nil;

@@ -53,8 +53,8 @@
 
 - (BOOL) play;
 - (BOOL) pause;
-- (void) setIntVolume: (int) volume;
-- (int) getIntVolume;
+- (void) setIntegerVolume: (NSInteger) volume;
+- (NSInteger) integerVolume;
 - (void) pauseOnScreensaverStart: (NSNotification *) aNotification;
 - (void) playOnScreensaverStop: (NSNotification *) aNotification;
 - (void) pauseOnScreenLock: (NSNotification *) aNotification;

@@ -342,9 +342,9 @@ static const unsigned long init_S[4][256] = {
 
 void
 Blowfish_initialize (struct blf_ctx *c,
-                     const unsigned char key[], int key_bytes)
+                     const unsigned char key[], unsigned long key_bytes)
 {
-  int i, j, k;
+  unsigned long i, j, k;
   unsigned long data, datal, datar;
 
   for ( i=0 ; i<NBROUNDS+2 ; i++ )
@@ -386,7 +386,7 @@ Blowfish_initialize (struct blf_ctx *c,
 
 void
 Blowfish_ecb_start (struct blf_ecb_ctx *c, char encrypt,
-                    const unsigned char key[], int key_bytes,
+                    const unsigned char key[], unsigned long key_bytes,
                     void (* callback) (unsigned char byte, void *user_data),
                     void *user_data)
 {

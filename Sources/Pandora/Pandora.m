@@ -653,7 +653,7 @@ static NSString *hierrs[] = {
 
 #pragma mark Sort stations in UI
 
-- (void) sortStations:(int)sort {
+- (void) sortStations:(NSInteger)sort {
   [stations sortUsingComparator:
    ^NSComparisonResult (Station *s1, Station *s2) {
      // keep Shuffle/QuickMix at the top of the list
@@ -848,7 +848,7 @@ static NSString *hierrs[] = {
   [nsrequest addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   
   /* Create the body */
-  NSData *data = [NSJSONSerialization dataWithJSONObject:request.request options:nil error:nil];
+  NSData *data = [NSJSONSerialization dataWithJSONObject:request.request options:0 error:nil];
   if ([request encrypted]) { data = [self encryptData:data]; }
   [nsrequest setHTTPBody: data];
   
@@ -859,7 +859,7 @@ static NSString *hierrs[] = {
                       /* Parse the JSON if we don't have an error */
                       NSDictionary *dict = nil;
                       if (e == nil) {
-                        dict = [NSJSONSerialization JSONObjectWithData:d options:nil error:&e];
+                        dict = [NSJSONSerialization JSONObjectWithData:d options:0 error:&e];
                       }
                       /* If we still don't have an error, look at the JSON for an error */
                       NSString *err = e == nil ? nil : [e localizedDescription];

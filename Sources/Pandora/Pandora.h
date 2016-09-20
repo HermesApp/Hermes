@@ -269,7 +269,7 @@ typedef void(^PandoraCallback)(NSDictionary*);
 
 #pragma mark Sort stations in UI
 
-- (void) sortStations:(int)sort;
+- (void) sortStations:(NSInteger)sort;
 
 #pragma mark - Song Manipulation
 

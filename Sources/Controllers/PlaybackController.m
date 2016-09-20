@@ -173,12 +173,12 @@ BOOL playOnStart = YES;
 }
 
 - (void) prepareFirst {
-  int saved = [[NSUserDefaults standardUserDefaults]
-                  integerForKey:@"hermes.volume"];
+  NSInteger saved = [[NSUserDefaults standardUserDefaults]
+                     integerForKey:@"hermes.volume"];
   if (saved == 0) {
     saved = 100;
   }
-  [self setIntVolume:saved];
+  [self setIntegerVolume:saved];
 }
 
 - (Pandora*) pandora {
@@ -520,17 +520,17 @@ BOOL playOnStart = YES;
   [[NSWorkspace sharedWorkspace] openURL:url];
 }
 
-- (void) setIntVolume: (int) vol {
+- (void) setIntegerVolume: (NSInteger) vol {
   if (vol < 0) { vol = 0; }
   if (vol > 100) { vol = 100; }
-  [volume setIntValue:vol];
+  [volume setIntegerValue:vol];
   [playing setVolume:vol/100.0];
   [[NSUserDefaults standardUserDefaults] setInteger:vol
                                              forKey:@"hermes.volume"];
 }
 
-- (int) getIntVolume {
-  return [volume intValue];
+- (NSInteger) integerVolume {
+  return [volume integerValue];
 }
 
 - (void) pauseOnScreensaverStart:(NSNotification *)aNotification {
@@ -577,16 +577,16 @@ BOOL playOnStart = YES;
 
 - (IBAction) volumeChanged: (id) sender {
   if (playing) {
-    [self setIntVolume:[volume intValue]];
+    [self setIntegerVolume:[volume intValue]];
   }
 }
 
 - (IBAction)increaseVolume:(id)sender {
-  [self setIntVolume:[self getIntVolume] + 5];
+  [self setIntegerVolume:[self integerVolume] + 5];
 }
 
 - (IBAction)decreaseVolume:(id)sender {
-  [self setIntVolume:[self getIntVolume] - 5];
+  [self setIntegerVolume:[self integerVolume] - 5];
 }
 
 - (IBAction)quickLookArt:(id)sender {

@@ -203,7 +203,7 @@
   URLConnection *conn = [URLConnection connectionForRequest:req
                                           completionHandler:^(NSData *d, NSError *err) {
     if (err == nil) {
-      NSDictionary *object = [NSJSONSerialization JSONObjectWithData:d options:nil error:&err];
+      NSDictionary *object = [NSJSONSerialization JSONObjectWithData:d options:0 error:&err];
       if (err == nil) {
         NSString *url = object[@"url"];
         [spinner setHidden:YES];

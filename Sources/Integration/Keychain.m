@@ -15,23 +15,23 @@ BOOL KeychainSetItem(NSString* username, NSString* password) {
     NULL,
     strlen(KEYCHAIN_SERVICE_NAME),
     KEYCHAIN_SERVICE_NAME,
-    [username length],
+    (UInt32)[username length],
     [username UTF8String],
     NULL,
     NULL,
     &item);
 
   if (result == noErr) {
-    result = SecKeychainItemModifyContent(item, NULL, [password length],
+    result = SecKeychainItemModifyContent(item, NULL, (UInt32)[password length],
                                           [password UTF8String]);
   } else {
     result = SecKeychainAddGenericPassword(
       NULL,
       strlen(KEYCHAIN_SERVICE_NAME),
       KEYCHAIN_SERVICE_NAME,
-      [username length],
+      (UInt32)[username length],
       [username UTF8String],
-      [password length],
+      (UInt32)[password length],
       [password UTF8String],
       NULL);
   }
@@ -49,7 +49,7 @@ NSString *KeychainGetPassword(NSString* username) {
     NULL,
     strlen(KEYCHAIN_SERVICE_NAME),
     KEYCHAIN_SERVICE_NAME,
-    [username length],
+    (UInt32)[username length],
     [username UTF8String],
     &length,
     &passwordData,

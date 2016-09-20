@@ -7,7 +7,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                                         CFStreamEventType eventType,
                                         void* _conn) {
   UInt8 buf[1024];
-  int len;
+  CFIndex len;
   URLConnection* conn = (__bridge URLConnection*) _conn;
   conn->events++;
 
@@ -178,9 +178,9 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
       host, kCFStreamPropertyHTTPProxyHost,
-      [NSNumber numberWithInt:port], kCFStreamPropertyHTTPProxyPort,
+      [NSNumber numberWithInteger:port], kCFStreamPropertyHTTPProxyPort,
       host, kCFStreamPropertyHTTPSProxyHost,
-      [NSNumber numberWithInt:port], kCFStreamPropertyHTTPSProxyPort,
+      [NSNumber numberWithInteger:port], kCFStreamPropertyHTTPSProxyPort,
       nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
 }
@@ -191,7 +191,7 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
       host, kCFStreamPropertySOCKSProxyHost,
-      [NSNumber numberWithInt:port], kCFStreamPropertySOCKSProxyPort,
+      [NSNumber numberWithInteger:port], kCFStreamPropertySOCKSProxyPort,
       nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertySOCKSProxy, proxySettings);
 }
