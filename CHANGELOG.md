@@ -1,9 +1,11 @@
-# Version 1.2.9 (unreleased)
+# Version 1.3.0 (9/20/16)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.8...HEAD)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.8...v1.3.0)
 
 * [added by @paullj1] Allow skipping songs (if using banners) and liking/disliking songs (if using alerts) from macOS notifications (#273)
 * [added by @paullj1] Optionally show album art and/or track titles in the menu bar (#208, #275)
+* [added by @paullj1] Optionally show album art and play/pause status in the Dock (#275)
+* [added by @paullj1 and @nriley] Display currently playing station in menubar and Dock menu
 * [changed by @paullj1] Make Hermes macOS song notifications look more like iTunes notifications (#273)
 * [changed by @nriley] Simplify and reduce screen space used by main window
 * [fixed by @nriley] Allow the Hermes to appear over fullscreen applications when the Dock icon is hidden
