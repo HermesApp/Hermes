@@ -69,9 +69,9 @@
   NSMenuItem *menuItem;
   Song *song = [[playback playing] playingSong];
   if (song != nil) {
-    [menu addItemWithTitle:nowPlaying.title action:nil keyEquivalent:@""];;
-    [menu addItemWithTitle:song.title action:nil keyEquivalent:@""];
-    [menu addItemWithTitle:song.artist action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:nowPlaying.title action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:[@"   " stringByAppendingString:song.title] action:nil keyEquivalent:@""];
+    [menu addItemWithTitle:[@"   " stringByAppendingString:song.artist] action:nil keyEquivalent:@""];
     [menu addItem:[NSMenuItem separatorItem]];
   }
   NSString *title;
