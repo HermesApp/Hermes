@@ -551,7 +551,7 @@
   [icon setSize:size];
   
   // draw the overlay image (if there is album art)
-  if (data) {
+  if (data && PREF_KEY_BOOL(ALBUM_ART_PLAY_PAUSE)) {
     NSImage *overlay = [NSImage imageNamed:(playback.playing.isPlaying) ?
                         @"play" : @"pause"];
     
@@ -560,8 +560,10 @@
     
     NSSize overlaySize = {.width = playPauseSize, .height = playPauseSize};
     [overlay setSize:overlaySize];
-  
+    
     [icon lockFocus];
+    CGContextSetShadowWithColor([NSGraphicsContext currentContext].CGContext,
+                                CGSizeMake(0, 0), 120, [NSColor whiteColor].CGColor);
     [overlay drawInRect:NSMakeRect(playPauseOffset, playPauseOffset,
                                    [overlay size].width, [overlay size].height)
                fromRect:NSZeroRect
