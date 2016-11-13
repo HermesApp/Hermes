@@ -306,7 +306,7 @@
   NSAlert *alert = [NSAlert new];
   alert.messageText = @"Cannot delete all seeds from a station";
   alert.informativeText = @"A station must always contain at least one seed.";
-  alert.alertStyle = NSWarningAlertStyle;
+  alert.alertStyle = NSAlertStyleWarning;
   alert.icon = [NSImage imageNamed:@"error_icon"];
   [alert beginSheetModalForWindow:window completionHandler:nil];
 
