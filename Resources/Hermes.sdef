@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
 <dictionary title="Hermes Terminology">
+	<suite name="Standard Suite" code="????" description="Common classes and commands for most applications.">
+		<cocoa name="NSCoreSuite"/>
+		<command name="quit" code="aevtquit" description="Quit an application.">
+			<cocoa class="NSQuitCommand"/>
+		</command>
+		<command name="count" code="corecnte" description="Return the number of elements of a particular class within an object.">
+			<cocoa class="NSCountCommand"/>
+			<direct-parameter description="the object whose elements are to be counted" type="specifier"/>
+			<parameter name="each" code="kocl" description="The class of objects to be counted." type="type" optional="yes">
+				<cocoa key="ObjectClass"/>
+			</parameter>
+			<result description="the number of elements" type="integer"/>
+		</command>
+		<command name="exists" code="coredoex" description="Verify if an object exists.">
+			<cocoa class="NSExistsCommand"/>
+			<direct-parameter description="the object in question" type="specifier"/>
+			<result description="true if it exists, false if not" type="boolean"/>
+		</command>
+		<!-- "get" is supposed to be hidden. -->
+		<command name="get" code="coregetd" description="Get the data for an object.">
+			<cocoa class="NSGetCommand"/>
+			<direct-parameter type="specifier"/>
+			<result type="any"/>
+		</command>
+		<!-- "set" is supposed to be hidden. -->
+		<command name="set" code="coresetd" description="Set an object&apos;s data.">
+			<cocoa class="NSSetCommand"/>
+			<direct-parameter type="specifier"/>
+			<!-- "set" is supposed to return the fully evaluated "to" data.
+				<result type="any"/>
+				-->
+			<parameter name="to" code="data" description="The new value." type="any">
+				<cocoa key="Value"/>
+			</parameter>
+		</command>
+	</suite>
 	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes and commands.">
 		<enumeration name="player states" code="esta" description="Legal player states">
 			<enumerator name="stopped" code="stop" description="Player is stopped"/>
