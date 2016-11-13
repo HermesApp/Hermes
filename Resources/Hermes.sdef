@@ -54,7 +54,7 @@
 			<property name="playback position" code="ppos" description="The current song’s playback position, in seconds." type="real" access="r"/>
 			<property name="current song duration" code="pdur" description="The duration (length) of the current song, in seconds." type="real" access="r"/>
 			<property name="current station" code="pstn" description="The currently selected Pandora station." type="station"/>
-			<property name="current song" code="psng" description="The currently playing (or paused) Pandora song (WARNING: This is an invalid reference in current versions of Hermes; you must access the current song’s properties individually or as a group directly instead.)" type="song" access="r"/>
+			<property name="current song" code="psng" description="The currently playing (or paused) Pandora song." type="song" access="r"/>
 		</class>
 		<class name="song" code="ctra" description="A Pandora song (track).">
 			<cocoa class="Song"/>

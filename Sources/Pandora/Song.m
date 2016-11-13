@@ -70,12 +70,13 @@
 #pragma mark - Object Specifier
 
 - (NSScriptObjectSpecifier *) objectSpecifier {
-  NSScriptClassDescription *containerClassDesc =
-  [NSScriptClassDescription classDescriptionForClass:[Station class]];
+  NSScriptClassDescription *appDesc =
+  [NSScriptClassDescription classDescriptionForClass:[NSApp class]];
 
-  return [[NSNameSpecifier alloc]
-          initWithContainerClassDescription:containerClassDesc
-          containerSpecifier:nil key:@"songs" name:[self title]];
+  // currently, the only way to get a reference to a song
+  // - if the playback history gets exposed, then publish it differently
+  return [[NSPropertySpecifier alloc]
+          initWithContainerClassDescription:appDesc containerSpecifier:nil key:@"currentSong"];
 }
 
 #pragma mark - Reference to station
