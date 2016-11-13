@@ -6,11 +6,7 @@
  * This class is meant to have one instance of itself during runtime.
  */
 #include <netinet/in.h>
-#include <string.h>
 
-#import <CoreFoundation/CFRunLoop.h>
-
-#import "HermesAppDelegate.h"
 #import "NetworkConnection.h"
 
 @implementation NetworkConnection

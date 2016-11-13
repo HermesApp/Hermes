@@ -3,7 +3,6 @@
  * @brief Implementation of editing stations
  */
 
-#import "HermesAppDelegate.h"
 #import "ImageLoader.h"
 #import "Pandora/Station.h"
 #import "StationController.h"

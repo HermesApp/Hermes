@@ -26,7 +26,6 @@
 
 #import "AudioStreamer.h"
 
-#define BitRateEstimationMaxPackets 5000
 #define BitRateEstimationMinPackets 50
 
 #define PROXY_SYSTEM 0

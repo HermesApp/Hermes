@@ -1,6 +1,5 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
-#import "HermesAppDelegate.h"
 #import "PreferencesController.h"
 
 @implementation PreferencesController

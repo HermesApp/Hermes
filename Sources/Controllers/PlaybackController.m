@@ -11,11 +11,9 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "Integration/Growler.h"
-#import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "ImageLoader.h"
 #import "PlaybackController.h"
-#import "Integration/Scrobbler.h"
 #import "StationsController.h"
 #import "PreferencesController.h"
 #import "Notifications.h"
