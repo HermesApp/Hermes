@@ -38,7 +38,7 @@
 		</command>
 	</suite>
 	<suite name="Hermes Suite" code="HeRM" description="Hermes specific classes and commands.">
-		<enumeration name="player states" code="esta" description="Legal player states">
+		<enumeration name="player states" code="esta" description="Hermes playback states">
 			<enumerator name="stopped" code="stop" description="Player is stopped"/>
 			<enumerator name="playing" code="play" description="Player is playing"/>
 			<enumerator name="paused" code="paus" description="Player is paused"/>
