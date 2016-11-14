@@ -11,7 +11,6 @@
 #import "Growler.h"
 #import "PreferencesController.h"
 #import "PlaybackController.h"
-#import "Pandora/Song.h"
 
 @implementation Growler
 

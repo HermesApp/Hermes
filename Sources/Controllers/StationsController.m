@@ -1,12 +1,9 @@
 #import "FileReader.h"
-#import "HermesAppDelegate.h"
-#import "Pandora.h"
 #import "Pandora/Station.h"
 #import "PlaybackController.h"
 #import "PreferencesController.h"
 #import "StationController.h"
 #import "StationsController.h"
-#import "HermesAppDelegate.h"
 #import "Notifications.h"
 
 #define SORT_NAME 0
@@ -549,7 +546,7 @@
 - (IBAction)editSelected:(id)sender {
   Station *s = [self selectedStation];
   if (s == nil || s.isQuickMix) return;
-  StationController *c = [(HermesAppDelegate*)HMSAppDelegate station];
+  StationController *c = [HMSAppDelegate station];
   [c editStation:s];
 }
 
