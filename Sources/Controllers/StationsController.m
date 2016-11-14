@@ -527,7 +527,7 @@
   alert.messageText = [NSString stringWithFormat:@"Are you sure you want to permanently delete the station “%@”?", selected.name];
   [alert addButtonWithTitle:@"Cancel"];
   [alert addButtonWithTitle:@"Delete"];
-  alert.alertStyle = NSWarningAlertStyle;
+  alert.alertStyle = NSAlertStyleWarning;
   alert.icon = [NSImage imageNamed:@"error_icon"];
 
   [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:^(NSModalResponse returnCode) {

@@ -146,7 +146,7 @@ BOOL playOnStart = YES;
 /* see https://github.com/nevyn/SPMediaKeyTap */
 - (void) mediaKeyTap:(SPMediaKeyTap*)keyTap
       receivedMediaKeyEvent:(NSEvent*)event {
-  assert([event type] == NSSystemDefined &&
+  assert([event type] == NSEventTypeSystemDefined &&
          [event subtype] == SPSystemDefinedEventMediaKeys);
 
   int keyCode = (([event data1] & 0xFFFF0000) >> 16);
