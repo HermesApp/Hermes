@@ -11,11 +11,9 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "Integration/Growler.h"
-#import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "ImageLoader.h"
 #import "PlaybackController.h"
-#import "Integration/Scrobbler.h"
 #import "StationsController.h"
 #import "PreferencesController.h"
 #import "Notifications.h"
@@ -146,7 +144,7 @@ BOOL playOnStart = YES;
 /* see https://github.com/nevyn/SPMediaKeyTap */
 - (void) mediaKeyTap:(SPMediaKeyTap*)keyTap
       receivedMediaKeyEvent:(NSEvent*)event {
-  assert([event type] == NSSystemDefined &&
+  assert([event type] == NSEventTypeSystemDefined &&
          [event subtype] == SPSystemDefinedEventMediaKeys);
 
   int keyCode = (([event data1] & 0xFFFF0000) >> 16);

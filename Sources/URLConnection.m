@@ -176,12 +176,12 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                  host:(NSString*)host
                  port:(NSInteger)port {
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-    [NSMutableDictionary dictionaryWithObjectsAndKeys:
-      host, kCFStreamPropertyHTTPProxyHost,
-      [NSNumber numberWithInteger:port], kCFStreamPropertyHTTPProxyPort,
-      host, kCFStreamPropertyHTTPSProxyHost,
-      [NSNumber numberWithInteger:port], kCFStreamPropertyHTTPSProxyPort,
-      nil];
+          [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                  host, kCFStreamPropertyHTTPProxyHost,
+                  @(port), kCFStreamPropertyHTTPProxyPort,
+                  host, kCFStreamPropertyHTTPSProxyHost,
+                  @(port), kCFStreamPropertyHTTPSProxyPort,
+                          nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
 }
 
@@ -189,10 +189,10 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
                  host:(NSString*)host
                  port:(NSInteger)port {
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-    [NSMutableDictionary dictionaryWithObjectsAndKeys:
-      host, kCFStreamPropertySOCKSProxyHost,
-      [NSNumber numberWithInteger:port], kCFStreamPropertySOCKSProxyPort,
-      nil];
+          [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                  host, kCFStreamPropertySOCKSProxyHost,
+                  @(port), kCFStreamPropertySOCKSProxyPort,
+                          nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertySOCKSProxy, proxySettings);
 }
 

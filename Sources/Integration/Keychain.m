@@ -7,8 +7,6 @@
 
 #import "Keychain.h"
 
-#import <Security/Security.h>
-
 BOOL KeychainSetItem(NSString* username, NSString* password) {
   SecKeychainItemRef item = nil;
   OSStatus result = SecKeychainFindGenericPassword(

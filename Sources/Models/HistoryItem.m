@@ -9,8 +9,6 @@
 #import "HistoryItem.h"
 #import "HistoryView.h"
 #import "ImageLoader.h"
-#import "Pandora.h"
-#import "Pandora/Song.h"
 
 @implementation HistoryItem
 

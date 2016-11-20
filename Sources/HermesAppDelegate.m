@@ -8,19 +8,15 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
 #import "AuthController.h"
-#import "Integration/Growler.h"
-#import "HermesAppDelegate.h"
 #import "HistoryController.h"
 #import "Integration/Keychain.h"
 #import "PlaybackController.h"
 #import "PreferencesController.h"
-#import "Integration/Scrobbler.h"
 #import "StationController.h"
 #import "StationsController.h"
 #import "Notifications.h"
 
 // strftime_l()
-#include <time.h>
 #include <xlocale.h>
 
 #define HERMES_LOG_DIRECTORY_PATH @"~/Library/Logs/Hermes/"

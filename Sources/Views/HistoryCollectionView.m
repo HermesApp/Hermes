@@ -7,7 +7,6 @@
 //
 
 #import "HistoryCollectionView.h"
-#import "HermesAppDelegate.h"
 #import "PlaybackController.h"
 
 @implementation HistoryCollectionView

@@ -6,13 +6,8 @@
  * documented here: http://6xq.net/playground/pandora-apidoc/json/
  */
 
-#include <string.h>
-
 #import "FMEngine/NSString+FMEngine.h"
-#import "HermesAppDelegate.h"
-#import "Pandora.h"
 #import "Pandora/Crypt.h"
-#import "Pandora/Song.h"
 #import "Pandora/Station.h"
 #import "PreferencesController.h"
 #import "URLConnection.h"
@@ -296,7 +291,7 @@ static NSString *hierrs[] = {
                         @"password":    self.device[kPandoraDevicePassword],
                         @"deviceModel": self.device[kPandoraDeviceDeviceID],
                         @"version":     PANDORA_API_VERSION,
-                        @"includeUrls": [NSNumber numberWithBool:TRUE]
+                        @"includeUrls": @TRUE
                         };
   request.method    = @"auth.partnerLogin";
   request.encrypted = FALSE;
@@ -320,7 +315,7 @@ static NSString *hierrs[] = {
     NSNumber *subscriberStatus = respDict[@"result"][@"isSubscriber"];
     if (subscriberStatus == nil) {
       NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
-      self.cachedSubscriberStatus = [NSNumber numberWithBool:NO];
+      self.cachedSubscriberStatus = @NO;
     } else {
       self.cachedSubscriberStatus = subscriberStatus;
     }
@@ -565,7 +560,7 @@ static NSString *hierrs[] = {
 - (BOOL) fetchStationInfo:(Station *)station {
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [station token];
-  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
+  d[@"includeExtendedAttributes"] = @TRUE;
   
   PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
   [req setRequest:d];
@@ -704,7 +699,7 @@ static NSString *hierrs[] = {
   
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [[song station] token];
-  d[@"includeExtendedAttributes"] = [NSNumber numberWithBool:TRUE];
+  d[@"includeExtendedAttributes"] = @TRUE;
   
   PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
   [req setRequest:d];
@@ -741,7 +736,7 @@ static NSString *hierrs[] = {
 #pragma mark - syncTime
 
 - (NSNumber*) syncTimeNum {
-  return [NSNumber numberWithLongLong: sync_time + ([self time] - start_time)];
+  return @(sync_time + ([self time] - start_time));
 }
 
 - (int64_t) time {
