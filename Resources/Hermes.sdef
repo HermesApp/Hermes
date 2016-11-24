@@ -3,9 +3,6 @@
 <dictionary title="Hermes Terminology">
 	<suite name="Standard Suite" code="????" description="Common classes and commands for most applications.">
 		<cocoa name="NSCoreSuite"/>
-		<command name="quit" code="aevtquit" description="Quit an application.">
-			<cocoa class="NSQuitCommand"/>
-		</command>
 		<command name="count" code="corecnte" description="Return the number of elements of a particular class within an object.">
 			<cocoa class="NSCountCommand"/>
 			<direct-parameter description="the object whose elements are to be counted" type="specifier"/>
