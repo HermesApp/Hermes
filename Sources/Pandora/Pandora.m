@@ -291,7 +291,7 @@ static NSString *hierrs[] = {
                         @"password":    self.device[kPandoraDevicePassword],
                         @"deviceModel": self.device[kPandoraDeviceDeviceID],
                         @"version":     PANDORA_API_VERSION,
-                        @"includeUrls": @TRUE
+                        @"includeUrls": @YES
                         };
   request.method    = @"auth.partnerLogin";
   request.encrypted = FALSE;
@@ -560,7 +560,7 @@ static NSString *hierrs[] = {
 - (BOOL) fetchStationInfo:(Station *)station {
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [station token];
-  d[@"includeExtendedAttributes"] = @TRUE;
+  d[@"includeExtendedAttributes"] = @YES;
   
   PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
   [req setRequest:d];
@@ -699,7 +699,7 @@ static NSString *hierrs[] = {
   
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"stationToken"] = [[song station] token];
-  d[@"includeExtendedAttributes"] = @TRUE;
+  d[@"includeExtendedAttributes"] = @YES;
   
   PandoraRequest *req = [self defaultRequestWithMethod:@"station.getStation"];
   [req setRequest:d];
