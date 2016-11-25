@@ -27,6 +27,7 @@
 #define SORT_STATIONS              @"sortStations"
 #define GROWL_TYPE                 @"notificationType"
 #define DOCK_ICON_ALBUM_ART        @"dockIconAlbumArt"
+#define ALBUM_ART_PLAY_PAUSE       @"albumArtPlayPause"
 #define STATUS_BAR_ICON            @"statusBarIcon"
 #define STATUS_BAR_ICON_BW         @"statusBarIconBlackWhite"
 #define STATUS_BAR_ICON_ALBUM      @"statusBarIconAlbumArt"
