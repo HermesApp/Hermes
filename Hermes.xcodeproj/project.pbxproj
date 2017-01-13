@@ -40,6 +40,7 @@
 		E1C1EC121A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */; };
 		E1C1EC131A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */; };
 		E1D0A73A17E5630200429DE0 /* StationsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0A73917E5630100429DE0 /* StationsTableView.m */; };
+		E1D68B0A1E295DB50074ED7F /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1D68B091E295DB50074ED7F /* MediaPlayer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FA04AE96144365D900819310 /* HistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FA04AE95144365D900819310 /* HistoryItem.m */; };
 		FA04AE9C14438F1000819310 /* thumbdown.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9A14438F1000819310 /* thumbdown.png */; };
 		FA04AE9D14438F1000819310 /* thumbup.png in Resources */ = {isa = PBXBuildFile; fileRef = FA04AE9B14438F1000819310 /* thumbup.png */; };
@@ -171,6 +172,7 @@
 		E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Pandora-Menu-Dark-Pause.pdf"; sourceTree = "<group>"; };
 		E1D0A73817E5630100429DE0 /* StationsTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StationsTableView.h; path = Views/StationsTableView.h; sourceTree = "<group>"; };
 		E1D0A73917E5630100429DE0 /* StationsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StationsTableView.m; path = Views/StationsTableView.m; sourceTree = "<group>"; };
+		E1D68B091E295DB50074ED7F /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		FA04AE94144365D900819310 /* HistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HistoryItem.h; path = Models/HistoryItem.h; sourceTree = "<group>"; };
 		FA04AE95144365D900819310 /* HistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HistoryItem.m; path = Models/HistoryItem.m; sourceTree = "<group>"; };
 		FA04AE9A14438F1000819310 /* thumbdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbdown.png; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 				FA228ECB137045F40070141A /* Security.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				FAD42F8813678F7500E935CA /* Sparkle.framework in Frameworks */,
+				E1D68B0A1E295DB50074ED7F /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,6 +351,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E1D68B091E295DB50074ED7F /* MediaPlayer.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);

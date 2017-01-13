@@ -6,6 +6,7 @@
  */
 
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 #import "AuthController.h"
 #import "HistoryController.h"
@@ -224,6 +225,26 @@
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
+  
+  // XXX Can we do this instead of registering media keys in 10.12?
+  if ([MPRemoteCommandCenter class] != nil) {
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    commandCenter.previousTrackCommand.enabled = NO;
+    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      return [playback play] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
+    }];
+    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      return [playback pause] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
+    }];
+    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [playback next:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [playback playpause:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+  }
 
   NSString *savedUsername = [self getSavedUsername];
   NSString *savedPassword = [self getSavedPassword];
@@ -663,13 +684,38 @@
 
 - (void)playbackStateChanged:(NSNotification*) not {
   AudioStreamer *stream = [not object];
-  if ([stream isPlaying]) {
+  BOOL streamIsPlaying = [stream isPlaying];
+  if (streamIsPlaying) {
     [playbackState setTitle:@"Pause"];
   } else {
     [playbackState setTitle:@"Play"];
   }
   [self updateWindowTitle];
   [self updateStatusItem:nil];
+
+  if ([MPNowPlayingInfoCenter class]) {
+    MPNowPlayingInfoCenter *nowPlayingInfoCenter = [MPNowPlayingInfoCenter defaultCenter];
+    if (streamIsPlaying) {
+      Station *playing = [playback playing];
+      Song *song = [playing playingSong];
+      double progress = 0;
+      [playing progress:&progress];
+      nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStatePlaying;
+      nowPlayingInfoCenter.nowPlayingInfo = @{
+        MPNowPlayingInfoPropertyMediaType: @(MPNowPlayingInfoMediaTypeAudio),
+        MPMediaItemPropertyArtist: song.artist,
+        MPMediaItemPropertyAlbumTitle: song.album,
+        MPMediaItemPropertyTitle: song.title,
+        MPNowPlayingInfoPropertyElapsedPlaybackTime: @(progress),
+        MPNowPlayingInfoPropertyPlaybackRate: @(1.)
+      };
+    } else if ([stream isPaused])
+      nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStatePaused;
+    else if ([stream isDone])
+      nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStateStopped;
+    else
+      nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStateUnknown;
+  }
 }
 
 - (void) receiveSleepNote: (NSNotification*) note {
