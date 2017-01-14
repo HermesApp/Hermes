@@ -671,8 +671,9 @@
     if (streamIsPlaying) {
       Station *playing = [playback playing];
       Song *song = [playing playingSong];
-      double progress = 0;
+      double progress = 0, duration = 0;
       [playing progress:&progress];
+      [playing duration:&duration];
       nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStatePlaying;
       nowPlayingInfoCenter.nowPlayingInfo = @{
         MPNowPlayingInfoPropertyMediaType: @(MPNowPlayingInfoMediaTypeAudio),
@@ -680,7 +681,8 @@
         MPMediaItemPropertyAlbumTitle: song.album,
         MPMediaItemPropertyTitle: song.title,
         MPNowPlayingInfoPropertyElapsedPlaybackTime: @(progress),
-        MPNowPlayingInfoPropertyPlaybackRate: @(1.)
+        MPNowPlayingInfoPropertyPlaybackRate: @(1.),
+        @"playbackDuration": @(duration) // XXX MPMediaItemPropertyPlaybackDuration not exposed in 10.12 SDK
       };
     } else if ([stream isPaused])
       nowPlayingInfoCenter.playbackState = MPNowPlayingPlaybackStatePaused;
