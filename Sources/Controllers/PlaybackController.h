@@ -5,6 +5,7 @@
 #import "Integration/Scrobbler.h"
 
 @class Song;
+@class MPRemoteCommandCenter;
 
 @interface PlaybackController : NSObject <QLPreviewPanelDataSource, QLPreviewPanelDelegate, QLPreviewItem> {
   IBOutlet NSProgressIndicator *songLoadingProgress;
@@ -29,6 +30,7 @@
   IBOutlet NSSlider *volume;
   IBOutlet NSToolbar *toolbar;
 
+  MPRemoteCommandCenter *commandCenter;
   NSTimer *progressUpdateTimer;
   BOOL scrobbleSent;
   NSString *lastImgSrc;

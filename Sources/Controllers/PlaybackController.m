@@ -9,6 +9,7 @@
  */
 
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 #import "Integration/Growler.h"
 #import "HistoryController.h"
@@ -118,6 +119,43 @@ BOOL playOnStart = YES;
   
   // prevent dragging the progress slider
   [playbackProgress setEnabled:NO];
+
+  // Media keys - no longer need SPMediaKeyTap in 10.12.2 and later
+  if ([MPRemoteCommandCenter class] != nil) {
+    commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    // commandCenter.previousTrackCommand.enabled = NO;
+    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      return [self play] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
+    }];
+    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      return [self pause] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
+    }];
+    // XXX Doesn't show up in the Touch Bar as of 10.12.2 unless there is a previousTrackCommand registered
+    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [self next:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [self playpause:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.likeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [self like:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+    [commandCenter.dislikeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+      [self dislike:self];
+      return MPRemoteCommandHandlerStatusSuccess;
+    }];
+  }
+#ifndef DEBUG
+  else {
+   mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:self];
+    if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
+      [mediaKeyTap startWatchingMediaKeys];
+    }
+  }
+#endif
 }
 
 - (void)showToolbar {
@@ -333,8 +371,12 @@ BOOL playOnStart = YES;
 
   if ([[song nrating] intValue] == 1) {
     [toolbar setSelectedItemIdentifier:[like itemIdentifier]];
+    if (commandCenter != nil)
+      commandCenter.likeCommand.active = true;
   } else {
     [toolbar setSelectedItemIdentifier:nil];
+    if (commandCenter != nil)
+      commandCenter.likeCommand.active = false;
   }
 
   [[HMSAppDelegate history] addSong:song];

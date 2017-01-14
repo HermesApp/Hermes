@@ -225,26 +225,6 @@
   [[[NSWorkspace sharedWorkspace] notificationCenter] addObserver: self
       selector: @selector(receiveSleepNote:)
       name: NSWorkspaceWillSleepNotification object: NULL];
-  
-  // XXX Can we do this instead of registering media keys in 10.12?
-  if ([MPRemoteCommandCenter class] != nil) {
-    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-    commandCenter.previousTrackCommand.enabled = NO;
-    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-      return [playback play] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
-    }];
-    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-      return [playback pause] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
-    }];
-    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-      [playback next:self];
-      return MPRemoteCommandHandlerStatusSuccess;
-    }];
-    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
-      [playback playpause:self];
-      return MPRemoteCommandHandlerStatusSuccess;
-    }];
-  }
 
   NSString *savedUsername = [self getSavedUsername];
   NSString *savedPassword = [self getSavedPassword];
@@ -281,13 +261,6 @@
   [defaults registerDefaults:app_defaults];
   [self migrateDefaults:defaults];
   [playback prepareFirst];
-
-#ifndef DEBUG
-  mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:playback];
-  if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
-    [mediaKeyTap startWatchingMediaKeys];
-  }
-#endif
 
   [self updateAlwaysOnTop:nil];
 }
