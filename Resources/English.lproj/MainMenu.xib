@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11201"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -960,6 +961,8 @@ Gw
         <customObject id="1114" userLabel="PreferencesController" customClass="PreferencesController">
             <connections>
                 <outlet property="general" destination="1610" id="1612"/>
+                <outlet property="mediaKeysCheckbox" destination="1117" id="cu6-2o-Ziw"/>
+                <outlet property="mediaKeysLabel" destination="1550" id="8dv-nE-yQs"/>
                 <outlet property="network" destination="1919" id="2026"/>
                 <outlet property="notificationEnabled" destination="1827" id="2294"/>
                 <outlet property="notificationType" destination="2288" id="2295"/>
@@ -1354,10 +1357,10 @@ DQ
                         <binding destination="979" name="value" keyPath="values.pleaseBindMedia" id="1978"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1550">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="1550">
                     <rect key="frame" x="36" y="314" width="308" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause, forward and back keys to control Hermes from any application." id="1551">
+                    <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause and next track keys to control Hermes from any application." id="1551">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>

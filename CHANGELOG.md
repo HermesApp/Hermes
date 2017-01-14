@@ -1,3 +1,11 @@
+# Version 1.3.1 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.0...HEAD)
+
+* [added by @paullj1] Allow display of play/pause status in the Dock to be disabled
+* [added by @nriley] Better distinguish the play/pause icon from the album art in the Dock
+* [added by @nriley] Use native Touch Bar controls (when Hermes is not the active application) and media key support in macOS 10.12.2 and later
+
 # Version 1.3.0 (9/20/16)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.2.8...v1.3.0)

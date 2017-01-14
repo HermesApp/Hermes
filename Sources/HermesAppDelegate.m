@@ -34,7 +34,7 @@
 @implementation HermesAppDelegate
 
 @synthesize stations, auth, playback, pandora, window, history, station,
-            growler, scrobbler, mediaKeyTap, networkManager, preferences;
+            growler, scrobbler, networkManager, preferences;
 
 - (id) init {
   if ((self = [super init])) {

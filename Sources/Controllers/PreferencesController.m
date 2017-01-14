@@ -1,5 +1,6 @@
 #import <SPMediaKeyTap/SPMediaKeyTap.h>
 
+#import "PlaybackController.h"
 #import "PreferencesController.h"
 
 @implementation PreferencesController
@@ -68,6 +69,20 @@
   }
   [window setTitle:title];
 
+  if ([HMSAppDelegate playback].mediaKeyTap == nil) {
+    mediaKeysCheckbox.enabled = NO;
+    if ([HMSAppDelegate playback].remoteCommandCenter != nil) {
+      mediaKeysCheckbox.integerValue = YES;
+      mediaKeysLabel.stringValue = @"Play/pause and next track keys are always enabled in macOS 10.12.2 and later.";
+    } else {
+#if DEBUG
+      mediaKeysLabel.stringValue = @"Media keys are not available because this version of Hermes is compiled in debug mode.";
+#else
+      mediaKeysLabel.stringValue = @"Media keys are unavailable for an unknown reason.";
+#endif
+    }
+  }
+
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   [defaults setObject:name forKey:LAST_PREF_PANE];
 }
@@ -99,7 +114,10 @@
 }
 
 - (IBAction) bindMediaChanged: (id) sender {
-  SPMediaKeyTap *mediaKeyTap = [HMSAppDelegate mediaKeyTap];
+  SPMediaKeyTap *mediaKeyTap = [HMSAppDelegate playback].mediaKeyTap;
+  if (!mediaKeyTap)
+    return;
+
   if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
     [mediaKeyTap startWatchingMediaKeys];
   } else {

@@ -30,7 +30,6 @@
   IBOutlet NSSlider *volume;
   IBOutlet NSToolbar *toolbar;
 
-  MPRemoteCommandCenter *commandCenter;
   NSTimer *progressUpdateTimer;
   BOOL scrobbleSent;
   NSString *lastImgSrc;
@@ -41,6 +40,9 @@
 @property (readonly) NSData *lastImg;
 @property BOOL pausedByScreensaver;
 @property BOOL pausedByScreenLock;
+
+@property (readonly) MPRemoteCommandCenter *remoteCommandCenter;
+@property (readonly) SPMediaKeyTap *mediaKeyTap;
 
 + (void) setPlayOnStart: (BOOL)play;
 + (BOOL) playOnStart;

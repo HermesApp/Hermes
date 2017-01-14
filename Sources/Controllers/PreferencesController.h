@@ -70,6 +70,9 @@
   IBOutlet NSView *playback;
   IBOutlet NSView *network;
 
+  IBOutlet NSButton *mediaKeysCheckbox;
+  IBOutlet NSTextField *mediaKeysLabel;
+
   IBOutlet NSButton *statusItemShowColorIcon;
   IBOutlet NSButton *statusItemShowBlackAndWhiteIcon;
   IBOutlet NSButton *statusItemShowAlbumArt;

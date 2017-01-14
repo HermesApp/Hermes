@@ -29,6 +29,7 @@ BOOL playOnStart = YES;
 
 @synthesize playing;
 @synthesize lastImg;
+@synthesize remoteCommandCenter, mediaKeyTap;
 
 + (void) setPlayOnStart: (BOOL)play {
   playOnStart = play;
@@ -122,28 +123,28 @@ BOOL playOnStart = YES;
 
   // Media keys - no longer need SPMediaKeyTap in 10.12.2 and later
   if ([MPRemoteCommandCenter class] != nil) {
-    commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
-    // commandCenter.previousTrackCommand.enabled = NO;
-    [commandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    remoteCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+    // remoteCommandCenter.previousTrackCommand.enabled = NO;
+    [remoteCommandCenter.playCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       return [self play] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
     }];
-    [commandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    [remoteCommandCenter.pauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       return [self pause] ? MPRemoteCommandHandlerStatusSuccess : MPRemoteCommandHandlerStatusCommandFailed;
     }];
     // XXX Doesn't show up in the Touch Bar as of 10.12.2 unless there is a previousTrackCommand registered
-    [commandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    [remoteCommandCenter.nextTrackCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self next:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
-    [commandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    [remoteCommandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self playpause:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
-    [commandCenter.likeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    [remoteCommandCenter.likeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self like:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
-    [commandCenter.dislikeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
+    [remoteCommandCenter.dislikeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self dislike:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
@@ -371,12 +372,12 @@ BOOL playOnStart = YES;
 
   if ([[song nrating] intValue] == 1) {
     [toolbar setSelectedItemIdentifier:[like itemIdentifier]];
-    if (commandCenter != nil)
-      commandCenter.likeCommand.active = true;
+    if (remoteCommandCenter != nil)
+      remoteCommandCenter.likeCommand.active = true;
   } else {
     [toolbar setSelectedItemIdentifier:nil];
-    if (commandCenter != nil)
-      commandCenter.likeCommand.active = false;
+    if (remoteCommandCenter != nil)
+      remoteCommandCenter.likeCommand.active = false;
   }
 
   [[HMSAppDelegate history] addSong:song];

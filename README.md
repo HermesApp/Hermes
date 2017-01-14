@@ -4,7 +4,7 @@ Hermes
 
 [![Build Status](https://travis-ci.org/HermesApp/Hermes.svg?branch=master)](https://travis-ci.org/HermesApp/Hermes)
 
-A [Pandora](http://www.pandora.com) client for macOS.
+A [Pandora](http://www.pandora.com/) client for macOS.
 
 ### THIS PROJECT IS UNMAINTAINED
 
@@ -84,7 +84,7 @@ ways you can develop against Hermes if you really want to.
 
    Please note that Media Key shortcuts
    [will not work](https://github.com/nevyn/SPMediaKeyTap/blob/master/SPMediaKeyTap.m#L108)
-   if compiled with `CONFIGURATION=Debug` (the default).
+   in macOS 10.12.1 or earlier if compiled with `CONFIGURATION=Debug` (the default).
 
 ## License
 

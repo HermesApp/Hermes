@@ -53,7 +53,6 @@
 @property (readonly) IBOutlet StationController *station;
 @property (readonly) IBOutlet Growler *growler;
 @property (readonly) IBOutlet Scrobbler *scrobbler;
-@property (readonly) IBOutlet SPMediaKeyTap *mediaKeyTap;
 @property (readonly) IBOutlet NetworkConnection *networkManager;
 @property (readonly) IBOutlet PreferencesController *preferences;
 @property (readonly) BOOL debugMode;
