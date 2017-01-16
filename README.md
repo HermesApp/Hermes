@@ -14,9 +14,10 @@ If you're interested in fixing up Hermes, please reply to this [GitHub issue (23
 
 ### Download Hermes
 
-- Visit the official website [hermesapp.org](http://hermesapp.org/) and click download.
-- Install using [Homebrew](http://brew.sh)/[Caskroom](https://caskroom.github.io): `brew cask install hermes`.
-- If you wish to compile Hermes, continue reading.
+- Click Download at [hermesapp.org](http://hermesapp.org/).
+- Or install using [Homebrew](http://brew.sh)/[Caskroom](https://caskroom.github.io): `brew cask install hermes`.
+
+If you would like to compile Hermes, continue reading.
 
 ### Develop against Hermes
 
