@@ -61,7 +61,7 @@
 			<property name="artwork URL" code="paRT" description="An image URL for the album’s cover artwork." type="text" access="r">
 				<cocoa key="art"/>
 			</property>
-			<property name="rating" code="prat" description="The song’s numeric rating." type="integer" access="r">
+			<property name="rating" code="prat" description="The song’s numeric rating (1 if liked, -1 if disliked, 0 otherwise)." type="integer" access="r">
 				<cocoa key="nrating"/>
 			</property>
 			<property name="album URL" code="alur" description="A Pandora URL for more information on the album." type="text" access="r"/>
@@ -89,7 +89,7 @@
 			<cocoa class="SkipCommand"/>
 		</command>
 		<!-- Pandora feedback commands -->
-		<command name="thumbs up" code="HeRMthup" description="Tell Pandora you like the current song.">
+		<command name="thumbs up" code="HeRMthup" description="Tell Pandora you like the current song, or remove the “like” if the song is currently liked.">
 			<cocoa class="ThumbsUpCommand"/>
 		</command>
 		<command name="thumbs down" code="HeRMthdn" description="Tell Pandora you don’t like the current song.">
