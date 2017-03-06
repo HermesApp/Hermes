@@ -435,6 +435,10 @@ BOOL playOnStart = YES;
   }
 }
 
+- (void) stop {
+  [playing stop];
+}
+
 - (void) rate:(Song *)song as:(BOOL)liked {
   if (!song || [[song station] shared]) return;
   int rating = liked ? 1 : -1;
