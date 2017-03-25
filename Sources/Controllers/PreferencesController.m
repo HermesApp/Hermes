@@ -71,16 +71,20 @@
 
   if ([HMSAppDelegate playback].mediaKeyTap == nil) {
     mediaKeysCheckbox.enabled = NO;
+#ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
     if ([HMSAppDelegate playback].remoteCommandCenter != nil) {
       mediaKeysCheckbox.integerValue = YES;
       mediaKeysLabel.stringValue = @"Play/pause and next track keys are always enabled in macOS 10.12.2 and later.";
     } else {
+#endif
 #if DEBUG
       mediaKeysLabel.stringValue = @"Media keys are not available because this version of Hermes is compiled in debug mode.";
 #else
       mediaKeysLabel.stringValue = @"Media keys are unavailable for an unknown reason.";
 #endif
+#ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
     }
+#endif
   }
 
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

@@ -121,7 +121,7 @@ BOOL playOnStart = YES;
   // prevent dragging the progress slider
   [playbackProgress setEnabled:NO];
 
-  // Media keys - no longer need SPMediaKeyTap in 10.12.2 and later
+  // Media keys
   if ([MPRemoteCommandCenter class] != nil) {
     remoteCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
     // remoteCommandCenter.previousTrackCommand.enabled = NO;
@@ -150,12 +150,16 @@ BOOL playOnStart = YES;
     }];
   }
 #ifndef DEBUG
+#ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
   else {
+#endif
    mediaKeyTap = [[SPMediaKeyTap alloc] initWithDelegate:self];
     if (PREF_KEY_BOOL(PLEASE_BIND_MEDIA)) {
       [mediaKeyTap startWatchingMediaKeys];
     }
+#ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
   }
+#endif
 #endif
 }
 
