@@ -10,6 +10,7 @@
 * [fixed by @nriley] Work around a regression in macOS 10.12 which caused issues when showing drawers
 * [fixed by @elemongw] Fix checking then unchecking “Use proxy for audio” leaving proxy enabled (#290)
 * [fixed by @nriley] Don’t crash, instead display a message when proxy information is invalid
+* [fixed by @yerke] Work around Pandora API returning errors in user.canSubscribe (#296)
 
 # Version 1.3.0 (9/20/16)
 
