@@ -85,7 +85,7 @@ ways you can develop against Hermes if you really want to.
 
    Please note that Media Key shortcuts
    [will not work](https://github.com/nevyn/SPMediaKeyTap/blob/master/SPMediaKeyTap.m#L108)
-   in macOS 10.12.1 or earlier if compiled with `CONFIGURATION=Debug` (the default).
+   if compiled with `CONFIGURATION=Debug` (the default).
 
 ## License
 
