@@ -1,5 +1,7 @@
 typedef void(^URLConnectionCallback)(NSData*, NSError*);
 
+extern NSString * const URLConnectionProxyValidityChangedNotification;
+
 @interface URLConnection : NSObject {
   CFReadStreamRef stream;
   URLConnectionCallback cb;
@@ -11,6 +13,7 @@ typedef void(^URLConnectionCallback)(NSData*, NSError*);
 + (URLConnection*) connectionForRequest:(NSURLRequest*)request
                       completionHandler:(URLConnectionCallback) cb;
 + (void) setHermesProxy: (CFReadStreamRef) stream;
++ (BOOL) validProxyHost:(NSString **)host port:(NSInteger)port;
 
 - (void) start;
 - (void) setHermesProxy;

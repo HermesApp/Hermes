@@ -2,8 +2,15 @@
 
 #import "PlaybackController.h"
 #import "PreferencesController.h"
+#import "URLConnection.h"
 
 @implementation PreferencesController
+
+- (void)awakeFromNib {
+  [super awakeFromNib];
+
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(proxyServerValidityChanged:) name:URLConnectionProxyValidityChangedNotification object:nil];
+}
 
 - (void)windowDidBecomeMain:(NSNotification *)notification {
   /* See HermesAppDelegate#updateStatusBarIcon */
@@ -132,6 +139,38 @@
 - (IBAction) show: (id) sender {
   [NSApp activateIgnoringOtherApps:YES];
   [window makeKeyAndOrderFront:sender];
+}
+
+- (IBAction)proxySettingsChanged:(id)sender {
+  BOOL proxyValid = NO;
+  NSString *proxyHost;
+  NSInteger proxyPort;
+
+  switch (PREF_KEY_INT(ENABLED_PROXY)) {
+    case PROXY_SYSTEM:
+      proxyValid = YES;
+      break;
+    case PROXY_HTTP:
+      proxyHost = PREF_KEY_VALUE(PROXY_HTTP_HOST);
+      proxyPort = PREF_KEY_INT(PROXY_HTTP_PORT);
+      break;
+    case PROXY_SOCKS:
+      proxyHost = PREF_KEY_VALUE(PROXY_SOCKS_HOST);
+      proxyPort = PREF_KEY_INT(PROXY_SOCKS_PORT);
+  }
+  if (!proxyValid) {
+    proxyValid = [URLConnection validProxyHost:&proxyHost port:proxyPort];
+  }
+  proxyServerErrorMessage.hidden = proxyValid;
+}
+
+- (void)proxyServerValidityChanged:(NSNotification *)notification {
+  BOOL proxyServerValid = [notification.userInfo[@"isValid"] boolValue];
+  proxyServerErrorMessage.hidden = proxyServerValid;
+  if (!proxyServerValid) {
+    [self showNetwork:nil];
+    [window orderFront:nil];
+  }
 }
 
 @end

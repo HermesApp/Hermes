@@ -65,21 +65,26 @@
 #define GROWL_TYPE_OSX   1
 
 @interface PreferencesController : NSObject <NSWindowDelegate> {
+  IBOutlet NSWindow *window;
   IBOutlet NSToolbar *toolbar;
   IBOutlet NSView *general;
   IBOutlet NSView *playback;
   IBOutlet NSView *network;
 
+  // General
   IBOutlet NSButton *mediaKeysCheckbox;
   IBOutlet NSTextField *mediaKeysLabel;
 
   IBOutlet NSButton *statusItemShowColorIcon;
   IBOutlet NSButton *statusItemShowBlackAndWhiteIcon;
   IBOutlet NSButton *statusItemShowAlbumArt;
-  
+
+  // Playback
   IBOutlet NSButton *notificationEnabled;
   IBOutlet NSPopUpButton *notificationType;
-  IBOutlet NSWindow *window;
+
+  // Network
+  IBOutlet NSTextField *proxyServerErrorMessage;
 
   NSArray *itemIdentifiers;
 }

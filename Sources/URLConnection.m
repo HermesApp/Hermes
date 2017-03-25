@@ -1,6 +1,8 @@
 #import "PreferencesController.h"
 #import "URLConnection.h"
 
+NSString * const URLConnectionProxyValidityChangedNotification = @"URLConnectionProxyValidityChangedNotification";
+
 @implementation URLConnection
 
 static void URLConnectionStreamCallback(CFReadStreamRef aStream,
@@ -152,17 +154,17 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
  *        preferences
  */
 + (void) setHermesProxy:(CFReadStreamRef) stream {
-  switch ([[NSUserDefaults standardUserDefaults] integerForKey:ENABLED_PROXY]) {
+  switch (PREF_KEY_INT(ENABLED_PROXY)) {
     case PROXY_HTTP:
       [self setHTTPProxy:stream
-                     host:PREF_KEY_VALUE(PROXY_HTTP_HOST)
-                     port:[PREF_KEY_VALUE(PROXY_HTTP_PORT) intValue]];
+                    host:PREF_KEY_VALUE(PROXY_HTTP_HOST)
+                    port:PREF_KEY_INT(PROXY_HTTP_PORT)];
       break;
 
     case PROXY_SOCKS:
       [self setSOCKSProxy:stream
                      host:PREF_KEY_VALUE(PROXY_SOCKS_HOST)
-                     port:[PREF_KEY_VALUE(PROXY_SOCKS_PORT) intValue]];
+                     port:PREF_KEY_INT(PROXY_SOCKS_PORT)];
       break;
 
     case PROXY_SYSTEM:
@@ -172,28 +174,45 @@ static void URLConnectionStreamCallback(CFReadStreamRef aStream,
   }
 }
 
-+ (void) setHTTPProxy:(CFReadStreamRef)stream
++ (BOOL)validProxyHost:(NSString **)host port:(NSInteger)port {
+  static BOOL wasValid = YES;
+  *host = [*host stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
+  BOOL isValid = ((port > 0 && port <= 65535) && [NSHost hostWithName:*host].address != nil);
+  if (isValid != wasValid) {
+    [[NSNotificationCenter defaultCenter] postNotificationName:URLConnectionProxyValidityChangedNotification
+                                                        object:nil
+                                                      userInfo:@{@"isValid": @(isValid)}];
+    wasValid = isValid;
+  }
+  return isValid;
+}
+
++ (BOOL) setHTTPProxy:(CFReadStreamRef)stream
                  host:(NSString*)host
                  port:(NSInteger)port {
+  if (![self validProxyHost:&host port:port]) return NO;
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-          [NSMutableDictionary dictionaryWithObjectsAndKeys:
+          [NSDictionary dictionaryWithObjectsAndKeys:
                   host, kCFStreamPropertyHTTPProxyHost,
                   @(port), kCFStreamPropertyHTTPProxyPort,
                   host, kCFStreamPropertyHTTPSProxyHost,
                   @(port), kCFStreamPropertyHTTPSProxyPort,
-                          nil];
+                  nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertyHTTPProxy, proxySettings);
+  return YES;
 }
 
-+ (void) setSOCKSProxy:(CFReadStreamRef)stream
++ (BOOL) setSOCKSProxy:(CFReadStreamRef)stream
                  host:(NSString*)host
                  port:(NSInteger)port {
+  if (![self validProxyHost:&host port:port]) return NO;
   CFDictionaryRef proxySettings = (__bridge CFDictionaryRef)
-          [NSMutableDictionary dictionaryWithObjectsAndKeys:
+          [NSDictionary dictionaryWithObjectsAndKeys:
                   host, kCFStreamPropertySOCKSProxyHost,
                   @(port), kCFStreamPropertySOCKSProxyPort,
-                          nil];
+                  nil];
   CFReadStreamSetProperty(stream, kCFStreamPropertySOCKSProxy, proxySettings);
+  return YES;
 }
 
 + (void) setSystemProxy:(CFReadStreamRef)stream {
