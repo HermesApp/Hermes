@@ -78,7 +78,7 @@ ways you can develop against Hermes if you really want to.
 
         make        # build everything
         make run    # build and run the application (logging to stdout)
-        make dbg    # build and run inside gdb
+        make dbg    # build and run inside LLDB
 
         # Build with the 'Release' configuration instead of 'Debug'
         make CONFIGURATION=Release [run|dbg]
