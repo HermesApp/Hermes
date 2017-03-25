@@ -136,10 +136,13 @@ BOOL playOnStart = YES;
       [self next:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
+#ifndef MPREMOTECOMMANDCENTER_MEDIA_KEYS_BROKEN
+    // XXX This gets triggered seemingly at random.
     [remoteCommandCenter.togglePlayPauseCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self playpause:self];
       return MPRemoteCommandHandlerStatusSuccess;
     }];
+#endif
     [remoteCommandCenter.likeCommand addTargetWithHandler:^MPRemoteCommandHandlerStatus(MPRemoteCommandEvent * _Nonnull event) {
       [self like:self];
       return MPRemoteCommandHandlerStatusSuccess;
