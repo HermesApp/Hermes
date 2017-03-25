@@ -244,11 +244,12 @@ static NSString *hierrs[] = {
   }
   PandoraRequest *loginRequest = [[PandoraRequest alloc] init];
   loginRequest.request   = @{
-                             @"loginType":        @"user",
-                             @"username":         username,
-                             @"password":         password,
-                             @"partnerAuthToken": partner_auth_token,
-                             @"syncTime":         [self syncTimeNum]
+                             @"loginType":          @"user",
+                             @"username":           username,
+                             @"password":           password,
+                             @"partnerAuthToken":   partner_auth_token,
+                             @"syncTime":           [self syncTimeNum],
+                             @"returnIsSubscriber": @YES
                              };
   loginRequest.method    = @"auth.userLogin";
   loginRequest.partnerId = partner_id;
@@ -258,13 +259,17 @@ static NSString *hierrs[] = {
     NSDictionary *result = respDict[@"result"];
     user_auth_token = result[@"userAuthToken"];
     user_id = result[@"userId"];
-    if (self.cachedSubscriberStatus == nil) {
-      // Get subscriber status then reinvoke this method
-      [self checkSubscriberStatus:^(NSDictionary *respDict) {
-        [self doUserLogin:username password:password callback:callback];
-      }];
-      return;
-    } else if (self.cachedSubscriberStatus.boolValue &&
+
+    NSNumber *subscriberStatus = result[@"isSubscriber"];
+    if (subscriberStatus == nil) {
+      NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
+      self.cachedSubscriberStatus = @NO;
+    } else {
+      self.cachedSubscriberStatus = subscriberStatus;
+    }
+    NSLogd(@"Subscriber status: %@", self.cachedSubscriberStatus);
+
+    if (self.cachedSubscriberStatus.boolValue &&
                ![self.device[kPandoraDeviceUsername] isEqualToString:@"pandora one"]) {
       // Change our device to the desktop client, logout, then reinvoke this method
       NSLogd(@"Subscriber detected, re-logging-in...");
@@ -304,25 +309,6 @@ static NSString *hierrs[] = {
     sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
   };
-  return [self sendRequest:request];
-}
-
-- (BOOL)checkSubscriberStatus:(PandoraCallback)callback {
-  assert(user_id != nil);
-
-  PandoraRequest *request = [self defaultRequestWithMethod:@"user.canSubscribe"];
-  request.callback = ^(NSDictionary *respDict) {
-    NSNumber *subscriberStatus = respDict[@"result"][@"isSubscriber"];
-    if (subscriberStatus == nil) {
-      NSLogd(@"Warning: no key isSubscriber, assuming non-subscriber.");
-      self.cachedSubscriberStatus = @NO;
-    } else {
-      self.cachedSubscriberStatus = subscriberStatus;
-    }
-    NSLogd(@"Subscriber status: %@", self.cachedSubscriberStatus);
-    callback(respDict);
-  };
-  request.request = [self defaultRequestDictionary];
   return [self sendRequest:request];
 }
 
