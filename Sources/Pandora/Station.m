@@ -161,7 +161,7 @@
   [stream setBufferInfinite:TRUE];
   [stream setTimeoutInterval:15];
 
-  if (PREF_KEY_VALUE(PROXY_AUDIO)) {
+  if (PREF_KEY_BOOL(PROXY_AUDIO)) {
     switch ([PREF_KEY_VALUE(ENABLED_PROXY) intValue]) {
       case PROXY_HTTP:
         [stream setHTTPProxy:PREF_KEY_VALUE(PROXY_HTTP_HOST)
