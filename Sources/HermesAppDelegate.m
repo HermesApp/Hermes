@@ -272,6 +272,7 @@
 
 - (void) applicationWillTerminate: (NSNotification *)aNotification {
   [playback saveState];
+  [playback stop];
   [history saveSongs];
 }
 
