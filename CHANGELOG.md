@@ -1,6 +1,6 @@
-# Version 1.3.1 (unreleased)
+# Version 1.3.1 (3/26/17)
 
-[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.0...HEAD)
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.0...v1.3.1)
 
 * [added by @paullj1] Allow display of play/pause status in the Dock to be disabled (#278)
 * [added by @paullj1] Add “Skip” button to macOS song notifications
