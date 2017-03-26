@@ -2,15 +2,18 @@
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.0...HEAD)
 
-* [added by @paullj1] Allow display of play/pause status in the Dock to be disabled
-* [added by @nriley] Better distinguish the play/pause icon from the album art in the Dock
-* [added by @nriley] Use native Touch Bar controls (when Hermes is not the active application) in macOS 10.12.2 and later
+* [added by @paullj1] Allow display of play/pause status in the Dock to be disabled (#278)
+* [added by @paullj1] Add “Skip” button to macOS song notifications
+* [added by @nriley] Better distinguish the play/pause icon from the album art in the Dock (#277)
+* [added by @nriley] Use native Touch Bar controls (when Hermes is not the active application) in macOS 10.12.2 and later (#287)
 * [added by @brettpynn] Provide notification of stream stopping when Hermes is quit (#293)
 * [changed by @nriley] Clarify “thumbs up” and “rating” in scripting (#196)
+* [fixed by @nriley] Fix “current song” reference in scripting
 * [fixed by @nriley] Work around a regression in macOS 10.12 which caused issues when showing drawers
 * [fixed by @elemongw] Fix checking then unchecking “Use proxy for audio” leaving proxy enabled (#290)
 * [fixed by @nriley] Don’t crash, instead display a message when proxy information is invalid
 * [fixed by @yerke] Work around Pandora API returning errors in user.canSubscribe (#296)
+* [fixed by @grimreaper] Several code cleanups (#283)
 
 # Version 1.3.0 (9/20/16)
 
