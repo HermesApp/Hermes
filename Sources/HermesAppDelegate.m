@@ -571,11 +571,13 @@
 }
 
 - (IBAction) updateDockIcon:(id)sender {
+  NSSize size = {.width = 1024, .height = 1024};
   if (PREF_KEY_BOOL(DOCK_ICON_ALBUM_ART)) {
-    NSSize size = {.width = 1024, .height = 1024};
     [NSApp setApplicationIconImage:[self buildPlayPauseAlbumArtImage:size]];
   } else {
-    [NSApp setApplicationIconImage:[NSImage imageNamed:@"pandora"]];
+    NSImage *icon = [NSImage imageNamed:@"pandora"];
+    [icon setSize:size];
+    [NSApp setApplicationIconImage:icon];
   }
 }
 
