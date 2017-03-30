@@ -18,6 +18,8 @@
 
   if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW))
     statusItemShowBlackAndWhiteIcon.state = NSOnState;
+  else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW_ONLY))
+    statusItemShowBlackAndWhiteOnlyIcon.state = NSOnState;
   else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM))
     statusItemShowAlbumArt.state = NSOnState;
   else
@@ -113,12 +115,19 @@
 - (IBAction) statusItemIconChanged:(id)sender {
   if (sender == statusItemShowColorIcon) {
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW_ONLY, NO);
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
   } else if (sender == statusItemShowBlackAndWhiteIcon) {
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, YES);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW_ONLY, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
+  } else if (sender == statusItemShowBlackAndWhiteOnlyIcon) {
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW_ONLY, YES);
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, NO);
   } else if (sender == statusItemShowAlbumArt) {
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW, NO);
+    PREF_KEY_SET_BOOL(STATUS_BAR_ICON_BW_ONLY, NO);
     PREF_KEY_SET_BOOL(STATUS_BAR_ICON_ALBUM, YES);
   }
   [HMSAppDelegate updateStatusItem:sender];

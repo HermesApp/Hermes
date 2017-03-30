@@ -30,6 +30,7 @@
 		97539FAD158442A500D1E65C /* URLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 97539FAC158442A500D1E65C /* URLConnection.m */; };
 		97E0DA35159EDF7C00BEA465 /* radio.png in Resources */ = {isa = PBXBuildFile; fileRef = 97E0DA34159EDF7C00BEA465 /* radio.png */; };
 		B2A26AEF1AE39E9B00ADD460 /* MusicProgressSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */; };
+		D68477BF1E8DC7E600DCBB34 /* Pandora-Menu-BW-Only.icns in Resources */ = {isa = PBXBuildFile; fileRef = D68477BE1E8DC7E600DCBB34 /* Pandora-Menu-BW-Only.icns */; };
 		E1200AA11CF2A4CC000D3215 /* LabelHoverShowField.m in Sources */ = {isa = PBXBuildFile; fileRef = E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */; };
 		E1200AA41CF2B015000D3215 /* LabelHoverShowFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1200AA31CF2B015000D3215 /* LabelHoverShowFieldCell.m */; };
 		E124109A18EBAF6F007AF091 /* HermesApp.m in Sources */ = {isa = PBXBuildFile; fileRef = E124109918EBAF6F007AF091 /* HermesApp.m */; };
@@ -156,6 +157,7 @@
 		97E0DA34159EDF7C00BEA465 /* radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = radio.png; sourceTree = "<group>"; };
 		B2A26AED1AE39E9B00ADD460 /* MusicProgressSliderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MusicProgressSliderCell.h; path = Views/MusicProgressSliderCell.h; sourceTree = "<group>"; };
 		B2A26AEE1AE39E9B00ADD460 /* MusicProgressSliderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MusicProgressSliderCell.m; path = Views/MusicProgressSliderCell.m; sourceTree = "<group>"; };
+		D68477BE1E8DC7E600DCBB34 /* Pandora-Menu-BW-Only.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Pandora-Menu-BW-Only.icns"; sourceTree = "<group>"; };
 		E1200A9F1CF2A4CC000D3215 /* LabelHoverShowField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LabelHoverShowField.h; path = Views/LabelHoverShowField.h; sourceTree = "<group>"; };
 		E1200AA01CF2A4CC000D3215 /* LabelHoverShowField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LabelHoverShowField.m; path = Views/LabelHoverShowField.m; sourceTree = "<group>"; };
 		E1200AA21CF2B015000D3215 /* LabelHoverShowFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LabelHoverShowFieldCell.h; path = Views/LabelHoverShowFieldCell.h; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 				FAEFFC4B132D6D2A007DC6FB /* pause.png */,
 				FAEFFC4C132D6D2A007DC6FB /* play.png */,
 				FAEFFBD4132CC0E2007DC6FB /* error_icon.png */,
+				D68477BE1E8DC7E600DCBB34 /* Pandora-Menu-BW-Only.icns */,
 				E1C1EC101A1AE7E4001E4D8F /* Pandora-Menu-Dark-Play.pdf */,
 				E1C1EC111A1AE7E4001E4D8F /* Pandora-Menu-Dark-Pause.pdf */,
 			);
@@ -615,6 +618,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D68477BF1E8DC7E600DCBB34 /* Pandora-Menu-BW-Only.icns in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				FAEFFBD5132CC0E2007DC6FB /* error_icon.png in Resources */,
