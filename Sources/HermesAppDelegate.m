@@ -597,9 +597,9 @@
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW_ONLY)) {
     // Use b&w only application image
     icon = [NSImage imageNamed:@"Pandora-Menu-BW-Only"];
+    [icon setTemplate:YES];
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     icon = [self buildPlayPauseAlbumArtImage:size];
-    [icon setTemplate:YES];
   } else {
     // Use color application image
     icon = [NSImage imageNamed:@"pandora"];
