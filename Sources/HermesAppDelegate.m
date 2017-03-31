@@ -595,8 +595,7 @@
             @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
     [icon setTemplate:YES];
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW_ONLY)) {
-    // Use b&w only application image
-    icon = [NSImage imageNamed:@"Pandora-Menu-BW-Only"];
+    icon = [NSImage imageNamed:@"Pandora-Menu-BW-Only"]; // Use b&w only application image
     [icon setTemplate:YES];
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
     icon = [self buildPlayPauseAlbumArtImage:size];
