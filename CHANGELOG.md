@@ -1,3 +1,7 @@
+# Version 1.3.2 (unreleased)
+
+[Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.1...HEAD)
+
 # Version 1.3.1 (3/26/17)
 
 [Full changelog](https://github.com/HermesApp/Hermes/compare/v1.3.0...v1.3.1)
