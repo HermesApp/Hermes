@@ -575,7 +575,7 @@
     NSSize size = {.width = 1024, .height = 1024};
     [NSApp setApplicationIconImage:[self buildPlayPauseAlbumArtImage:size]];
   } else {
-    [NSApp setApplicationIconImage:[NSImage imageNamed:@"pandora"]];
+    [NSApp setApplicationIconImage:nil];
   }
 }
 
