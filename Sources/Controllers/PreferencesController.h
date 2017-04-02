@@ -30,6 +30,7 @@
 #define ALBUM_ART_PLAY_PAUSE       @"albumArtPlayPause"
 #define STATUS_BAR_ICON            @"statusBarIcon"
 #define STATUS_BAR_ICON_BW         @"statusBarIconBlackWhite"
+#define STATUS_BAR_ICON_BW_ONLY    @"statusBarIconBlackWhiteOnly"
 #define STATUS_BAR_ICON_ALBUM      @"statusBarIconAlbumArt"
 #define STATUS_BAR_SHOW_SONG       @"statusBarShowSongTitle"
 #define ALWAYS_ON_TOP              @"alwaysOnTop"
@@ -76,6 +77,7 @@
   IBOutlet NSTextField *mediaKeysLabel;
 
   IBOutlet NSButton *statusItemShowColorIcon;
+  IBOutlet NSButton *statusItemShowBlackAndWhiteOnlyIcon;
   IBOutlet NSButton *statusItemShowBlackAndWhiteIcon;
   IBOutlet NSButton *statusItemShowAlbumArt;
 

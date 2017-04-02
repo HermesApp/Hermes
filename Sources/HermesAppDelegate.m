@@ -587,18 +587,18 @@
   }
   
   NSImage *icon;
+  
   NSSize size = {.width = 18, .height = 18};
 
-  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {
-    
+  if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW)) {    
     icon = [NSImage imageNamed:(playback.playing.isPlaying) ?
             @"Pandora-Menu-Dark-Play" : @"Pandora-Menu-Dark-Pause"];
     [icon setTemplate:YES];
-    
+  } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_BW_ONLY)) {
+    icon = [NSImage imageNamed:@"Pandora-Menu-BW-Only"]; // Use b&w only application image
+    [icon setTemplate:YES];
   } else if (PREF_KEY_BOOL(STATUS_BAR_ICON_ALBUM)) {
-    
     icon = [self buildPlayPauseAlbumArtImage:size];
-    
   } else {
     // Use color application image
     icon = [NSImage imageNamed:@"pandora"];
