@@ -13,6 +13,8 @@
 #import "URLConnection.h"
 #import "Notifications.h"
 #import "PandoraDevice.h"
+#import "StationsController.h"
+#import "PlaybackController.h"
 
 #pragma mark Error Codes
 
@@ -338,6 +340,7 @@ static NSString *hierrs[] = {
 #pragma mark - Station Manipulation
 
 - (BOOL) createStation: (NSString*)musicId {
+  
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"musicToken"] = musicId;
   
@@ -348,6 +351,18 @@ static NSString *hierrs[] = {
     NSDictionary *result = d[@"result"];
     Station *s = [self parseStationFromDictionary:result];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    // Check if station exists:
+    NSUInteger stationIndex = [stations indexOfObject:s];
+    
+    if (stationIndex <= [stations count]) {
+      // Station already exists, play it
+      Station *existingStation = [stations objectAtIndex:stationIndex];
+      // This is misleading but it closes the search box
+      dict[@"station"] = existingStation;
+      [self postNotification:PandoraDidCreateStationNotification result:dict];
+      return;
+    }
+    
     dict[@"station"] = s;
     [stations addObject:s];
     [Station addStation:s];
@@ -614,7 +629,9 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    [self postNotification:PandoraDidAddSeedNotification result:d[@"result"]];
+    NSDictionary *result = d[@"result"];
+   
+    [self postNotification:PandoraDidAddSeedNotification result:result];
   }];
   return [self sendAuthenticatedRequest:req];
 }
