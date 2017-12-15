@@ -233,6 +233,14 @@
   if (seedsOfKind == nil) {
     seedsOfKind = seeds[seedKind] = [NSMutableArray array];
   }
+  NSString *seedId = seed[@"seedId"];
+  for (NSDictionary *currSeed in seedsOfKind) {
+    NSString *currSeedId = currSeed[@"seedId"];
+    if ([currSeedId isEqualToString:seedId]) {
+      return;
+    }
+  }
+  
   [seedsOfKind addObject:seed];
   seeds[seedKind] = seedsOfKind;
   [seedsCurrent reloadData];

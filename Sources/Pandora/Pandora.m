@@ -349,8 +349,14 @@ static NSString *hierrs[] = {
     Station *s = [self parseStationFromDictionary:result];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"station"] = s;
-    [stations addObject:s];
-    [Station addStation:s];
+    
+    /* Add the station internally if it doesn't exist */
+    NSUInteger stationIndex = [stations indexOfObject:s];
+    if (stationIndex > [stations count]) {
+      [stations addObject:s];
+      [Station addStation:s];
+    }
+    
     [self postNotification:PandoraDidCreateStationNotification result:dict];
   }];
   return [self sendAuthenticatedRequest:req];
