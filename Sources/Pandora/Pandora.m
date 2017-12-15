@@ -626,7 +626,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-  [self postNotification:PandoraDidAddSeedNotification result:d[@"result"]];
+    [self postNotification:PandoraDidAddSeedNotification result:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }
