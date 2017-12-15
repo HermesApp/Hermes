@@ -354,15 +354,12 @@ static NSString *hierrs[] = {
     if (stationIndex <= [stations count]) {
       // Station already exists, play it
       Station *existingStation = [stations objectAtIndex:stationIndex];
-      // This is misleading but it closes the search box
       dict[@"station"] = existingStation;
-      [self postNotification:PandoraDidCreateStationNotification result:dict];
-      return;
+    } else {
+      dict[@"station"] = s;
+      [stations addObject:s];
+      [Station addStation:s];
     }
-    
-    dict[@"station"] = s;
-    [stations addObject:s];
-    [Station addStation:s];
     [self postNotification:PandoraDidCreateStationNotification result:dict];
   }];
   return [self sendAuthenticatedRequest:req];
