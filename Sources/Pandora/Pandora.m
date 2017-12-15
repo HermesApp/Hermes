@@ -13,8 +13,6 @@
 #import "URLConnection.h"
 #import "Notifications.h"
 #import "PandoraDevice.h"
-#import "StationsController.h"
-#import "PlaybackController.h"
 
 #pragma mark Error Codes
 
@@ -340,7 +338,6 @@ static NSString *hierrs[] = {
 #pragma mark - Station Manipulation
 
 - (BOOL) createStation: (NSString*)musicId {
-  
   NSMutableDictionary *d = [self defaultRequestDictionary];
   d[@"musicToken"] = musicId;
   
@@ -629,9 +626,7 @@ static NSString *hierrs[] = {
   [req setRequest:d];
   [req setTls:FALSE];
   [req setCallback:^(NSDictionary* d) {
-    NSDictionary *result = d[@"result"];
-   
-    [self postNotification:PandoraDidAddSeedNotification result:result];
+  [self postNotification:PandoraDidAddSeedNotification result:d[@"result"]];
   }];
   return [self sendAuthenticatedRequest:req];
 }

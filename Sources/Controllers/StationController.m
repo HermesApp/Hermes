@@ -235,7 +235,7 @@
   }
   NSString *seedId = seed[@"seedId"];
   for (NSDictionary *currSeed in seedsOfKind) {
-    NSString *currSeedId = [currSeed objectForKey:@"seedId"];
+    NSString *currSeedId = currSeed[@"seedId"];
     if ([currSeedId isEqualToString:seedId]) {
       return;
     }
