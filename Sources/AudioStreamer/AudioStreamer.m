@@ -296,6 +296,17 @@ static void ASReadStreamCallBack(CFReadStreamRef aStream, CFStreamEventType even
   return YES;
 }
 
+- (BOOL) replay {
+  [self seekToTime:0.0];
+  /*
+   * seekToTime stops the stream and then opens a new stream.
+   * Set us to AS_PAUSED so then we can begin playing immediately
+   */
+  [self setState:AS_PAUSED];
+  [self play];
+  return YES;
+}
+
 - (void) stop {
   if (![self isDone]) {
     [self setState:AS_STOPPED];

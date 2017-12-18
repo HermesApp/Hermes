@@ -79,6 +79,9 @@
 		<command name="playpause" code="HeRMplpa" description="Play the current song if it is paused; pause the current song if it is playing.">
 			<cocoa class="PlayPauseCommand"/>
 		</command>
+    <command name="replay" code="HeRMrepl" description="Replay the currently playing song.">
+      <cocoa class="ReplayCommand"/>
+    </command>
 		<command name="pause" code="HeRMpauU" description="Pause the currently playing song.">
 			<cocoa class="PauseCommand"/>
 		</command>

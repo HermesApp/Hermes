@@ -171,6 +171,10 @@ NSString * const ASAttemptingNewSong = @"ASAttemptingNewSong";
   }
 }
 
+- (void)replay {
+  [stream replay];
+}
+
 - (void)pause {
   [stream pause];
 }

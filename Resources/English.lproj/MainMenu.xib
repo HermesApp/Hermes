@@ -199,6 +199,12 @@
                                     <action selector="playpause:" target="835" id="882"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Replay" keyEquivalent="" id="888">
+                              <modifierMask key="keyEquivalentModifierMask"/>
+                              <connections>
+                                <action selector="replay:" target="835" id="889"/>
+                              </connections>
+                            </menuItem>
                             <menuItem title="Like" keyEquivalent="l" id="879">
                                 <connections>
                                     <action selector="like:" target="835" id="884"/>
@@ -325,6 +331,11 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
                         <connections>
                             <action selector="playpause:" target="835" id="854"/>
                         </connections>
+                    </toolbarItem>
+                    <toolbarItem implicitItemIdentifier="93E09E6C-9E59-4A3C-A062-D1300904AE9D" label="Replay" paletteLabel="Replay" toolTip="Replay the current song" tag="-1" image="replay" id="778">
+                      <connections>
+                        <action selector="replay:" target="835" id="890"/>
+                      </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="C1F73AAE-CA9B-4AE4-84F0-6FD469CA5403" label="Next Song" paletteLabel="Next Song" toolTip="Skip current song" tag="-1" image="fast_forward" id="777">
                         <connections>

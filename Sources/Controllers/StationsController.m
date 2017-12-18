@@ -450,6 +450,19 @@
   [stationsTable reloadData];
 }
 
+/* Callback for when the replay button is hit */
+- (IBAction)replaySelected: (id)sender {
+  Station *selected = [self selectedStation];
+  
+  if (selected == nil) {
+    return;
+  }
+  
+  [self selectStation:selected];
+  [[HMSAppDelegate playback] replay];
+  [stationsTable reloadData];
+}
+
 /* Callback for when the refresh stations button is hit */
 - (IBAction)refreshList: (id)sender {
   [stationsRefreshing setHidden:NO];

@@ -437,6 +437,14 @@ struct queued_packet;
 - (BOOL) play;
 
 /**
+ * Restarts the current audio stream from the beginning
+ *
+ * @return YES if the audio stream entered into the AS_PLAYING state, or NO if
+ *         any other error or bad state was encountered.
+ */
+- (BOOL) replay;
+
+/**
  * Tests whether the stream is playing
  *
  * @return YES if the stream is playing, or NO Otherwise

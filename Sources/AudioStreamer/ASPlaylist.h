@@ -53,6 +53,11 @@ extern NSString * const ASBitrateReadyNotification;
 - (void) play;
 
 /**
+ * Restart the currently playing song.
+ */
+- (void)replay;
+
+/**
  * Pause playback on the playlist.
  *
  * This has no effect if the playlist is already paused or wasn't playing a song
