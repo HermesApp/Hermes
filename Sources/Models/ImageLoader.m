@@ -35,17 +35,17 @@
                           completionHandler:^(NSData *d, NSError *error) {
     NSLogd(@"fetching: %@", url);
     cb(d);
-    cur = nil;
-    curURL = nil;
+                            self->cur = nil;
+                            self->curURL = nil;
 
     /* If any pending requests are to this url, also satisfy them */
     NSUInteger idx;
-    while ((idx = [queue indexOfObject:url]) != NSNotFound) {
+                            while ((idx = [self->queue indexOfObject:url]) != NSNotFound) {
       NSLogd(@"cached:   %@", url);
-      [queue removeObjectAtIndex:idx];
-      ImageCallback cb = cbqueue[idx];
+                              [self->queue removeObjectAtIndex:idx];
+                              ImageCallback cb = self->cbqueue[idx];
       cb(d);
-      [cbqueue removeObjectAtIndex:idx];
+                              [self->cbqueue removeObjectAtIndex:idx];
     }
 
     [self tryFetch];

@@ -868,7 +868,7 @@
   _hermesLogFile = [[NSString stringWithFormat:@"%@/HermesLog_%s.log", HERMES_LOG_DIRECTORY_PATH, currentDateTime] stringByStandardizingPath];
   static dispatch_once_t onceTokenForOpeningLogFile = 0;
   dispatch_once(&onceTokenForOpeningLogFile, ^{
-    _hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");
+    self->_hermesLogFileHandle = fopen([self.hermesLogFile cStringUsingEncoding:NSUTF8StringEncoding], "a");
     setvbuf(self.hermesLogFileHandle, NULL, _IOLBF, 0);
   });
   return YES;

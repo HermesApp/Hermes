@@ -35,7 +35,7 @@
   if (a && ![a isEqual:@""]) {
     [[ImageLoader loader] loadImageURL:a callback:^(NSData* data) {
       NSImage *image = [[NSImage alloc] initWithData: data];
-      [art setImage:image];
+      [self->art setImage:image];
     }];
   }
 }

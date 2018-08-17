@@ -221,14 +221,14 @@ static NSString *hierrs[] = {
       
       // Update the request dictionary with new User Auth Token & Sync Time
       NSMutableDictionary *updatedRequest = [newreq.request mutableCopy];
-      updatedRequest[@"userAuthToken"] = user_auth_token;
+      updatedRequest[@"userAuthToken"] = self->user_auth_token;
       updatedRequest[@"syncTime"] = [self syncTimeNum];
       newreq.request = updatedRequest;
 
       // Also update the properties on the request used to build the request URL
-      newreq.userId = user_id;
-      newreq.authToken = user_auth_token;
-      newreq.partnerId = partner_id;
+      newreq.userId = self->user_id;
+      newreq.authToken = self->user_auth_token;
+      newreq.partnerId = self->partner_id;
 
       [self sendRequest:newreq];
     }
@@ -257,8 +257,8 @@ static NSString *hierrs[] = {
   
   PandoraCallback loginCallback = ^(NSDictionary *respDict) {
     NSDictionary *result = respDict[@"result"];
-    user_auth_token = result[@"userAuthToken"];
-    user_id = result[@"userId"];
+    self->user_auth_token = result[@"userAuthToken"];
+    self->user_id = result[@"userId"];
 
     NSNumber *subscriberStatus = result[@"isSubscriber"];
     if (subscriberStatus == nil) {
@@ -302,11 +302,11 @@ static NSString *hierrs[] = {
   request.encrypted = FALSE;
   request.callback  = ^(NSDictionary* dict) {
     NSDictionary *result = dict[@"result"];
-    partner_auth_token = result[@"partnerAuthToken"];
-    partner_id = result[@"partnerId"];
+    self->partner_auth_token = result[@"partnerAuthToken"];
+    self->partner_id = result[@"partnerId"];
     NSData *sync = [self decryptString:result[@"syncTime"]];
     const char *bytes = [sync bytes];
-    sync_time = strtoul(bytes + 4, NULL, 10);
+    self->sync_time = strtoul(bytes + 4, NULL, 10);
     callback();
   };
   return [self sendRequest:request];
@@ -349,7 +349,7 @@ static NSString *hierrs[] = {
     Station *s = [self parseStationFromDictionary:result];
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     dict[@"station"] = s;
-    [stations addObject:s];
+    [self->stations addObject:s];
     [Station addStation:s];
     [self postNotification:PandoraDidCreateStationNotification result:dict];
   }];
@@ -367,18 +367,18 @@ static NSString *hierrs[] = {
     unsigned int i;
     
     /* Remove the station internally */
-    for (i = 0; i < [stations count]; i++) {
-      if ([[stations[i] token] isEqual:stationToken]) {
+    for (i = 0; i < [self->stations count]; i++) {
+      if ([[self->stations[i] token] isEqual:stationToken]) {
         break;
       }
     }
 
-    if ([stations count] == i) {
+    if ([self->stations count] == i) {
       NSLogd(@"Deleted unknown station?!");
     } else {
-      Station *stationToRemove = stations[i];
+      Station *stationToRemove = self->stations[i];
       [Station removeStation:stationToRemove];
-      [stations removeObjectAtIndex:i];
+      [self->stations removeObjectAtIndex:i];
       [self postNotification:PandoraDidDeleteStationNotification request:stationToRemove];
     }
     
@@ -414,8 +414,8 @@ static NSString *hierrs[] = {
     NSDictionary *result = dict[@"result"];
     for (NSDictionary *s in result[@"stations"]) {
       Station *station = [self parseStationFromDictionary:s];
-      if (![stations containsObject:station]) {
-        [stations addObject:station];
+      if (![self->stations containsObject:station]) {
+        [self->stations addObject:station];
         [Station addStation:station];
       }
     };

@@ -340,7 +340,7 @@ BOOL playOnStart = YES;
       [[ImageLoader loader] loadImageURL:lastImgSrc
                                 callback:^(NSData *data) {
         NSImage *image = nil;
-        lastImg = data;
+                                  self->lastImg = data;
         if (data == nil) {
           image = [NSImage imageNamed:@"missing-album"];
         } else {
@@ -349,12 +349,12 @@ BOOL playOnStart = YES;
 
         [HMSAppDelegate updateStatusItem:nil];
 
-        if (![playing isPaused]) {
+                                  if (![self->playing isPaused]) {
           [GROWLER growl:song withImage:data isNew:YES];
         }
-        [art setImage:image];
-        [artLoading setHidden:YES];
-        [artLoading stopAnimation:nil];
+                                  [self->art setImage:image];
+                                  [self->artLoading setHidden:YES];
+                                  [self->artLoading stopAnimation:nil];
         [self updateQuickLookPreviewWithArt:data != nil];
       }];
     }
