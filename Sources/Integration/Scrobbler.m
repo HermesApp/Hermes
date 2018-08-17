@@ -81,7 +81,7 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
       
       switch (errorCode) {
         case 9: /* Invalid session key - Please re-authenticate */
-          sessionToken = nil;
+          self->sessionToken = nil;
           [self fetchRequestToken];
           break;
         case 8: /* Operation failed - Most likely the backend service failed. Please try again. */
@@ -225,20 +225,20 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
   [alert beginSheetModalForWindow:[HMSAppDelegate window] completionHandler:^(NSModalResponse returnCode) {
     if (returnCode != NSAlertFirstButtonReturn) {
       PREF_KEY_SET_BOOL(PLEASE_SCROBBLE, NO);
-      inAuthorization = NO;
+      self->inAuthorization = NO;
       return;
     }
     
     NSString *authURL = [NSString stringWithFormat:
                          @"http://www.last.fm/api/auth/?api_key=%@&token=%@",
-                         _LASTFM_API_KEY_, requestToken];
+                         _LASTFM_API_KEY_, self->requestToken];
     NSURL *url = [NSURL URLWithString:authURL];
     
     [[NSWorkspace sharedWorkspace] openURL:url];
     
     /* Give the user some time to authorize the request token. Then try to get a session token again */
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(30 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-      inAuthorization = NO;
+      self->inAuthorization = NO;
       [self fetchSessionToken];
     });
   }];
@@ -259,12 +259,12 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
 
   /* More info at http://www.last.fm/api/show/auth.getToken */
   ScrobblerCallback cb = ^(NSDictionary *object) {
-    requestToken = object[@"token"];
+    self->requestToken = object[@"token"];
 
-    if (requestToken == nil || [@"" isEqual:requestToken]) {
-      requestToken = nil;
+    if (self->requestToken == nil || [@"" isEqual:self->requestToken]) {
+      self->requestToken = nil;
       [self error:@"Couldn't get an authentication request token from last.fm!"];
-      inAuthorization = NO;
+      self->inAuthorization = NO;
     } else {
       [self requestAuthorization];
     }
@@ -306,13 +306,13 @@ typedef void(^ScrobblerCallback)(NSDictionary*);
       } else {
         [self error:object[@"message"]];
       }
-      sessionToken = nil;
+      self->sessionToken = nil;
       return;
     }
 
     NSDictionary *session = object[@"session"];
-    sessionToken = session[@"key"];
-    if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, sessionToken)) {
+    self->sessionToken = session[@"key"];
+    if (!KeychainSetItem(LASTFM_KEYCHAIN_ITEM, self->sessionToken)) {
       [self error:@"Couldn't save session token to keychain!"];
     }
   };

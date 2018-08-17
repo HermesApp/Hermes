@@ -30,11 +30,11 @@
 
     NSArray *s = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     for (Song *song in s) {
-      if ([songs indexOfObject:song] == NSNotFound)
-        [controller addObject:song];
+      if ([self->songs indexOfObject:song] == NSNotFound)
+        [self->controller addObject:song];
     }
 
-    reader = nil;
+    self->reader = nil;
   }];
   [reader start];
 }
@@ -203,7 +203,7 @@
       NSDictionary *object = [NSJSONSerialization JSONObjectWithData:d options:0 error:&err];
       if (err == nil) {
         NSString *url = object[@"url"];
-        [spinner setHidden:YES];
+        [self->spinner setHidden:YES];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
         return;
       }

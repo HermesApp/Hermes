@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -298,8 +299,8 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="371" userLabel="Main Window" customClass="HermesMainWindow">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
+        <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" titlebarAppearsTransparent="YES" id="371" userLabel="Main Window" customClass="HermesMainWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
             <rect key="contentRect" x="300" y="434" width="240" height="294"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
             <view key="contentView" wantsLayer="YES" canDrawConcurrently="YES" id="372" userLabel="View">
@@ -441,7 +442,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="Qxl-WA-Sas">
                         <rect key="frame" x="1" y="1" width="301" height="246"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="734" customClass="StationsTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="301" height="246"/>
@@ -461,7 +462,7 @@ DQ
                                         </imageCell>
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                     </tableColumn>
-                                    <tableColumn editable="NO" width="280" minWidth="10" maxWidth="1000" id="947">
+                                    <tableColumn identifier="" editable="NO" width="280" minWidth="10" maxWidth="1000" id="947">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Stations">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -520,7 +521,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="5Gd-m0-JbG">
                         <rect key="frame" x="1" y="1" width="295" height="255"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" maxNumberOfRows="26" maxNumberOfColumns="1" id="2161" customClass="HistoryCollectionView">
                                 <rect key="frame" x="0.0" y="0.0" width="295" height="255"/>
@@ -669,7 +670,7 @@ DQ
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <clipView key="contentView" id="oiz-Qg-D22">
                                                 <rect key="frame" x="1" y="1" width="428" height="185"/>
-                                                <autoresizingMask key="autoresizingMask"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" indentationPerLevel="16" autoresizesOutlineColumn="YES" outlineTableColumn="915" id="913">
                                                         <rect key="frame" x="0.0" y="0.0" width="428" height="185"/>
@@ -678,7 +679,7 @@ DQ
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="425" minWidth="16" maxWidth="1000" id="915">
+                                                            <tableColumn identifier="" editable="NO" width="425" minWidth="16" maxWidth="1000" id="915">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -791,7 +792,7 @@ Gw
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="425" minWidth="16" maxWidth="1000" id="2250">
+                                                            <tableColumn identifier="" editable="NO" width="425" minWidth="16" maxWidth="1000" id="2250">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -1796,7 +1797,7 @@ DQ
                         <outlet property="nextKeyView" destination="1941" id="afc-fl-iE5"/>
                     </connections>
                 </matrix>
-                <textField toolTip="Hostname or IP address of the HTTP proxy server" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="1941" userLabel="HTTP proxy server host">
+                <textField toolTip="Hostname or IP address of the HTTP proxy server" verticalHuggingPriority="750" textCompletion="NO" id="1941" userLabel="HTTP proxy server host">
                     <rect key="frame" x="74" y="163" width="186" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="1942">
@@ -1861,7 +1862,7 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField toolTip="Hostname or IP address of the SOCKS proxy server" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="2124" userLabel="SOCKS proxy server host">
+                <textField toolTip="Hostname or IP address of the SOCKS proxy server" verticalHuggingPriority="750" textCompletion="NO" id="2124" userLabel="SOCKS proxy server host">
                     <rect key="frame" x="74" y="111" width="186" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="2129">
@@ -1975,7 +1976,7 @@ DQ
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="196" minWidth="16" maxWidth="1000" id="1683">
+                                                            <tableColumn identifier="" editable="NO" width="196" minWidth="16" maxWidth="1000" id="1683">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -2021,7 +2022,7 @@ DQ
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                         <tableColumns>
-                                                            <tableColumn editable="NO" width="196" minWidth="16" maxWidth="1000" id="1692">
+                                                            <tableColumn identifier="" editable="NO" width="196" minWidth="16" maxWidth="1000" id="1692">
                                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left">
                                                                     <font key="font" metaFont="smallSystem"/>
                                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
