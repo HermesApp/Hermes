@@ -196,12 +196,9 @@
     [self updateWindowTitle];
   }
   
-  if ([window respondsToSelector:@selector(setRestorable:)]) {
-    [window setRestorable:YES];
-  }
-  if ([window respondsToSelector:@selector(setRestorationClass:)]) {
-    [window setRestorationClass:[self class]];
-  }
+  window.restorable = YES;
+  window.restorationClass = [self class];
+
   [NSApp activateIgnoringOtherApps:YES];
 
   NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
