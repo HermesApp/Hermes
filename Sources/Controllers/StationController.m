@@ -139,7 +139,7 @@
       if (image == nil) {
         image = [NSImage imageNamed:@"missing-album"];
       }
-      [art setImage:image];
+      [self->art setImage:image];
     }];
   } else {
     [art setImage:[NSImage imageNamed:@"missing-album"]];
@@ -214,12 +214,12 @@
   Pandora *pandora = [HMSAppDelegate pandora];
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
-    id item = [seedsResults itemAtRow:idx];
+    id item = [self->seedsResults itemAtRow:idx];
     if (![item isKindOfClass:[PandoraSearchResult class]]) {
       return;
     }
     PandoraSearchResult *d = item;
-    [pandora addSeed:[d value] toStation:cur_station];
+    [pandora addSeed:[d value] toStation:self->cur_station];
     [self showSpinner];
   }];
   [seedsResults deselectAll:nil];
@@ -250,7 +250,7 @@
   __block int removeRequests = 0;
 
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
-    id item = [seedsCurrent itemAtRow:idx];
+    id item = [self->seedsCurrent itemAtRow:idx];
     if (![item isKindOfClass:[NSDictionary class]]) {
       return;
     }
@@ -277,7 +277,7 @@
 
   NSMutableSet *seedIdsToDelete = [NSMutableSet set];
   [set enumerateIndexesUsingBlock: ^(NSUInteger idx, BOOL *stop) {
-    id item = [seedsCurrent itemAtRow:idx];
+    id item = [self->seedsCurrent itemAtRow:idx];
     if ([item isKindOfClass:[NSDictionary class]]) {
       [seedIdsToDelete addObject:item[@"seedId"]];
     }

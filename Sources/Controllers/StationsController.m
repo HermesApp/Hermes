@@ -534,11 +534,11 @@
     if ([selected isEqual:[self playingStation]]) {
       HermesAppDelegate *delegate = HMSAppDelegate;
       [[delegate playback] playStation:nil];
-      [delegate setCurrentView:chooseStationView];
+      [delegate setCurrentView:self->chooseStationView];
     }
     
-    [stationsRefreshing setHidden:NO];
-    [stationsRefreshing startAnimation:nil];
+    [self->stationsRefreshing setHidden:NO];
+    [self->stationsRefreshing startAnimation:nil];
     [[self pandora] removeStation:[selected token]];
   }];
 }
