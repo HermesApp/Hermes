@@ -55,6 +55,11 @@
   return self;
 }
 
+- (void) awakeFromNib {
+  [super awakeFromNib];
+  stations.contentView.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
+}
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
   if (![[self pandora] isAuthenticated]) {
     return NO;

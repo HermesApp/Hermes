@@ -16,10 +16,6 @@
   if (NSAppKitVersionNumber <= NSAppKitVersionNumber10_10_Max) {
     [[NSColor colorWithGenericGamma22White:241/255. alpha:1] setFill];
     NSRectFill(dirtyRect);
-  } else if (NSAppKitVersionNumber > NSAppKitVersionNumber10_13_4) {
-    // XXX should be using NSVisualEffectView instead
-    [[NSColor windowBackgroundColor] setFill];
-    NSRectFill(dirtyRect);
   }
 }
 

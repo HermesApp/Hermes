@@ -19,6 +19,11 @@
 
 @synthesize songs, controller;
 
+- (void) awakeFromNib {
+  [super awakeFromNib];
+  drawer.contentView.window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameAqua];
+}
+
 - (void) loadSavedSongs {
   NSLogd(@"loading saved songs");
   NSString *historySaveStatePath = [HMSAppDelegate stateDirectory:@"history.savestate"];
