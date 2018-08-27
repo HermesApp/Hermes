@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.13.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <development version="7000" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.13.2"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -298,8 +299,8 @@
                 </menuItem>
             </items>
         </menu>
-        <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="371" userLabel="Main Window" customClass="HermesMainWindow">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES" unifiedTitleAndToolbar="YES"/>
+        <window title="Hermes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" appearanceType="aqua" frameAutosaveName="Preferences" animationBehavior="default" id="371" userLabel="Main Window" customClass="HermesMainWindow">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" texturedBackground="YES"/>
             <rect key="contentRect" x="300" y="434" width="240" height="294"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
             <view key="contentView" wantsLayer="YES" canDrawConcurrently="YES" id="372" userLabel="View">
@@ -367,7 +368,7 @@ MgA3AEEARwBQAFcAXABkAHkAewB9AH8AgQCLAJAAlQCgAKMApQCnAKkArgC5AMIAygDNANYA2wDoAOwA
             <point key="canvasLocation" x="39" y="-307.5"/>
         </window>
         <customObject id="420" customClass="NSFontManager"/>
-        <customView id="701" userLabel="Stations Drawer" customClass="HermesBackgroundView">
+        <customView appearanceType="aqua" id="701" userLabel="Stations Drawer" customClass="HermesBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="303" height="297"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -441,7 +442,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="Qxl-WA-Sas">
                         <rect key="frame" x="1" y="1" width="301" height="246"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" id="734" customClass="StationsTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="301" height="246"/>
@@ -488,11 +489,11 @@ DQ
                             </tableView>
                         </subviews>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="733">
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="733">
                         <rect key="frame" x="1" y="156" width="121" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="732">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="732">
                         <rect key="frame" x="224" y="17" width="15" height="102"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -509,9 +510,9 @@ DQ
                     </connections>
                 </button>
             </subviews>
-            <point key="canvasLocation" x="149.5" y="176.5"/>
+            <point key="canvasLocation" x="69" y="46"/>
         </customView>
-        <customView id="2155" userLabel="History Drawer" customClass="HermesBackgroundView">
+        <customView appearanceType="aqua" id="2155" userLabel="History Drawer" customClass="HermesBackgroundView">
             <rect key="frame" x="0.0" y="0.0" width="297" height="280"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
@@ -520,7 +521,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" id="5Gd-m0-JbG">
                         <rect key="frame" x="1" y="1" width="295" height="255"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" maxNumberOfRows="26" maxNumberOfColumns="1" id="2161" customClass="HistoryCollectionView">
                                 <rect key="frame" x="0.0" y="0.0" width="295" height="255"/>
@@ -536,11 +537,11 @@ DQ
                             </collectionView>
                         </subviews>
                     </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="2162">
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2162">
                         <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="2163">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="2163">
                         <rect key="frame" x="234" y="1" width="15" height="143"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
@@ -644,7 +645,7 @@ DQ
                 <outlet property="parentWindow" destination="371" id="2221"/>
             </connections>
         </drawer>
-        <window title="New Station" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" visibleAtLaunch="NO" animationBehavior="default" id="902">
+        <window title="New Station" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="default" id="902">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="157" y="162" width="480" height="313"/>
@@ -700,11 +701,11 @@ DQ
                                                     </outlineView>
                                                 </subviews>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="912">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="912">
                                                 <rect key="frame" x="-100" y="-100" width="428" height="16"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="911">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="911">
                                                 <rect key="frame" x="424" y="17" width="15" height="175"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -813,11 +814,11 @@ Gw
                                                     </outlineView>
                                                 </subviews>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="2247">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="2247">
                                                 <rect key="frame" x="-100" y="-100" width="432" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="2249">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="2249">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -847,7 +848,7 @@ Gw
             <point key="canvasLocation" x="244" y="255.5"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="979"/>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Hermes Preferences" animationBehavior="default" id="1112" userLabel="Preferences Window">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" appearanceType="aqua" frameAutosaveName="Hermes Preferences" animationBehavior="default" id="1112" userLabel="Preferences Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES"/>
             <rect key="contentRect" x="0.0" y="0.0" width="362" height="451"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1366" height="745"/>
@@ -1021,7 +1022,7 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" state="on" borderStyle="bezel" placeholderString="Email" drawsBackground="YES" id="1213">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1034,7 +1035,7 @@ Gw
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Password" drawsBackground="YES" id="1214">
                         <font key="font" metaFont="system"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <allowedInputSourceLocales>
                             <string>NSAllRomanInputSourcesLocaleIdentifier</string>
@@ -1342,7 +1343,7 @@ DQ
                 <binding destination="1331" name="contentArray" keyPath="songs" id="1445"/>
             </connections>
         </arrayController>
-        <customView misplaced="YES" id="1610" userLabel="General Preferences View">
+        <customView id="1610" userLabel="General Preferences View">
             <rect key="frame" x="0.0" y="0.0" width="362" height="380"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -1358,7 +1359,7 @@ DQ
                         <binding destination="979" name="value" keyPath="values.pleaseBindMedia" id="1978"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="1550">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="1550">
                     <rect key="frame" x="36" y="314" width="308" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use play/pause and next track keys to control Hermes from any application." id="1551">
@@ -1367,7 +1368,7 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button misplaced="YES" id="2338">
+                <button id="2338">
                     <rect key="frame" x="18" y="281" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Hide Dock icon and menus" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="2348">
@@ -1379,7 +1380,7 @@ DQ
                         <binding destination="979" name="value" keyPath="values.statusBarIcon" id="2357"/>
                     </connections>
                 </button>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="2354">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="2354">
                     <rect key="frame" x="36" y="251" width="308" height="28"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="When checked, control Hermes with the keyboard or its menu on the right side of the menu bar." id="2355">
@@ -1388,7 +1389,7 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="y6s-Gc-dec">
+                <box verticalHuggingPriority="750" boxType="separator" id="y6s-Gc-dec">
                     <rect key="frame" x="12" y="100" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
@@ -1396,7 +1397,7 @@ DQ
                     <rect key="frame" x="12" y="303" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
-                <button misplaced="YES" id="qU3-Mb-t5B">
+                <button id="qU3-Mb-t5B">
                     <rect key="frame" x="156" y="226" width="188" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Song title" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Jjy-wl-Erl">
@@ -1409,7 +1410,7 @@ DQ
                         <binding destination="979" name="value" keyPath="values.statusBarShowSongTitle" id="HaC-QQ-VPO"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="12375">
+                <button id="12375">
                     <rect key="frame" x="156" y="181" width="188" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="B&amp;W icon and play/pause" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="12376">
@@ -1421,7 +1422,7 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="12392"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="sIX-RA-vSL">
+                <button id="sIX-RA-vSL">
                     <rect key="frame" x="156" y="203" width="188" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Color Hermes icon only" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="i1p-bV-vfc">
@@ -1433,7 +1434,7 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="qig-Tq-jcU"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="28c-Js-E8a">
+                <button id="28c-Js-E8a">
                     <rect key="frame" x="156" y="159" width="188" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="radio" title="Album art" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="mnw-9k-8hv">
@@ -1445,7 +1446,7 @@ DQ
                         <binding destination="979" name="enabled" keyPath="values.statusBarIcon" id="cG2-KI-QQz"/>
                     </connections>
                 </button>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="cu3-Mz-UFU">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" id="cu3-Mz-UFU">
                     <rect key="frame" x="36" y="227" width="118" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Show in menu bar:" id="eNj-oy-3dc">
@@ -1454,11 +1455,11 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <box verticalHuggingPriority="750" misplaced="YES" boxType="separator" id="S4B-aI-Ikt">
+                <box verticalHuggingPriority="750" boxType="separator" id="S4B-aI-Ikt">
                     <rect key="frame" x="12" y="69" width="338" height="5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                 </box>
-                <button misplaced="YES" id="2369">
+                <button id="2369">
                     <rect key="frame" x="18" y="78" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Keep Hermes on top of all other windows" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="2370">
@@ -1470,7 +1471,7 @@ DQ
                         <binding destination="979" name="value" keyPath="values.alwaysOnTop" id="2373"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="1847">
+                <button id="1847">
                     <rect key="frame" x="18" y="44" width="142" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Check for updates:" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1848">
@@ -1481,7 +1482,7 @@ DQ
                         <binding destination="1000" name="value" keyPath="automaticallyChecksForUpdates" id="1862"/>
                     </connections>
                 </button>
-                <button misplaced="YES" id="1851">
+                <button id="1851">
                     <rect key="frame" x="18" y="18" width="326" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Automatically download updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1852">
@@ -1493,7 +1494,7 @@ DQ
                         <binding destination="1000" name="value" keyPath="automaticallyDownloadsUpdates" id="1863"/>
                     </connections>
                 </button>
-                <popUpButton verticalHuggingPriority="750" misplaced="YES" id="1864">
+                <popUpButton verticalHuggingPriority="750" id="1864">
                     <rect key="frame" x="164" y="39" width="100" height="26"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <popUpButtonCell key="cell" type="push" title="Daily" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="86400" imageScaling="proportionallyDown" inset="2" selectedItem="1868" id="1865">
@@ -1532,7 +1533,7 @@ DQ
                         </binding>
                     </connections>
                 </button>
-                <button misplaced="YES" id="Gqd-Md-zJS">
+                <button id="Gqd-Md-zJS">
                     <rect key="frame" x="36" y="109" width="308" height="18"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="check" title="Show play/pause icon over album art" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="xUP-vt-caX">
@@ -1755,7 +1756,7 @@ DQ
             <rect key="frame" x="0.0" y="0.0" width="362" height="273"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="QeC-l0-JJ4">
+                <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="QeC-l0-JJ4">
                     <rect key="frame" x="36" y="205" width="307" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" enabled="NO" sendsActionOnEndEditing="YES" title="Can’t access proxy server. Please verify settings." id="ygT-al-bjM">
@@ -1796,12 +1797,12 @@ DQ
                         <outlet property="nextKeyView" destination="1941" id="afc-fl-iE5"/>
                     </connections>
                 </matrix>
-                <textField toolTip="Hostname or IP address of the HTTP proxy server" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="1941" userLabel="HTTP proxy server host">
+                <textField toolTip="Hostname or IP address of the HTTP proxy server" verticalHuggingPriority="750" textCompletion="NO" id="1941" userLabel="HTTP proxy server host">
                     <rect key="frame" x="74" y="163" width="186" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="1942">
                         <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1815,7 +1816,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="1944">
                         <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1825,7 +1826,7 @@ DQ
                         <outlet property="nextKeyView" destination="2124" id="IwZ-dA-qbT"/>
                     </connections>
                 </textField>
-                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" allowsCharacterPickerTouchBarItem="YES" id="2112">
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsCharacterPickerTouchBarItem="YES" id="2112">
                     <rect key="frame" x="36" y="221" width="307" height="14"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Use proxies configured in Network System Preferences." id="2113">
@@ -1861,12 +1862,12 @@ DQ
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField toolTip="Hostname or IP address of the SOCKS proxy server" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="2124" userLabel="SOCKS proxy server host">
+                <textField toolTip="Hostname or IP address of the SOCKS proxy server" verticalHuggingPriority="750" textCompletion="NO" id="2124" userLabel="SOCKS proxy server host">
                     <rect key="frame" x="74" y="111" width="186" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="2129">
                         <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1880,7 +1881,7 @@ DQ
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="2128">
                         <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
@@ -1927,7 +1928,7 @@ DQ
             </subviews>
             <point key="canvasLocation" x="-68" y="233"/>
         </customView>
-        <window title="Edit Station" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="Edit Station" animationBehavior="default" id="1641" userLabel="Edit Station Window">
+        <window title="Edit Station" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="Edit Station" animationBehavior="default" id="1641" userLabel="Edit Station Window">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="131" y="159" width="611" height="286"/>
@@ -1998,11 +1999,11 @@ DQ
                                                 </subviews>
                                                 <nil key="backgroundColor"/>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1680">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1680">
                                                 <rect key="frame" x="-100" y="-100" width="198" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1682">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1682">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -2043,11 +2044,11 @@ DQ
                                                 </subviews>
                                                 <nil key="backgroundColor"/>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1689">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1689">
                                                 <rect key="frame" x="-100" y="-100" width="198" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1691">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1691">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -2139,11 +2140,11 @@ DQ
                                                     </tableView>
                                                 </subviews>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1700">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1700">
                                                 <rect key="frame" x="1" y="137" width="198" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1702">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1702">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -2188,11 +2189,11 @@ DQ
                                                     </tableView>
                                                 </subviews>
                                             </clipView>
-                                            <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="1710">
+                                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="1710">
                                                 <rect key="frame" x="1" y="137" width="198" height="15"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
-                                            <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="1708">
+                                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="1708">
                                                 <rect key="frame" x="224" y="17" width="15" height="102"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                             </scroller>
@@ -2253,7 +2254,7 @@ DQ
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="Station Name" drawsBackground="YES" id="1762">
                             <font key="font" metaFont="system"/>
-                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                         <connections>
@@ -2360,12 +2361,12 @@ DQ
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSDescendingSortIndicator" width="9" height="9"/>
         <image name="NSFollowLinkFreestandingTemplate" width="14" height="14"/>
-        <image name="NSFontPanel" width="32" height="32"/>
-        <image name="NSNetwork" width="32" height="32"/>
-        <image name="NSPreferencesGeneral" width="32" height="32"/>
+        <image name="NSFontPanel" width="128" height="128"/>
+        <image name="NSNetwork" width="128" height="128"/>
+        <image name="NSPreferencesGeneral" width="128" height="128"/>
         <image name="NSRefreshTemplate" width="11" height="15"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
-        <image name="NSUser" width="32" height="32"/>
+        <image name="NSUser" width="128" height="128"/>
         <image name="cd" width="512" height="512"/>
         <image name="error_icon" width="128" height="128"/>
         <image name="fast_forward" width="128" height="128"/>
