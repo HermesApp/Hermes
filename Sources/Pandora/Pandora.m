@@ -837,34 +837,37 @@ static NSString *hierrs[] = {
   URLConnection *c =
   [URLConnection connectionForRequest:nsrequest
                     completionHandler:^(NSData *d, NSError *e) {
-                      /* Parse the JSON if we don't have an error */
                       NSDictionary *dict = nil;
-                      if (e == nil) {
+                      /* Parse the JSON if we don't have an error */
+                      if (!e) {
                         dict = [NSJSONSerialization JSONObjectWithData:d options:0 error:&e];
                       }
+
+                      NSString *err = e ? [e localizedDescription] : nil;
                       /* If we still don't have an error, look at the JSON for an error */
-                      NSString *err = e == nil ? nil : [e localizedDescription];
-                      if (dict != nil && err == nil) {
-                        NSString *stat = dict[@"stat"];
-                        if ([stat isEqualToString:@"fail"]) {
+                      if (!err && dict) {
+                        if ([dict[@"stat"] isEqualToString:@"fail"]) {
                           err = dict[@"message"];
                         }
                       }
                       
-                      /* If we don't have an error, then all we need to do is invoked the
-                       specified callback, otherwise build the error dictionary. */
+                      /* If we don't have an error, then invoke the callback. */
                       if (err == nil) {
                         assert(dict != nil);
                         [request callback](dict);
                         return;
                       }
-                      
+
+                      /* Otherwise build the error dictionary. */
                       NSMutableDictionary *info = [NSMutableDictionary dictionary];
-                      
-                      [info setValue:request forKey:@"request"];
-                      [info setValue:err     forKey:@"error"];
-                      if (dict != nil) {
-                        [info setValue:dict[@"code"] forKey:@"code"];
+                      info[@"request"] = request;
+                      info[@"err"] = err;
+                      if (e) {
+                        NSInteger code = e.code;
+                        if (code != 0)
+                          info[@"nsErrorCode"] = @(code); /* This is a NSError code. */
+                      } else if (dict) {
+                        info[@"code"] = dict[@"code"]; /* This is a Pandora error code. */
                       }
                       [[NSNotificationCenter defaultCenter] postNotificationName:PandoraDidErrorNotification
                                                                           object:self
