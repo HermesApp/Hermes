@@ -297,6 +297,15 @@ BOOL playOnStart = YES;
   }
 }
 
+// nil = no image available
+- (void)setArtImage:(NSImage *)artImage {
+  self->_artImage = artImage;
+  [art setImage:artImage ? artImage : [NSImage imageNamed:@"missing-album"]];
+  [artLoading setHidden:YES];
+  [artLoading stopAnimation:nil];
+  [self updateQuickLookPreviewWithArt:artImage != nil];
+}
+
 - (void)updateQuickLookPreviewWithArt:(BOOL)hasArt {
   [art setEnabled:hasArt];
 
@@ -326,11 +335,9 @@ BOOL playOnStart = YES;
   /* Prevent a flicker by not loading the same image twice */
   if ([song art] != lastImgSrc) {
     if ([song art] == nil || [[song art] isEqual: @""]) {
-      [art setImage: [NSImage imageNamed:@"missing-album"]];
-      [GROWLER growl:song withImage:nil isNew:YES];
-      [artLoading setHidden:YES];
-      [artLoading stopAnimation:nil];
-      [self updateQuickLookPreviewWithArt:NO];
+      [self setArtImage:nil];
+      if (![self->playing isPaused])
+        [GROWLER growl:song withImage:nil isNew:YES];
     } else {
       [artLoading startAnimation:nil];
       [artLoading setHidden:NO];
@@ -341,9 +348,7 @@ BOOL playOnStart = YES;
                                 callback:^(NSData *data) {
         NSImage *image = nil;
         self->lastImg = data;
-        if (data == nil) {
-          image = [NSImage imageNamed:@"missing-album"];
-        } else {
+        if (data != nil) {
           image = [[NSImage alloc] initWithData:data];
         }
 
@@ -352,10 +357,7 @@ BOOL playOnStart = YES;
         if (![self->playing isPaused]) {
           [GROWLER growl:song withImage:data isNew:YES];
         }
-        [self->art setImage:image];
-        [self->artLoading setHidden:YES];
-        [self->artLoading stopAnimation:nil];
-        [self updateQuickLookPreviewWithArt:data != nil];
+        [self setArtImage:image];
       }];
     }
   } else {
@@ -714,7 +716,7 @@ BOOL playOnStart = YES;
 
 - (NSURL *)previewItemURL {
   NSURL *artFileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"Hermes Album Art.tiff"]];
-  [[[art image] TIFFRepresentation] writeToURL:artFileURL atomically:YES];
+  [self.artImage.TIFFRepresentation writeToURL:artFileURL atomically:YES];
 
   return artFileURL;
 }
@@ -731,8 +733,7 @@ BOOL playOnStart = YES;
 
   frame = NSInsetRect(frame, 1, 1); // image doesn't extend into the button border
 
-  NSImage *image = [art image];
-  NSSize imageSize = [image size]; // correct for aspect ratio
+  NSSize imageSize = self.artImage.size; // correct for aspect ratio
   if (imageSize.width > imageSize.height)
     frame = NSInsetRect(frame, 0, ((imageSize.width - imageSize.height) / imageSize.height) / 2. * frame.size.height);
   else if (imageSize.height > imageSize.width)
@@ -743,7 +744,7 @@ BOOL playOnStart = YES;
 
 - (NSImage *)previewPanel:(QLPreviewPanel *)panel transitionImageForPreviewItem:(id <QLPreviewItem>)item contentRect:(NSRect *)contentRect {
 
-  return [art image];
+  return self.artImage;
 }
 
 @end
