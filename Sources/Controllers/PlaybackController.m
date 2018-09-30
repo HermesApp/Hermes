@@ -444,6 +444,10 @@ BOOL playOnStart = YES;
   }
 }
 
+- (void) replay {
+  [playing replay];
+}
+
 - (void) stop {
   [playing stop];
 }
@@ -491,6 +495,11 @@ BOOL playOnStart = YES;
   } else {
     [self pause];
   }
+}
+
+/* Replay current song */
+- (IBAction)replay: (id) sender {
+  [self replay];
 }
 
 /* Stop this song and go to the next */

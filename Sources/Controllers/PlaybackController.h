@@ -28,6 +28,7 @@
   IBOutlet NSToolbarItem *like;
   IBOutlet NSToolbarItem *dislike;
   IBOutlet NSToolbarItem *playpause;
+  IBOutlet NSToolbarItem *replay;
   IBOutlet NSToolbarItem *nextSong;
   IBOutlet NSToolbarItem *tiredOfSong;
   IBOutlet NSSlider *volume;
@@ -61,6 +62,7 @@
 
 - (BOOL) play;
 - (BOOL) pause;
+- (void) replay;
 - (void) stop;
 - (void) setIntegerVolume: (NSInteger) volume;
 - (NSInteger) integerVolume;
