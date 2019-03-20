@@ -86,7 +86,7 @@
                       keyEquivalent:@""];
   [menuItem setTarget:playback];
   if ([[song nrating] intValue] == 1) {
-    menuItem.state = NSOnState;
+    menuItem.state = NSControlStateValueOn;
   }
   menuItem = [menu addItemWithTitle:@"Dislike"
                              action:@selector(dislike:)
@@ -187,8 +187,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-  NSUInteger flags = ([NSEvent modifierFlags] & NSDeviceIndependentModifierFlagsMask);
-  BOOL isOptionPressed = (flags == NSAlternateKeyMask);
+  NSUInteger flags = ([NSEvent modifierFlags] & NSEventModifierFlagDeviceIndependentFlagsMask);
+  BOOL isOptionPressed = (flags == NSEventModifierFlagOption);
   
   if (isOptionPressed && [self configureLogFile]) {
     _debugMode = YES;
@@ -559,7 +559,7 @@
     [overlay drawInRect:NSMakeRect(playPauseOffset, playPauseOffset,
                                    [overlay size].width, [overlay size].height)
                fromRect:NSZeroRect
-              operation:NSCompositeSourceOver
+              operation:NSCompositingOperationSourceOver
                fraction:1.0];
     [icon unlockFocus];
   }
@@ -804,17 +804,17 @@
       return NO;
 
     NSInteger openDrawer = [PREF_KEY_VALUE(OPEN_DRAWER) integerValue];
-    NSCellStateValue state = NSOffState;
+    NSControlStateValue state = NSControlStateValueOff;
     if (action == @selector(showHistoryDrawer:)) {
       if (openDrawer == DRAWER_NONE_HIST)
-        state = NSMixedState;
+        state = NSControlStateValueMixed;
       else if (openDrawer == DRAWER_HISTORY)
-        state = NSOnState;
+        state = NSControlStateValueOn;
     } else if (action == @selector(showStationsDrawer:)) {
       if (openDrawer == DRAWER_NONE_STA)
-        state = NSMixedState;
+        state = NSControlStateValueMixed;
       else if (openDrawer == DRAWER_STATIONS)
-        state = NSOnState;
+        state = NSControlStateValueOn;
     } else {
       if (openDrawer == DRAWER_HISTORY || openDrawer == DRAWER_STATIONS)
         [menuItem setTitle:@"Hide Drawer"];
