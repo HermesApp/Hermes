@@ -59,6 +59,10 @@ BOOL playOnStart = YES;
              selector:@selector(startUpdatingProgress)
                  name:NSApplicationDidUnhideNotification
                object:NSApp];
+  [center addObserver:self
+             selector:@selector(applicationDidResignActiveNotification)
+                 name:NSApplicationDidResignActiveNotification
+               object:NSApp];
 
   [center
     addObserver:self
@@ -121,6 +125,8 @@ BOOL playOnStart = YES;
   // prevent dragging the progress slider
   [playbackProgress setEnabled:NO];
 
+	appWasInactive = NO;
+
   // Media keys
   if ([MPRemoteCommandCenter class] != nil) {
     remoteCommandCenter = [MPRemoteCommandCenter sharedCommandCenter];
@@ -168,6 +174,12 @@ BOOL playOnStart = YES;
 
 - (void)showToolbar {
   toolbar.visible = YES;
+}
+
+- (void) applicationDidResignActiveNotification
+{
+	// See quickLookArt:
+	appWasInactive = YES;
 }
 
 /* Don't run the timer when playback is paused, the window is hidden, etc. */
@@ -644,11 +656,17 @@ BOOL playOnStart = YES;
 }
 
 - (IBAction)quickLookArt:(id)sender {
-  QLPreviewPanel *previewPanel = [QLPreviewPanel sharedPreviewPanel];
-  if ([previewPanel isVisible])
-    [previewPanel orderOut:nil];
-  else
-    [previewPanel makeKeyAndOrderFront:nil];
+  // Don't do the quicklook artwork thing if the app is being clicked
+  // on to bring it to the foreground (since 80% of the app's surface
+  // is the artwork, this quickly becomes annoying)
+  if (! appWasInactive) {
+    QLPreviewPanel *previewPanel = [QLPreviewPanel sharedPreviewPanel];
+    if ([previewPanel isVisible])
+      [previewPanel orderOut:nil];
+    else
+      [previewPanel makeKeyAndOrderFront:nil];
+  }
+  appWasInactive = NO;
 }
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
